@@ -1,0 +1,90 @@
+Version 1.6
+     - Changed Parameters.py and parameters_runtime.json:
+         - added NightlyBatchEmailAddress
+         - added NightlyBatchEmailSMTPServer
+         - added NightlyBatchEmailFromAdress
+         - added NightlyBatchDomain
+     - Added MeeusAlgorithmsFormulas.py: centralize all Meeus formulas with explicit name related to chapter in book
+     - Added MeeusAlgorithmsFormulasTests.py and NonRegression.py: so Meeus formulas can be tested against known values
+     - Updated MeeusAlgorithms.py so compute method will use MeeusAlgorithmsFormulas
+     - EphemeridesData.py:
+         - Added method getObjectVisibilityStatusForSlot
+     - RenderBitmap.py:
+         - Changed method _getBitmapColorForObjectAltitudeDependingOnSunAltitude to use EphemeridesData.getObjectVisibilityStatusForSlot
+         - remove hardcoded domain in HTML generated (uses value in Parameters)
+Version 1.5
+     - Parameters_run.json: Added Lunar Features
+     - Split Parameters_run.json in 3 files:
+         - parameters_Runtime.json
+         - parameters_SkyObjects.json
+         - parameters_LunarFeatures.json
+     - Renamed parameters_places.json to parmeters_Places.json
+     - EphemeridesMoonMeeus.py:
+         - fixed colongitude calculation so the value corresponds to a lunar longitude
+     - parameters_LunarFeatures.json: Added LongitudeMin and LongitudeMax (to be used with parameter ObservationShowWhenTerminatorIsOnLunarFeature)
+     - Added parameters ObservationShowWhenTerminatorIsOnLunarFeature and ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg
+     - RenderBitmap.py:
+         - Changed _addLunarFeatureVisibilityBitmapForDay to take into account parameter ObservationShowWhenTerminatorIsOnLunarFeature
+         - Changed _addMoonMinimapBitmap: added 1 or 2 pixel in mini moon map bitmap size to fix the issue of the circle cropped on the right
+Version 1.4
+ - Changed RenderBitmap:
+     - Renamed some methods to be compliant with underscore standard
+     - Added Visibility flag in Row header
+     - Added counters in Titles
+     - Added phase visualization in moon minimap
+     - Added Favicon
+     - Added hour for additional information
+     - Fixed formula for computing coordinate of lunar feature for moon mini map
+     - Added heliocentric schema for planets
+     - Added redraw of moon border at the end of drawing the mini moon map
+     - Added Comment1 from json fil on Lunar features row header
+ - Changed LunarFeatures.py and LunarFeature.py:
+     - Added Comment1 and Comment2 properties on LunarFeature (user in init) taking information from json file
+ - Changed parameters_run.json:
+     - Added ObservationForceDisplayPlanetMoon : if Yes, planets and moon are always displayed even if not observable
+     - Added DisplayDaySlotForDataInfo : slot used to compute additional info for a day, and for mini moon map
+ - Changed nightlyBatchBitmap
+     - added counter in email subjects
+
+Version 1.3
+ - Added nightlyBatchBitmap.py for generating ephemerides in only 1 bitmap
+ - Changed Tools.py: added RemoveHTML tags function used to remove HTML tags when generating ephemerides as bitmap
+Version 1.2
+ - Changed nightlyBatch.py:
+     Changed Tools.sendEmailHTML
+        Added connection SMTP parameter and Try/Catch
+Version 1.1
+ - Changed parameters_run.json file:
+     Changed section "Notification" to "NightlyBatch", and parameters renamed accordingly:
+        NightlyBatchEmailAddress
+     New parameter for adding delta time when computing ephemeris during nightly batch (to cope with time slot where servers are located):
+        NightlyBatchTimeDeltaInHours
+     Transferred information from "NightlyBatch" section to "Observation" and renamed accordingly:
+        ObservationAlways
+        ObservationStartTimeAsHHMM
+        ObservationMaxDurationInHours
+        ObservationMinAltitudeInDeg
+        ObservationMaximumLunarFeatureSunAltitude
+     Added comment for some parameters
+ - Changed parameters reading in Parameters.py and thus, following parameters are renamed:
+        NotificationEmailAddress to NightlyBatchEmailAddress
+        NotificationAlways to ObservationAlways
+        NotificationStartTimeAsHHMM to ObservationStartTimeAsHHMM
+        NotificationDurationInHours to ObservationMaxDurationInHours
+        NotificationMinAltitudeInDeg to ObservationMinAltitudeInDeg
+        NotificationMaximumLunarFeatureSunAltitude to ObservationMaximumLunarFeatureSunAltitude
+ - Changed nightlyBatch.py:
+        sParamDate formula changed to take into account the NightlyBatchTimeDeltaInHours parameter
+ - Renamed generateEmail.cgi to generateEphemerides.cgi (removed former version of generateEphemerides.cgi)
+ - Changed Tools.getCurrentFilesHTMLHeaderComment in order to handle the case where the file doesn't exists when trying to retrieve the header
+ - Added NGC891 in paramters_run.json
+ - Changed paramters_places.json:
+        added cooment field in ObstructedSkyAreas
+ - changed tool.getGenerateMoonFeatureBitmap:
+        added parameter sSubfolderForBitmaps
+ - changed RendererHTML.py
+        added instance variable self._sURLFolderForBitmaps
+        changed parameter for _init
+        used new instance variable in all IMG tags
+ - changed nightlyBatch.py
+        new parameter in RendererHTML creator
