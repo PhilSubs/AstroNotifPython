@@ -1,0 +1,26 @@
+[
+	{
+	"Name":"Maison-Jardin", 
+	"Longitude":6.977777778, 
+	"Latitude":43.636666667, 
+	"ObstructedSkyAreas":
+		[
+			{"Comment":"         ", "Azimut-Min":0,   "Azimut-Max":59,  "Altitude-Min":0, "Altitude-Max":45},
+			{"Comment":"Maison   ", "Azimut-Min":60,  "Azimut-Max":130, "Altitude-Min":0, "Altitude-Max":45},
+			{"Comment":"Arbre    ", "Azimut-Min":131, "Azimut-Max":164, "Altitude-Min":0, "Altitude-Max":45},
+			{"Comment":"Maison 01", "Azimut-Min":165, "Azimut-Max":205, "Altitude-Min":0, "Altitude-Max":35},
+			{"Comment":"         ", "Azimut-Min":206, "Azimut-Max":360, "Altitude-Min":0, "Altitude-Max":25}
+		]
+	}, 
+	
+	{
+	"Name":"Maison-Entree", 
+	"Longitude":6.977777778, 
+	"Latitude":43.636666667, 
+	"ObstructedSkyAreas":
+		[
+			{"Comment":"", "Azimut-Min":0, "Azimut-Max":180, "Altitude-Min":0, "Altitude-Max":30},
+			{"Comment":"", "Azimut-Min":181, "Azimut-Max":359, "Altitude-Min":0, "Altitude-Max":3}
+		]
+	}
+]
