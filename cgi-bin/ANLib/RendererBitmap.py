@@ -791,7 +791,7 @@ class RendererBitmap(toolObjectSerializable):
         sHTML = self.getHTMLHeaderComment(oCalendar, oParameters) + "\n"
         sHTML += '<HTML>' + "\n"
         sHTML += '	<HEAD>' + "\n"
-        SHTML += '		<title>AstroNotif/title>' + "\n"
+        sHTML += '		<title>AstroNotif/title>' + "\n"
         sHTML += '		<link rel="icon" href="http://' + oParameters.getNightlyBatchDomain() + '/favicon.png">' 
         sHTML += '		<base href="">' + "\n"
         sHTML += '		<style>' + "\n"
