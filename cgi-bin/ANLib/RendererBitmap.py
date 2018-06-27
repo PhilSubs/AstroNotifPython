@@ -791,6 +791,7 @@ class RendererBitmap(toolObjectSerializable):
         sHTML = self.getHTMLHeaderComment(oCalendar, oParameters) + "\n"
         sHTML += '<HTML>' + "\n"
         sHTML += '	<HEAD>' + "\n"
+        SHTML += '      <title>AstroNotif/title>' + "\n"
         sHTML += '		<link rel="icon" href="http://' + oParameters.getNightlyBatchDomain() + '/favicon.png">' 
         sHTML += '		<base href="">' + "\n"
         sHTML += '		<style>' + "\n"
@@ -801,7 +802,7 @@ class RendererBitmap(toolObjectSerializable):
 
         iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = self.getEphemeridesBitmapForPeriod(oCalendar, oParameters, oEphemeridesData)
         
-        sHTML += '    <H1>&nbsp;&nbsp;<A href="http://' + oParameters.getNightlyBatchDomain() + '" target="_blank">Ephemerides du <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:20px">Lieu: ' + oParameters.getPlace().getName() + ' </SPAN></H1>' + "\n"
+        sHTML += '    <H1>&nbsp;&nbsp;<A href="http://' + oParameters.getNightlyBatchDomain() + '" target="_blank">Ephemerides du <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:20px">Lieu: ' + oParameters.getPlace().getName() + ' </SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:10px">Généré le ' + (datetime.now()).strftime("%d/%m/%Y à %H:%M") + ' </SPAN></H1>' + "\n"
         sHTML += '    <IMG style="border:none" src="' + sBitmapNameURL + '" alt="' + "Ephemerides du " + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
         sHTML += '    </BODY>' + "\n"
         sHTML += '</HTML>' + "\n"
