@@ -15,6 +15,7 @@ from LunarFeatures import LunarFeatures
 class Parameters(toolObjectSerializable):
     def __init__(self):
         toolObjectSerializable.__init__(self)
+        self._sGlobalCurrentVersion = ""
         self._sNightlyBatchDomain = ""
         self._sNightlyBatchEmailAddress = ""
         self._sNightlyEmailSMTPServer = ""
@@ -48,6 +49,7 @@ class Parameters(toolObjectSerializable):
         self._SkyObjects = {}
         self._LunarFeatures = {}
         self.__loadFromFile()
+    def getGlobalCurrentVersion(self): return self._sGlobalCurrentVersion
     def getNightlyBatchTimeDeltaInHours(self): return self._iNightlyBatchTimeDeltaInHours
     def getNightlyBatchEmailAddress(self): return self._sNightlyBatchEmailAddress
     def getNightlyBatchEmailSMTPServer(self): return self._sNightlyBatchEmailSMTPServer
@@ -86,6 +88,7 @@ class Parameters(toolObjectSerializable):
         with open('parameters_Runtime.json', 'r') as f:
              data = json.load(f)
         # init properties
+        self._sGlobalCurrentVersion = data["currentVersion"]
         self._iNightlyBatchTimeDeltaInHours = data["NightlyBatchTimeDeltaInHours"]
         self._sNightlyBatchEmailAddress = data["NightlyBatchEmailAddress"]
         self._sNightlyBatchEmailSMTPServer = data["NightlyBatchEmailSMTPServer"]
