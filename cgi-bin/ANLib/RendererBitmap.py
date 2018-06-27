@@ -9,8 +9,7 @@ from MeeusAlgorithms import MeeusAlgorithms
 from Tools import Tools
 from PIL import Image, ImageDraw, ImageFont
 import math
-Import datetime
-
+from datetime import datetime
 
 class RendererBitmap(toolObjectSerializable):
     iLeftLabelWidthInPx = 100
