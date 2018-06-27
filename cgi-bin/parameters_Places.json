@@ -1,8 +1,8 @@
 [
 	{
 	"Name":"Maison-Jardin", 
-	"Longitude":6.977777778, 
-	"Latitude":43.636666667, 
+	"Longitude":0.000000000 
+	"Latitude":0.000000000, 
 	"ObstructedSkyAreas":
 		[
 			{"Comment":"         ", "Azimut-Min":0,   "Azimut-Max":59,  "Altitude-Min":0, "Altitude-Max":45},
@@ -15,8 +15,8 @@
 	
 	{
 	"Name":"Maison-Entree", 
-	"Longitude":6.977777778, 
-	"Latitude":43.636666667, 
+	"Longitude":0.000000000, 
+	"Latitude":0.000000000, 
 	"ObstructedSkyAreas":
 		[
 			{"Comment":"", "Azimut-Min":0, "Azimut-Max":180, "Altitude-Min":0, "Altitude-Max":30},
