@@ -9,6 +9,7 @@ from MeeusAlgorithms import MeeusAlgorithms
 from Tools import Tools
 from PIL import Image, ImageDraw, ImageFont
 import math
+Import datetime
 
 
 class RendererBitmap(toolObjectSerializable):
