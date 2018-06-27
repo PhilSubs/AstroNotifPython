@@ -1,4 +1,7 @@
 {
+    "Global":"Global parameters",
+        "currentVersion":"v1.6b",
+    
     "NightlyBatch":"Parameters for nightly batch",
         "NightlyBatchTimeDeltaInHours":0,
         "NightlyBatchTimeDeltaInHours_comment":"Nb hours added to local time for computnig the Ephemeris during nightly batch. Cron runs on local time, but server is in California, so GMT-8...",
