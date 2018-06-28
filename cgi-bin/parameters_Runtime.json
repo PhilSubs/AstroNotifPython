@@ -1,6 +1,6 @@
 {
     "Global":"Global parameters",
-        "currentVersion":"v1.6b",
+        "currentVersion":"v1.7",
     
     "NightlyBatch":"Parameters for nightly batch",
         "NightlyBatchTimeDeltaInHours":0,
