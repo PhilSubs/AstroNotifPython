@@ -1,7 +1,7 @@
 #
 # usage : ./cronjob_AstroNotifPython.sh <path_to_App>
 #
-#  Extract the deployment.xml file from component tarball in obedeliv
+#  Generate HTML file and bitmaps
 #
 cd $1
 python nightlyBatchBitmap.py
