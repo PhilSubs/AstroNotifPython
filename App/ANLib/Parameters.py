@@ -16,6 +16,8 @@ class Parameters(toolObjectSerializable):
     def __init__(self):
         toolObjectSerializable.__init__(self)
         self._sGlobalCurrentVersion = ""
+        self._sGlobalPathToWWWFolder = ""
+        self._sGlobalPathToAPPFolder = ""
         self._sNightlyBatchDomain = ""
         self._sNightlyBatchEmailAddress = ""
         self._sNightlyEmailSMTPServer = ""
@@ -50,6 +52,8 @@ class Parameters(toolObjectSerializable):
         self._LunarFeatures = {}
         self.__loadFromFile()
     def getGlobalCurrentVersion(self): return self._sGlobalCurrentVersion
+    def getGlobalPathToWWWFolder(self): return self._sGlobalPathToWWWFolder
+    def getGlobalPathToAPPFolder(self): return self._sGlobalPathToAPPFolder
     def getNightlyBatchTimeDeltaInHours(self): return self._iNightlyBatchTimeDeltaInHours
     def getNightlyBatchEmailAddress(self): return self._sNightlyBatchEmailAddress
     def getNightlyBatchEmailSMTPServer(self): return self._sNightlyBatchEmailSMTPServer
@@ -89,6 +93,8 @@ class Parameters(toolObjectSerializable):
              data = json.load(f)
         # init properties
         self._sGlobalCurrentVersion = data["currentVersion"]
+        self._sGlobalPathToWWWFolder = data["GlobalPathToWWWFolder"]
+        self._sGlobalPathToAPPFolder = data["GlobalPathToAPPFolder"]
         self._iNightlyBatchTimeDeltaInHours = data["NightlyBatchTimeDeltaInHours"]
         self._sNightlyBatchEmailAddress = data["NightlyBatchEmailAddress"]
         self._sNightlyBatchEmailSMTPServer = data["NightlyBatchEmailSMTPServer"]
