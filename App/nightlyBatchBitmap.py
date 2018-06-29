@@ -19,15 +19,11 @@ theEphemeridesData = ANLib.EphemeridesData()
 
 # Compute ephemeris and produce new HTML
 theEphemeridesData.computeEphemeridesForPeriod(theParameters, theCalendar)
-if 'Render' == 'HTML':
-    theRendererHTML = ANLib.RendererHTML('../bm/', "http://" + theParameters.getNightlyBatchDomain() + "/bm/", True)
-    sHTMLContent = theRendererHTML.getHTML(theCalendar, theParameters, theEphemeridesData)
-else:
-    theRendererBitmap = ANLib.RendererBitmap('../bm/', "http://" + theParameters.getNightlyBatchDomain() + "/bm/", True)
-    sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = theRendererBitmap.getHTML(theCalendar, theParameters, theEphemeridesData)
+theRendererBitmap = ANLib.RendererBitmap( theParameters.getGlobalPathToWWWFolder() + '/', "http://" + theParameters.getNightlyBatchDomain() + "/", True)
+sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = theRendererBitmap.getHTML(theCalendar, theParameters, theEphemeridesData)
 
 # Save as default html file
-ANLib.Tools.saveAsFile(theParameters.getNightlyBatchHTMLFilname(), sHTMLContent)
+ANLib.Tools.saveAsFile(theParameters.getGlobalPathToWWWFolder() + '/' + theParameters.getNightlyBatchHTMLFilname(), sHTMLContent)
 
 # Prepare email for daily notification
 if len(theParameters.getNightlyBatchEmailAddress()) > 0:
