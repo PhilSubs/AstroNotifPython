@@ -21,7 +21,7 @@ class Parameters(toolObjectSerializable):
         self._sNightlyBatchDomain = ""
         self._sNightlyBatchEmailAddress = ""
         self._sNightlyEmailSMTPServer = ""
-        self._sNightlyEmailFromAdress = ""
+        self._sNightlyEmailFromAddress = ""
         self._sNightlyBatchHTMLFilname = ""
         self._fObservationMinAltitudeInDeg = 0.0
         self._sObservationStartTimeAsHHMM = ""
@@ -57,7 +57,7 @@ class Parameters(toolObjectSerializable):
     def getNightlyBatchTimeDeltaInHours(self): return self._iNightlyBatchTimeDeltaInHours
     def getNightlyBatchEmailAddress(self): return self._sNightlyBatchEmailAddress
     def getNightlyBatchEmailSMTPServer(self): return self._sNightlyBatchEmailSMTPServer
-    def getNightlyBatchEmailFromAdress(self): return self._sNightlyBatchEmailFromAdress
+    def getNightlyBatchEmailFromAddress(self): return self._sNightlyBatchEmailFromAddress
     def getNightlyBatchDomain(self): return self._sNightlyBatchDomain
     def getNightlyBatchHTMLFilname(self): return self._sNightlyBatchHTMLFilname
     def getObservationStartTimeAsHHMM(self): return self._sObservationStartTimeAsHHMM
@@ -98,7 +98,7 @@ class Parameters(toolObjectSerializable):
         self._iNightlyBatchTimeDeltaInHours = data["NightlyBatchTimeDeltaInHours"]
         self._sNightlyBatchEmailAddress = data["NightlyBatchEmailAddress"]
         self._sNightlyBatchEmailSMTPServer = data["NightlyBatchEmailSMTPServer"]
-        self._sNightlyBatchEmailFromAdress = data["NightlyBatchEmailFromAdress"]
+        self._sNightlyBatchEmailFromAddress = data["NightlyBatchEmailFromAddress"]
         self._sNightlyBatchDomain = data["NightlyBatchDomain"]
         self._sNightlyBatchHTMLFilname = data["NightlyBatchHTMLFilname"]
         self._sObservationStartTimeAsHHMM = data["ObservationStartTimeAsHHMM"]
