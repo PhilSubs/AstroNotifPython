@@ -35,3 +35,4 @@ Ajouter une tâche récurrente pour calculer les éphémérides tous les jours:
    - sauvegarder par CTRL-O
    - quitter par CTRL-X
   
+Copier le contenu du répertoire www dans [CheminWWW]
