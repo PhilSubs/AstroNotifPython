@@ -1,10 +1,7 @@
 {
-    "Global":"Global parameters",
-        "currentVersion":"v1.7",
-        "GlobalPathToWWWFolder":"/var/www/html",
-        "GlobalPathToWWWFolder_comment":"Absolute path to WWW folder containing files served by web server",
-        "GlobalPathToAPPFolder":"/usr/bin/AstroNotif",
-        "GlobalPathToAPPFolder_comment":"Absolute path to AstroNotif application folder containing python files",
+    "Global":"Global rendering parameters",
+        "GlobalParam":"",
+        "GlobalParam_comment":"",
         
     "VisibilityFlags":"colors for visibility flags",
         "colorVisibilityFlagsNotObservable":"255, 0, 0",
