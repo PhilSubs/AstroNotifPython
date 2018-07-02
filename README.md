@@ -29,9 +29,10 @@ Dans le répertoire App:
 
 Ajouter une tâche récurrente pour calculer les éphémérides tous les jours:
  - dans une fenêtre schell:
+   - chmod +x [CheminAPP]/cronjob_AstroNotifPython.sh
    - taper la commande "crontab -e"
    - entrer la ligne suivante :
-        0 4 * * [CheminAPP]/cronjob_AstroNotifPython.sh > [CheminAPP]/lastRun.log
+        0 4 * * [CheminAPP]/cronjob_AstroNotifPython.sh > [CheminWWW]/lastRun.log
    - sauvegarder par CTRL-O
    - quitter par CTRL-X
   
