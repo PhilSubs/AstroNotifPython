@@ -30,15 +30,15 @@ class ParametersRendering(toolObjectSerializable):
         with open('parameters_Rendering.json', 'r') as f:
              data = json.load(f)
         # init properties
-        self._tcolorVisibilityFlagsNotObservable = data["colorVisibilityFlagsNotObservable"]
-        self._tcolorVisibilityFlagsAtLEastOneDayObservable = data["colorVisibilityFlagsAtLEastOneDayObservable"]
-        self._tcolorVisibilityFlagsObservable = data["colorVisibilityFlagsObservable"]
-        self._tcolorHeliocentricGraphBackground = data["colorHeliocentricGraphBackground"]
-        self._tcolorHeliocentricGraphLines = data["colorHeliocentricGraphLines"]
-        self._tcolorHeliocentricGraphSun = data["colorHeliocentricGraphSun"]
-        self._tcolorHeliocentricGraphEarth = data["colorHeliocentricGraphEarth"]
-        self._tcolorHeliocentricGraphPlanet = data["colorHeliocentricGraphPlanet"]
-        self._tcolorMoonMiniMapBackground = data["colorMoonMiniMapBackground"]
-        self._tcolorMoonMiniMapBorder = data["colorMoonMiniMapBorder"]
-        self._tcolorMoonMiniMapLight = data["colorMoonMiniMapLight"]
-        self._tcolorMoonMiniMapDark = data["colorMoonMiniMapDark"]
+        self._tcolorVisibilityFlagsNotObservable = eval(data["colorVisibilityFlagsNotObservable"])
+        self._tcolorVisibilityFlagsAtLEastOneDayObservable = eval(data["colorVisibilityFlagsAtLEastOneDayObservable"])
+        self._tcolorVisibilityFlagsObservable = eval(data["colorVisibilityFlagsObservable"])
+        self._tcolorHeliocentricGraphBackground = eval(data["colorHeliocentricGraphBackground"])
+        self._tcolorHeliocentricGraphLines = eval(data["colorHeliocentricGraphLines"])
+        self._tcolorHeliocentricGraphSun = eval(data["colorHeliocentricGraphSun"])
+        self._tcolorHeliocentricGraphEarth = eval(data["colorHeliocentricGraphEarth"])
+        self._tcolorHeliocentricGraphPlanet = eval(data["colorHeliocentricGraphPlanet"])
+        self._tcolorMoonMiniMapBackground = eval(data["colorMoonMiniMapBackground"])
+        self._tcolorMoonMiniMapBorder = eval(data["colorMoonMiniMapBorder"])
+        self._tcolorMoonMiniMapLight = eval(data["colorMoonMiniMapLight"])
+        self._tcolorMoonMiniMapDark = eval(data["colorMoonMiniMapDark"])
