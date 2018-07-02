@@ -1,7 +1,8 @@
 #
-# usage : ./cronjob_AstroNotifPython.sh <path_to_App>
+# usage : ./cronjob_AstroNotifPython.sh
 #
 #  Generate HTML file and bitmaps
 #
-cd $1
+currentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $currentDir
 python nightlyBatchBitmap.py
