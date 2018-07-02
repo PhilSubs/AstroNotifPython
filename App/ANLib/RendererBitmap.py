@@ -39,40 +39,24 @@ class RendererBitmap(toolObjectSerializable):
         self._oParametersRendering = ParametersRendering()
 
     def _getBitmapColorForObjectAltitudeDependingOnSunAltitude(self, sObjectVisibilityStatus):
-        if sObjectVisibilityStatus == "Below":
-            tColor = self._oParametersRendering.getColorObjectVisibilityStatusBelow()  #(153, 153, 153)
-        elif sObjectVisibilityStatus == "Hidden":
-            tColor = self._oParametersRendering.getColorObjectVisibilityStatusHidden()  #(195, 0, 255)
-        elif sObjectVisibilityStatus == "VeryLow":
-            tColor = self._oParametersRendering.getColorObjectVisibilityStatusVeryLow()  #(253, 100, 0)
-        elif sObjectVisibilityStatus == "Low":
-            tColor = self._oParametersRendering.getColorObjectVisibilityStatusLow()  #(253, 134, 0)
-        elif sObjectVisibilityStatus == "Difficult":
-            tColor = self._oParametersRendering.getColorObjectVisibilityStatusDifficult()  #(255, 0, 0)
-        elif sObjectVisibilityStatus == "Impossible":
-            tColor = self._oParametersRendering.getColorObjectVisibilityStatusImpossible()  #(28, 69, 135)
-        elif sObjectVisibilityStatus == "Good":
-            tColor = self._oParametersRendering.getColorObjectVisibilityStatusGood()  #(0, 255, 0)
-        else:
-            tColor = self._oParametersRendering.getColorObjectVisibilityStatusOther()  #(0, 0, 255)
-            
+        tColor = self._oParametersRendering.getColorObjectVisibilityStatus(sObjectVisibilityStatus)
         return tColor
 
     def _getBitmapColorforSunAltitude(self, fSunAltitude):
         if fSunAltitude < -18.0:
-            tColor = self._oParametersRendering.getColorSunAltitudeMoreThan18DegBelow() #(0, 0, 0)
+            tColor = self._oParametersRendering.getColorSunAltitude('MoreThan18DegBelow')
         elif fSunAltitude < -12.0:
-            tColor = self._oParametersRendering.getColorSunAltitude12To18DegBelow() #(28, 69, 135)
+            tColor = self._oParametersRendering.getColorSunAltitude('12To18DegBelow')
         elif fSunAltitude < -6.0:
-            tColor = self._oParametersRendering.getColorSunAltitude06To12DegBelow() #(17, 85, 204)
+            tColor = self._oParametersRendering.getColorSunAltitude('06To12DegBelow')
         elif fSunAltitude < -0.0:
-            tColor = self._oParametersRendering.getColorSunAltitude00To06DegBelow() #(60, 120, 216)
+            tColor = self._oParametersRendering.getColorSunAltitude('00To06DegBelow')
         elif fSunAltitude < 6.0:
-            tColor = self._oParametersRendering.getColorSunAltitude00To06DegAbove() #(249, 203, 156)
+            tColor = self._oParametersRendering.getColorSunAltitude('00To06DegAbove')
         elif fSunAltitude < 12.0:
-            tColor = self._oParametersRendering.getColorSunAltitude06To12DegAbove() #(255, 242, 204)
+            tColor = self._oParametersRendering.getColorSunAltitude('06To12DegAbove')
         else:
-            tColor = self._oParametersRendering.getColorSunAltitudeMoreThan12DegAbove() #(255, 255, 255)
+            tColor = self._oParametersRendering.getColorSunAltitude('MoreThan12DegAbove')
         return tColor
 
     def _getFont(self, sStyle = ""):
@@ -188,11 +172,11 @@ class RendererBitmap(toolObjectSerializable):
             theNewImg = self._addMoonMinimapBitmap( oEphemeridesData.getEphemerideDataObject("Moon").getPhaseForSlot(iDataSlot), oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
 
         if not bAtLeastOneDayIsNotObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader((0, 255, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
         elif not bAtLeastOneDayIsObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader((255, 0, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
         else:
-                theNewImg = self._addVisibilityFlagOnRowHeader((255, 127, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
             
         if bAtLeastOneDayToBeDisplayed:
             return True, bAtLeastOneDayIsObservable, theNewImg
@@ -297,10 +281,10 @@ class RendererBitmap(toolObjectSerializable):
     def _addMoonMinimapBitmap(self, iPhase, fLongitude, fLatitude, oImg, iPosX, iPosY, iBitmapSize):
         iIndicatorSizeInPx = 3
         
-        tColorMoonMapBorder = (0, 0, 0, 255)
-        tColorMoonMapBackground = (255, 255, 255, 0)
-        tColorMoonMapLight = (210, 210, 210, 255)
-        tColorMoonMapDark = (64, 64, 64, 255)
+        tColorMoonMapBorder = self.oParametersRendering.getColorMoonMiniMap('Border')
+        tColorMoonMapBackground = self.oParametersRendering.getColorMoonMiniMap('Background')
+        tColorMoonMapLight = self.oParametersRendering.getColorMoonMiniMap('Light')
+        tColorMoonMapDark = self.oParametersRendering.getColorMoonMiniMap('Dark')
         
         # Draw intermediary bitmaps
         imgFullLight = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
@@ -381,11 +365,11 @@ class RendererBitmap(toolObjectSerializable):
         iTableObjectRowHeight = RendererBitmap.iAltitudeRowHeight * 18 + RendererBitmap.iTableObjectRowGraphAdditionalDataHeight
         iBitmapSize = iTableObjectRowHeight
         iPositionX = RendererBitmap.iTableWidthObjectLabel - iBitmapSize - RendererBitmap.iTableVisibilityFlagWidth - 1
-        tColorBackground = (0, 0, 0, 255)
-        tColorLines = (50, 50, 50, 255)
-        tColorSun = (255, 127, 80, 255)
-        tColorEarth = (0, 0, 255, 255)
-        tColorPlanet = (255, 0, 0, 255)
+        tColorBackground = self._oParametersRendering.getColorHeliocentricGraph('Background')
+        tColorLines = self._oParametersRendering.getColorHeliocentricGraph('Lines')
+        tColorSun = self._oParametersRendering.getColorHeliocentricGraph('Sun')
+        tColorEarth = self._oParametersRendering.getColorHeliocentricGraph('Earth')
+        tColorPlanet = self._oParametersRendering.getColorHeliocentricGraph('Planet')
 
         iSunSize = 6
         iEarthSize = 4 
@@ -450,11 +434,11 @@ class RendererBitmap(toolObjectSerializable):
                 bAtLeastOneDayNotObservable = True
         
         if not bAtLeastOneDayNotObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader((0, 255, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
         elif not bAtLeastOneDayObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader((255, 0, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
         else:
-                theNewImg = self._addVisibilityFlagOnRowHeader((255, 127, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
         
         if bAtLeastOneDayToBeDisplayed:
             return bAtLeastOneDayToBeDisplayed, bAtLeastOneDayObservable, theNewImg
