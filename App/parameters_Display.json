@@ -1,1 +1,26 @@
-
+{
+    "Global":"Global parameters",
+        "currentVersion":"v1.7",
+        "GlobalPathToWWWFolder":"/var/www/html",
+        "GlobalPathToWWWFolder_comment":"Absolute path to WWW folder containing files served by web server",
+        "GlobalPathToAPPFolder":"/usr/bin/AstroNotif",
+        "GlobalPathToAPPFolder_comment":"Absolute path to AstroNotif application folder containing python files",
+        
+    "VisibilityFlags":"colors for visibility flags",
+        "colorVisibilityFlagsNotObservable":"255, 0, 0",
+        "colorVisibilityFlagsAtLEastOneDayObservable":"255, 127, 0",
+        "colorVisibilityFlagsObservable":"0,255,0",
+        
+    "HeliocentricGraph":"colors for Heliocentric Graph",
+        "colorHeliocentricGraphBackground":"0, 0, 0, 255",
+        "colorHeliocentricGraphLines":"50, 50, 50, 255",
+        "colorHeliocentricGraphSun":"255, 127, 80, 255",
+        "colorHeliocentricGraphEarth":"0, 0, 255, 255",
+        "colorHeliocentricGraphPlanet":"255, 0, 0, 255",
+        
+    "MoonMiniMap":"colors for Moon Mini Map",
+        "colorMoonMiniMapBackground":"255, 255, 255, 0",
+        "colorMoonMiniMapBorder":"0, 0, 0, 255",
+        "colorMoonMiniMapLight":"210, 210, 210, 255",
+        "colorMoonMiniMapDark":"64, 64, 64, 255"
+}
