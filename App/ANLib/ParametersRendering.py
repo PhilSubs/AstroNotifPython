@@ -24,7 +24,20 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorMoonMiniMapLight = (0,0,0,0)
         self._tcolorMoonMiniMapDark = (0,0,0,0)
         self.__loadFromFile()
-    def getGlobalParam(self): return self._sGlobalParam
+        
+    def getColorVisibilityFlagsNotObservable(self): return self._tcolorVisibilityFlagsNotObservable
+    def getColorVisibilityFlagsAtLEastOneDayObservable(self): return self._tcolorVisibilityFlagsAtLEastOneDayObservable
+    def getColorVisibilityFlagsObservable(self): return self._tcolorVisibilityFlagsObservable
+    def getColorHeliocentricGraphBackground(self): return self._tcolorHeliocentricGraphBackground
+    def getColorHeliocentricGraphLines(self): return self._tcolorHeliocentricGraphLines
+    def getColorHeliocentricGraphSun(self): return self._tcolorHeliocentricGraphSun
+    def getColorHeliocentricGraphEarth(self): return self._tcolorHeliocentricGraphEarth
+    def getColorHeliocentricGraphPlanet(self): return self._tcolorHeliocentricGraphPlanet
+    def getColorMoonMiniMapBackground(self): return self._tcolorMoonMiniMapBackground
+    def getColorMoonMiniMapBorder(self): return self._tcolorMoonMiniMapBorder
+    def getColorMoonMiniMapLight(self): return self._tcolorMoonMiniMapLight
+    def getColorMoonMiniMapDark(self): return self._tcolorMoonMiniMapDark
+    
     def __loadFromFile(self):
         # load parameters file
         with open('parameters_Rendering.json', 'r') as f:
