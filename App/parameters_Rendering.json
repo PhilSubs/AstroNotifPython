@@ -3,21 +3,21 @@
         "GlobalParam":"",
         "GlobalParam_comment":"",
         
-    "VisibilityFlags":"colors for visibility flags",
-        "colorVisibilityFlagsNotObservable":"255, 0, 0",
-        "colorVisibilityFlagsAtLEastOneDayObservable":"255, 127, 0",
-        "colorVisibilityFlagsObservable":"0,255,0",
+    "VisibilityFlags":"colors for visibility flags as (r,g,b)",
+        "colorVisibilityFlagsNotObservable":"(255, 0, 0)",
+        "colorVisibilityFlagsAtLEastOneDayObservable":"(255, 127, 0)",
+        "colorVisibilityFlagsObservable":"(0,255,0)",
         
-    "HeliocentricGraph":"colors for Heliocentric Graph",
-        "colorHeliocentricGraphBackground":"0, 0, 0, 255",
-        "colorHeliocentricGraphLines":"50, 50, 50, 255",
-        "colorHeliocentricGraphSun":"255, 127, 80, 255",
-        "colorHeliocentricGraphEarth":"0, 0, 255, 255",
-        "colorHeliocentricGraphPlanet":"255, 0, 0, 255",
+    "HeliocentricGraph":"colors for Heliocentric Graph as (r,g,b,t)",
+        "colorHeliocentricGraphBackground":"(0, 0, 0, 255)",
+        "colorHeliocentricGraphLines":"(50, 50, 50, 255)",
+        "colorHeliocentricGraphSun":"(255, 127, 80, 255)",
+        "colorHeliocentricGraphEarth":"(0, 0, 255, 255)",
+        "colorHeliocentricGraphPlanet":"(255, 0, 0, 255)",
         
-    "MoonMiniMap":"colors for Moon Mini Map",
-        "colorMoonMiniMapBackground":"255, 255, 255, 0",
-        "colorMoonMiniMapBorder":"0, 0, 0, 255",
-        "colorMoonMiniMapLight":"210, 210, 210, 255",
-        "colorMoonMiniMapDark":"64, 64, 64, 255"
+    "MoonMiniMap":"colors for Moon Mini Map as (r,g,b,t)",
+        "colorMoonMiniMapBackground":"(255, 255, 255, 0)",
+        "colorMoonMiniMapBorder":"(0, 0, 0, 255)",
+        "colorMoonMiniMapLight":"(210, 210, 210, 255)",
+        "colorMoonMiniMapDark":"(64, 64, 64, 255)"
 }
