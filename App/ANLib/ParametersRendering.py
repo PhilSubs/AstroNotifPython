@@ -57,4 +57,4 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorObjectVisibilityStatus['Difficult'] = eval(data["colorObjectVisibilityStatusDifficult"])
         self._tcolorObjectVisibilityStatus['Impossible'] = eval(data["colorObjectVisibilityStatusImpossible"])
         self._tcolorObjectVisibilityStatus['Good'] = eval(data["colorObjectVisibilityStatusGood"])
-        self._tcolorObjectVisibilityStatus['Other'] = eval(data["colorObjectVisibilityStatusOther"])
+        self._tcolorObjectVisibilityStatus['Unknown'] = eval(data["colorObjectVisibilityStatusUnknown"])
