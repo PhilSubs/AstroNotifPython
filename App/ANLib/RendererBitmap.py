@@ -10,6 +10,7 @@ from Tools import Tools
 from PIL import Image, ImageDraw, ImageFont
 import math
 from datetime import datetime
+from ParametersRendering import ParametersRendering
 
 class RendererBitmap(toolObjectSerializable):
     iLeftLabelWidthInPx = 100
@@ -35,42 +36,43 @@ class RendererBitmap(toolObjectSerializable):
         self._bForFavouriteOnly = bForFavouriteOnly
         self._sRelativeFolderForBitmaps = sRelativeFolderForBitmaps
         self._sURLFolderForBitmaps = sURLFolderForBitmaps
+        self._oParametersRendering = ParametersRendering()
 
     def _getBitmapColorForObjectAltitudeDependingOnSunAltitude(self, sObjectVisibilityStatus):
         if sObjectVisibilityStatus == "Below":
-            tColor = (153, 153, 153)
+            tColor = self._oParametersRendering.getColorObjectVisibilityStatusBelow()  #(153, 153, 153)
         elif sObjectVisibilityStatus == "Hidden":
-            tColor = (195, 0, 255)
+            tColor = self._oParametersRendering.getColorObjectVisibilityStatusHidden()  #(195, 0, 255)
         elif sObjectVisibilityStatus == "VeryLow":
-            tColor = (253, 100, 0)
+            tColor = self._oParametersRendering.getColorObjectVisibilityStatusVeryLow()  #(253, 100, 0)
         elif sObjectVisibilityStatus == "Low":
-            tColor = (253, 134, 0)
+            tColor = self._oParametersRendering.getColorObjectVisibilityStatusLow()  #(253, 134, 0)
         elif sObjectVisibilityStatus == "Difficult":
-            tColor = (255, 0, 0)
+            tColor = self._oParametersRendering.getColorObjectVisibilityStatusDifficult()  #(255, 0, 0)
         elif sObjectVisibilityStatus == "Impossible":
-            tColor = (28, 69, 135)
+            tColor = self._oParametersRendering.getColorObjectVisibilityStatusImpossible()  #(28, 69, 135)
         elif sObjectVisibilityStatus == "Good":
-            tColor = (0, 255, 0)
+            tColor = self._oParametersRendering.getColorObjectVisibilityStatusGood()  #(0, 255, 0)
         else:
-            tColor = (0, 0, 255)
+            tColor = self._oParametersRendering.getColorObjectVisibilityStatusOther()  #(0, 0, 255)
             
         return tColor
 
     def _getBitmapColorforSunAltitude(self, fSunAltitude):
         if fSunAltitude < -18.0:
-            tColor = (0, 0, 0)
+            tColor = self._oParametersRendering.getColorSunAltitudeMoreThan18DegBelow() #(0, 0, 0)
         elif fSunAltitude < -12.0:
-            tColor = ((28, 69, 135))
+            tColor = self._oParametersRendering.getColorSunAltitude12To18DegBelow() #(28, 69, 135)
         elif fSunAltitude < -6.0:
-            tColor = (17, 85, 204)
+            tColor = self._oParametersRendering.getColorSunAltitude06To12DegBelow() #(17, 85, 204)
         elif fSunAltitude < -0.0:
-            tColor = (60, 120, 216)
+            tColor = self._oParametersRendering.getColorSunAltitude00To06DegBelow() #(60, 120, 216)
         elif fSunAltitude < 6.0:
-            tColor = (249, 203, 156)
+            tColor = self._oParametersRendering.getColorSunAltitude00To06DegAbove() #(249, 203, 156)
         elif fSunAltitude < 12.0:
-            tColor = (255, 242, 204)
+            tColor = self._oParametersRendering.getColorSunAltitude06To12DegAbove() #(255, 242, 204)
         else:
-            tColor = (255, 255, 255)
+            tColor = self._oParametersRendering.getColorSunAltitudeMoreThan12DegAbove() #(255, 255, 255)
         return tColor
 
     def _getFont(self, sStyle = ""):
