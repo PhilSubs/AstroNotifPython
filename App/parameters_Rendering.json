@@ -25,7 +25,7 @@
         "colorObjectVisibilityStatusDifficult":"(255, 0, 0)",
         "colorObjectVisibilityStatusImpossible":"(28, 69, 135)",
         "colorObjectVisibilityStatusGood":"(0, 255, 0)",
-        "colorObjectVisibilityStatusOther":"(0, 0, 255)",
+        "colorObjectVisibilityStatusUnknown":"(0, 0, 255)",
         
     "HeliocentricGraph":"colors for Heliocentric Graph as (r,g,b,t)",
         "colorHeliocentricGraphBackground":"(0, 0, 0, 255)",
