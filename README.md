@@ -19,10 +19,10 @@ L'application a besoin de connaitre le répertoire où elle est installée, ains
 
 ## Installation d'une mise à jour
 
-1. Copier le contenu du répertoire **`App`** dans **`[CheminAPP]`**
-1.**ATTENTION: _ne pas écraser le fichier parameters_Places.json._**
+ - Copier le contenu du répertoire **`App`** dans **`[CheminAPP]`**
+    1.**ATTENTION: _ne pas écraser le fichier parameters_Places.json._**
 
-2.Copier le contenu du répertoire **`www`** dans **`[CheminWWW]`**
+ - Copier le contenu du répertoire **`www`** dans **`[CheminWWW]`**
 
 
 ## Nouvelle installation
