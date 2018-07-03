@@ -42,4 +42,4 @@ main_function() {
 }
 
 # log everything, but also output to stdout
-main_function 2>&1 | tee -a $fichierLog.html
+main_function 2>&1 | tee -a $fichierLog
