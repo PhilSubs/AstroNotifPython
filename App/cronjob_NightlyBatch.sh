@@ -4,7 +4,7 @@
 #
 #  Generate HTML file and bitmaps
 #
-fichierLog="nightlyBatch_log.html"
+fichierLog="/var/www/html/nightlyBatch_log.html"
 if [ -f $fichierLog ] ; then
     logDelete="&nbsp;&nbsp;&nbsp;&nbsp;--> le fichier '$fichierLog' existe:  on le supprime....<BR>"
     rm $fichierLog
