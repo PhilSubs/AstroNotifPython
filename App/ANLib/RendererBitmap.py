@@ -78,39 +78,39 @@ class RendererBitmap(toolObjectSerializable):
             
     def _getStyle(self, sStyle = ""):
         # Default values
-        iStyleFontSize = 16
-        sFontDirectory = "" #"C:\\Windows\\Fonts\\"
-        sFont = sFontDirectory + "arial"
-        tStyleFontColor = (255, 255, 255)
-        tStyleBackColor = (0, 0, 0)
+        iStyleFontSize = self._oParametersRendering.getStyles('DefaultFontSize')
+        sFontDirectory = self._oParametersRendering.getStyles('DefaultFontDirectory')
+        sFont = sFontDirectory + self._oParametersRendering.getStyles('DefaultFont')
+        tStyleFontColor = self._oParametersRendering.getStyles('DefaultFontColor')
+        tStyleBackColor = self._oParametersRendering.getStyles('DefaultBackColor')
         
         # Style overlap
         if sStyle == "RowHeaderDate":
-            iStyleFontSize = 16 
+            iStyleFontSize = self._oParametersRendering.getStyles('RowHeaderDateFontSize')
         elif sStyle == "RowHeaderTime":
-            iStyleFontSize = 10
+            iStyleFontSize = self._oParametersRendering.getStyles('RowHeaderTimeFontSize')
         elif sStyle == "ObjectName":
-            iStyleFontSize = 24
+            iStyleFontSize = self._oParametersRendering.getStyles('ObjectNameFontSize')
         elif sStyle == "ObjectData":
-            iStyleFontSize = 9
+            iStyleFontSize = self._oParametersRendering.getStyles('ObjectDataFontSize')
         elif sStyle == "ObjectAdditionalDailyData":
-            iStyleFontSize = 9
+            iStyleFontSize = self._oParametersRendering.getStyles('ObjectAdditionalDailyDataFontSize')
         elif sStyle == "SectionTitleH0":
-            iStyleFontSize = 35
-            tStyleBackColor = (109, 199, 255)
-            tStyleFontColor = (0, 0, 0)
+            iStyleFontSize = self._oParametersRendering.getStyles('SectionTitleH0FontSize')
+            tStyleBackColor = self._oParametersRendering.getStyles('SectionTitleH0BackColor')
+            tStyleFontColor = self._oParametersRendering.getStyles('SectionTitleH0FontColor')
         elif sStyle == "SectionTitleH1":
-            iStyleFontSize = 30
-            tStyleBackColor = (191, 218, 252)
-            tStyleFontColor = (0, 0, 0)
+            iStyleFontSize = self._oParametersRendering.getStyles('SectionTitleH1FontSize')
+            tStyleBackColor = self._oParametersRendering.getStyles('SectionTitleH1BackColor')
+            tStyleFontColor = self._oParametersRendering.getStyles('SectionTitleH1FontColor')
         elif sStyle == "SectionTitleH2":
-            iStyleFontSize = 24
-            tStyleFontColor = (192, 192, 192)
+            iStyleFontSize = self._oParametersRendering.getStyles('SectionTitleH2FontSize')
+            tStyleFontColor = self._oParametersRendering.getStyles('SectionTitleH2FontColor')
         elif sStyle == "LunarFeatureName":
-            iStyleFontSize = 20
+            iStyleFontSize = self._oParametersRendering.getStyles('LunarFeatureNameFontSize')
         elif sStyle == "LunarFeatureData":
-            iStyleFontSize = 9
-            sFont = sFontDirectory + "arialbi.ttf"
+            iStyleFontSize = self._oParametersRendering.getStyles('LunarFeatureDataFontSize')
+            sFont = sFontDirectory + self._oParametersRendering.getStyles('LunarFeatureDataFont')
         
         # return all values for style
         try:
