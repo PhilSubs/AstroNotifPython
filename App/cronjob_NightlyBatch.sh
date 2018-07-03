@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# usage : ./cronjob_AstroNotifPython.sh
+# usage : ./cronjob_NightlyBatch.sh
 #
 #  Generate HTML file and bitmaps
 #
