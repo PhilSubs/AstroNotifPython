@@ -48,9 +48,9 @@ L'application a besoin de connaitre le répertoire où elle est installée, ains
  
    - dans une fenêtre schell:
      - Ajouter l'attribut X sur le script shell par la commande:
-         `chmod +x **[CheminAPP]**/cronjob_AstroNotifPython.sh`
+         `chmod +x **[CheminAPP]**/cronjob_NightlyBatch.sh`
      - taper la commande `crontab -e`
      - entrer la ligne suivante :
-        `0 4 * * [CheminAPP]/cronjob_AstroNotifPython.sh > [CheminWWW]/lastRun.log`
+        `0 4 * * [CheminAPP]/cronjob_NightlyBatch.sh`
      - sauvegarder par `CTRL-O`
      - quitter par `CTRL-X`
