@@ -6,7 +6,8 @@ Notify Astronomy objects observability
  - Librairie PIL
 
 # Structure des répertoires:
- - App: contient les sripts Python, les fichiers de paramètres JSON, les fontes nécessaires.
+ La delivery contient trois répertoires:
+ - App: contient les scripts Python, les fichiers de paramètres JSON, les fontes nécessaires.
  - www: contient un fichier favicon
  - Documentation: contient la documentation
 
@@ -15,7 +16,9 @@ L'application a besoin de connaitre le répertoire où elle est installée, ains
  - [CheminAPP] : répertoire d'installation de l'application (chemin vers le répertoir App)
  - [CheminWWW] : répertoire contenant les fichiers HTML et bitmap
 
-Dans le répertoire App:
+**ATTENTION: En cas d'installation d'une mise à jour:** _attention à ne pas écraser le fichier **parameters_Places.json**._
+
+## Dans le répertoire App:
  - modifier le fichier parameters_Places.json
    - renseigner les longitude et latitude pour les lieux déclarés:
       "Longitude":0.000000000
@@ -27,7 +30,7 @@ Dans le répertoire App:
    - "ObservationPlaceName":"<nomDuLieu>"
  - modificer le fichier cronjob_AstroNotifPython.sh
 
-Ajouter une tâche récurrente pour calculer les éphémérides tous les jours:
+## Ajouter une tâche récurrente pour calculer les éphémérides tous les jours:
  - dans une fenêtre schell:
    - chmod +x [CheminAPP]/cronjob_AstroNotifPython.sh
    - taper la commande "crontab -e"
@@ -36,4 +39,4 @@ Ajouter une tâche récurrente pour calculer les éphémérides tous les jours:
    - sauvegarder par CTRL-O
    - quitter par CTRL-X
   
-Copier le contenu du répertoire www dans [CheminWWW]
+## Copier le contenu du répertoire www dans [CheminWWW]
