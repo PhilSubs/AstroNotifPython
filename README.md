@@ -35,8 +35,8 @@ L'application a besoin de connaitre le répertoire où elle est installée, ains
 
    - modifier le fichier **`parameters_Places.json`**
      - renseigner les longitude et latitude pour les lieux déclarés:
-        "Longitude":0.000000000
-        "Latitude":0.000000000 
+       - "Longitude":0.000000000
+       - "Latitude":0.000000000 
      - renommer les lieux comme il convient, notamment celui qui sera utilisé pour le calcul **`[nomDuLieu]`**.
     
    - modifier le fichier **`parameters_Runtime.json`**
