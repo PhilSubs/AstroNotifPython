@@ -16,6 +16,7 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorMoonMiniMap = {}
         self._tcolorSunAltitude = {}
         self._tcolorObjectVisibilityStatus = {}
+        self._tStyles = {}
         
         self.__loadFromFile()
         
@@ -25,6 +26,7 @@ class ParametersRendering(toolObjectSerializable):
     def getColorMoonMiniMap(self, sCode): return self._tcolorMoonMiniMap[sCode]
     def getColorSunAltitude(self, sCode): return self._tcolorSunAltitude[sCode]
     def getColorObjectVisibilityStatus(self, sCode): return self._tcolorObjectVisibilityStatus[sCode]
+    def getStyles(self, sCode): return self._tStyles[sCode]
     
     def __loadFromFile(self):
         # load parameters file
@@ -58,3 +60,32 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorObjectVisibilityStatus['Impossible'] = eval(data["colorObjectVisibilityStatusImpossible"])
         self._tcolorObjectVisibilityStatus['Good'] = eval(data["colorObjectVisibilityStatusGood"])
         self._tcolorObjectVisibilityStatus['Unknown'] = eval(data["colorObjectVisibilityStatusUnknown"])
+        self._tStyles['DefaultFontSize'] = data["styleDefaultFontSize"]
+        self._tStyles['DefaultFontDirectory'] = data["styleDefaultFontDirectory"]
+        self._tStyles['DefaultFont'] = data["styleDefaultFont"]
+        self._tStyles['DefaultFontColor'] = eval(data["styleDefaultFontColor"])
+        self._tStyles['DefaultBackColor'] = eval(data["styleDefaultBackColor"])
+        self._tStyles['RowHeaderDateFontSize'] = data["styleRowHeaderDateFontSize"]
+        self._tStyles['RowHeaderTimeFontSize'] = data["styleRowHeaderTimeFontSize"]
+        self._tStyles['ObjectNameFontSize'] = data["styleObjectNameFontSize"]
+        self._tStyles['ObjectDataFontSize'] = data["styleObjectDataFontSize"]
+        self._tStyles['ObjectAdditionalDailyDataFontSize'] = data["styleObjectAdditionalDailyDataFontSize"]
+        self._tStyles['SectionTitleH0FontSize'] = data["styleSectionTitleH0FontSize"]
+        self._tStyles['SectionTitleH0BackColor'] = eval(data["styleSectionTitleH0BackColor"])
+        self._tStyles['SectionTitleH0FontColor'] = eval(data["styleSectionTitleH0FontColor"])
+        self._tStyles['SectionTitleH1FontSize'] = data["styleSectionTitleH1FontSize"]
+        self._tStyles['SectionTitleH1BackColor'] = eval(data["styleSectionTitleH1BackColor"])
+        self._tStyles['SectionTitleH1FontColor'] = eval(data["styleSectionTitleH1FontColor"])
+        self._tStyles['SectionTitleH2FontSize'] = data["styleSectionTitleH2FontSize"]
+        self._tStyles['SectionTitleH2FontColor'] = eval(data["styleSectionTitleH2FontColor"])
+        self._tStyles['LunarFeatureNameFontSize'] = data["styleLunarFeatureNameFontSize"]
+        self._tStyles['LunarFeatureDataFontSize'] = data["styleLunarFeatureDataFontSize"]
+        self._tStyles['LunarFeatureDataFont'] = data["styleLunarFeatureDataFont"]
+        self._tStyles[''] = data["style"]
+        self._tStyles[''] = data["style"]
+        self._tStyles[''] = data["style"]
+        self._tStyles[''] = data["style"]
+        self._tStyles[''] = data["style"]
+        self._tStyles[''] = data["style"]
+        self._tStyles[''] = data["style"]
+        self._tStyles[''] = data["style"]
