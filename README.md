@@ -16,26 +16,40 @@ L'application a besoin de connaitre le répertoire où elle est installée, ains
  - **`[CheminAPP]`** : répertoire d'installation de l'application (chemin vers le répertoir App)
  - **`[CheminWWW]`** : répertoire contenant les fichiers HTML et bitmap
 
-**ATTENTION: En cas d'installation d'une mise à jour:** _attention à ne pas écraser le fichier **parameters_Places.json**._
 
-## Dans le répertoire App:
+## Installation d'une mise à jour
+
+### copier le contenu du répertoire **`App`** dans **`[CheminAPP]`**
+   **ATTENTION: _ne pas écraser le fichier parameters_Places.json._**
+
+### copier le contenu du répertoire **`www`** dans **`[CheminWWW]`**
+
+
+## Nouvelle installation
+
+### copier le contenu du répertoire **`App`** dans **`[CheminAPP]`**
+
+### copier le contenu du répertoire **`www`** dans **`[CheminWWW]`**
+
+### Dans le répertoire `[CheminAPP]`:
+
  - modifier le fichier **`parameters_Places.json`**
    - renseigner les longitude et latitude pour les lieux déclarés:
       "Longitude":0.000000000
       "Latitude":0.000000000 
    - renommer les lieux comme il convient, notamment celui qui sera utilisé pour le calcul **`[nomDuLieu]`**.
+   
  - modifier le fichier **`parameters_Runtime.json`**
    - "GlobalPathToWWWFolder":"**`[CheminWWW]`**"
    - "GlobalPathToAPPFolder":"**`[CheminAPP]`**"
    - "ObservationPlaceName":"**`[nomDuLieu]`**"
 
-## Ajouter une tâche récurrente pour calculer les éphémérides tous les jours:
+### Ajouter une tâche récurrente pour calculer les éphémérides tous les jours:
  - dans une fenêtre schell:
-   - `chmod +x **[CheminAPP]**/cronjob_AstroNotifPython.sh`
+   - Ajouter l'attribut X sur le script shell par la commande:
+       `chmod +x **[CheminAPP]**/cronjob_AstroNotifPython.sh`
    - taper la commande `crontab -e`
    - entrer la ligne suivante :
         `0 4 * * [CheminAPP]/cronjob_AstroNotifPython.sh > [CheminWWW]/lastRun.log`
    - sauvegarder par `CTRL-O`
    - quitter par `CTRL-X`
-  
-## Copier le contenu du répertoire www dans [CheminWWW]
