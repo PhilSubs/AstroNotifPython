@@ -504,7 +504,7 @@ class RendererBitmap(toolObjectSerializable):
                 if oEphemeridesDataObject.getAltitudeForSlot(iSlot) > 0:
                     sObjectVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot(oEphemeridesDataObject.getID(), iSlot, oParameters)
                     tColor = self._getBitmapColorForObjectAltitudeDependingOnSunAltitude(sObjectVisibilityStatus)
-                    if tColor == (0, 255, 0): bIsObservable = True
+                    bIsObservable = (sObjectVisibilityStatus == "Good")
                     if iPrevX > -1 and iPrevY > -1:
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY, iRowPositionX - 1 + x, iRowPositionY + 1 + y), fill=tColor)
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY -1, iRowPositionX - 1 + x, iRowPositionY + 1 + y -1 ), fill=tColor)
@@ -595,21 +595,21 @@ class RendererBitmap(toolObjectSerializable):
         # Resize Image and define starting point to draw header
         iImgWidth, iImgHeight = oImg.size
         if sStyle == "SectionTitleH0":
-            iTopMargin = 1
-            iBottomMargin = 10
-            iPaddingTopBottom = 6
+            iTopMargin = self._oParametersRendering.getStyles('SectionTitleH0TopMargin')
+            iBottomMargin = self._oParametersRendering.getStyles('SectionTitleH0BottomMargin')
+            iPaddingTopBottom = self._oParametersRendering.getStyles('SectionTitleH0PaddingTopBottom')
         elif sStyle == "SectionTitleH1":
-            iTopMargin = 60
-            iBottomMargin = 15
-            iPaddingTopBottom = 5
+            iTopMargin = self._oParametersRendering.getStyles('SectionTitleH1TopMargin')
+            iBottomMargin = self._oParametersRendering.getStyles('SectionTitleH1BottomMargin')
+            iPaddingTopBottom = self._oParametersRendering.getStyles('SectionTitleH1PaddingTopBottom')
         elif sStyle == "SectionTitleH2":
-            iTopMargin = 20
-            iBottomMargin = 0
-            iPaddingTopBottom = 2
+            iTopMargin = self._oParametersRendering.getStyles('SectionTitleH2TopMargin')
+            iBottomMargin = self._oParametersRendering.getStyles('SectionTitleH2BottomMargin')
+            iPaddingTopBottom = self._oParametersRendering.getStyles('SectionTitleH2PaddingTopBottom')
         else:
-            iTopMargin = 10
-            iBottomMargin = 10
-            iPaddingTopBottom = 2
+            iTopMargin = self._oParametersRendering.getStyles('DefaultTopMargin')
+            iBottomMargin = self._oParametersRendering.getStyles('DefaultBottomMargin')
+            iPaddingTopBottom = self._oParametersRendering.getStyles('DefaultPaddingTopBottom')
         
         if iStartY == -1:
             iNewHeight = iImgHeight + iTopMargin + iStyleFontSize + iBottomMargin + iPaddingTopBottom*2
@@ -780,16 +780,14 @@ class RendererBitmap(toolObjectSerializable):
         sHTML += '		<title>AstroNotif</title>' + "\n"
         sHTML += '		<link rel="icon" href="http://' + oParameters.getNightlyBatchDomain() + '/favicon.png">' 
         sHTML += '		<base href="">' + "\n"
-        sHTML += '		<style>' + "\n"
-        sHTML += '          H1   {font-family: "arial", "sans-serif"; font-size:30px; font-weight: normal; background: #6dc7ff; color: #000000; padding-top: 15px; padding-bottom: 15px;}' + "\n"
-        sHTML += '		</style>' + "\n"
+        sHTML += '		<link rel="stylesheet" href="AstroNotif.css">' + "\n"
         sHTML += '	</head>' + "\n"
         sHTML += '<BODY>' + "\n"
 
         iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = self.getEphemeridesBitmapForPeriod(oCalendar, oParameters, oEphemeridesData)
         
-        sHTML += '    <H1>&nbsp;&nbsp;<A href="http://' + oParameters.getNightlyBatchDomain() + '" target="_blank">Ephemerides du <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:20px">Lieu: ' + oParameters.getPlace().getName() + ' </SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:10px">Calculs du ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' par AstroNotifPython ' + oParameters.getGlobalCurrentVersion() + '</SPAN></H1>' + "\n"
-        sHTML += '    <IMG style="border:none" src="' + sBitmapNameURL + '" alt="' + "Ephemerides du " + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
+        sHTML += '    <H1 class="PageHeader">&nbsp;&nbsp;<A href="http://' + oParameters.getNightlyBatchDomain() + '" target="_blank">Ephemerides du <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:20px">Lieu: ' + oParameters.getPlace().getName() + ' </SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:10px">Calculs du ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' par AstroNotifPython ' + oParameters.getGlobalCurrentVersion() + '</SPAN></H1>' + "\n"
+        sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' + "Ephemerides du " + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
         sHTML += '    </BODY>' + "\n"
         sHTML += '</HTML>' + "\n"
 
