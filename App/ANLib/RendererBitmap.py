@@ -10,6 +10,7 @@ from Tools import Tools
 from PIL import Image, ImageDraw, ImageFont
 import math
 from datetime import datetime
+from ParametersRendering import ParametersRendering
 
 class RendererBitmap(toolObjectSerializable):
     iLeftLabelWidthInPx = 100
@@ -35,42 +36,27 @@ class RendererBitmap(toolObjectSerializable):
         self._bForFavouriteOnly = bForFavouriteOnly
         self._sRelativeFolderForBitmaps = sRelativeFolderForBitmaps
         self._sURLFolderForBitmaps = sURLFolderForBitmaps
+        self._oParametersRendering = ParametersRendering()
 
     def _getBitmapColorForObjectAltitudeDependingOnSunAltitude(self, sObjectVisibilityStatus):
-        if sObjectVisibilityStatus == "Below":
-            tColor = (153, 153, 153)
-        elif sObjectVisibilityStatus == "Hidden":
-            tColor = (195, 0, 255)
-        elif sObjectVisibilityStatus == "VeryLow":
-            tColor = (253, 100, 0)
-        elif sObjectVisibilityStatus == "Low":
-            tColor = (253, 134, 0)
-        elif sObjectVisibilityStatus == "Difficult":
-            tColor = (255, 0, 0)
-        elif sObjectVisibilityStatus == "Impossible":
-            tColor = (28, 69, 135)
-        elif sObjectVisibilityStatus == "Good":
-            tColor = (0, 255, 0)
-        else:
-            tColor = (0, 0, 255)
-            
+        tColor = self._oParametersRendering.getColorObjectVisibilityStatus(sObjectVisibilityStatus)
         return tColor
 
     def _getBitmapColorforSunAltitude(self, fSunAltitude):
         if fSunAltitude < -18.0:
-            tColor = (0, 0, 0)
+            tColor = self._oParametersRendering.getColorSunAltitude('MoreThan18DegBelow')
         elif fSunAltitude < -12.0:
-            tColor = ((28, 69, 135))
+            tColor = self._oParametersRendering.getColorSunAltitude('12To18DegBelow')
         elif fSunAltitude < -6.0:
-            tColor = (17, 85, 204)
+            tColor = self._oParametersRendering.getColorSunAltitude('06To12DegBelow')
         elif fSunAltitude < -0.0:
-            tColor = (60, 120, 216)
+            tColor = self._oParametersRendering.getColorSunAltitude('00To06DegBelow')
         elif fSunAltitude < 6.0:
-            tColor = (249, 203, 156)
+            tColor = self._oParametersRendering.getColorSunAltitude('00To06DegAbove')
         elif fSunAltitude < 12.0:
-            tColor = (255, 242, 204)
+            tColor = self._oParametersRendering.getColorSunAltitude('06To12DegAbove')
         else:
-            tColor = (255, 255, 255)
+            tColor = self._oParametersRendering.getColorSunAltitude('MoreThan12DegAbove')
         return tColor
 
     def _getFont(self, sStyle = ""):
@@ -92,39 +78,39 @@ class RendererBitmap(toolObjectSerializable):
             
     def _getStyle(self, sStyle = ""):
         # Default values
-        iStyleFontSize = 16
-        sFontDirectory = "" #"C:\\Windows\\Fonts\\"
-        sFont = sFontDirectory + "arial"
-        tStyleFontColor = (255, 255, 255)
-        tStyleBackColor = (0, 0, 0)
+        iStyleFontSize = self._oParametersRendering.getStyles('DefaultFontSize')
+        sFontDirectory = self._oParametersRendering.getStyles('DefaultFontDirectory')
+        sFont = sFontDirectory + self._oParametersRendering.getStyles('DefaultFont')
+        tStyleFontColor = self._oParametersRendering.getStyles('DefaultFontColor')
+        tStyleBackColor = self._oParametersRendering.getStyles('DefaultBackColor')
         
         # Style overlap
         if sStyle == "RowHeaderDate":
-            iStyleFontSize = 16 
+            iStyleFontSize = self._oParametersRendering.getStyles('RowHeaderDateFontSize')
         elif sStyle == "RowHeaderTime":
-            iStyleFontSize = 10
+            iStyleFontSize = self._oParametersRendering.getStyles('RowHeaderTimeFontSize')
         elif sStyle == "ObjectName":
-            iStyleFontSize = 24
+            iStyleFontSize = self._oParametersRendering.getStyles('ObjectNameFontSize')
         elif sStyle == "ObjectData":
-            iStyleFontSize = 9
+            iStyleFontSize = self._oParametersRendering.getStyles('ObjectDataFontSize')
         elif sStyle == "ObjectAdditionalDailyData":
-            iStyleFontSize = 9
+            iStyleFontSize = self._oParametersRendering.getStyles('ObjectAdditionalDailyDataFontSize')
         elif sStyle == "SectionTitleH0":
-            iStyleFontSize = 35
-            tStyleBackColor = (109, 199, 255)
-            tStyleFontColor = (0, 0, 0)
+            iStyleFontSize = self._oParametersRendering.getStyles('SectionTitleH0FontSize')
+            tStyleBackColor = self._oParametersRendering.getStyles('SectionTitleH0BackColor')
+            tStyleFontColor = self._oParametersRendering.getStyles('SectionTitleH0FontColor')
         elif sStyle == "SectionTitleH1":
-            iStyleFontSize = 30
-            tStyleBackColor = (191, 218, 252)
-            tStyleFontColor = (0, 0, 0)
+            iStyleFontSize = self._oParametersRendering.getStyles('SectionTitleH1FontSize')
+            tStyleBackColor = self._oParametersRendering.getStyles('SectionTitleH1BackColor')
+            tStyleFontColor = self._oParametersRendering.getStyles('SectionTitleH1FontColor')
         elif sStyle == "SectionTitleH2":
-            iStyleFontSize = 24
-            tStyleFontColor = (192, 192, 192)
+            iStyleFontSize = self._oParametersRendering.getStyles('SectionTitleH2FontSize')
+            tStyleFontColor = self._oParametersRendering.getStyles('SectionTitleH2FontColor')
         elif sStyle == "LunarFeatureName":
-            iStyleFontSize = 20
+            iStyleFontSize = self._oParametersRendering.getStyles('LunarFeatureNameFontSize')
         elif sStyle == "LunarFeatureData":
-            iStyleFontSize = 9
-            sFont = sFontDirectory + "arialbi.ttf"
+            iStyleFontSize = self._oParametersRendering.getStyles('LunarFeatureDataFontSize')
+            sFont = sFontDirectory + self._oParametersRendering.getStyles('LunarFeatureDataFont')
         
         # return all values for style
         try:
@@ -186,11 +172,11 @@ class RendererBitmap(toolObjectSerializable):
             theNewImg = self._addMoonMinimapBitmap( oEphemeridesData.getEphemerideDataObject("Moon").getPhaseForSlot(iDataSlot), oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
 
         if not bAtLeastOneDayIsNotObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader((0, 255, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
         elif not bAtLeastOneDayIsObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader((255, 0, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
         else:
-                theNewImg = self._addVisibilityFlagOnRowHeader((255, 127, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
             
         if bAtLeastOneDayToBeDisplayed:
             return True, bAtLeastOneDayIsObservable, theNewImg
@@ -295,10 +281,10 @@ class RendererBitmap(toolObjectSerializable):
     def _addMoonMinimapBitmap(self, iPhase, fLongitude, fLatitude, oImg, iPosX, iPosY, iBitmapSize):
         iIndicatorSizeInPx = 3
         
-        tColorMoonMapBorder = (0, 0, 0, 255)
-        tColorMoonMapBackground = (255, 255, 255, 0)
-        tColorMoonMapLight = (210, 210, 210, 255)
-        tColorMoonMapDark = (64, 64, 64, 255)
+        tColorMoonMapBorder = self._oParametersRendering.getColorMoonMiniMap('Border')
+        tColorMoonMapBackground = self._oParametersRendering.getColorMoonMiniMap('Background')
+        tColorMoonMapLight = self._oParametersRendering.getColorMoonMiniMap('Light')
+        tColorMoonMapDark = self._oParametersRendering.getColorMoonMiniMap('Dark')
         
         # Draw intermediary bitmaps
         imgFullLight = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
@@ -379,11 +365,11 @@ class RendererBitmap(toolObjectSerializable):
         iTableObjectRowHeight = RendererBitmap.iAltitudeRowHeight * 18 + RendererBitmap.iTableObjectRowGraphAdditionalDataHeight
         iBitmapSize = iTableObjectRowHeight
         iPositionX = RendererBitmap.iTableWidthObjectLabel - iBitmapSize - RendererBitmap.iTableVisibilityFlagWidth - 1
-        tColorBackground = (0, 0, 0, 255)
-        tColorLines = (50, 50, 50, 255)
-        tColorSun = (255, 127, 80, 255)
-        tColorEarth = (0, 0, 255, 255)
-        tColorPlanet = (255, 0, 0, 255)
+        tColorBackground = self._oParametersRendering.getColorHeliocentricGraph('Background')
+        tColorLines = self._oParametersRendering.getColorHeliocentricGraph('Lines')
+        tColorSun = self._oParametersRendering.getColorHeliocentricGraph('Sun')
+        tColorEarth = self._oParametersRendering.getColorHeliocentricGraph('Earth')
+        tColorPlanet = self._oParametersRendering.getColorHeliocentricGraph('Planet')
 
         iSunSize = 6
         iEarthSize = 4 
@@ -448,11 +434,11 @@ class RendererBitmap(toolObjectSerializable):
                 bAtLeastOneDayNotObservable = True
         
         if not bAtLeastOneDayNotObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader((0, 255, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
         elif not bAtLeastOneDayObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader((255, 0, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
         else:
-                theNewImg = self._addVisibilityFlagOnRowHeader((255, 127, 0), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
         
         if bAtLeastOneDayToBeDisplayed:
             return bAtLeastOneDayToBeDisplayed, bAtLeastOneDayObservable, theNewImg
@@ -518,7 +504,7 @@ class RendererBitmap(toolObjectSerializable):
                 if oEphemeridesDataObject.getAltitudeForSlot(iSlot) > 0:
                     sObjectVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot(oEphemeridesDataObject.getID(), iSlot, oParameters)
                     tColor = self._getBitmapColorForObjectAltitudeDependingOnSunAltitude(sObjectVisibilityStatus)
-                    if tColor == (0, 255, 0): bIsObservable = True
+                    bIsObservable = (sObjectVisibilityStatus == "Good")
                     if iPrevX > -1 and iPrevY > -1:
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY, iRowPositionX - 1 + x, iRowPositionY + 1 + y), fill=tColor)
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY -1, iRowPositionX - 1 + x, iRowPositionY + 1 + y -1 ), fill=tColor)
@@ -609,21 +595,21 @@ class RendererBitmap(toolObjectSerializable):
         # Resize Image and define starting point to draw header
         iImgWidth, iImgHeight = oImg.size
         if sStyle == "SectionTitleH0":
-            iTopMargin = 1
-            iBottomMargin = 10
-            iPaddingTopBottom = 6
+            iTopMargin = self._oParametersRendering.getStyles('SectionTitleH0TopMargin')
+            iBottomMargin = self._oParametersRendering.getStyles('SectionTitleH0BottomMargin')
+            iPaddingTopBottom = self._oParametersRendering.getStyles('SectionTitleH0PaddingTopBottom')
         elif sStyle == "SectionTitleH1":
-            iTopMargin = 60
-            iBottomMargin = 15
-            iPaddingTopBottom = 5
+            iTopMargin = self._oParametersRendering.getStyles('SectionTitleH1TopMargin')
+            iBottomMargin = self._oParametersRendering.getStyles('SectionTitleH1BottomMargin')
+            iPaddingTopBottom = self._oParametersRendering.getStyles('SectionTitleH1PaddingTopBottom')
         elif sStyle == "SectionTitleH2":
-            iTopMargin = 20
-            iBottomMargin = 0
-            iPaddingTopBottom = 2
+            iTopMargin = self._oParametersRendering.getStyles('SectionTitleH2TopMargin')
+            iBottomMargin = self._oParametersRendering.getStyles('SectionTitleH2BottomMargin')
+            iPaddingTopBottom = self._oParametersRendering.getStyles('SectionTitleH2PaddingTopBottom')
         else:
-            iTopMargin = 10
-            iBottomMargin = 10
-            iPaddingTopBottom = 2
+            iTopMargin = self._oParametersRendering.getStyles('DefaultTopMargin')
+            iBottomMargin = self._oParametersRendering.getStyles('DefaultBottomMargin')
+            iPaddingTopBottom = self._oParametersRendering.getStyles('DefaultPaddingTopBottom')
         
         if iStartY == -1:
             iNewHeight = iImgHeight + iTopMargin + iStyleFontSize + iBottomMargin + iPaddingTopBottom*2
@@ -794,16 +780,14 @@ class RendererBitmap(toolObjectSerializable):
         sHTML += '		<title>AstroNotif</title>' + "\n"
         sHTML += '		<link rel="icon" href="http://' + oParameters.getNightlyBatchDomain() + '/favicon.png">' 
         sHTML += '		<base href="">' + "\n"
-        sHTML += '		<style>' + "\n"
-        sHTML += '          H1   {font-family: "arial", "sans-serif"; font-size:30px; font-weight: normal; background: #6dc7ff; color: #000000; padding-top: 15px; padding-bottom: 15px;}' + "\n"
-        sHTML += '		</style>' + "\n"
+        sHTML += '		<link rel="stylesheet" href="AstroNotif.css">' + "\n"
         sHTML += '	</head>' + "\n"
         sHTML += '<BODY>' + "\n"
 
         iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = self.getEphemeridesBitmapForPeriod(oCalendar, oParameters, oEphemeridesData)
         
-        sHTML += '    <H1>&nbsp;&nbsp;<A href="http://' + oParameters.getNightlyBatchDomain() + '" target="_blank">Ephemerides du <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:20px">Lieu: ' + oParameters.getPlace().getName() + ' </SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:10px">Calculs du ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' par AstroNotifPython ' + oParameters.getGlobalCurrentVersion() + '</SPAN></H1>' + "\n"
-        sHTML += '    <IMG style="border:none" src="' + sBitmapNameURL + '" alt="' + "Ephemerides du " + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
+        sHTML += '    <H1 class="PageHeader">&nbsp;&nbsp;<A href="http://' + oParameters.getNightlyBatchDomain() + '" target="_blank">Ephemerides du <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:20px">Lieu: ' + oParameters.getPlace().getName() + ' </SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:10px">Calculs du ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' par AstroNotifPython ' + oParameters.getGlobalCurrentVersion() + '</SPAN></H1>' + "\n"
+        sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' + "Ephemerides du " + oCalendar.getFormattedDateForSlot(0,oParameters.getDisplayNumberOfMinutesPerSlot()) + '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
         sHTML += '    </BODY>' + "\n"
         sHTML += '</HTML>' + "\n"
 

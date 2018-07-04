@@ -20,6 +20,7 @@ from MeeusTable45B import MeeusTable45B
 from ObstructedSkyArea import ObstructedSkyArea
 from ObstructedSkyAreas import ObstructedSkyAreas
 from Parameters import Parameters
+from ParametersRendering import ParametersRendering
 from Place import Place
 from Places import Places
 from RendererBitmap import RendererBitmap
