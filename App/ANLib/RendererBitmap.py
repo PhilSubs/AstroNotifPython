@@ -12,6 +12,7 @@ import math
 from datetime import datetime
 from ParametersRendering import ParametersRendering
 
+
 class RendererBitmap(toolObjectSerializable):
     iLeftLabelWidthInPx = 100
     iHourSlotWidthInPx = 16
@@ -463,8 +464,9 @@ class RendererBitmap(toolObjectSerializable):
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), Tools.removeHTMLTags(sObjectDataRow2), (0,0,0), font=self._getFont("ObjectData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 * 2), Tools.removeHTMLTags(sObjectDataRow3), (0,0,0), font=self._getFont("ObjectData"))
         
-        imgObjectThumbnail = Image.open('/Resources/Bitmaps/' + oEphemeridesDataObject.getPictureName())
-        oNewImg.paste(imgObjectThumbnail, (iStartX + RendererBitmap.iTableWidthObjectLabel - 50 - RendererBitmap.iTableVisibilityFlagWidth - 2, iStartY + 2 ))
+        if oEphemeridesDataObject.getPictureName() <> "":
+            imgObjectThumbnail = Image.open(Tools.get_script_path() + '\\Resources\\Bitmaps\\' + oEphemeridesDataObject.getPictureName())
+            oNewImg.paste(imgObjectThumbnail, (iStartX + RendererBitmap.iTableWidthObjectLabel - 50 - RendererBitmap.iTableVisibilityFlagWidth - 2, iStartY + 2 ))
         
         return iStartY, oNewImg
 
