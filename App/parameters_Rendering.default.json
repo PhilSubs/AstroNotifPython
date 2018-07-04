@@ -43,7 +43,7 @@
     "Styles":"styles attributes for text displayed",
         "styleDefaultFontSize":16,
         "styleDefaultFontDirectory":"",
-        "styleDefaultFont":"arial",
+        "styleDefaultFont":"Resources/Fonts/arial",
         "styleDefaultFontColor":"(255, 255, 255)",
         "styleDefaultBackColor":"(0, 0, 0)",
         "styleDefaultTopMargin":10,
@@ -73,5 +73,5 @@
         "styleSectionTitleH2PaddingTopBottom":2,
         "styleLunarFeatureNameFontSize":20,
         "styleLunarFeatureDataFontSize":9,
-        "styleLunarFeatureDataFont":"arialbi.ttf"
+        "styleLunarFeatureDataFont":"Resources/Fonts/arialbi.ttf"
 }
