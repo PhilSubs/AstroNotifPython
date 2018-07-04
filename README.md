@@ -27,6 +27,7 @@ L'application a besoin de connaitre le répertoire où elle est installée, ains
 
    - Verifier le contenu du fichier **`parameters_Places.json`** par rapport au fichier **`parameters_Places.default.json`** 
    - Verifier le contenu du fichier **`parameters_Runtime.json`** par rapport au fichier **`parameters_Runtime.default.json`** 
+   - Verifier le contenu du fichier **`parameters_Rendering.json`** par rapport au fichier **`parameters_Rendering.default.json`** 
    - Verifier le contenu du fichier **`parameters_SkyObjects.json`** par rapport au fichier **`parameters_SkyObjects.default.json`** 
    - Verifier le contenu du fichier **`parameters_LunarFeatures.json`** par rapport au fichier **`parameters_LunarFeatures.default.json`** 
 
@@ -43,6 +44,7 @@ L'application a besoin de connaitre le répertoire où elle est installée, ains
 
    - copier le fichier **`parameters_Places.default.json`** vers **`parameters_Places.json`**
    - copier le fichier **`parameters_Runtime.default.json`** vers **`parameters_Runtime.json`**
+   - copier le fichier **`parameters_Rendering.default.json`** vers **`parameters_Rendering.json`**
    - copier le fichier **`parameters_SkyObjects.default.json`** vers **`parameters_SkyObjects.json`**
    - copier le fichier **`parameters_LunarFeatures.default.json`** vers **`parameters_LunarFeatures.json`**
    
