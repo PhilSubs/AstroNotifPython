@@ -16,13 +16,13 @@ iImageWidth = 149#173
 iBorderRight = 2
 iSpace = 5
 
-sizeThumbnail = 250, 250
+sizeThumbnail = 50, 50
 
-for iRow in range(1, 12):
-    for iCol in range(1, 11):
-        sCropName = "miniature_M" + ("000" + str((iRow - 1) * 11 + iCol))[-3:]
-        iStartX = iLeftMargin + (iBorderWidth  + iImageWidth  + iBorderRight  + iSpace)     * (iCol - 1) + iBorderWidth
-        iStartY = iTopMargin  + (iBorderHeight + iImageHeight + iBorderBottom + iInterline) * (iRow - 1) + iBorderHeight
+for iRow in range(0, 12):
+    for iCol in range(0, 10):
+        sCropName = "miniature_M" + ("000" + str((iRow * 10 + iCol + 1)))[-3:]
+        iStartX = iLeftMargin + (iBorderWidth  + iImageWidth  + iBorderRight  + iSpace)     * (iCol) + iBorderWidth
+        iStartY = iTopMargin  + (iBorderHeight + iImageHeight + iBorderBottom + iInterline) * (iRow) + iBorderHeight
         iSizeX = iStartX + iImageWidth
         iSizeY = iStartY + iImageHeight
         iAdjustX = 0
