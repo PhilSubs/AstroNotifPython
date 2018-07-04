@@ -281,10 +281,10 @@ class RendererBitmap(toolObjectSerializable):
     def _addMoonMinimapBitmap(self, iPhase, fLongitude, fLatitude, oImg, iPosX, iPosY, iBitmapSize):
         iIndicatorSizeInPx = 3
         
-        tColorMoonMapBorder = self.oParametersRendering.getColorMoonMiniMap('Border')
-        tColorMoonMapBackground = self.oParametersRendering.getColorMoonMiniMap('Background')
-        tColorMoonMapLight = self.oParametersRendering.getColorMoonMiniMap('Light')
-        tColorMoonMapDark = self.oParametersRendering.getColorMoonMiniMap('Dark')
+        tColorMoonMapBorder = self._oParametersRendering.getColorMoonMiniMap('Border')
+        tColorMoonMapBackground = self._oParametersRendering.getColorMoonMiniMap('Background')
+        tColorMoonMapLight = self._oParametersRendering.getColorMoonMiniMap('Light')
+        tColorMoonMapDark = self._oParametersRendering.getColorMoonMiniMap('Dark')
         
         # Draw intermediary bitmaps
         imgFullLight = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
