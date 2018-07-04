@@ -16,7 +16,7 @@ class RendererBitmap(toolObjectSerializable):
     iLeftLabelWidthInPx = 100
     iHourSlotWidthInPx = 16
     iAltitudeRowHeight = 3
-    sFontDefaultName = "arial.ttf"
+    sFontDefaultName = "Resources/Fonts/arial.ttf"
     iFontDefaultSize = 16
     iTableMarginLeft = 0
     iTableWidthObjectLabel = 300
@@ -400,7 +400,7 @@ class RendererBitmap(toolObjectSerializable):
         bIsObservable = False
         sHTMLObjectRow = ""
         if (oEphemeridesDataObject.getType() == "Moon"):
-            iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject.getName(), "", "", "", oImg)
+            iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject, "", "", "", oImg)
             iMaxSlot = oParameters.getDisplayNumberOfSlotsForMoon()
         elif (oEphemeridesDataObject.getType() == "Planet"):
             iMaxSlot = oParameters.getDisplayNumberOfSlotsForPlanets()
@@ -411,12 +411,12 @@ class RendererBitmap(toolObjectSerializable):
             sMeanLongComment = str(int(round(fDiffMeanLong, 0))) + ' deg'
             if fDiffMeanLong < 25: sMeanLongComment = sMeanLongComment + ' (near conjonction)'
             if fDiffMeanLong > 155: sMeanLongComment = sMeanLongComment + ' (near opposition)'
-            iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject.getName(), "Distance: " +  str(int(round(oEphemeridesDataObject.getDistanceForSlot(0) * 149.600000, 1))) + ' M.Km', "Position Angle: " +  sMeanLongComment, 'Diam. app.: ' + str(int(round(oEphemeridesDataObject.getApparentDiameterInArcSecForSlot(0), 1))) + ' "', oImg)
+            iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject, "Distance: " +  str(int(round(oEphemeridesDataObject.getDistanceForSlot(0) * 149.600000, 1))) + ' M.Km', "Position Angle: " +  sMeanLongComment, 'Diam. app.: ' + str(int(round(oEphemeridesDataObject.getApparentDiameterInArcSecForSlot(0), 1))) + ' "', oImg)
             # add heliocentric schema
             theNewImg = self._addHeliocentricBitmap(oEphemeridesDataObject.getName(), oEphemeridesData.getSunMeanLongInDegForSlot(0) - 180.0, oEphemeridesDataObject.getMeanLongForSlot(0), iRowPositionY, theNewImg)
         else:
             iMaxSlot = oParameters.getDisplayNumberOfSlotsForDeepSky()
-            iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject.getName(), oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getType(), "RA: " + CommonAstroFormulaes.getHMSFromDeg(oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getRA()) + "    Dec: " +  str(round(oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDec(),2)), oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getComment1(), oImg)
+            iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject, oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getType(), "RA: " + CommonAstroFormulaes.getHMSFromDeg(oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getRA()) + "    Dec: " +  str(round(oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDec(),2)), oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getComment1(), oImg)
         
         bAtLeastOneDayToBeDisplayed = False
         bAtLeastOneDayObservable = False
@@ -445,7 +445,7 @@ class RendererBitmap(toolObjectSerializable):
         else:
             return bAtLeastOneDayToBeDisplayed, bAtLeastOneDayObservable, oImg
             
-    def _addObjectRowHeader(self, sObjectName, sObjectDataRow1, sObjectDataRow2, sObjectDataRow3, oImg):
+    def _addObjectRowHeader(self, oEphemeridesDataObject, sObjectDataRow1, sObjectDataRow2, sObjectDataRow3, oImg):
         # Resize Image and define starting point to draw header
         iImgWidth, iImgHeight = oImg.size
         iTableObjectRowHeight = RendererBitmap.iAltitudeRowHeight * 18 + RendererBitmap.iTableObjectRowGraphAdditionalDataHeight
@@ -458,10 +458,13 @@ class RendererBitmap(toolObjectSerializable):
 
         theNewDraw.rectangle((iStartX, iStartY, iStartX + RendererBitmap.iTableWidthObjectLabel, iStartY + iTableObjectRowHeight), fill=(255, 255, 255))
 
-        theNewDraw.text((iStartX + 3, iStartY), sObjectName, (0,0,0), font=self._getFont("ObjectName"))
+        theNewDraw.text((iStartX + 3, iStartY), oEphemeridesDataObject.getName(), (0,0,0), font=self._getFont("ObjectName"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10), Tools.removeHTMLTags(sObjectDataRow1), (0,0,0), font=self._getFont("ObjectData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), Tools.removeHTMLTags(sObjectDataRow2), (0,0,0), font=self._getFont("ObjectData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 * 2), Tools.removeHTMLTags(sObjectDataRow3), (0,0,0), font=self._getFont("ObjectData"))
+        
+        imgObjectThumbnail = Image.open('/Resources/Bitmaps/' + oEphemeridesDataObject.getPictureName())
+        oNewImg.paste(imgObjectThumbnail, (iStartX + RendererBitmap.iTableWidthObjectLabel - 50 - RendererBitmap.iTableVisibilityFlagWidth - 2, iStartY + 2 ))
         
         return iStartY, oNewImg
 
