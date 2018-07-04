@@ -465,7 +465,10 @@ class RendererBitmap(toolObjectSerializable):
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 * 2), Tools.removeHTMLTags(sObjectDataRow3), (0,0,0), font=self._getFont("ObjectData"))
         
         if oEphemeridesDataObject.getPictureName() <> "":
-            imgObjectThumbnail = Image.open(Tools.get_script_path() + '\\Resources\\Bitmaps\\' + oEphemeridesDataObject.getPictureName())
+            sResourceBitmapsFolder = "/Resources/Bitmaps/"
+            if Tools.get_script_path()[0:1] != "/":
+                sResourceBitmapsFolder = "\\Resources\\Bitmaps\\"
+            imgObjectThumbnail = Image.open(Tools.get_script_path() + sResourceBitmapsFolder + oEphemeridesDataObject.getPictureName())
             oNewImg.paste(imgObjectThumbnail, (iStartX + RendererBitmap.iTableWidthObjectLabel - 50 - RendererBitmap.iTableVisibilityFlagWidth - 2, iStartY + 2 ))
         
         return iStartY, oNewImg
