@@ -58,6 +58,12 @@ L'application a besoin de connaitre le répertoire où elle est installée, ains
      - "GlobalPathToWWWFolder":"**`[CheminWWW]`**"
      - "GlobalPathToAPPFolder":"**`[CheminAPP]`**"
      - "ObservationPlaceName":"**`[nomDuLieu]`**"
+     - "NightlyBatchEmailAddress":"email@domain.com"   (email destinataire de la notification par mail)
+     - "NightlyBatchEmailSMTPServer":"server.domain.com"  (nom du serveur SMTP, ex: smtp.gmail.com)
+     - "NightlyBatchEmailSMTPUser":"username"  (username du compte envoyant le mail)
+     - "NightlyBatchEmailSMTPPassword":"password"  (password du compte envoyant le mail)
+     - "NightlyBatchEmailFromAddress":"AstroNotif<email@domain.com>"   (email d'origine de la notification par mail)
+     - "NightlyBatchDomain":"IP or URL"   (Addresse IP ou url du domaine hebergeant l'application)
 
  - Ajouter une tâche récurrente pour calculer les éphémérides tous les jours:
  
