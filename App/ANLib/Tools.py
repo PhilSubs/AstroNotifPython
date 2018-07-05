@@ -104,7 +104,7 @@ class Tools:
 
 
     @staticmethod
-    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sSMTPServer, sUser = "", sPassword = "" ):
+    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sSMTPServer, sUser, sPassword):
         # Create message container - the correct MIME type is multipart/alternative.
         theMsg = MIMEMultipart('alternative')
         theMsg['Subject'] = sSubject
@@ -125,7 +125,7 @@ class Tools:
         theSender.set_debuglevel(False)
         theSender.ehlo()
         theSender.starttls()
-        print "login..."
+        print "login(" + sUser + ")..."
         theSender.login(sUser, sPassword)
         print "logged in..."
         try:
