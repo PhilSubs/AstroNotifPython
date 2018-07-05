@@ -248,9 +248,9 @@ class RendererBitmap(toolObjectSerializable):
             bIsTerminatorNearFeature = ((fTerminatorLongitudeRise >= fLongitudeMin and fTerminatorLongitudeRise <= fLongitudeMax) or (fTerminatorLongitudeSet >= fLongitudeMin and fTerminatorLongitudeSet <= fLongitudeMax))
             if oParameters.getObservationShowWhenTerminatorIsOnLunarFeature() and bIsTerminatorNearFeature:
                 if sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
-                    tColor = (154, 154, 154, 255)
+                    tColor = self._oParametersRendering.getColorLunarFeatureVisibility('NotObservable')
                 else:
-                    tColor = (255, 64, 0, 255)
+                    tColor = self._oParametersRendering.getColorLunarFeatureVisibility('Good')
             elif fSunAltitudeOverFeature <= 0.0:
                 tColor = (0, 0, 0, 255)
             elif fSunAltitudeOverFeature >= oParameters.getObservationMaximumLunarFeatureSunAltitude():
