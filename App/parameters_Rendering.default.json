@@ -17,7 +17,7 @@
         "colorSunAltitude06To12DegAbove":"(255, 242, 204)",
         "colorSunAltitudeMoreThan12DegAbove":"(255, 255, 255)",
         
-    "ColorObject":"colors for object dependeing on visibility status as (r,g,b)",
+    "ColorObject":"colors for object graph line dependeing on visibility status as (r,g,b)",
         "colorObjectVisibilityStatusBelow":"(153, 153, 153)",
         "colorObjectVisibilityStatusHidden":"(195, 0, 255)",
         "colorObjectVisibilityStatusVeryLow":"(253, 100, 0)",
@@ -26,6 +26,10 @@
         "colorObjectVisibilityStatusImpossible":"(28, 69, 135)",
         "colorObjectVisibilityStatusGood":"(0, 255, 0)",
         "colorObjectVisibilityStatusUnknown":"(0, 0, 255)",
+        
+    "colorLunarFeatureVisibility":"colors for lunar feature graph dependeing on terminator position, elevation, etc... as (r,g,b)",
+        "colorLunarFeatureVisibilityNotObservable":"(154, 154, 154, 255)",
+        "colorLunarFeatureVisibilityGood":"(0, 255, 0, 255)",
         
     "HeliocentricGraph":"colors for Heliocentric Graph as (r,g,b,t)",
         "colorHeliocentricGraphBackground":"(0, 0, 0, 255)",
