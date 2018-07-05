@@ -242,22 +242,24 @@ class RendererBitmap(toolObjectSerializable):
             if fLongitudeMax < fLongitudeMin: fLongitudeMax += 360.0
             if fTerminatorLongitudeRise < fLongitudeMin: fTerminatorLongitudeRise += 360.0
             if fTerminatorLongitudeSet < fLongitudeMin: fTerminatorLongitudeSet += 360.0
-
+            
             bIsTerminatorNearFeature = ((fTerminatorLongitudeRise >= fLongitudeMin and fTerminatorLongitudeRise <= fLongitudeMax) or (fTerminatorLongitudeSet >= fLongitudeMin and fTerminatorLongitudeSet <= fLongitudeMax))
+            
+            
+            iTransparency = 255
+            if sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
+                iTransparency = 250
             if oParameters.getObservationShowWhenTerminatorIsOnLunarFeature() and bIsTerminatorNearFeature:
-                if sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
-                    tColor = self._oParametersRendering.getColorLunarFeatureVisibility('TerminatorNearButNotObservable')
-                else:
-                    tColor = self._oParametersRendering.getColorLunarFeatureVisibility('Good')
-            elif fSunAltitudeOverFeature <= 0.0:
+                tColor = self._oParametersRendering.getColorLunarFeatureVisibility('Good')
+            elif fSunAltitudeOverFeature <= 0.0:  
                 tColor = self._oParametersRendering.getColorLunarFeatureVisibility('SunBelowHorizon')
             elif fSunAltitudeOverFeature >= oParameters.getObservationMaximumLunarFeatureSunAltitude():
                 tColor = self._oParametersRendering.getColorLunarFeatureVisibility('SunTooHigh')
             else:
-                if sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
-                    tColor = (180 + int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 75.0), 180 + int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 75.0), 180 + int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 75.0), 255)
-                else:
-                    tColor = (255, 127 + int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 128.0), int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 255.0), 255)
+                tColor = (255, 127 + int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 128.0), int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 255.0))
+            tColor = (tColor[0], tColor[1], tColor[2], iTransparency)
+
+                    
             x1 = iBorderStartX + 1 + (iSlot - iStartSlot) * iSlotWidthInPx
             x2 = x1 + iSlotWidthInPx - 1
             y1 = iBorderStartY + 1
