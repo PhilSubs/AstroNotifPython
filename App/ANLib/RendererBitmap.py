@@ -678,6 +678,9 @@ class RendererBitmap(toolObjectSerializable):
             # Rewrite Title with counters
             iTitlePosY, theNewImg = self._addTitleForSection("The Planets (" + str(iCount) + "/" + str(iNumber) + ")", "SectionTitleH1", theNewImg, True, iTitlePosY)
             iNbPlanetsObservable = iCount
+            # Add legend
+            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
+            
         #
         # MOON
         #
@@ -690,6 +693,8 @@ class RendererBitmap(toolObjectSerializable):
         # Add object row for Moon
         isMoonDisplayed, isMoonObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject("Moon"), oCalendar, oParameters, oEphemeridesData, theNewImg)
         if isMoonDisplayed:
+            # Add legend
+            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
             theBackupImg = self._getImageCopy(theNewImg)
             # Add Title
             iTitlePosY, theNewImg = self._addTitleForSection("Lunar Features", "SectionTitleH2", theNewImg, False, -1)
@@ -711,6 +716,8 @@ class RendererBitmap(toolObjectSerializable):
                 # Rewrite Title with counters
                 iTitlePosY, theNewImg = self._addTitleForSection("Lunar Features (" + str(iCount) + "/" + str(oParameters.getLunarFeatures().getCount()) + ")", "SectionTitleH2", theNewImg, True, iTitlePosY)
                 iNbLunarFeaturesobservable = iCount
+                # Add legend
+                theNewImg = self._addLunarFeatureVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph, oParameters)
         else:
             theNewImg = theBackupImg
         
@@ -743,6 +750,8 @@ class RendererBitmap(toolObjectSerializable):
             # Rewrite Title with counters
             iTitlePosY, theNewImg = self._addTitleForSection("Favourites Deep Sky Objects (" + str(iCount) + "/" + str(iNumber) + ")", "SectionTitleH2", theNewImg, True, iTitlePosY)
             iNbDeepSkyobjectsObservable = iCount
+            # Add legend
+            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
         # Other Deep Sky Objects
         theBackupImg = self._getImageCopy(theNewImg)
         if self._bForFavouriteOnly:
@@ -768,7 +777,9 @@ class RendererBitmap(toolObjectSerializable):
             # Rewrite Title with counters
             iTitlePosY, theNewImg = self._addTitleForSection("Other Deep Sky Objects (" + str(iCount) + "/" + str(iNumber) + ")", "SectionTitleH2", theNewImg, True, iTitlePosY)
             iNbDeepSkyobjectsObservable = iNbDeepSkyobjectsObservable + iCount
-
+            # Add legend
+            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
+            
         # Save and return bitmap name
         sBitmapName = 'Ephemerides_' + oParameters.getPlace().getName().replace(' ','') + '.png'
         theNewImg.save(self._sRelativeFolderForBitmaps + sBitmapName, "PNG")
@@ -818,3 +829,92 @@ class RendererBitmap(toolObjectSerializable):
         finalDraw.text((300, 200),"Sample Text" + " --> " + str(draw.textsize("Sample Text", font=self._getFont("ObjectName"))[0]),(255,255,255),font=self._getFont("ObjectName"))
         finalDraw.text((300, 220),"Sample Text:  00 01 02 03 04 05 06 07" + " --> " + str(draw.textsize("Sample Text:  00 01 02 03 04 05 06 07", font=self._getFont("RowHeaderTime"))[0]),(255,255,255),font=self._getFont("RowHeaderTime"))
         finalImg.save('bitmapRenderer_sample.jpg')
+                
+    def _addVisibilityMapLegend(self, oImg, iPastePosX):
+        # Add legend at bottom of the bitmap (resized to add the legend)
+        
+        iImgWidth, iImgHeight = oImg.size
+        imgLegend = self._changeImageSize(oImg, iImgWidth, iImgHeight + 30)
+
+        drawLegend = ImageDraw.Draw(imgLegend)
+        
+        iPosY = iImgHeight + 5
+        iPosX = iPastePosX + 10
+
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Impossible'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Impossible'))
+        drawLegend.text((iPosX + 25, iPosY),  "Impossible during day", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Impossible during day", font=self._getFont("RowHeaderDate"))[0] + 25
+
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
+        drawLegend.text((iPosX + 25, iPosY),  "Below horizon", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Below horizon", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Hidden'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Hidden'))
+        drawLegend.text((iPosX + 25, iPosY),  "Hidden by obstacle", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Hidden by obstacle", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('VeryLow'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('VeryLow'))
+        drawLegend.text((iPosX + 25, iPosY),  "Very Low", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Very Low", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Low'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Low'))
+        drawLegend.text((iPosX + 25, iPosY),  "Low", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Low", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Difficult'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Difficult'))
+        drawLegend.text((iPosX + 25, iPosY),  "Difficult to see", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Difficult to see", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Good'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Good'))
+        drawLegend.text((iPosX + 25, iPosY),  "Good visibility", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Good visibility", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Unknown'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Unknown'))
+        drawLegend.text((iPosX + 25, iPosY),  "Unknown", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Unknown", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        return imgLegend          
+                
+    def _addLunarFeatureVisibilityMapLegend(self, oImg, iPastePosX, oParameters):
+        # Add legend at bottom of the bitmap (resized to add the legend)
+        
+        iImgWidth, iImgHeight = oImg.size
+        imgLegend = self._changeImageSize(oImg, iImgWidth, iImgHeight + 30)
+
+        drawLegend = ImageDraw.Draw(imgLegend)
+        
+        iPosY = iImgHeight + 5
+        iPosX = iPastePosX + 10
+
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunBelowHorizon'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunBelowHorizon'))
+        drawLegend.text((iPosX + 25, iPosY),  "At feature, Sun is below horizon", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("At feature, Sun is below horizon", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        for iOcc in range(20, 0, -1):
+            fAlt = oParameters.getObservationMaximumLunarFeatureSunAltitude() / 20.0 * float(iOcc)
+            tColor = (255, 127 + int(fAlt / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 128.0), int(fAlt / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 255.0))
+            drawLegend.line((iPosX + iOcc, iPosY + 9, iPosX + iOcc, iPosY + 9), fill=tColor)
+            drawLegend.line((iPosX + iOcc, iPosY + 10, iPosX + iOcc, iPosY + 10), fill=tColor)
+        drawLegend.text((iPosX + 25, iPosY),  "Observable", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Observable", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorLunarFeatureVisibility('Good'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorLunarFeatureVisibility('Good'))
+        drawLegend.text((iPosX + 25, iPosY),  "Near terminator, good visibility", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("Near terminator, good visibility", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunTooHigh'))
+        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunTooHigh'))
+        drawLegend.text((iPosX + 25, iPosY),  "At feature, Sun is too high", (255,255,255), font=self._getFont("RowHeaderDate"))
+        iPosX += 25 + drawLegend.textsize("At feature, Sun is too high", font=self._getFont("RowHeaderDate"))[0] + 25
+        
+        return imgLegend          
