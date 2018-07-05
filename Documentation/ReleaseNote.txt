@@ -1,9 +1,12 @@
+Version 1.7
+     - 
 Version 1.6
      - Changed Parameters.py and parameters_runtime.json:
          - added NightlyBatchEmailAddress
          - added NightlyBatchEmailSMTPServer
          - added NightlyBatchEmailFromAdress
          - added NightlyBatchDomain
+         - added GlobalCurrentVersion
      - Added MeeusAlgorithmsFormulas.py: centralize all Meeus formulas with explicit name related to chapter in book
      - Added MeeusAlgorithmsFormulasTests.py and NonRegression.py: so Meeus formulas can be tested against known values
      - Updated MeeusAlgorithms.py so compute method will use MeeusAlgorithmsFormulas
