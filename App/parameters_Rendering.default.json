@@ -28,10 +28,13 @@
         "colorObjectVisibilityStatusUnknown":"(0, 0, 255)",
         
     "colorLunarFeatureVisibility":"colors for lunar feature graph dependeing on terminator position, elevation, etc... as (r,g,b)",
-        "colorLunarFeatureVisibilityTerminatorNearButNotObservable":"(154, 154, 154, 255)",
-        "colorLunarFeatureVisibilityGood":"(0, 255, 0, 255)",
-        "colorLunarFeatureVisibilitySunBelowHorizon":"(0, 0, 0, 255)",
-        "colorLunarFeatureVisibilitySunTooHigh":"(255, 255, 255, 255)",
+        "colorLunarFeatureVisibilityTerminatorNearButNotObservable":"(21, 76, 20, 255)",
+        "colorLunarFeatureVisibilityGood":"(0, 255, 0)",
+        "colorLunarFeatureVisibilitySunBelowHorizon":"(81, 8, 8)",
+        "colorLunarFeatureVisibilitySunTooHigh":"(255, 255, 255)",
+        "colorLunarFeatureVisibilityMoonBelowHorizon":"(0, 0, 0)",
+        "colorLunarFeatureVisibilityMoonHidden":"(195, 0, 255)",
+        "colorLunarFeatureVisibilityMoonImpossible":"(28, 69, 135)",
         
     "HeliocentricGraph":"colors for Heliocentric Graph as (r,g,b,t)",
         "colorHeliocentricGraphBackground":"(0, 0, 0, 255)",
