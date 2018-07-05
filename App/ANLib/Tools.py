@@ -125,15 +125,15 @@ class Tools:
         theSender.set_debuglevel(False)
         theSender.ehlo()
         theSender.starttls()
-        print "login"
+        print "login..."
         theSender.login(sUser, sPassword)
-        print "logged in"
+        print "logged in..."
         try:
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
             print "sending..."
             theSender.sendmail(sFrom, sTo, theMsg.as_string())
-            print "sent"
+            print "sent..."
         finally:
             theSender.quit()
 
