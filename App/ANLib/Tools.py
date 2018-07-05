@@ -4,6 +4,7 @@
 import string
 import os
 import os.path
+import sys
 
 # Import PIL or PILLOW libraries for bitmaps
 from PIL import Image, ImageDraw
@@ -15,6 +16,11 @@ from email.mime.text import MIMEText
 
 
 class Tools:
+    @staticmethod
+    def get_script_path():
+        """ Return the script path"""
+        return os.path.dirname(os.path.realpath(sys.argv[0]))
+
     @staticmethod
     def getScriptname(  ):
         """ Return the scriptname part of the URL ("/path/to/my.cgi"). """

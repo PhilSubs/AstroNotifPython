@@ -8,12 +8,13 @@ from toolObjectSerializable import toolObjectSerializable
 
 
 class EphemeridesDataObject(toolObjectSerializable):
-    def __init__(self, sID, sType, sCategory, sName):
+    def __init__(self, sID, sType, sCategory, sName, sPictureName):
         toolObjectSerializable.__init__(self)
         self._sID = sID
         self._sType = sType
         self._sCategory = sCategory
         self._sName = sName
+        self._sPictureName = sPictureName
         self._Azimut = {}        #
         self._Altitude = {}      #
         self._RightAscension = {}        #
@@ -41,6 +42,7 @@ class EphemeridesDataObject(toolObjectSerializable):
     def getType(self): return self._sType
     def getCategory(self): return self._sCategory
     def getName(self): return self._sName
+    def getPictureName(self): return self._sPictureName
     def getMinAzimut(self, iStartSlot, iEndSlot):
         iMinAzimut = -1      # rise azimut
         for iSlot in range(iStartSlot, iEndSlot):

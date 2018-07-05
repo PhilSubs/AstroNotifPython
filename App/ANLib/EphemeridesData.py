@@ -123,17 +123,17 @@ class EphemeridesData(toolObjectSerializable):
         self._observerLongitude = oParameters.getPlace().getLongitude()
         self._observerLatitude = oParameters.getPlace().getLatitude()
         # init objects list
-        self._objects['Moon'] = EphemeridesDataObject("Moon", "Moon", "Planetary", "Moon")
-        self._objects['Mercury'] = EphemeridesDataObject("Mercury", "Planet", "Planetary", "Mercury")
-        self._objects['Venus'] = EphemeridesDataObject("Venus", "Planet", "Planetary", "Venus")
-        self._objects['Mars'] = EphemeridesDataObject("Mars", "Planet", "Planetary", "Mars")
-        self._objects['Jupiter'] = EphemeridesDataObject("Jupiter", "Planet", "Planetary", "Jupiter")
-        self._objects['Saturn'] = EphemeridesDataObject("Saturn", "Planet", "Planetary", "Saturn")
-        self._objects['Uranus'] = EphemeridesDataObject("Uranus", "Planet", "Planetary", "Uranus")
-        self._objects['Neptune'] = EphemeridesDataObject("Neptune", "Planet", "Planetary", "Neptune")
+        self._objects['Moon'] = EphemeridesDataObject("Moon", "Moon", "Planetary", "Moon", "")
+        self._objects['Mercury'] = EphemeridesDataObject("Mercury", "Planet", "Planetary", "Mercury", "")
+        self._objects['Venus'] = EphemeridesDataObject("Venus", "Planet", "Planetary", "Venus", "")
+        self._objects['Mars'] = EphemeridesDataObject("Mars", "Planet", "Planetary", "Mars", "")
+        self._objects['Jupiter'] = EphemeridesDataObject("Jupiter", "Planet", "Planetary", "Jupiter", "")
+        self._objects['Saturn'] = EphemeridesDataObject("Saturn", "Planet", "Planetary", "Saturn", "")
+        self._objects['Uranus'] = EphemeridesDataObject("Uranus", "Planet", "Planetary", "Uranus", "")
+        self._objects['Neptune'] = EphemeridesDataObject("Neptune", "Planet", "Planetary", "Neptune", "")
         for iIndex in range(0, oParameters.getSkyObjects().getCount()):
             if oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getCategory() != "Planetary":
-                self._objects[oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getID()] = EphemeridesDataObject(oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getID(), oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getType(), oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getCategory(), oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getName())
+                self._objects[oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getID()] = EphemeridesDataObject(oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getID(), oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getType(), oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getCategory(), oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getName(), oParameters.getSkyObjects().getSkyObjectByIndex(iIndex).getPictureName())
         # Compute data for each slots
         theSun = EphemeridesSun()
         theMoon = EphemeridesMoonMeeus() #EphemeridesMoon()
