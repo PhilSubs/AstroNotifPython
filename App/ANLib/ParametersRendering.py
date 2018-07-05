@@ -17,6 +17,7 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorMoonMiniMap = {}
         self._tcolorSunAltitude = {}
         self._tcolorObjectVisibilityStatus = {}
+        self._tcolorLunarFeatureVisibility = {}
         self._tStyles = {}
         
         self.__loadFromFile()
@@ -27,6 +28,7 @@ class ParametersRendering(toolObjectSerializable):
     def getColorMoonMiniMap(self, sCode): return self._tcolorMoonMiniMap[sCode]
     def getColorSunAltitude(self, sCode): return self._tcolorSunAltitude[sCode]
     def getColorObjectVisibilityStatus(self, sCode): return self._tcolorObjectVisibilityStatus[sCode]
+    def getColorLunarFeatureVisibility(self, sCode): return self._tcolorLunarFeatureVisibility[sCode]
     def getStyles(self, sCode): return self._tStyles[sCode]
     
     def __loadFromFile(self):
@@ -61,6 +63,8 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorObjectVisibilityStatus['Impossible'] = eval(data["colorObjectVisibilityStatusImpossible"])
         self._tcolorObjectVisibilityStatus['Good'] = eval(data["colorObjectVisibilityStatusGood"])
         self._tcolorObjectVisibilityStatus['Unknown'] = eval(data["colorObjectVisibilityStatusUnknown"])
+        self._tcolorLunarFeatureVisibility['colorLunarFeatureVisibilityNotObservable'] = eval(data["colorLunarFeatureVisibilityNotObservable"])
+        self._tcolorLunarFeatureVisibility['colorLunarFeatureVisibilityGood'] = eval(data["colorLunarFeatureVisibilityGood"])
         self._tStyles['DefaultFontSize'] = data["styleDefaultFontSize"]
         self._tStyles['DefaultFontDirectory'] = data["styleDefaultFontDirectory"]
         self._tStyles['DefaultFont'] = Tools.get_ResourceSubfolder_path("Fonts") + data["styleDefaultFont"]
