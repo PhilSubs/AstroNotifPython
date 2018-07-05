@@ -238,23 +238,21 @@ class RendererBitmap(toolObjectSerializable):
             fLongitudeMax = (oLunarFeatureObject.getLongitudeMax() + oParameters.getObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg() + 360.0) % 360.0
             fTerminatorLongitudeRise = (oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot) - 90.0) % 360.0
             fTerminatorLongitudeSet = (oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot) + 90.0) % 360.0
-#            if oEphemeridesData.getEphemerideDataObject("Moon").getColongitudeForSlot(iSlot) < 90.0:
-#                fTerminatorLongitude = oEphemeridesData.getEphemerideDataObject("Moon").getColongitudeForSlot(iSlot) + 180.0
-#            elif oEphemeridesData.getEphemerideDataObject("Moon").getColongitudeForSlot(iSlot) > 90.0:
-#                fTerminatorLongitude = oEphemeridesData.getEphemerideDataObject("Moon").getColongitudeForSlot(iSlot) - 180.0
-#            else:
-#                fTerminatorLongitude = oEphemeridesData.getEphemerideDataObject("Moon").getColongitudeForSlot(iSlot)
-#            bIsTerminatorNearFeature = (fTerminatorLongitude >= fLongitudeMin and fTerminatorLongitude <= fLongitudeMax)
+
+            if fLongitudeMax < fLongitudeMin: fLongitudeMax += 360.0
+            if fTerminatorLongitudeRise < fLongitudeMin: fTerminatorLongitudeRise += 360.0
+            if fTerminatorLongitudeSet < fLongitudeMin: fTerminatorLongitudeSet += 360.0
+
             bIsTerminatorNearFeature = ((fTerminatorLongitudeRise >= fLongitudeMin and fTerminatorLongitudeRise <= fLongitudeMax) or (fTerminatorLongitudeSet >= fLongitudeMin and fTerminatorLongitudeSet <= fLongitudeMax))
             if oParameters.getObservationShowWhenTerminatorIsOnLunarFeature() and bIsTerminatorNearFeature:
                 if sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
-                    tColor = self._oParametersRendering.getColorLunarFeatureVisibility('NotObservable')
+                    tColor = self._oParametersRendering.getColorLunarFeatureVisibility('TerminatorNearButNotObservable')
                 else:
                     tColor = self._oParametersRendering.getColorLunarFeatureVisibility('Good')
             elif fSunAltitudeOverFeature <= 0.0:
-                tColor = (0, 0, 0, 255)
+                tColor = self._oParametersRendering.getColorLunarFeatureVisibility('SunBelowHorizon')
             elif fSunAltitudeOverFeature >= oParameters.getObservationMaximumLunarFeatureSunAltitude():
-                tColor = (255, 255, 255, 255)
+                tColor = self._oParametersRendering.getColorLunarFeatureVisibility('SunTooHigh')
             else:
                 if sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
                     tColor = (180 + int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 75.0), 180 + int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 75.0), 180 + int(fSunAltitudeOverFeature / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 75.0), 255)
