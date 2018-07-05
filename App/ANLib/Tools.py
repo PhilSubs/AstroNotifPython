@@ -104,7 +104,7 @@ class Tools:
 
 
     @staticmethod
-    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sSMTPServer ):
+    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sSMTPServer, sUser = "", sPassword = "" ):
         # Create message container - the correct MIME type is multipart/alternative.
         theMsg = MIMEMultipart('alternative')
         theMsg['Subject'] = sSubject
@@ -120,13 +120,20 @@ class Tools:
         theMsg.attach(theMIMEpart)
 
         # Send the message via local SMTP server.
-        theSender = smtplib.SMTP(sSMTPServer)
+        print "smtp..."
+        theSender = smtplib.SMTP(sSMTPServer, 587)
         theSender.set_debuglevel(False)
-        theSender.login("notifier@astronot.heliohost.org", "bH!l!bb6@8K8dtF3Unbi$sep##eKM7jk")
+        theSender.ehlo()
+        theSender.starttls()
+        print "login"
+        theSender.login(sUser, sPassword)
+        print "logged in"
         try:
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
+            print "sending..."
             theSender.sendmail(sFrom, sTo, theMsg.as_string())
+            print "sent"
         finally:
             theSender.quit()
 
