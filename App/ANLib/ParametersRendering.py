@@ -67,6 +67,9 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorLunarFeatureVisibility['Good'] = eval(data["colorLunarFeatureVisibilityGood"])
         self._tcolorLunarFeatureVisibility['SunBelowHorizon'] = eval(data["colorLunarFeatureVisibilitySunBelowHorizon"])
         self._tcolorLunarFeatureVisibility['SunTooHigh'] = eval(data["colorLunarFeatureVisibilitySunTooHigh"])
+        self._tcolorLunarFeatureVisibility['MoonBelowHorizon'] = eval(data["colorLunarFeatureVisibilityMoonBelowHorizon"])
+        self._tcolorLunarFeatureVisibility['MoonHidden'] = eval(data["colorLunarFeatureVisibilityMoonHidden"])
+        self._tcolorLunarFeatureVisibility['MoonImpossible'] = eval(data["colorLunarFeatureVisibilityMoonImpossible"])
         self._tStyles['DefaultFontSize'] = data["styleDefaultFontSize"]
         self._tStyles['DefaultFontDirectory'] = data["styleDefaultFontDirectory"]
         self._tStyles['DefaultFont'] = Tools.get_ResourceSubfolder_path("Fonts") + data["styleDefaultFont"]
