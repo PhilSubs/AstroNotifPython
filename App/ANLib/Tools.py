@@ -22,6 +22,27 @@ class Tools:
         return os.path.dirname(os.path.realpath(sys.argv[0]))
 
     @staticmethod
+    def get_ResourceSubfolder_path(sSubfolder):
+        """ Return the script path"""
+        sScriptPath = Tools.get_script_path()
+        if sScriptPath[0:1] == "/":
+            sFontPath = sScriptPath + "/Resources/" + sSubfolder + "/"
+        else:
+            sFontPath = sScriptPath + "\\Resources\\" + sSubfolder + "\\"
+        return sFontPath
+
+    @staticmethod
+    def get_ResourceBitmaps_path():
+        """ Return the script path"""
+        sScriptPath = Tools.get_script_path()
+        if sScriptPath[0:1] == "/":
+            sFontPath = sScriptPath + "/Resources/Bitmaps/"
+        else:
+            sFontPath = sScriptPath + "\\Resources\\Bitmaps\\"
+        return sFontPath
+
+    
+    @staticmethod
     def getScriptname(  ):
         """ Return the scriptname part of the URL ("/path/to/my.cgi"). """
         return os.environ.get('SCRIPT_NAME', '')
