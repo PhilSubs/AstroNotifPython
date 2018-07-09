@@ -199,10 +199,10 @@ class RendererBitmap(toolObjectSerializable):
         theNewDraw.rectangle((iStartX, iStartY, iStartX + RendererBitmap.iTableWidthObjectLabel, iStartY + iTableObjectRowHeight), fill=(255, 255, 255))
 
         # Display name and infos
-        theNewDraw.text((iStartX + 3 + 40, iStartY + 5), sObjectName, (0,0,0), font=self._getFont("LunarFeatureName"))
-        theNewDraw.text((iStartX + 3 + 40, iStartY + 22 + 10), sComment1, (0,0,0), font=self._getFont("LunarFeatureData"))
-        theNewDraw.text((iStartX + 3 + 40, iStartY + 22 + 10 + 12), sComment2, (0,0,0), font=self._getFont("LunarFeatureData"))
-        theNewDraw.text((iStartX + 3 + 40, iStartY + 22 + 10 + 12 + 12), sComment3, (0,0,0), font=self._getFont("LunarFeatureData"))
+        theNewDraw.text((iStartX + 3, iStartY + 5), sObjectName, (0,0,0), font=self._getFont("LunarFeatureName"))
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10), sComment1, (0,0,0), font=self._getFont("LunarFeatureData"))
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), sComment2, (0,0,0), font=self._getFont("LunarFeatureData"))
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 + 12), sComment3, (0,0,0), font=self._getFont("LunarFeatureData"))
 
         return iStartY, oNewImg
 
