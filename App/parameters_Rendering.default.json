@@ -18,12 +18,12 @@
         "colorSunAltitudeMoreThan12DegAbove":"(255, 255, 255)",
         
     "ColorObject":"colors for object graph line dependeing on visibility status as (r,g,b)",
-        "colorObjectVisibilityStatusBelow":"(153, 153, 153)",
+        "colorObjectVisibilityStatusBelow":"(200, 200, 200)",
         "colorObjectVisibilityStatusHidden":"(195, 0, 255)",
-        "colorObjectVisibilityStatusVeryLow":"(253, 100, 0)",
-        "colorObjectVisibilityStatusLow":"(253, 134, 0)",
+        "colorObjectVisibilityStatusVeryLow":"(242, 84, 0)",
+        "colorObjectVisibilityStatusLow":"(255, 159, 63)",
         "colorObjectVisibilityStatusDifficult":"(255, 0, 0)",
-        "colorObjectVisibilityStatusImpossible":"(28, 69, 135)",
+        "colorObjectVisibilityStatusImpossible":"(127, 127, 127)",
         "colorObjectVisibilityStatusGood":"(0, 255, 0)",
         "colorObjectVisibilityStatusUnknown":"(0, 0, 255)",
         
