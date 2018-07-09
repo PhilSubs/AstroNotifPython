@@ -846,10 +846,10 @@ class RendererBitmap(toolObjectSerializable):
         drawLegend.text((iPosX + 25, iPosY),  "Impossible during day", (255,255,255), font=self._getFont("RowHeaderDate"))
         iPosX += 25 + drawLegend.textsize("Impossible during day", font=self._getFont("RowHeaderDate"))[0] + 25
 
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
-        drawLegend.text((iPosX + 25, iPosY),  "Below horizon", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Below horizon", font=self._getFont("RowHeaderDate"))[0] + 25
+#        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
+#        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
+#        drawLegend.text((iPosX + 25, iPosY),  "Below horizon", (255,255,255), font=self._getFont("RowHeaderDate"))
+#        iPosX += 25 + drawLegend.textsize("Below horizon", font=self._getFont("RowHeaderDate"))[0] + 25
         
         drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Hidden'))
         drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Hidden'))
