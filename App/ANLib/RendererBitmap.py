@@ -86,8 +86,12 @@ class RendererBitmap(toolObjectSerializable):
         tStyleBackColor = self._oParametersRendering.getStyles('DefaultBackColor')
         
         # Style overlap
-        if sStyle == "RowHeaderDate":
+        if sStyle == "Legend":
+            iStyleFontSize = self._oParametersRendering.getStyles('LegendFontSize')
+            sFont = sFontDirectory + self._oParametersRendering.getStyles('LegendFont')
+        elif sStyle == "RowHeaderDate":
             iStyleFontSize = self._oParametersRendering.getStyles('RowHeaderDateFontSize')
+            sFont = sFontDirectory + self._oParametersRendering.getStyles('RowHeaderDateFont')
         elif sStyle == "RowHeaderTime":
             iStyleFontSize = self._oParametersRendering.getStyles('RowHeaderTimeFontSize')
         elif sStyle == "ObjectName":
@@ -840,46 +844,48 @@ class RendererBitmap(toolObjectSerializable):
         
         iPosY = iImgHeight + 5
         iPosX = iPastePosX + 10
+        
+        iHeightText = self._getFontSize("Legend")
 
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Impossible'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Impossible'))
-        drawLegend.text((iPosX + 25, iPosY),  "Impossible during day", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Impossible during day", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Impossible'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Impossible'))
+        drawLegend.text((iPosX + 25, iPosY),  "Impossible during day", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Impossible during day", font=self._getFont("Legend"))[0] + 25
 
-#        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
-#        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
-#        drawLegend.text((iPosX + 25, iPosY),  "Below horizon", (255,255,255), font=self._getFont("RowHeaderDate"))
-#        iPosX += 25 + drawLegend.textsize("Below horizon", font=self._getFont("RowHeaderDate"))[0] + 25
+#        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
+#        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Below'))
+#        drawLegend.text((iPosX + 25, iPosY),  "Below horizon", (255,255,255), font=self._getFont("Legend"))
+#        iPosX += 25 + drawLegend.textsize("Below horizon", font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Hidden'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Hidden'))
-        drawLegend.text((iPosX + 25, iPosY),  "Hidden by obstacle", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Hidden by obstacle", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Hidden'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Hidden'))
+        drawLegend.text((iPosX + 25, iPosY),  "Hidden by obstacle", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Hidden by obstacle", font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('VeryLow'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('VeryLow'))
-        drawLegend.text((iPosX + 25, iPosY),  "Very Low", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Very Low", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('VeryLow'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('VeryLow'))
+        drawLegend.text((iPosX + 25, iPosY),  "Very Low", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Very Low", font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Low'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Low'))
-        drawLegend.text((iPosX + 25, iPosY),  "Low", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Low", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Low'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Low'))
+        drawLegend.text((iPosX + 25, iPosY),  "Low", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Low", font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Difficult'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Difficult'))
-        drawLegend.text((iPosX + 25, iPosY),  "Difficult to see", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Difficult to see", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Difficult'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Difficult'))
+        drawLegend.text((iPosX + 25, iPosY),  "Difficult to see", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Difficult to see", font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Good'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Good'))
-        drawLegend.text((iPosX + 25, iPosY),  "Good visibility", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Good visibility", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Good'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Good'))
+        drawLegend.text((iPosX + 25, iPosY),  "Good visibility", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Good visibility", font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Unknown'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Unknown'))
-        drawLegend.text((iPosX + 25, iPosY),  "Unknown", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Unknown", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Unknown'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorObjectVisibilityStatus('Unknown'))
+        drawLegend.text((iPosX + 25, iPosY),  "Unknown", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Unknown", font=self._getFont("Legend"))[0] + 25
         
         return imgLegend          
                 
@@ -893,28 +899,30 @@ class RendererBitmap(toolObjectSerializable):
         
         iPosY = iImgHeight + 5
         iPosX = iPastePosX + 10
+        
+        iHeightText = self._getFontSize("Legend")
 
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunBelowHorizon'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunBelowHorizon'))
-        drawLegend.text((iPosX + 25, iPosY),  "At feature, Sun is below horizon", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("At feature, Sun is below horizon", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunBelowHorizon'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunBelowHorizon'))
+        drawLegend.text((iPosX + 25, iPosY),  "At feature, Sun is below horizon", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("At feature, Sun is below horizon", font=self._getFont("Legend"))[0] + 25
         
         for iOcc in range(20, 0, -1):
             fAlt = oParameters.getObservationMaximumLunarFeatureSunAltitude() / 20.0 * float(iOcc)
             tColor = (255, 127 + int(fAlt / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 128.0), int(fAlt / oParameters.getObservationMaximumLunarFeatureSunAltitude() * 255.0))
-            drawLegend.line((iPosX + iOcc, iPosY + 9, iPosX + iOcc, iPosY + 9), fill=tColor)
-            drawLegend.line((iPosX + iOcc, iPosY + 10, iPosX + iOcc, iPosY + 10), fill=tColor)
-        drawLegend.text((iPosX + 25, iPosY),  "Observable", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Observable", font=self._getFont("RowHeaderDate"))[0] + 25
+            drawLegend.line((iPosX + iOcc, iPosY + (iHeightText / 2), iPosX + iOcc, iPosY + (iHeightText / 2)), fill=tColor)
+            drawLegend.line((iPosX + iOcc, iPosY + (iHeightText / 2 + 1), iPosX + iOcc, iPosY + (iHeightText / 2 + 1)), fill=tColor)
+        drawLegend.text((iPosX + 25, iPosY),  "Observable", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Observable", font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorLunarFeatureVisibility('Good'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorLunarFeatureVisibility('Good'))
-        drawLegend.text((iPosX + 25, iPosY),  "Near terminator, good visibility", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("Near terminator, good visibility", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorLunarFeatureVisibility('Good'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorLunarFeatureVisibility('Good'))
+        drawLegend.text((iPosX + 25, iPosY),  "Near terminator, good visibility", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("Near terminator, good visibility", font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + 9, iPosX + 20, iPosY + 9), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunTooHigh'))
-        drawLegend.line((iPosX, iPosY + 10, iPosX + 20, iPosY + 10), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunTooHigh'))
-        drawLegend.text((iPosX + 25, iPosY),  "At feature, Sun is too high", (255,255,255), font=self._getFont("RowHeaderDate"))
-        iPosX += 25 + drawLegend.textsize("At feature, Sun is too high", font=self._getFont("RowHeaderDate"))[0] + 25
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunTooHigh'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParametersRendering.getColorLunarFeatureVisibility('SunTooHigh'))
+        drawLegend.text((iPosX + 25, iPosY),  "At feature, Sun is too high", (255,255,255), font=self._getFont("Legend"))
+        iPosX += 25 + drawLegend.textsize("At feature, Sun is too high", font=self._getFont("Legend"))[0] + 25
         
         return imgLegend          
