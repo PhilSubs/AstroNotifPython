@@ -86,7 +86,10 @@ class RendererBitmap(toolObjectSerializable):
         tStyleBackColor = self._oParametersRendering.getStyles('DefaultBackColor')
         
         # Style overlap
-        if sStyle == "Legend":
+        if sStyle == "GMTWarning":
+            iStyleFontSize = self._oParametersRendering.getStyles('GMTWarningFontSize')
+            sFont = sFontDirectory + self._oParametersRendering.getStyles('GMTWarningFont')
+        elif sStyle == "Legend":
             iStyleFontSize = self._oParametersRendering.getStyles('LegendFontSize')
             sFont = sFontDirectory + self._oParametersRendering.getStyles('LegendFont')
         elif sStyle == "RowHeaderDate":
@@ -591,7 +594,11 @@ class RendererBitmap(toolObjectSerializable):
             iHeaderEndY = iHeaderStartY + iTableHeaderHeight - 1
             theNewDraw.rectangle((iHeaderStartX, iHeaderStartY, iHeaderEndX, iHeaderEndY), fill=(255, 255, 255))
             theNewDraw.rectangle((iHeaderStartX + 1, iHeaderStartY + 1, iHeaderEndX - 1, iHeaderEndY - 1), fill=(0, 0, 0))
+            # Display date
             theNewDraw.text((iHeaderStartX + 3, iHeaderStartY + 3), oCalendar.getFormattedDateForSlot(iSlot,oParameters.getDisplayNumberOfMinutesPerSlot()), (255,255,255), font=self._getFont("RowHeaderDate"))
+            # Display GMT warning
+            theNewDraw.text((iHeaderEndX - 3 - theNewDraw.textsize("GMT time", font=self._getFont("GMTWarning"))[0], iHeaderStartY + 3), "GMT time", (255,255,255), font=self._getFont("GMTWarning"))            
+            # Display hours
             for iDaySlot in range (iSlot,  iSlot + iNbSlotsPerDay, iNbSlotsPerHour ):
                 theNewDraw.text((iHeaderStartX + 3 + (iDaySlot - iSlot) * iSlotWidthInPx, iStartY + RendererBitmap.iTableHeaderRowHeight + 4 + RendererBitmap.iTableHeaderRowInterline), oCalendar.getTimeForSlot(iDaySlot, oParameters.getDisplayNumberOfMinutesPerSlot())[0:2], (255,255,255), font=self._getFont("RowHeaderTime"))
         
