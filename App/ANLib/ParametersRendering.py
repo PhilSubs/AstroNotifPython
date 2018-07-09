@@ -78,6 +78,8 @@ class ParametersRendering(toolObjectSerializable):
         self._tStyles['DefaultTopMargin'] = data["styleDefaultTopMargin"]
         self._tStyles['DefaultBottomMargin'] = data["styleDefaultBottomMargin"]
         self._tStyles['DefaultPaddingTopBottom'] = data["styleDefaultPaddingTopBottom"]
+        self._tStyles['GMTWarningFontSize'] = data["styleGMTWarningFontSize"]
+        self._tStyles['GMTWarningFont'] = data["styleGMTWarningFont"]
         self._tStyles['LegendFontSize'] = data["styleLegendFontSize"]
         self._tStyles['LegendFont'] = data["styleLegendFont"]
         self._tStyles['RowHeaderDateFontSize'] = data["styleRowHeaderDateFontSize"]
