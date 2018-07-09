@@ -264,8 +264,10 @@ class RendererBitmap(toolObjectSerializable):
             
             
             iTransparency = 255
-            if sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
+            if sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
                 iTransparency = 250
+            if sMoonVisibilityStatus == "Below":
+                iTransparency = 0
             if self._oParameters.getObservationShowWhenTerminatorIsOnLunarFeature() and bIsTerminatorNearFeature:
                 tColor = self._oParametersRendering.getColorLunarFeatureVisibility('Good')
             elif fSunAltitudeOverFeature <= 0.0:  
