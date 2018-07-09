@@ -128,7 +128,6 @@ class RendererBitmap(toolObjectSerializable):
             theStyleFont = ImageFont.truetype(sFont, iStyleFontSize)
         except:
             theStyleFont = ImageFont.truetype(sFont + ".ttf", iStyleFontSize)
-        
         return (iStyleFontSize, theStyleFont, tStyleFontColor, tStyleBackColor)
 
     def _getRectangularCoordXYFromLunarLongLat(self, fLongitude, fLatitude, iBitmapSize): 
@@ -452,28 +451,14 @@ class RendererBitmap(toolObjectSerializable):
             else:
                 bAtLeastOneDayNotObservable = True
 
-
         if bAtLeastOneDayObservable:
             if not bAtLeastOneDayNotObservable:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
-                if oEphemeridesDataObject.getID() == "Jupiter":
-                    print "==> Observable  " + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[0]) + "," + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[1]) + "," + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[2])
             else:            
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
-                if oEphemeridesDataObject.getID() == "Jupiter":
-                    print "==> AtLEastOneDayObservable  " + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[0]) + "," + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[1]) + "," + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[2])
         else:
             theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
-            if oEphemeridesDataObject.getID() == "Jupiter":
-                print "==> NotObservable  " + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[0]) + "," + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[1]) + "," + str(self._oParametersRendering.getColorVisibilityFlags('Observable')[2])
             
-#        if not bAtLeastOneDayNotObservable:
-#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
-#        elif not bAtLeastOneDayObservable:
-#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
-#        else:
-#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
-        
         if bAtLeastOneDayToBeDisplayed:
             return bAtLeastOneDayToBeDisplayed, bAtLeastOneDayObservable, theNewImg
         else:
@@ -542,7 +527,7 @@ class RendererBitmap(toolObjectSerializable):
                 if oEphemeridesDataObject.getAltitudeForSlot(iSlot) > 0:
                     sObjectVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot(oEphemeridesDataObject.getID(), iSlot, self._oParameters)
                     tColor = self._getBitmapColorForObjectAltitudeDependingOnSunAltitude(sObjectVisibilityStatus)
-                    bIsObservable = ((sObjectVisibilityStatus == "Good") or bIsObservable)
+                    bIsObservable = ((sObjectVisibilityStatus == "Good" or sObjectVisibilityStatus == "Low") or bIsObservable)
                     if iPrevX > -1 and iPrevY > -1:
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY, iRowPositionX - 1 + x, iRowPositionY + 1 + y), fill=tColor)
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY -1, iRowPositionX - 1 + x, iRowPositionY + 1 + y -1 ), fill=tColor)
@@ -566,8 +551,6 @@ class RendererBitmap(toolObjectSerializable):
         iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.getDisplayNumberOfMinutesPerSlot())
         
         bIsDisplayed, bIsObservable, theNewImg = self._addObjectVisibilityBitmapForDay(oEphemeridesDataObject, oCalendar, iStartSlot, iEndSlot, oEphemeridesData, oImg, iRowPositionX + 3, iRowPositionY)
-        if oEphemeridesDataObject.getID() == "Jupiter":
-            print "_addObjectVisibilityBitmapForDay   bIsDisplayed:" + str(bIsDisplayed) + ", bIsObservable:" + str(bIsObservable)
 
         if oEphemeridesDataObject.getType() == "Planet":
             fDiffMeanLong = oEphemeridesData.getSunMeanLongInDegForSlot(iStartSlot) - 180.0 - oEphemeridesDataObject.getMeanLongForSlot(iStartSlot)
