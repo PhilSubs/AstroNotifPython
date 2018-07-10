@@ -21,8 +21,6 @@ class Parameters(toolObjectSerializable):
         self._sNightlyBatchDomain = ""
         self._sNightlyBatchEmailAddress = ""
         self._sNightlyEmailSMTPServer = ""
-        self._sNightlyEmailSMTPUser = ""
-        self._sNightlyEmailSMTPPassword = ""
         self._sNightlyEmailFromAddress = ""
         self._sNightlyBatchHTMLFilname = ""
         self._fObservationMinAltitudeInDeg = 0.0
@@ -35,6 +33,7 @@ class Parameters(toolObjectSerializable):
         self._fObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg = 0.0
         self._sObservationPlaceName = ""
         self._bDisplayVisibilityTableAsBitmap = True
+        self._iDisplayLanguage = "EN"
         self._iDisplayNumberOfSlotsForMoon = 0
         self._iDisplayNumberOfSlotsForMoonFeatures = 0
         self._iDisplayNumberOfSlotsForPlanets = 0
@@ -53,14 +52,13 @@ class Parameters(toolObjectSerializable):
         self._SkyObjects = {}
         self._LunarFeatures = {}
         self.__loadFromFile()
+    def getLanguage(self): return self._iDisplayLanguage
     def getGlobalCurrentVersion(self): return self._sGlobalCurrentVersion
     def getGlobalPathToWWWFolder(self): return self._sGlobalPathToWWWFolder
     def getGlobalPathToAPPFolder(self): return self._sGlobalPathToAPPFolder
     def getNightlyBatchTimeDeltaInHours(self): return self._iNightlyBatchTimeDeltaInHours
     def getNightlyBatchEmailAddress(self): return self._sNightlyBatchEmailAddress
     def getNightlyBatchEmailSMTPServer(self): return self._sNightlyBatchEmailSMTPServer
-    def getNightlyBatchEmailSMTPUser(self): return self._sNightlyBatchEmailSMTPUser
-    def getNightlyBatchEmailSMTPPassword(self): return self._sNightlyBatchEmailSMTPPassword
     def getNightlyBatchEmailFromAddress(self): return self._sNightlyBatchEmailFromAddress
     def getNightlyBatchDomain(self): return self._sNightlyBatchDomain
     def getNightlyBatchHTMLFilname(self): return self._sNightlyBatchHTMLFilname
@@ -102,8 +100,6 @@ class Parameters(toolObjectSerializable):
         self._iNightlyBatchTimeDeltaInHours = data["NightlyBatchTimeDeltaInHours"]
         self._sNightlyBatchEmailAddress = data["NightlyBatchEmailAddress"]
         self._sNightlyBatchEmailSMTPServer = data["NightlyBatchEmailSMTPServer"]
-        self._sNightlyBatchEmailSMTPUser = data["NightlyBatchEmailSMTPUser"]
-        self._sNightlyBatchEmailSMTPPassword = data["NightlyBatchEmailSMTPPassword"]
         self._sNightlyBatchEmailFromAddress = data["NightlyBatchEmailFromAddress"]
         self._sNightlyBatchDomain = data["NightlyBatchDomain"]
         self._sNightlyBatchHTMLFilname = data["NightlyBatchHTMLFilname"]
@@ -116,6 +112,7 @@ class Parameters(toolObjectSerializable):
         self._bObservationShowWhenTerminatorIsOnLunarFeature = ( data["ObservationShowWhenTerminatorIsOnLunarFeature"] == "Yes")
         self._fObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg = data["ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg"]
         self._sObservationPlaceName = data["ObservationPlaceName"]
+        self._iDisplayLanguage = data["DisplayLanguage"]
         self._bDisplayVisibilityTableAsBitmap = ( data["DisplayVisibilityTableAsBitmap"] == "Yes" )
         self._iDisplayNumberOfSlotsForMoon = data["DisplayNumberOfSlotsForMoon"]
         self._iDisplayNumberOfSlotsForMoonFeatures = data["DisplayNumberOfSlotsForMoonFeatures"]

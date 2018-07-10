@@ -21,6 +21,7 @@ from ObstructedSkyArea import ObstructedSkyArea
 from ObstructedSkyAreas import ObstructedSkyAreas
 from Parameters import Parameters
 from ParametersRendering import ParametersRendering
+from ParametersLocalization import ParametersLocalization
 from Place import Place
 from Places import Places
 from RendererBitmap import RendererBitmap

@@ -1,6 +1,6 @@
 {
     "Global":"Global parameters",
-        "currentVersion":"v1.7",
+        "currentVersion":"v1.8",
         "GlobalPathToWWWFolder":"/var/www/html",
         "GlobalPathToWWWFolder_comment":"Absolute path to WWW folder containing files served by web server",
         "GlobalPathToAPPFolder":"/usr/bin/AstroNotif",
@@ -44,6 +44,7 @@
         "ObservationShowWhenTerminatorIsOnLunarFeature_comment": "if Yes, a special color is used for showing that terminator is within ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg deg of the lunar feature, based on Min Longitude and Max Longitude",
         
     "Display":"Display parameters",
+        "DisplayLanguage":"FR",
         "DisplayVisibilityTableAsBitmap":"Yes",
         "DisplayNumberOfSlotsForMoon":384,
         "DisplayNumberOfSlotsForPlanets":384,

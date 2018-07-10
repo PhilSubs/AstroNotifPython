@@ -5,7 +5,7 @@
         
     "VisibilityFlags":"colors for visibility flags as (r,g,b)",
         "colorVisibilityFlagsNotObservable":"(255, 0, 0)",
-        "colorVisibilityFlagsAtLEastOneDayObservable":"(255, 127, 0)",
+        "colorVisibilityFlagsAtLEastOneDayObservable":"(255, 159, 63)",
         "colorVisibilityFlagsObservable":"(0,255,0)",
         
     "SunAltitude":"colors for Sun Altitude as (r,g,b)",
@@ -18,12 +18,12 @@
         "colorSunAltitudeMoreThan12DegAbove":"(255, 255, 255)",
         
     "ColorObject":"colors for object graph line dependeing on visibility status as (r,g,b)",
-        "colorObjectVisibilityStatusBelow":"(153, 153, 153)",
+        "colorObjectVisibilityStatusBelow":"(200, 200, 200)",
         "colorObjectVisibilityStatusHidden":"(195, 0, 255)",
-        "colorObjectVisibilityStatusVeryLow":"(253, 100, 0)",
-        "colorObjectVisibilityStatusLow":"(253, 134, 0)",
+        "colorObjectVisibilityStatusVeryLow":"(242, 84, 0)",
+        "colorObjectVisibilityStatusLow":"(255, 159, 63)",
         "colorObjectVisibilityStatusDifficult":"(255, 0, 0)",
-        "colorObjectVisibilityStatusImpossible":"(28, 69, 135)",
+        "colorObjectVisibilityStatusImpossible":"(127, 127, 127)",
         "colorObjectVisibilityStatusGood":"(0, 255, 0)",
         "colorObjectVisibilityStatusUnknown":"(0, 0, 255)",
         
@@ -58,7 +58,12 @@
         "styleDefaultTopMargin":10,
         "styleDefaultBottomMargin":10,
         "styleDefaultPaddingTopBottom":2,
+        "styleGMTWarningFontSize":9,
+        "styleGMTWarningFont":"ariali.ttf",
+        "styleLegendFontSize":10,
+        "styleLegendFont":"arial.ttf",
         "styleRowHeaderDateFontSize":16,
+        "styleRowHeaderDateFont":"arialnb.ttf",
         "styleRowHeaderTimeFontSize":10,
         "styleObjectNameFontSize":24,
         "styleObjectDataFontSize":9,
