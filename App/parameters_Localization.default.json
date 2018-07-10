@@ -77,7 +77,13 @@
             "Saturn":"Saturn",
             "Uranus":"Uranus",
             "Neptune":"Neptune",
-            "Moon":"Moon"
+            "Moon":"Moon",
+            "MoonFeatureCrater":"Crater",
+            "MoonFeatureRim":"Rim",
+            "MoonFeatureValley":"Valley",
+            "MoonFeatureFault":"Fault",
+            "MoonFeaturePlain":"Plain"
+            
 		},
 
 	"FR":
@@ -154,6 +160,11 @@
             "Saturn":"Saturne",
             "Uranus":"Uranus",
             "Neptune":"Neptune",
-            "Moon":"Lune"
+            "Moon":"Lune",
+            "MoonFeatureCrater":"Cratère",
+            "MoonFeatureRim":"Faille",
+            "MoonFeatureValley":"Vallée",
+            "MoonFeatureFault":"Accident",
+            "MoonFeaturePlain":"Plaine"
 		}
 }
