@@ -5,7 +5,7 @@
         
     "VisibilityFlags":"colors for visibility flags as (r,g,b)",
         "colorVisibilityFlagsNotObservable":"(255, 0, 0)",
-        "colorVisibilityFlagsAtLEastOneDayObservable":"(255, 127, 0)",
+        "colorVisibilityFlagsAtLEastOneDayObservable":"(255, 159, 63)",
         "colorVisibilityFlagsObservable":"(0,255,0)",
         
     "SunAltitude":"colors for Sun Altitude as (r,g,b)",

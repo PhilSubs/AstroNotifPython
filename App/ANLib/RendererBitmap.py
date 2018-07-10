@@ -128,7 +128,6 @@ class RendererBitmap(toolObjectSerializable):
             theStyleFont = ImageFont.truetype(sFont, iStyleFontSize)
         except:
             theStyleFont = ImageFont.truetype(sFont + ".ttf", iStyleFontSize)
-        
         return (iStyleFontSize, theStyleFont, tStyleFontColor, tStyleBackColor)
 
     def _getRectangularCoordXYFromLunarLongLat(self, fLongitude, fLatitude, iBitmapSize): 
@@ -182,12 +181,20 @@ class RendererBitmap(toolObjectSerializable):
             iPosYMoonMap = iRowPositionY 
             theNewImg = self._addMoonMinimapBitmap( oEphemeridesData.getEphemerideDataObject("Moon").getPhaseForSlot(iDataSlot), oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
 
-        if not bAtLeastOneDayIsNotObservable:
+        if bAtLeastOneDayToBeDisplayed:
+            if not bAtLeastOneDayIsNotObservable:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
-        elif not bAtLeastOneDayIsObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
-        else:
+            else:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
+        else:
+            theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
+                
+#        if not bAtLeastOneDayIsNotObservable:
+#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
+#        elif not bAtLeastOneDayIsObservable:
+#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
+#        else:
+#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
             
         if bAtLeastOneDayToBeDisplayed:
             return True, bAtLeastOneDayIsObservable, theNewImg
@@ -257,8 +264,10 @@ class RendererBitmap(toolObjectSerializable):
             
             
             iTransparency = 255
-            if sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
+            if sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
                 iTransparency = 250
+            if sMoonVisibilityStatus == "Below":
+                iTransparency = 0
             if self._oParameters.getObservationShowWhenTerminatorIsOnLunarFeature() and bIsTerminatorNearFeature:
                 tColor = self._oParametersRendering.getColorLunarFeatureVisibility('Good')
             elif fSunAltitudeOverFeature <= 0.0:  
@@ -443,14 +452,15 @@ class RendererBitmap(toolObjectSerializable):
                 bAtLeastOneDayObservable = True
             else:
                 bAtLeastOneDayNotObservable = True
-        
-        if not bAtLeastOneDayNotObservable:
+
+        if bAtLeastOneDayObservable:
+            if not bAtLeastOneDayNotObservable:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
-        elif not bAtLeastOneDayObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
-        else:
+            else:            
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
-        
+        else:
+            theNewImg = self._addVisibilityFlagOnRowHeader(self._oParametersRendering.getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
+            
         if bAtLeastOneDayToBeDisplayed:
             return bAtLeastOneDayToBeDisplayed, bAtLeastOneDayObservable, theNewImg
         else:
@@ -519,7 +529,7 @@ class RendererBitmap(toolObjectSerializable):
                 if oEphemeridesDataObject.getAltitudeForSlot(iSlot) > 0:
                     sObjectVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot(oEphemeridesDataObject.getID(), iSlot, self._oParameters)
                     tColor = self._getBitmapColorForObjectAltitudeDependingOnSunAltitude(sObjectVisibilityStatus)
-                    bIsObservable = (sObjectVisibilityStatus == "Good")
+                    bIsObservable = ((sObjectVisibilityStatus == "Good" or sObjectVisibilityStatus == "Low") or bIsObservable)
                     if iPrevX > -1 and iPrevY > -1:
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY, iRowPositionX - 1 + x, iRowPositionY + 1 + y), fill=tColor)
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY -1, iRowPositionX - 1 + x, iRowPositionY + 1 + y -1 ), fill=tColor)
