@@ -1,6 +1,6 @@
 {
     "Objects":[
-        {"Category":"Planetary", "IsFavourite":"Yes", "ID":"Moon","Type":"[Label]satellite","Name":"[label]Moon","RA":"","Dec":0.0,"PictureName":"","Comment1":"","Comment2":""},
+        {"Category":"Moon", "IsFavourite":"Yes", "ID":"Moon","Type":"[Label]satellite","Name":"[label]Moon","RA":"","Dec":0.0,"PictureName":"","Comment1":"","Comment2":""},
         {"Category":"Planetary", "IsFavourite":"Yes", "ID":"Mercury","Type":"[label]Planet","Name":"[label]Mercury","RA":"","Dec":0.0,"PictureName":"","Comment1":"","Comment2":""},
         {"Category":"Planetary", "IsFavourite":"Yes", "ID":"Venus","Type":"[label]Planet","Name":"[label]Venus","RA":"","Dec":0.0,"PictureName":"","Comment1":"","Comment2":""},
         {"Category":"Planetary", "IsFavourite":"Yes", "ID":"Mars","Type":"[label]Planet","Name":"[label]Mars","RA":"","Dec":0.0,"PictureName":"","Comment1":"","Comment2":""},
