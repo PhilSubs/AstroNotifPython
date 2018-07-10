@@ -436,7 +436,21 @@ class RendererBitmap(toolObjectSerializable):
             theNewImg = self._addHeliocentricBitmap(oEphemeridesDataObject.getName(), oEphemeridesData.getSunMeanLongInDegForSlot(0) - 180.0, oEphemeridesDataObject.getMeanLongForSlot(0), iRowPositionY, theNewImg)
         else:
             iMaxSlot = self._oParameters.getDisplayNumberOfSlotsForDeepSky()
-            iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject, self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getType(), self._oParametersLocalization.getLabel("RightAscensionAbrev") + ": " + CommonAstroFormulaes.getHMSFromDeg(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getRA()) + "    " + self._oParametersLocalization.getLabel("DeclinationAbrev") + ": " +  str(round(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDec(),2)), self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getComment1(), oImg)
+            sDataRow1 = self._oParametersLocalization.getLabel(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getType())
+            if self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistanceUnit() != "":
+                sDataRow1 += "     "  + self._oParametersLocalization.getLabel("DistanceAbrev") + ": " + str(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistance()) + " "  + self._oParametersLocalization.getLabel(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistanceUnit())
+            sDataRow2 = self._oParametersLocalization.getLabel("RightAscensionAbrev") + ": " + CommonAstroFormulaes.getHMSFromDeg(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getRA()) + "    " + self._oParametersLocalization.getLabel("DeclinationAbrev") + ": " +  str(round(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDec(),2))
+            if self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getApparentMagnitude() != "":
+                sDataRow3 = self._oParametersLocalization.getLabel("ApparentMagnitudeAbrev") + ": " + str(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getApparentMagnitude())
+            if self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionXUnit() != "":
+                if sDataRow3 != "": sDataRow3 += "     "
+                sDataRow3 += self._oParametersLocalization.getLabel("DimensionAbrev") + ": " + str(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionX()) + " "  + self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionXUnit()
+                if self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionYUnit() != "":
+                    sDataRow3 += " x "  + str(self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionY()) + " "  + self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionYUnit()
+            if self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getComment1() != "":
+                if sDataRow3 != "": sDataRow3 += "     "
+                sDataRow3 += self._oParameters.getSkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getComment1()
+            iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject, sDataRow1, sDataRow2, sDataRow3, oImg)
         
         bAtLeastOneDayToBeDisplayed = False
         bAtLeastOneDayObservable = False
