@@ -18,7 +18,20 @@ class ParametersLocalization(toolObjectSerializable):
         self.__loadFromFile()
         
     def getActiveLanguage(self): return self._sLanguageCode
-    def getLabel(self, sCode): return self._tLabels[sCode]
+    def getLabel(self, sCode): 
+        sReturn = sCode
+        if sCode[0:7] == "[label]":
+            if sCode[7:] in self._tLabels:
+                sReturn = self._tLabels[sCode[7:]
+                print "Label   " + sCode + "   --> " + sReturn + "  (" + self._sLanguageCode + ")"
+            else:
+                print "Label   " + sCode + "   missing !  (" + self._sLanguageCode + ")"
+        elif sCode in self._tLabels:
+            sReturn = self._tLabels[sCode]
+            print "Label   " + sCode + "   --> " + sReturn + "  (" + self._sLanguageCode + ")"
+        else:
+            print "Label   " + sCode + "   not translated !  (" + self._sLanguageCode + ")"
+        return sReturn
     
     def __loadFromFile(self):
         # load parameters file
