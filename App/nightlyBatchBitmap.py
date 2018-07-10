@@ -22,8 +22,8 @@ theEphemeridesData = ANLib.EphemeridesData()
 print "Calcul des ephemerides<br>"
 theEphemeridesData.computeEphemeridesForPeriod(theParameters, theCalendar)
 print "Generation de la page HTML et du bitmap<br>"
-theRendererBitmap = ANLib.RendererBitmap( theParameters.getGlobalPathToWWWFolder() + '/', "http://" + theParameters.getNightlyBatchDomain() + "/", True)
-sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = theRendererBitmap.getHTML(theCalendar, theParameters, theEphemeridesData)
+theRendererBitmap = ANLib.RendererBitmap( theParameters, theParameters.getGlobalPathToWWWFolder() + '/', "http://" + theParameters.getNightlyBatchDomain() + "/", True)
+sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
 
 # Save as default html file
 ANLib.Tools.saveAsFile(theParameters.getGlobalPathToWWWFolder() + '/' + theParameters.getNightlyBatchHTMLFilname(), sHTMLContent)
@@ -49,4 +49,4 @@ if len(theParameters.getNightlyBatchEmailAddress()) > 0:
 
     # Send email
     print "Envoi du mail<br>"
-    ANLib.Tools.sendEmailHTML(theParameters.getNightlyBatchEmailFromAddress(), sTo, sSubject, sHTMLContent, theParameters.getNightlyBatchEmailSMTPServer(), theParameters.getNightlyBatchEmailSMTPUser(), theParameters.getNightlyBatchEmailSMTPPassword() )
+    ANLib.Tools.sendEmailHTML(theParameters.getNightlyBatchEmailFromAdress(), sTo, sSubject, sHTMLContent, theParameters.getNightlyBatchEmailSMTPServer() )
