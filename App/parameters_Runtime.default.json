@@ -1,6 +1,6 @@
 {
     "Global":"Global parameters",
-        "currentVersion":"v1.8",
+        "currentVersion":"v1.8.1",
         "GlobalPathToWWWFolder":"/var/www/html",
         "GlobalPathToWWWFolder_comment":"Absolute path to WWW folder containing files served by web server",
         "GlobalPathToAPPFolder":"/usr/bin/AstroNotif",
