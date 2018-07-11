@@ -31,6 +31,10 @@ class ParametersLocalization(toolObjectSerializable):
 #            print "Label   " + sCode + "   --> " + sReturn + "  (" + self._sLanguageCode + ")"
         else:
             print "Label ! " + sCode + "   not translated !  (" + self._sLanguageCode + ")"
+
+        if type(sReturn) is unicode:
+                sReturn.encode("iso-8859-1" )
+
         return sReturn
     
     def __loadFromFile(self):
