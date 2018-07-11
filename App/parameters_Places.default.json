@@ -1,23 +1,12 @@
-[
-	{
-	"Name":"Location1", 
-	"Longitude":0.000000000, 
-	"Latitude":0.000000000, 
-	"ObstructedSkyAreas":
-		[
-			{"Comment":"", "Azimut-Min":0, "Azimut-Max":180, "Altitude-Min":0, "Altitude-Max":10},
-			{"Comment":"", "Azimut-Min":181, "Azimut-Max":359, "Altitude-Min":0, "Altitude-Max":10}
-		]
-	}, 
-	
-	{
-	"Name":"Location2", 
-	"Longitude":0.000000000, 
-	"Latitude":0.000000000, 
-	"ObstructedSkyAreas":
-		[
-			{"Comment":"", "Azimut-Min":0, "Azimut-Max":180, "Altitude-Min":0, "Altitude-Max":10},
-			{"Comment":"", "Azimut-Min":181, "Azimut-Max":359, "Altitude-Min":0, "Altitude-Max":10}
-		]
-	}
-]
+{
+    "Location1":{
+         "Name":"Location1", 
+         "Longitude":0.000000000, 
+         "Latitude":0.000000000, 
+         "ObstructedSkyAreas":
+             {
+                 "zone01":{"Comment":"", "Azimut-Min":0, "Azimut-Max":180, "Altitude-Min":0, "Altitude-Max":10},
+                 "zone02":{"Comment":"", "Azimut-Min":181, "Azimut-Max":359, "Altitude-Min":0, "Altitude-Max":10}
+             }
+    }
+}
