@@ -142,9 +142,9 @@ class Parameters(toolObjectSerializable):
         # init sky objects
         with open('parameters_SkyObjects.json', 'r') as f:
              data = json.load(f)
-        self._SkyObjects = SkyObjects(data["Objects"])
+        self._SkyObjects = SkyObjects(data)
         
         # init Lunar features
         with open('parameters_LunarFeatures.json', 'r') as f:
              data = json.load(f)
-        self._LunarFeatures = LunarFeatures(data["LunarFeatures"])
+        self._LunarFeatures = LunarFeatures(data)
