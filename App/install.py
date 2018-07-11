@@ -15,9 +15,13 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault):
         sKeyLabel = list(dictDataDefault.keys())[iId]
         sFormattedKeyLabel = ("'" + sLevel + sKeyLabel + "'                                ")[-0:40]
         if sKeyLabel == "currentVersion" and sJsonFilename == "parameters_Runtime.json":
-            dictData["currentVersion"] = dictDataDefault["currentVersion"]
+            dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
             bChangeDone = True
-            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + dictData["currentVersion"]
+            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + dictData[sKeyLabel]
+        elif sKeyLabel == "GlobalPathToAPPFolder" and sJsonFilename == "parameters_Runtime.json":
+            dictData[sKeyLabel] = ANLib.Tools.get_script_path()
+            bChangeDone = True
+            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + dictData[sKeyLabel]
         else:
             if sKeyLabel in dictData:
                 if type(dictData[sKeyLabel]) is dict:
@@ -28,8 +32,6 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault):
                     sDefaultValue = dictDataDefault[sKeyLabel]
                     if sCuurentValue != sDefaultValue:
                         print "      " + sFormattedFilename + ":  #  " + sFormattedKeyLabel + "          " + sCuurentValue + "    <-->    " +  sDefaultValue
-#                    else:
-#                        print "      " + sFormattedFilename + ":  .  " + sFormattedKeyLabel
             else:
                 dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
                 bChangeDone = True
@@ -116,21 +118,46 @@ if bIsBackupOk:
     if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
         if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json' 
+            print ""
+            print "   Modifier le fichier parameters_Runtime.json:"
+            print ""
+            print '      "GlobalPathToWWWFolder":"[CheminWWW]"'
+            print '      "GlobalPathToAPPFolder":"[CheminAPP]"'
+            print '      "ObservationPlaceName":"[nomDuLieu]"'
+            print '      "NightlyBatchEmailAddress":"email@domain.com" (email destinataire de la notification par mail)'
+            print '      "NightlyBatchEmailSMTPServer":"server.domain.com" (nom du serveur SMTP, ex: smtp.gmail.com)'
+            print '      "NightlyBatchEmailSMTPUser":"username" (username du compte envoyant le mail)'
+            print '      "NightlyBatchEmailSMTPPassword":"password" (password du compte envoyant le mail)'
+            print '      "NightlyBatchEmailFromAddress":"AstroNotifemail@domain.com" (email d''origine de la notification par mail)'
+            print '      "NightlyBatchDomain":"IP or URL" (Addresse IP ou url du domaine hebergeant l''application)'
+            print ""
     if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json'):
         if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json'):
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json' 
+            print ""
     if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json'):
         if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json'):
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json' 
+            print ""
+            print "   Modifier le fichier parameters_Places.json:"
+            print ""
+            print '      renseigner les longitude et latitude pour les lieux déclarés:'
+            print '         "Longitude":0.000000000'
+            print '         "Latitude":0.000000000'
+            print '      renommer les lieux comme il convient, notamment celui qui sera utilisé pour le calcul [nomDuLieu].'
+            print ""
     if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json'):
         if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json'):
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json' 
+            print ""
     if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json'):
         if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json'):
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json' 
+            print ""
     if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json'):
         if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json'):
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json' 
+            print ""
     print ""
     
     # Update des fichiers JSON si existants et Affichage des changement
@@ -158,7 +185,7 @@ if bIsBackupOk:
         print ""
         print "       Inserer (ou modifier la ligne si deja existant) la ligne suivante:"
         print ""
-        print "          0 4  * * " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + "cronjob_NightlyBatch.sh"
+        print "          0 4  * * * " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + "cronjob_NightlyBatch.sh"
         print ""
         print "       Sauvegarder par CTRL-O"
         print ""
