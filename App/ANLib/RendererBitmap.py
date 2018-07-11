@@ -18,7 +18,7 @@ class RendererBitmap(toolObjectSerializable):
     iLeftLabelWidthInPx = 100
     iHourSlotWidthInPx = 16
     iAltitudeRowHeight = 3
-    sFontDefaultName = "Resources/Fonts/arial.ttf"
+    #sFontDefaultName = "arial.ttf"
     iFontDefaultSize = 16
     iTableMarginLeft = 0
     iTableWidthObjectLabel = 300
@@ -84,6 +84,7 @@ class RendererBitmap(toolObjectSerializable):
         # Default values
         iStyleFontSize = self._oParametersRendering.getStyles('DefaultFontSize')
         sFontDirectory = self._oParametersRendering.getStyles('DefaultFontDirectory')
+        if sFontDirectory == "": sFontDirectory = Tools.get_ResourceSubfolder_path("Fonts")
         sFont = sFontDirectory + self._oParametersRendering.getStyles('DefaultFont')
         tStyleFontColor = self._oParametersRendering.getStyles('DefaultFontColor')
         tStyleBackColor = self._oParametersRendering.getStyles('DefaultBackColor')
