@@ -49,4 +49,4 @@ if len(theParameters.getNightlyBatchEmailAddress()) > 0:
 
     # Send email
     print "Envoi du mail<br>"
-    ANLib.Tools.sendEmailHTML(theParameters.getNightlyBatchEmailFromAdress(), sTo, sSubject, sHTMLContent, theParameters.getNightlyBatchEmailSMTPServer() )
+    ANLib.Tools.sendEmailHTML(theParameters.getNightlyBatchEmailFromAddress(), sTo, sSubject, sHTMLContent, theParameters.getNightlyBatchEmailSMTPServer() )
