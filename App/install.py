@@ -158,7 +158,7 @@ if bIsBackupOk:
         print ""
         print "       Inserer (ou modifier la ligne si deja existant) la ligne suivante:"
         print ""
-        print "          0 4  * * * " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + "cronjob_NightlyBatch.sh"
+        print "          0 4  * * " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + "cronjob_NightlyBatch.sh"
         print ""
         print "       Sauvegarder par CTRL-O"
         print ""
