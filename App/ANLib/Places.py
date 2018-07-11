@@ -20,8 +20,9 @@ class Places(toolObjectSerializable):
     def __loadFromFile(self):
         with open('parameters_Places.json', 'r') as f:
              data = json.load(f)
-        for x in range(0,  len(data)):
-            newPlace = Place(data[x]["Name"], data[x]["Longitude"], data[x]["Latitude"])
+        for iId in range (0, len(data)):
+            sPlaceKey = list(data.keys())[iId]
+            newPlace = Place(data[sPlaceKey]["Name"], data[sPlaceKey]["Longitude"], data[sPlaceKey]["Latitude"])
             self._dictPlaces[newPlace.getName()] = newPlace
-            newPlace.initObstructedSkyAreas(data[x]["ObstructedSkyAreas"])
+            newPlace.initObstructedSkyAreas(data[sPlaceKey]["ObstructedSkyAreas"])
         self._iCount = len(self._dictPlaces)
