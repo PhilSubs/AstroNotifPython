@@ -52,8 +52,8 @@ def updateParameterFile(sJsonDefaultFilename):
         print ""
         if bChangeDone:
             try:
-    #        with open(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonFilename, "w") as fParametersFile:
-    #            json.dump(dataParametersRuntime, fParametersFile)
+                with open(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonFilename, "w") as fParametersFile:
+                    json.dump(dataParametersRuntime, fParametersFile)
                 bResult = True
                 print "             --> fichier  " + sJsonFilename + "   modifie."
             except:
