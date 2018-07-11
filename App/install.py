@@ -90,21 +90,23 @@ def updateParameterFile(sJsonDefaultFilename):
     return bResult
     
 print ""
+print ""
+print ""
 print "Installation ASTRONOTIF python"
 print "=============================="
 print ""
+print ""
 
-# Check parameters_runtime files
-# load parameters file
-with open('parameters_Runtime.json', 'r') as fParametersRuntime:
-    dataParametersRuntime = json.load(fParametersRuntime)
+# Récupération des versions
+sUpgradeFromVersion = ""
+if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
+    with open('parameters_Runtime.json', 'r') as fParametersRuntime:
+        dataParametersRuntime = json.load(fParametersRuntime)
+    sUpgradeFromVersion = dataParametersRuntime['currentVersion']
 # load parameters file default
 with open('parameters_Runtime.default.json', 'r') as fParametersRuntimeDefault:
     dataParametersRuntimeDefault = json.load(fParametersRuntimeDefault)
-
-# Récupération des versions
 sNewVersion = dataParametersRuntimeDefault['currentVersion']
-sUpgradeFromVersion = dataParametersRuntime['currentVersion']
 
 # Afficher du message de changement de version
 if sUpgradeFromVersion == "":
@@ -114,32 +116,42 @@ else:
 print ""
 
 # copy de backup des fichiers existants (suffixe: version précédente)
-print ""
-print "   BACKUP PARAMETERS FILES"
-print ""
-bIsBackupOk = True
-sBackupSuffix = '.back-' + sUpgradeFromVersion
-if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
-    bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_Runtime.json', sBackupSuffix)
-if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json'):
-    bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_Rendering.json', sBackupSuffix)
-if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json'):
-    bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_Places.json', sBackupSuffix)
-if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json'):
-    bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_LunarFeatures.json', sBackupSuffix)
-if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json'):
-    bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_Localization.json', sBackupSuffix)
-if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json'):
-    bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_SkyObjects.json', sBackupSuffix)
+if sUpgradeFromVersion != "":
+    print ""
+    print "   BACKUP DES FICHIERS DE PARAMETRES"
+    print ""
+    bIsBackupOk = True
+    sBackupSuffix = '.back-' + sUpgradeFromVersion
+    if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
+        bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_Runtime.json', sBackupSuffix)
+    if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json'):
+        bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_Rendering.json', sBackupSuffix)
+    if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json'):
+        bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_Places.json', sBackupSuffix)
+    if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json'):
+        bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_LunarFeatures.json', sBackupSuffix)
+    if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json'):
+        bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_Localization.json', sBackupSuffix)
+    if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json'):
+        bIsBackupOk = bIsBackupOk and ANLib.Tools.backupFile(ANLib.Tools.get_script_path(), 'parameters_SkyObjects.json', sBackupSuffix)
 
-if bIsBackupOk:
-    print ""
-    print "    --> Backup is successful"
-    print ""
-    
+    if bIsBackupOk:
+        print ""
+        print "    --> Backup termine."
+        print ""
+        bContinue = True
+    else:
+        print ""
+        print "   >>> ERREUR pendant lle backup. Installation interrompue."
+        print ""    
+        bContinue = False
+
+if bContinue:
+        
     # si les fichiers de paramètres n'existent pas, il sont créés
-    if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
-        if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
+    if bContinue and not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
+        bContinue = ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json')
+        if bContinue:
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json' 
             print ""
             print "   Modifier le fichier parameters_Runtime.json:"
@@ -154,12 +166,24 @@ if bIsBackupOk:
             print '      "NightlyBatchEmailFromAddress":"AstroNotifemail@domain.com" (email d''origine de la notification par mail)'
             print '      "NightlyBatchDomain":"IP or URL" (Addresse IP ou url du domaine hebergeant l''application)'
             print ""
-    if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json'):
-        if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json'):
+        else:
+            print ""
+            print "   >>> ERREUR pendant la creation du fichier. Installation interrompue."
+            print ""    
+            bContinue = False
+    if bContinue and not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json'):
+        bContinue = ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json')
+        if bContinue:
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Rendering.json' 
             print ""
-    if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json'):
-        if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json'):
+        else:
+            print ""
+            print "   >>> ERREUR pendant la creation du fichier. Installation interrompue."
+            print ""    
+            bContinue = False
+    if bContinue and not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json'):
+        bContinue = ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json')
+        if bContinue:
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Places.json' 
             print ""
             print "   Modifier le fichier parameters_Places.json:"
@@ -169,31 +193,81 @@ if bIsBackupOk:
             print '         "Latitude":0.000000000'
             print '      renommer les lieux comme il convient, notamment celui qui sera utilisé pour le calcul [nomDuLieu].'
             print ""
-    if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json'):
-        if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json'):
+        else:
+            print ""
+            print "   >>> ERREUR pendant la creation du fichier. Installation interrompue."
+            print ""    
+            bContinue = False
+    if bContinue and not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json'):
+        bContinue = ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json')
+        if bContinue:
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_LunarFeatures.json' 
             print ""
-    if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json'):
-        if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json'):
+        else:
+            print ""
+            print "   >>> ERREUR pendant la creation du fichier. Installation interrompue."
+            print ""    
+            bContinue = False
+    if bContinue and not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json'):
+        bContinue = ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json')
+        if bContinue:
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Localization.json' 
             print ""
-    if not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json'):
-        if ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json'):
+        else:
+            print ""
+            print "   >>> ERREUR pendant la creation du fichier. Installation interrompue."
+            print ""    
+            bContinue = False
+    if bContinue and not os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json'):
+        bContinue = ANLib.Tools.copyFile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.default.json', ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json')
+        if bContinue:
             print "Creation du fichier  " + ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_SkyObjects.json' 
             print ""
+        else:
+            print ""
+            print "   >>> ERREUR pendant la creation du fichier. Installation interrompue."
+            print ""    
+            bContinue = False
     print ""
+
+if bContinue:
+     # Update des fichiers JSON si existants et Affichage des changement
+    print ""
+    print "   MISE A JOUR DES FICHIERS DE PARAMETRES"
+    print ""
+    if not updateParameterFile( 'parameters_Runtime.default.json'):
+        print ""
+        print "   >>> ERREUR pendant la mise a jour du fichier parameters_Runtime.default.json. Installation interrompue."
+        print ""    
+        bContinue = False
+    elif not updateParameterFile( 'parameters_Rendering.default.json'):
+        print ""
+        print "   >>> ERREUR pendant la mise a jour du fichier parameters_Rendering.default.json. Installation interrompue."
+        print ""    
+        bContinue = False
+    elif not updateParameterFile( 'parameters_LunarFeatures.default.json'):
+        print ""
+        print "   >>> ERREUR pendant la mise a jour du fichier parameters_LunarFeatures.default.json. Installation interrompue."
+        print ""    
+        bContinue = False
+    elif not updateParameterFile( 'parameters_SkyObjects.default.json'):
+        print ""
+        print "   >>> ERREUR pendant la mise a jour du fichier parameters_SkyObjects.default.json. Installation interrompue."
+        print ""    
+        bContinue = False
+    elif not updateParameterFile( 'parameters_Localization.default.json'):
+        print ""
+        print "   >>> ERREUR pendant la mise a jour du fichier parameters_Localization.default.json. Installation interrompue."
+        print ""    
+        bContinue = False
+    elif not updateParameterFile( 'parameters_Places.default.json'):
+        print ""
+        print "   >>> ERREUR pendant la mise a jour du fichier parameters_Places.default.json. Installation interrompue."
+        print ""    
+        bContinue = False
     
-    # Update des fichiers JSON si existants et Affichage des changement
-    print ""
-    print "   UPDATE PARAMETERS FILES"
-    print ""
-    bIsReplaceOk = updateParameterFile( 'parameters_Runtime.default.json')
-    if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_Rendering.default.json')
-    if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_LunarFeatures.default.json')
-    if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_SkyObjects.default.json')
-    if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_Localization.default.json')
-    if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_Places.default.json')
-    
+
+if bContinue:
     # Affichage des instruction pour le crontab
     if ANLib.Tools.get_path_separator() == "/":
         print ""
@@ -217,7 +291,4 @@ if bIsBackupOk:
         print ""
         
 
-else:
-    print ""
-    print "   >>> ERROR during backup. Process aborted"
-    print ""
+
