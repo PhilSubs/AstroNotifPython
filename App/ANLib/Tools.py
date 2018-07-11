@@ -5,6 +5,7 @@ import string
 import os
 import os.path
 import sys
+import shutil
 
 # Import PIL or PILLOW libraries for bitmaps
 from PIL import Image, ImageDraw
@@ -17,6 +18,34 @@ from email.mime.text import MIMEText
 
 class Tools:
     @staticmethod
+    def copyFile(sFilenameOrig, sFilenameDest):
+        """ backup a file in the same directory"""
+        print "           > copy file " + sFilenameOrig + " to " + sFilenameDest
+        try:
+            shutil.copy2(sFilenameOrig, sFilenameDest)
+            bResult = True
+        except:
+            bResult = False
+        return bResult
+        
+    @staticmethod
+    def backupFile(sPath, sFilename, sSuffixBackup):
+        """ backup a file in the same directory"""
+        sOrigFile = sPath + Tools.get_path_separator() + sFilename
+        sDestFile = sPath + Tools.get_path_separator() + sFilename + sSuffixBackup
+        return Tools.copyFile(sOrigFile, sDestFile)
+
+    @staticmethod
+    def get_path_separator():
+        """ Return the path separator"""
+        sScriptPath = Tools.get_script_path()
+        if sScriptPath[0:1] == "/":
+            sSeparator = "/"
+        else:
+            sSeparator = "\\"
+        return sSeparator
+
+    @staticmethod
     def get_script_path():
         """ Return the script path"""
         return os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -25,10 +54,8 @@ class Tools:
     def get_ResourceSubfolder_path(sSubfolder):
         """ Return the script path"""
         sScriptPath = Tools.get_script_path()
-        if sScriptPath[0:1] == "/":
-            sFontPath = sScriptPath + "/Resources/" + sSubfolder + "/"
-        else:
-            sFontPath = sScriptPath + "\\Resources\\" + sSubfolder + "\\"
+        sSeparator = Tools.get_path_separator()
+        sFontPath = sScriptPath + sSeparator + "Resources" + sSeparator + sSubfolder + sSeparator
         return sFontPath
 
     @staticmethod
