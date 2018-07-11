@@ -26,8 +26,9 @@ class SkyObjects(toolObjectSerializable):
             raise NameError('Error in getSkyObjectByIndex: ' + str(x) + ' value reached while searching index ' + str(iIndex) + '/' + str(len(self._dicSkyObjects)) + '.')
     def __initSkyObjects(self, dataSkyObjects):
         # init Sky Objects array of SkyObject objects
-        for x in range(0,  len(dataSkyObjects)):
-            newSkyObject = SkyObject(x, dataSkyObjects[x]["Category"], dataSkyObjects[x]["ID"], dataSkyObjects[x]["Type"], dataSkyObjects[x]["Name"], dataSkyObjects[x]["RA"], dataSkyObjects[x]["Dec"], dataSkyObjects[x]["PictureName"], dataSkyObjects[x]["Comment1"], dataSkyObjects[x]["Comment2"], dataSkyObjects[x]["Distance"], dataSkyObjects[x]["DistanceUnit"], dataSkyObjects[x]["DimensionX"], dataSkyObjects[x]["DimensionXUnit"], dataSkyObjects[x]["DimensionY"], dataSkyObjects[x]["DimensionYUnit"], dataSkyObjects[x]["ApparentMagnitude"], dataSkyObjects[x]["IsFavourite"] )
-            self._dicSkyObjects[dataSkyObjects[x]["ID"]] = newSkyObject
-            if dataSkyObjects[x]["Category"] == "DeepSky": self._iCountDeepSky = self._iCountDeepSky + 1
+        for iId in range (0, len(dataSkyObjects)):
+            sObjectKey = list(dataSkyObjects.keys())[iId]
+            newSkyObject = SkyObject(iId, dataSkyObjects[sObjectKey]["Category"], dataSkyObjects[sObjectKey]["ID"], dataSkyObjects[sObjectKey]["Type"], dataSkyObjects[sObjectKey]["Name"], dataSkyObjects[sObjectKey]["RA"], dataSkyObjects[sObjectKey]["Dec"], dataSkyObjects[sObjectKey]["PictureName"], dataSkyObjects[sObjectKey]["Comment1"], dataSkyObjects[sObjectKey]["Comment2"], dataSkyObjects[sObjectKey]["Distance"], dataSkyObjects[sObjectKey]["DistanceUnit"], dataSkyObjects[sObjectKey]["DimensionX"], dataSkyObjects[sObjectKey]["DimensionXUnit"], dataSkyObjects[sObjectKey]["DimensionY"], dataSkyObjects[sObjectKey]["DimensionYUnit"], dataSkyObjects[sObjectKey]["ApparentMagnitude"], dataSkyObjects[sObjectKey]["IsFavourite"] )
+            self._dicSkyObjects[dataSkyObjects[sObjectKey]["ID"]] = newSkyObject
+            if dataSkyObjects[sObjectKey]["Category"] == "DeepSky": self._iCountDeepSky = self._iCountDeepSky + 1
             
