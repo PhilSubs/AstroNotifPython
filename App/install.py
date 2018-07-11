@@ -17,25 +17,48 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault):
         if sKeyLabel == "currentVersion" and sJsonFilename == "parameters_Runtime.json":
             dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
             bChangeDone = True
-            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + dictData[sKeyLabel]
+            sFormattedNewValue = dictData[sKeyLabel]
+            if type(sFormattedNewValue) is unicode:
+                sFormattedNewValue.encode("iso-8859-1" )
+            elif not(type(sFormattedNewValue) is str): 
+                sFormattedNewValue = str(sFormattedNewValue)
+            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + sFormattedNewValue
         elif sKeyLabel == "GlobalPathToAPPFolder" and sJsonFilename == "parameters_Runtime.json":
             dictData[sKeyLabel] = ANLib.Tools.get_script_path()
             bChangeDone = True
-            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + dictData[sKeyLabel]
+            sFormattedNewValue = dictData[sKeyLabel]
+            if type(sFormattedNewValue) is unicode:
+                sFormattedNewValue.encode("iso-8859-1" )
+            elif not(type(sFormattedNewValue) is str): 
+                sFormattedNewValue = str(sFormattedNewValue)
+            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + sFormattedNewValue
         else:
             if sKeyLabel in dictData:
-                if type(dictData[sKeyLabel]) is dict:
+                if type(dictDataDefault[sKeyLabel]) is dict:
                     bSubChangeDone, dictData[sKeyLabel] = updateDictValues(sJsonFilename, sLevel + sKeyLabel + ".", dictData[sKeyLabel], dictDataDefault[sKeyLabel])
                     if bSubChangeDone: bChangeDone = True
                 else:
-                    sCuurentValue = dictData[sKeyLabel]
+                    sCurrentValue = dictData[sKeyLabel]
+                    if type(sCurrentValue) is unicode:
+                        sCurrentValue.encode("iso-8859-1" )
+                    elif not(type(sCurrentValue) is str): 
+                        sCurrentValue = str(sCurrentValue)
                     sDefaultValue = dictDataDefault[sKeyLabel]
-                    if sCuurentValue != sDefaultValue:
-                        print "      " + sFormattedFilename + ":  #  " + sFormattedKeyLabel + "          " + sCuurentValue + "    <-->    " +  sDefaultValue
+                    if type(sDefaultValue) is unicode:
+                        sCurrentValue.encode("iso-8859-1" )
+                    elif not(type(sDefaultValue) is str): 
+                        sDefaultValue = str(sDefaultValue)
+                    if dictData[sKeyLabel] != dictDataDefault[sKeyLabel]:
+                        print "      " + sFormattedFilename + ":  #  " + sFormattedKeyLabel + "          " + sCurrentValue + "    <-->    " +  sDefaultValue
             else:
                 dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
                 bChangeDone = True
-                print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + dictDataDefault[sKeyLabel]
+                sFormattedNewValue = dictDataDefault[sKeyLabel]
+                if type(sFormattedNewValue) is unicode:
+                    sFormattedNewValue.encode("iso-8859-1" )
+                elif not(type(sFormattedNewValue) is str): 
+                    sFormattedNewValue = str(sFormattedNewValue)
+                print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + sFormattedNewValue
     return bChangeDone, dictData
 
 def updateParameterFile(sJsonDefaultFilename):
@@ -169,6 +192,7 @@ if bIsBackupOk:
     if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_LunarFeatures.default.json')
     if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_SkyObjects.default.json')
     if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_Localization.default.json')
+    if bIsReplaceOk: bIsReplaceOk = updateParameterFile( 'parameters_Places.default.json')
     
     # Affichage des instruction pour le crontab
     if ANLib.Tools.get_path_separator() == "/":
