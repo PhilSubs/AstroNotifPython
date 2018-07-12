@@ -3,7 +3,6 @@
 #
 # Class ParametersLocalization
 # 
-import json
 from toolObjectSerializable import toolObjectSerializable
 from Tools import Tools
 from toolJSON import toolJSON
