@@ -2,10 +2,10 @@
 # -*-coding:Latin-1 -*
 
 # Import libs for ephemerides
-import json
 from datetime import datetime, timedelta
 import ANLib
-import os.path
+irom toolJSON import toolJSON
+fmport os.path
 
     
 def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault, bForceUpdate = False):
@@ -75,18 +75,15 @@ def updateParameterFile(sJsonDefaultFilename, bForceUpdate = False):
     sJsonFilename = sJsonDefaultFilename.replace(".default.json",".json")
     print "      Fichier  " + sJsonFilename
     if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonFilename):
-        with open(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonFilename, 'r') as fParametersFile:
-            dataParametersRuntime = json.load(fParametersFile)
-        with open(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonDefaultFilename, 'r') as fParametersDefaultFile:
-            dataParametersRuntimeDefault = json.load(fParametersDefaultFile)
+        dataParametersRuntime = toolJSON.getContent(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonFilename)
+        dataParametersRuntimeDefault = toolJSON.getContent(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonDefaultFilename)
         # update parameters
         bChangeDone, dataParametersRuntime = updateDictValues(sJsonFilename, "", dataParametersRuntime, dataParametersRuntimeDefault, bForceUpdate)
         # write JSON file
         print ""
         if bChangeDone:
             try:
-                with open(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonFilename, "w") as fParametersFile:
-                    json.dump(dataParametersRuntime, fParametersFile)
+                toolJSON.saveContent(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonFilename, dataParametersRuntime)
                 bResult = True
                 print "             --> fichier  " + sJsonFilename + "   modifie."
             except:
@@ -112,12 +109,10 @@ bContinue = True
 # Récupération des versions
 sUpgradeFromVersion = ""
 if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
-    with open('parameters_Runtime.json', 'r') as fParametersRuntime:
-        dataParametersRuntime = json.load(fParametersRuntime)
+    dataParametersRuntime = toolJSON.getContent('parameters_Runtime.json')
     sUpgradeFromVersion = dataParametersRuntime['currentVersion']
 # load parameters file default
-with open('parameters_Runtime.default.json', 'r') as fParametersRuntimeDefault:
-    dataParametersRuntimeDefault = json.load(fParametersRuntimeDefault)
+dataParametersRuntimeDefault = toolJSON.getContent('parameters_Runtime.default.json')
 sNewVersion = dataParametersRuntimeDefault['currentVersion']
 
 # Afficher du message de changement de version
