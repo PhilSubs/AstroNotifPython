@@ -834,21 +834,27 @@ class RendererBitmap(toolObjectSerializable):
         sHTML = self.getHTMLHeaderComment(oCalendar) + "\n"
         sHTML += '<HTML>' + "\n"
         sHTML += '	<HEAD>' + "\n"
-        sHTML += '		<title>'+ self._oParametersLocalization.getLabel("HTMLPageTitle") + '</title>' + "\n"
-        sHTML += '		<link rel="icon" href="http://' + self._oParameters.getNightlyBatchDomain() + '/favicon.png">' 
-        sHTML += '		<base href="">' + "\n"
-        sHTML += '		<link rel="stylesheet" href="AstroNotif.css">' + "\n"
+        sHTML += '      <title>'+ self._oParametersLocalization.getLabel("HTMLPageTitle") + '</title>' + "\n"
+        sHTML += '      <link rel="icon" href="http://' + self._oParameters.getNightlyBatchDomain() + '/favicon.png">' 
+        sHTML += '      <base href="">' + "\n"
+        sHTML += '      <link rel="stylesheet" href="AstroNotif.css">' + "\n"
+        sHTML += '      <meta charset="UTF-8">' + "\n"
         sHTML += '	</head>' + "\n"
         sHTML += '<BODY>' + "\n"
 
         iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = self.getEphemeridesBitmapForPeriod(oCalendar, oEphemeridesData)
         
-        sHTML += '    <H1 class="PageHeader">&nbsp;&nbsp;<A href="http://' + self._oParameters.getNightlyBatchDomain() + '" target="_blank">'+ self._oParametersLocalization.getLabel("EphemerisFor") + ' <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,self._oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:20px">' + self._oParametersLocalization.getLabel("Place") + ': ' + self._oParameters.getPlace().getName() + ' </SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN style="font-size:10px">' + self._oParametersLocalization.getLabel("CalculusFor") + ' ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' ' + self._oParametersLocalization.getLabel("By") + ' AstroNotifPython ' + self._oParameters.getGlobalCurrentVersion() + '</SPAN></H1>' + "\n"
-        sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' + self._oParametersLocalization.getLabel("EphemerisFor") + " " + oCalendar.getFormattedDateForSlot(0,self._oParameters.getDisplayNumberOfMinutesPerSlot()) + '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
+        sHTML += '    <H1 class="PageHeader">&nbsp;&nbsp;'
+        sHTML += '<A href="http://' + self._oParameters.getNightlyBatchDomain() + '" target="_blank">' + self._oParametersLocalization.getLabel("EphemerisFor") + ' <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,self._oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>'
+        sHTML += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+        sHTML += '<SPAN style="font-size:20px">' + self._oParametersLocalization.getLabel("Place") + ': ' + self._oParameters.getPlace().getName() + ' </SPAN>'
+        sHTML += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+        sHTML += '<SPAN style="font-size:10px">' + self._oParametersLocalization.getLabel("CalculusFor") + ' ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' ' + self._oParametersLocalization.getLabel("By") + ' AstroNotifPython ' + self._oParameters.getGlobalCurrentVersion() + '</SPAN>'
+        sHTML += '</H1>' + "\n"
+        sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' +  self._oParametersLocalization.getLabel("EphemerisFor") + " " + oCalendar.getFormattedDateForSlot(0,self._oParameters.getDisplayNumberOfMinutesPerSlot()) +  '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
         sHTML += '    </BODY>' + "\n"
         sHTML += '</HTML>' + "\n"
-
-        return str(sHTML.encode("iso-8859-1" )), iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable
+        return sHTML, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable
 
     def getHTMLHeaderComment(self, oCalendar):
         return ('<!-- Parameters... Date:'  + oCalendar.getDate() + '  - Place:'  + self._oParameters.getPlace().getName() + ' - Longitude:'  + str(self._oParameters.getPlace().getLongitude()) + ' - Latitude:'  + str(self._oParameters.getPlace().getLatitude()) + '  -->'  )
