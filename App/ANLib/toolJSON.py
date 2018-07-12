@@ -18,7 +18,7 @@ class toolJSON(toolObjectSerializable):
             for value in obj:
                 newobj.append(toolJSON._parseJSON(value))
         elif isinstance(obj, unicode):
-            newobj = str(obj).encode("iso-8859-1" )
+            newobj = str(obj.encode("iso-8859-1" ))
         else:
             newobj = obj
         return newobj
