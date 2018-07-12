@@ -3,9 +3,9 @@
 #
 # Class ParametersRendering
 # 
-import json
 from toolObjectSerializable import toolObjectSerializable
 from Tools import Tools
+from toolJSON import toolJSON
 #from toolTrace import toolTrace
 
 
@@ -33,8 +33,7 @@ class ParametersRendering(toolObjectSerializable):
     
     def __loadFromFile(self):
         # load parameters file
-        with open('parameters_Rendering.json', 'r') as f:
-             data = json.load(f)
+        data = toolJSON.getContent('parameters_Rendering.json')
         # init properties
         self._tcolorVisibilityFlags['NotObservable'] = eval(data["colorVisibilityFlagsNotObservable"])
         self._tcolorVisibilityFlags['AtLEastOneDayObservable'] = eval(data["colorVisibilityFlagsAtLEastOneDayObservable"])
