@@ -6,6 +6,7 @@ import os
 import os.path
 import sys
 import shutil
+import io
 
 # Import PIL or PILLOW libraries for bitmaps
 from PIL import Image, ImageDraw
@@ -163,6 +164,12 @@ class Tools:
             print "sent..."
         finally:
             theSender.quit()
+
+    @staticmethod
+    def saveAsFileEncoded(sFileName, sContent ):
+        encoding = 'utf-8'
+        with io.open(sFileName, 'w', encoding=encoding) as theFile:
+            theFile.write(sContent)
 
     @staticmethod
     def saveAsFile(sFileName, sContent ):
