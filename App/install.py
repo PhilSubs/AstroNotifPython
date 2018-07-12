@@ -8,7 +8,7 @@ import ANLib
 import os.path
 
     
-def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault):
+def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault, bForceUpdate = False):
     bChangeDone = False
     sFormattedFilename = ("                          " + sJsonFilename)[-30:]
     for iId in range (0, len(dictDataDefault)):
@@ -35,7 +35,7 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault):
         else:
             if sKeyLabel in dictData:
                 if type(dictDataDefault[sKeyLabel]) is dict:
-                    bSubChangeDone, dictData[sKeyLabel] = updateDictValues(sJsonFilename, sLevel + sKeyLabel + ".", dictData[sKeyLabel], dictDataDefault[sKeyLabel])
+                    bSubChangeDone, dictData[sKeyLabel] = updateDictValues(sJsonFilename, sLevel + sKeyLabel + ".", dictData[sKeyLabel], dictDataDefault[sKeyLabel], bForceUpdate)
                     if bSubChangeDone: bChangeDone = True
                 else:
                     sCurrentValue = dictData[sKeyLabel]
@@ -49,7 +49,17 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault):
                     elif not(type(sDefaultValue) is str): 
                         sDefaultValue = str(sDefaultValue)
                     if dictData[sKeyLabel] != dictDataDefault[sKeyLabel]:
-                        print "      " + sFormattedFilename + ":  #  " + sFormattedKeyLabel + "          " + sCurrentValue + "    <-->    " +  sDefaultValue
+                        if bForceUpdate:
+                            dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
+                            bChangeDone = True
+                            sFormattedNewValue = dictDataDefault[sKeyLabel]
+                            if type(sFormattedNewValue) is unicode:
+                                sFormattedNewValue.encode("iso-8859-1" )
+                            elif not(type(sFormattedNewValue) is str): 
+                                sFormattedNewValue = str(sFormattedNewValue)
+                            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + sFormattedNewValue
+                        else:
+                            print "      " + sFormattedFilename + ":  #  " + sFormattedKeyLabel + "          " + sCurrentValue + "    <-->    " +  sDefaultValue
             else:
                 dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
                 bChangeDone = True
@@ -61,7 +71,7 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault):
                 print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + sFormattedNewValue
     return bChangeDone, dictData
 
-def updateParameterFile(sJsonDefaultFilename):
+def updateParameterFile(sJsonDefaultFilename, bForceUpdate = False):
     sJsonFilename = sJsonDefaultFilename.replace(".default.json",".json")
     print "      Fichier  " + sJsonFilename
     if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonFilename):
@@ -70,7 +80,7 @@ def updateParameterFile(sJsonDefaultFilename):
         with open(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + sJsonDefaultFilename, 'r') as fParametersDefaultFile:
             dataParametersRuntimeDefault = json.load(fParametersDefaultFile)
         # update parameters
-        bChangeDone, dataParametersRuntime = updateDictValues(sJsonFilename, "", dataParametersRuntime, dataParametersRuntimeDefault)
+        bChangeDone, dataParametersRuntime = updateDictValues(sJsonFilename, "", dataParametersRuntime, dataParametersRuntimeDefault, bForceUpdate)
         # write JSON file
         print ""
         if bChangeDone:
@@ -251,32 +261,32 @@ if bContinue:
     print ""
     print "   MISE A JOUR DES FICHIERS DE PARAMETRES"
     print ""
-    if not updateParameterFile( 'parameters_Runtime.default.json'):
+    if not updateParameterFile( 'parameters_Runtime.default.json', False):
         print ""
         print "         >>> ERREUR pendant la mise a jour du fichier parameters_Runtime.default.json. Installation interrompue."
         print ""    
         bContinue = False
-    elif not updateParameterFile( 'parameters_Rendering.default.json'):
+    elif not updateParameterFile( 'parameters_Rendering.default.json', True):
         print ""
         print "         >>> ERREUR pendant la mise a jour du fichier parameters_Rendering.default.json. Installation interrompue."
         print ""    
         bContinue = False
-    elif not updateParameterFile( 'parameters_LunarFeatures.default.json'):
+    elif not updateParameterFile( 'parameters_LunarFeatures.default.json', True):
         print ""
         print "         >>> ERREUR pendant la mise a jour du fichier parameters_LunarFeatures.default.json. Installation interrompue."
         print ""    
         bContinue = False
-    elif not updateParameterFile( 'parameters_SkyObjects.default.json'):
+    elif not updateParameterFile( 'parameters_SkyObjects.default.json', True):
         print ""
         print "         >>> ERREUR pendant la mise a jour du fichier parameters_SkyObjects.default.json. Installation interrompue."
         print ""    
         bContinue = False
-    elif not updateParameterFile( 'parameters_Localization.default.json'):
+    elif not updateParameterFile( 'parameters_Localization.default.json', True):
         print ""
         print "         >>> ERREUR pendant la mise a jour du fichier parameters_Localization.default.json. Installation interrompue."
         print ""    
         bContinue = False
-    elif not updateParameterFile( 'parameters_Places.default.json'):
+    elif not updateParameterFile( 'parameters_Places.default.json', False):
         print ""
         print "         >>> ERREUR pendant la mise a jour du fichier parameters_Places.default.json. Installation interrompue."
         print ""    
