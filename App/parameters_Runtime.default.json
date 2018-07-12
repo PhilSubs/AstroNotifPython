@@ -1,9 +1,9 @@
 {
     "Global":"Global parameters",
         "currentVersion":"v1.8.1",
-        "GlobalPathToWWWFolder":"/var/www/html",
+        "GlobalPathToWWWFolder":"",
         "GlobalPathToWWWFolder_comment":"Absolute path to WWW folder containing files served by web server",
-        "GlobalPathToAPPFolder":"/usr/bin/AstroNotif",
+        "GlobalPathToAPPFolder":"",
         "GlobalPathToAPPFolder_comment":"Absolute path to AstroNotif application folder containing python files",
     
     "NightlyBatch":"Parameters for nightly batch",
