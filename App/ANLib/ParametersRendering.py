@@ -72,7 +72,7 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorLunarFeatureVisibility['MoonImpossible'] = eval(data["colorLunarFeatureVisibilityMoonImpossible"])
         self._tStyles['DefaultFontSize'] = data["styleDefaultFontSize"]
         self._tStyles['DefaultFontDirectory'] = data["styleDefaultFontDirectory"]
-        self._tStyles['DefaultFont'] = Tools.get_ResourceSubfolder_path("Fonts") + data["styleDefaultFont"]
+        self._tStyles['DefaultFont'] = data["styleDefaultFont"]
         self._tStyles['DefaultFontColor'] = eval(data["styleDefaultFontColor"])
         self._tStyles['DefaultBackColor'] = eval(data["styleDefaultBackColor"])
         self._tStyles['DefaultTopMargin'] = data["styleDefaultTopMargin"]
@@ -107,4 +107,4 @@ class ParametersRendering(toolObjectSerializable):
         self._tStyles['SectionTitleH2PaddingTopBottom'] = data["styleSectionTitleH2PaddingTopBottom"]
         self._tStyles['LunarFeatureNameFontSize'] = data["styleLunarFeatureNameFontSize"]
         self._tStyles['LunarFeatureDataFontSize'] = data["styleLunarFeatureDataFontSize"]
-        self._tStyles['LunarFeatureDataFont'] = Tools.get_ResourceSubfolder_path("Fonts") + data["styleLunarFeatureDataFont"]
+        self._tStyles['LunarFeatureDataFont'] = data["styleLunarFeatureDataFont"]
