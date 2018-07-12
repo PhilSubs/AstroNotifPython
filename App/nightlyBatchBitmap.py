@@ -26,7 +26,7 @@ theRendererBitmap = ANLib.RendererBitmap( theParameters, theParameters.getGlobal
 sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
 
 # Save as default html file
-ANLib.Tools.saveAsFile(theParameters.getGlobalPathToWWWFolder() + '/' + theParameters.getNightlyBatchHTMLFilname(), sHTMLContent)
+ANLib.Tools.saveAsFileEncoded(theParameters.getGlobalPathToWWWFolder() + '/' + theParameters.getNightlyBatchHTMLFilname(), sHTMLContent)
 print "La page HTML et le bitmap sont generes dans " + theParameters.getGlobalPathToWWWFolder() + '/<br>'
 
 # Prepare email for daily notification
