@@ -15,6 +15,8 @@ from PIL import Image, ImageDraw
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.MIMEImage import MIMEImage
+
 
 
 class Tools:
@@ -132,7 +134,7 @@ class Tools:
 
 
     @staticmethod
-    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sSMTPServer, sUser, sPassword):
+    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sBitmapFilename, sSMTPServer, sUser, sPassword):
         # Create message container - the correct MIME type is multipart/alternative.
         theMsg = MIMEMultipart('alternative')
         theMsg['Subject'] = sSubject
@@ -146,6 +148,8 @@ class Tools:
         # According to RFC 2046, the last part of a multipart message, in this case
         # the HTML message, is best and preferred.
         theMsg.attach(theMIMEpart)
+	if sBitmapFilename !="": theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
+
 
         # Send the message via local SMTP server.
         print "smtp..."
