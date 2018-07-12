@@ -27,8 +27,9 @@ class toolJSON(toolObjectSerializable):
     def getContent(sFilename):
         # load parameters file
         with open(sFilename, 'r') as fJSONFile:
-            dictData = json.load(fJSONFile, parse_float=float, parse_int=int)
-            dictData  = toolJSON._parseJSON(dictData)
+            dictData = json.load(fJSONFile)
+#            dictData = json.load(fJSONFile, parse_float=float, parse_int=int)
+#            dictData  = toolJSON._parseJSON(dictData)
         return dictData
 
     @staticmethod
