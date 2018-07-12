@@ -8,6 +8,7 @@ from toolObjectSerializable import toolObjectSerializable
 from Places import Places
 from SkyObjects import SkyObjects
 from LunarFeatures import LunarFeatures
+from toolJSON import toolJSON
 
 #from toolTrace import toolTrace
 
@@ -146,11 +147,7 @@ class Parameters(toolObjectSerializable):
         self._Place = thePlaces.getPlaceByName(self._sObservationPlaceName)
 
         # init sky objects
-        with open('parameters_SkyObjects.json', 'r') as f:
-             data = json.load(f)
-        self._SkyObjects = SkyObjects(data)
+        self._SkyObjects = SkyObjects(toolJSON.getContent('parameters_SkyObjects.json'))
         
         # init Lunar features
-        with open('parameters_LunarFeatures.json', 'r') as f:
-             data = json.load(f)
-        self._LunarFeatures = LunarFeatures(data)
+        self._LunarFeatures = LunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
