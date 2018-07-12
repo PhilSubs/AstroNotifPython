@@ -169,7 +169,13 @@ class Tools:
     def saveAsFileEncoded(sFileName, sContent ):
         encoding = 'utf-8'
         with io.open(sFileName, 'w', encoding=encoding) as theFile:
-            theFile.write(sContent)
+            if type(sContent) is unicode:
+                theFile.write(sContent)
+            else:
+                try:
+                    theFile.write(sContent.decode('utf-8'))
+                except:
+                    theFile.write(sContent.encode("iso-8859-1").decode('utf-8'))
 
     @staticmethod
     def saveAsFile(sFileName, sContent ):
