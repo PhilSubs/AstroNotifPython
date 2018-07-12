@@ -827,7 +827,7 @@ class RendererBitmap(toolObjectSerializable):
         
         # Return bitmap URL and size
         iWidth, iHeight = theNewImg.size
-        return iWidth, iHeight, self._sURLFolderForBitmaps + sBitmapName, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable
+        return iWidth, iHeight, self._sURLFolderForBitmaps + sBitmapName, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, self._sRelativeFolderForBitmaps + sBitmapName
 
     def getHTML(self, oCalendar, oEphemeridesData):
         iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.getDisplayNumberOfMinutesPerSlot())
@@ -837,12 +837,12 @@ class RendererBitmap(toolObjectSerializable):
         sHTML += '      <title>'+ self._oParametersLocalization.getLabel("HTMLPageTitle") + '</title>' + "\n"
         sHTML += '      <link rel="icon" href="http://' + self._oParameters.getNightlyBatchDomain() + '/favicon.png">' 
         sHTML += '      <base href="">' + "\n"
-        sHTML += '      <link rel="stylesheet" href="AstroNotif.css">' + "\n"
+        sHTML += '      <link rel="stylesheet" href="http://' + self._oParameters.getNightlyBatchDomain() + '/AstroNotif.css">' + "\n"
         sHTML += '      <meta charset="UTF-8">' + "\n"
         sHTML += '	</head>' + "\n"
         sHTML += '<BODY>' + "\n"
 
-        iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = self.getEphemeridesBitmapForPeriod(oCalendar, oEphemeridesData)
+        iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename = self.getEphemeridesBitmapForPeriod(oCalendar, oEphemeridesData)
         
         sHTML += '    <H1 class="PageHeader">&nbsp;&nbsp;'
         sHTML += '<A href="http://' + self._oParameters.getNightlyBatchDomain() + '" target="_blank">' + self._oParametersLocalization.getLabel("EphemerisFor") + ' <SPAN style="font-weight: bold">' + oCalendar.getFormattedDateForSlot(0,self._oParameters.getDisplayNumberOfMinutesPerSlot()) + '</SPAN></A>'
@@ -854,7 +854,7 @@ class RendererBitmap(toolObjectSerializable):
         sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' +  self._oParametersLocalization.getLabel("EphemerisFor") + " " + oCalendar.getFormattedDateForSlot(0,self._oParameters.getDisplayNumberOfMinutesPerSlot()) +  '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
         sHTML += '    </BODY>' + "\n"
         sHTML += '</HTML>' + "\n"
-        return sHTML, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable
+        return sHTML, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename
 
     def getHTMLHeaderComment(self, oCalendar):
         return ('<!-- Parameters... Date:'  + oCalendar.getDate() + '  - Place:'  + self._oParameters.getPlace().getName() + ' - Longitude:'  + str(self._oParameters.getPlace().getLongitude()) + ' - Latitude:'  + str(self._oParameters.getPlace().getLatitude()) + '  -->'  )
