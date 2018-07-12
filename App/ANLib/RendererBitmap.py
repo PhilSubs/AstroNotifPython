@@ -128,6 +128,7 @@ class RendererBitmap(toolObjectSerializable):
         try:
             theStyleFont = ImageFont.truetype(sFont, iStyleFontSize)
         except:
+            print ">>> Font:" + sFont
             theStyleFont = ImageFont.truetype(sFont + ".ttf", iStyleFontSize)
         return (iStyleFontSize, theStyleFont, tStyleFontColor, tStyleBackColor)
 
@@ -847,7 +848,7 @@ class RendererBitmap(toolObjectSerializable):
         sHTML += '    </BODY>' + "\n"
         sHTML += '</HTML>' + "\n"
 
-        return sHTML, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable
+        return str(sHTML.encode("iso-8859-1" )), iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable
 
     def getHTMLHeaderComment(self, oCalendar):
         return ('<!-- Parameters... Date:'  + oCalendar.getDate() + '  - Place:'  + self._oParameters.getPlace().getName() + ' - Longitude:'  + str(self._oParameters.getPlace().getLongitude()) + ' - Latitude:'  + str(self._oParameters.getPlace().getLatitude()) + '  -->'  )
