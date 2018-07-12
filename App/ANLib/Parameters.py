@@ -3,7 +3,6 @@
 #
 # Class Parameters
 # 
-import json
 from toolObjectSerializable import toolObjectSerializable
 from Places import Places
 from SkyObjects import SkyObjects
@@ -96,8 +95,7 @@ class Parameters(toolObjectSerializable):
     def getLunarFeatures(self): return self._LunarFeatures
     def __loadFromFile(self):
         # load parameters file
-        with open('parameters_Runtime.json', 'r') as f:
-             data = json.load(f)
+        data = toolJSON.getContent('parameters_Runtime.json')
         # init properties
         self._sGlobalCurrentVersion = data["currentVersion"]
         self._sGlobalPathToWWWFolder = data["GlobalPathToWWWFolder"]
