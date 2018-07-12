@@ -18,19 +18,14 @@ class ParametersLocalization(toolObjectSerializable):
         
         self.__loadFromFile()
     def _convertForPrint (self, sText): 
-#        if isinstance(sText, unicode):
         try:
-#            print ">>>try>>>>>> "+ sText[0:4]
-            sReturn = str(sText.encode("iso-8859-1" ))#.encode("utf-8" )
+            sReturn = sText.decode("utf-8")
+#            sReturn = str(sText.encode("iso-8859-1" ))#.encode("utf-8" )
         except:
-#            print ">>>except>>> "+ sText[0:4]
             sReturn = sText
-#        else:
-#            print ">>>>>>>>>>>> "+ sText[0:3]
-#            sReturn = sText
         return sReturn
     def getActiveLanguage(self): return self._sLanguageCode
-    def getLabel(self, sCode): 
+    def getLabel1(self, sCode): 
         sReturn = sCode
         if sCode[0:7] == "[label]":
             if sCode[7:] in self._tLabels:
@@ -42,11 +37,21 @@ class ParametersLocalization(toolObjectSerializable):
 #        else:
 #            print "Label ! " + self._convertForPrint(sCode) + "   not translated !  (" + self._sLanguageCode + ")"
 
-        if type(sReturn) is unicode:
-            sReturn = self._convertForPrint(sReturn)
-
+#        if type(sReturn) is unicode:
+#            sReturn = self._convertForPrint(sReturn)
         return sReturn
-    
+
+    def getLabel(self, sCode): 
+        if sCode[0:7] == "[label]":
+            if sCode[7:] in self._tLabels:
+                return self._tLabels[sCode[7:]]
+            else:
+                return sCode
+        elif sCode in self._tLabels:
+            return self._tLabels[sCode]
+        else:
+            return sCode
+        
     def __loadFromFile(self):
         # load parameters file
         data = toolJSON.getContent('parameters_Localization.json')
