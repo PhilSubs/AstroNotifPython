@@ -23,30 +23,30 @@ print "Calcul des ephemerides<br>"
 theEphemeridesData.computeEphemeridesForPeriod(theParameters, theCalendar)
 print "Generation de la page HTML et du bitmap<br>"
 theRendererBitmap = ANLib.RendererBitmap( theParameters, theParameters.getGlobalPathToWWWFolder() + '/', "http://" + theParameters.getNightlyBatchDomain() + "/", True)
-sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
+sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
 
 # Save as default html file
-ANLib.Tools.saveAsFileEncoded(theParameters.getGlobalPathToWWWFolder() + '/' + theParameters.getNightlyBatchHTMLFilname(), sHTMLContent)
-print "La page HTML et le bitmap sont generes dans " + theParameters.getGlobalPathToWWWFolder() + '/<br>'
+ANLib.Tools.saveAsFileEncoded(theParameters.getGlobalPathToWWWFolder() + ANLib.Tools.get_path_separator() + theParameters.getNightlyBatchHTMLFilname(), sHTMLContent)
+print "La page HTML et le bitmap sont generes dans " + theParameters.getGlobalPathToWWWFolder() + ANLib.Tools.get_path_separator() + '<br>'
 
 # Prepare email for daily notification
+theLabels = ANLib.ParametersLocalization(theParameters.getLanguage())
 if len(theParameters.getNightlyBatchEmailAddress()) > 0:
     print "Preparation a l'envoi du mail<br>"
     sTo = theParameters.getNightlyBatchEmailAddress()
-    sSubject = "Ephemerides " + theCalendar.getFormattedDateForSlot(0, 0)
+    sSubject = theLabels.getLabel("EphemerisFor") + theCalendar.getFormattedDateForSlot(0, 0) + " (" + theParameters.getPlace().getName()  + ")"
     if (iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
         sSubject = sSubject + ": "
         if iNbPlanetsObservable > 0: 
-            sSubject = sSubject + str(iNbPlanetsObservable) +  " planet"
-            if iNbPlanetsObservable> 1: sSubject = sSubject + "s"
+            sSubject = sSubject + theLabels.getLabel("ThePlanets") + ":" + str(iNbPlanetsObservable)
             if (iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ", "
         if iNbLunarFeaturesobservable > 0: 
-            sSubject = sSubject + str(iNbLunarFeaturesobservable) +  " moon feat."
+            sSubject = sSubject + theLabels.getLabel("LunarFeatures") + ":" + str(iNbLunarFeaturesobservable)
             if (iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ", "
         if iNbDeepSkyobjectsObservable > 0: 
-            sSubject = sSubject + str(iNbDeepSkyobjectsObservable) +  " deep sky object"
-            if iNbDeepSkyobjectsObservable> 1: sSubject = sSubject + "s"
+            sSubject = sSubject + theLabels.getLabel("TheDeepSkyObjects") + ":" + str(iNbDeepSkyobjectsObservable)
 
     # Send email
     print "Envoi du mail<br>"
-    ANLib.Tools.sendEmailHTML(theParameters.getNightlyBatchEmailFromAddress(), sTo, sSubject, sHTMLContent, theParameters.getNightlyBatchEmailSMTPServer(), theParameters.getNightlyBatchEmailSMTPUser(), theParameters.getNightlyBatchEmailSMTPPassword() )
+    sHTMLContent = '<HTML><BODY><A href="http://' + theParameters.getNightlyBatchDomain() + '/">Lieu: ' + theParameters.getPlace().getName()  + '</A></BODY></HTML>'
+    ANLib.Tools.sendEmailHTML(theParameters.getNightlyBatchEmailFromAddress(), sTo, sSubject, sHTMLContent, sBitmapFilename, theParameters.getNightlyBatchEmailSMTPServer(), theParameters.getNightlyBatchEmailSMTPUser(), theParameters.getNightlyBatchEmailSMTPPassword() )
