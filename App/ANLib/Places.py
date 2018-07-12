@@ -3,9 +3,9 @@
 #
 # Class Places
 # 
-import json
 from Place import Place
 from toolObjectSerializable import toolObjectSerializable
+from toolJSON import toolJSON
 #from toolTrace import toolTrace
 
 class Places(toolObjectSerializable):
@@ -18,8 +18,7 @@ class Places(toolObjectSerializable):
     def getPlaceByName(self, sName): return self._dictPlaces.get(sName)
     def getPlaceByIndex(self, iIndex): return self._dictPlaces.values()[iIndex]
     def __loadFromFile(self):
-        with open('parameters_Places.json', 'r') as f:
-             data = json.load(f)
+        data = toolJSON.getContent('parameters_Places.json')
         for iId in range (0, len(data)):
             sPlaceKey = list(data.keys())[iId]
             newPlace = Place(data[sPlaceKey]["Name"], data[sPlaceKey]["Longitude"], data[sPlaceKey]["Latitude"])
