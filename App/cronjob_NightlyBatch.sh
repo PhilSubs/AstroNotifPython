@@ -14,6 +14,17 @@ fi
 
 main_function() {
     current_date_time="`date "+%Y-%m-%d %H:%M:%S"`"
+
+
+    echo "<HTML>"
+    echo "	<HEAD>"
+    echo '      <TITLE>AstroNotifLog</TITLE>'
+    echo '      <LINK rel="icon" href="http://88.187.178.221/favicon.png">      <base href="">'
+    echo '      <LINK rel="stylesheet" href="http://88.187.178.221/AstroNotif.css">'
+    echo '      <META charset="UTF-8">'
+    echo "	</HEAD>"
+    echo "  <BODY>"
+
     echo "Démarrage du script ($current_date_time) <BR><BR>"
     echo "<BR>"
     echo "----------------------------------------------------------------<BR>"
@@ -39,6 +50,9 @@ main_function() {
     echo "<BR>"
     echo "<BR>"
     python nightlyBatchBitmap.py
+
+    echo "  </BODY>"    
+    echo "</HTML>"
 }
 
 # log everything, but also output to stdout
