@@ -822,8 +822,8 @@ class RendererBitmap(toolObjectSerializable):
             theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
             
         # Save and return bitmap name
-        sBitmapName = 'Ephemerides_' + self._oParameters.getPlace().getName().replace(' ','') + '.png'
-        theNewImg.save(self._sRelativeFolderForBitmaps + sBitmapName, "PNG")
+        sBitmapName = 'Ephemerides_' + self._oParameters.getPlace().getName().replace(' ','') + '.' + self._oParameters.getDisplayBitmapExtension()
+        theNewImg.save(self._sRelativeFolderForBitmaps + sBitmapName, self._oParameters.getDisplayBitmapType())
         
         # Return bitmap URL and size
         iWidth, iHeight = theNewImg.size
