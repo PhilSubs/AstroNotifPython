@@ -30,3 +30,4 @@ from SkyObject import SkyObject
 from SkyObjects import SkyObjects
 from Tools import Tools
 from toolObjectSerializable import toolObjectSerializable
+from toolJSON import toolJSON

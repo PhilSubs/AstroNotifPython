@@ -3,9 +3,9 @@
 #
 # Class Places
 # 
-import json
 from Place import Place
 from toolObjectSerializable import toolObjectSerializable
+from toolJSON import toolJSON
 #from toolTrace import toolTrace
 
 class Places(toolObjectSerializable):
@@ -18,10 +18,10 @@ class Places(toolObjectSerializable):
     def getPlaceByName(self, sName): return self._dictPlaces.get(sName)
     def getPlaceByIndex(self, iIndex): return self._dictPlaces.values()[iIndex]
     def __loadFromFile(self):
-        with open('parameters_Places.json', 'r') as f:
-             data = json.load(f)
-        for x in range(0,  len(data)):
-            newPlace = Place(data[x]["Name"], data[x]["Longitude"], data[x]["Latitude"])
+        data = toolJSON.getContent('parameters_Places.json')
+        for iId in range (0, len(data)):
+            sPlaceKey = list(data.keys())[iId]
+            newPlace = Place(data[sPlaceKey]["Name"], data[sPlaceKey]["Longitude"], data[sPlaceKey]["Latitude"])
             self._dictPlaces[newPlace.getName()] = newPlace
-            newPlace.initObstructedSkyAreas(data[x]["ObstructedSkyAreas"])
+            newPlace.initObstructedSkyAreas(data[sPlaceKey]["ObstructedSkyAreas"])
         self._iCount = len(self._dictPlaces)

@@ -18,8 +18,9 @@ class ObstructedSkyAreas(toolObjectSerializable):
     def getObstructedSkyAreaByIndex(self, iIndex): return self._arrObstructedSkyAreas[iIndex]
     def initObstructedSkyAreas(self, dataObstructedSkyAreas):
         # init ObstructedSkyAreas array of ObstructedSkyArea objects
-        for x in range(0,  len(dataObstructedSkyAreas)):
-            newObstructedSkyArea = ObstructedSkyArea(dataObstructedSkyAreas[x]["Azimut-Min"], dataObstructedSkyAreas[x]["Azimut-Max"], dataObstructedSkyAreas[x]["Altitude-Min"], dataObstructedSkyAreas[x]["Altitude-Max"])
+        for iId in range (0, len(dataObstructedSkyAreas)):
+            sObstructedSkyAreaKey = list(dataObstructedSkyAreas.keys())[iId]
+            newObstructedSkyArea = ObstructedSkyArea(dataObstructedSkyAreas[sObstructedSkyAreaKey]["Azimut-Min"], dataObstructedSkyAreas[sObstructedSkyAreaKey]["Azimut-Max"], dataObstructedSkyAreas[sObstructedSkyAreaKey]["Altitude-Min"], dataObstructedSkyAreas[sObstructedSkyAreaKey]["Altitude-Max"])
             self._arrObstructedSkyAreas.append(newObstructedSkyArea)
         self._iCount = len(self._arrObstructedSkyAreas)
         # init Visibility Zones maps

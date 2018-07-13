@@ -5,6 +5,8 @@ import string
 import os
 import os.path
 import sys
+import shutil
+import io
 
 # Import PIL or PILLOW libraries for bitmaps
 from PIL import Image, ImageDraw
@@ -13,9 +15,39 @@ from PIL import Image, ImageDraw
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.MIMEImage import MIMEImage
+
 
 
 class Tools:
+    @staticmethod
+    def copyFile(sFilenameOrig, sFilenameDest):
+        """ backup a file in the same directory"""
+        print "           > copy file " + sFilenameOrig + " to " + sFilenameDest
+        try:
+            shutil.copy2(sFilenameOrig, sFilenameDest)
+            bResult = True
+        except:
+            bResult = False
+        return bResult
+        
+    @staticmethod
+    def backupFile(sPath, sFilename, sSuffixBackup):
+        """ backup a file in the same directory"""
+        sOrigFile = sPath + Tools.get_path_separator() + sFilename
+        sDestFile = sPath + Tools.get_path_separator() + sFilename + sSuffixBackup
+        return Tools.copyFile(sOrigFile, sDestFile)
+
+    @staticmethod
+    def get_path_separator():
+        """ Return the path separator"""
+        sScriptPath = Tools.get_script_path()
+        if sScriptPath[0:1] == "/":
+            sSeparator = "/"
+        else:
+            sSeparator = "\\"
+        return sSeparator
+
     @staticmethod
     def get_script_path():
         """ Return the script path"""
@@ -25,10 +57,8 @@ class Tools:
     def get_ResourceSubfolder_path(sSubfolder):
         """ Return the script path"""
         sScriptPath = Tools.get_script_path()
-        if sScriptPath[0:1] == "/":
-            sFontPath = sScriptPath + "/Resources/" + sSubfolder + "/"
-        else:
-            sFontPath = sScriptPath + "\\Resources\\" + sSubfolder + "\\"
+        sSeparator = Tools.get_path_separator()
+        sFontPath = sScriptPath + sSeparator + "Resources" + sSeparator + sSubfolder + sSeparator
         return sFontPath
 
     @staticmethod
@@ -104,7 +134,7 @@ class Tools:
 
 
     @staticmethod
-    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sSMTPServer, sUser, sPassword):
+    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sBitmapFilename, sSMTPServer, sUser, sPassword):
         # Create message container - the correct MIME type is multipart/alternative.
         theMsg = MIMEMultipart('alternative')
         theMsg['Subject'] = sSubject
@@ -118,6 +148,8 @@ class Tools:
         # According to RFC 2046, the last part of a multipart message, in this case
         # the HTML message, is best and preferred.
         theMsg.attach(theMIMEpart)
+	if sBitmapFilename !="": theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
+
 
         # Send the message via local SMTP server.
         print "smtp..."
@@ -136,6 +168,18 @@ class Tools:
             print "sent..."
         finally:
             theSender.quit()
+
+    @staticmethod
+    def saveAsFileEncoded(sFileName, sContent ):
+        encoding = 'utf-8'
+        with io.open(sFileName, 'w', encoding=encoding) as theFile:
+            if type(sContent) is unicode:
+                theFile.write(sContent)
+            else:
+                try:
+                    theFile.write(sContent.decode('utf-8'))
+                except:
+                    theFile.write(sContent.encode("iso-8859-1").decode('utf-8'))
 
     @staticmethod
     def saveAsFile(sFileName, sContent ):

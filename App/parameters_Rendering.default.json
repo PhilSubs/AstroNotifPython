@@ -63,7 +63,7 @@
         "styleLegendFontSize":10,
         "styleLegendFont":"arial.ttf",
         "styleRowHeaderDateFontSize":16,
-        "styleRowHeaderDateFont":"arialnb.ttf",
+        "styleRowHeaderDateFont":"ARIALNB.TTF",
         "styleRowHeaderTimeFontSize":10,
         "styleObjectNameFontSize":24,
         "styleObjectDataFontSize":9,

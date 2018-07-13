@@ -3,11 +3,11 @@
 #
 # Class Parameters
 # 
-import json
 from toolObjectSerializable import toolObjectSerializable
 from Places import Places
 from SkyObjects import SkyObjects
 from LunarFeatures import LunarFeatures
+from toolJSON import toolJSON
 
 #from toolTrace import toolTrace
 
@@ -21,6 +21,8 @@ class Parameters(toolObjectSerializable):
         self._sNightlyBatchDomain = ""
         self._sNightlyBatchEmailAddress = ""
         self._sNightlyEmailSMTPServer = ""
+        self._sNightlyEmailSMTPUser = ""
+        self._sNightlyEmailSMTPPassword = ""
         self._sNightlyEmailFromAddress = ""
         self._sNightlyBatchHTMLFilname = ""
         self._fObservationMinAltitudeInDeg = 0.0
@@ -59,6 +61,8 @@ class Parameters(toolObjectSerializable):
     def getNightlyBatchTimeDeltaInHours(self): return self._iNightlyBatchTimeDeltaInHours
     def getNightlyBatchEmailAddress(self): return self._sNightlyBatchEmailAddress
     def getNightlyBatchEmailSMTPServer(self): return self._sNightlyBatchEmailSMTPServer
+    def getNightlyBatchEmailSMTPUser(self): return self._sNightlyBatchEmailSMTPUser
+    def getNightlyBatchEmailSMTPPassword(self): return self._sNightlyBatchEmailSMTPPassword
     def getNightlyBatchEmailFromAddress(self): return self._sNightlyBatchEmailFromAddress
     def getNightlyBatchDomain(self): return self._sNightlyBatchDomain
     def getNightlyBatchHTMLFilname(self): return self._sNightlyBatchHTMLFilname
@@ -91,8 +95,7 @@ class Parameters(toolObjectSerializable):
     def getLunarFeatures(self): return self._LunarFeatures
     def __loadFromFile(self):
         # load parameters file
-        with open('parameters_Runtime.json', 'r') as f:
-             data = json.load(f)
+        data = toolJSON.getContent('parameters_Runtime.json')
         # init properties
         self._sGlobalCurrentVersion = data["currentVersion"]
         self._sGlobalPathToWWWFolder = data["GlobalPathToWWWFolder"]
@@ -100,6 +103,8 @@ class Parameters(toolObjectSerializable):
         self._iNightlyBatchTimeDeltaInHours = data["NightlyBatchTimeDeltaInHours"]
         self._sNightlyBatchEmailAddress = data["NightlyBatchEmailAddress"]
         self._sNightlyBatchEmailSMTPServer = data["NightlyBatchEmailSMTPServer"]
+        self._sNightlyBatchEmailSMTPUser = data["NightlyBatchEmailSMTPUser"]
+        self._sNightlyBatchEmailSMTPPassword = data["NightlyBatchEmailSMTPPassword"]
         self._sNightlyBatchEmailFromAddress = data["NightlyBatchEmailFromAddress"]
         self._sNightlyBatchDomain = data["NightlyBatchDomain"]
         self._sNightlyBatchHTMLFilname = data["NightlyBatchHTMLFilname"]
@@ -140,11 +145,7 @@ class Parameters(toolObjectSerializable):
         self._Place = thePlaces.getPlaceByName(self._sObservationPlaceName)
 
         # init sky objects
-        with open('parameters_SkyObjects.json', 'r') as f:
-             data = json.load(f)
-        self._SkyObjects = SkyObjects(data["Objects"])
+        self._SkyObjects = SkyObjects(toolJSON.getContent('parameters_SkyObjects.json'))
         
         # init Lunar features
-        with open('parameters_LunarFeatures.json', 'r') as f:
-             data = json.load(f)
-        self._LunarFeatures = LunarFeatures(data["LunarFeatures"])
+        self._LunarFeatures = LunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
