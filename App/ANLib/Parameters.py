@@ -36,6 +36,8 @@ class Parameters(toolObjectSerializable):
         self._sObservationPlaceName = ""
         self._bDisplayVisibilityTableAsBitmap = True
         self._iDisplayLanguage = "EN"
+        self._iDisplayBitmapType = "JPEG"
+        self._iDisplayBitmapExtension = "jpg"
         self._iDisplayNumberOfSlotsForMoon = 0
         self._iDisplayNumberOfSlotsForMoonFeatures = 0
         self._iDisplayNumberOfSlotsForPlanets = 0
@@ -75,6 +77,8 @@ class Parameters(toolObjectSerializable):
     def getObservationShowWhenTerminatorIsOnLunarFeature(self): return self._bObservationShowWhenTerminatorIsOnLunarFeature
     def getObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg(self): return self._fObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg
     def getObservationPlaceName(self): return self._sObservationPlaceName
+    def getDisplayBitmapType(self): return self._iDisplayBitmapType
+    def getDisplayBitmapExtension(self): return self._iDisplayBitmapExtension
     def getDisplayVisibilityTableAsBitmap(self): return self._bDisplayVisibilityTableAsBitmap
     def getDisplayNumberOfSlotsForMoon(self): return self._iDisplayNumberOfSlotsForMoon
     def getDisplayNumberOfSlotsForMoonFeatures(self): return self._iDisplayNumberOfSlotsForMoonFeatures
@@ -118,6 +122,8 @@ class Parameters(toolObjectSerializable):
         self._fObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg = data["ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg"]
         self._sObservationPlaceName = data["ObservationPlaceName"]
         self._iDisplayLanguage = data["DisplayLanguage"]
+        self._iDisplayBitmapType = data["DisplayBitmapType"]
+        self._iDisplayBitmapExtension = data["DisplayBitmapExtension"]
         self._bDisplayVisibilityTableAsBitmap = ( data["DisplayVisibilityTableAsBitmap"] == "Yes" )
         self._iDisplayNumberOfSlotsForMoon = data["DisplayNumberOfSlotsForMoon"]
         self._iDisplayNumberOfSlotsForMoonFeatures = data["DisplayNumberOfSlotsForMoonFeatures"]
