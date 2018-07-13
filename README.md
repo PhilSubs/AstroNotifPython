@@ -8,10 +8,15 @@ Notify Astronomy objects observability
 # Structure des répertoires:
  La delivery contient trois répertoires:
  - **`App`**: contient les scripts Python, les fichiers de paramètres JSON, les fontes nécessaires.
- - **`www`**: contient un fichier favicon
+ - **`www`**: contient un fichier favicon, et la feuille de style (css).
  - **`Documentation`**: contient la documentation
 
-# Installation
+# Installation automatique
+Dans le répertoire **`App`**, exécuter la commande suivante et lire les instructions:
+**`python install.py`**
+
+
+# Installation manuelle
 L'application a besoin de connaitre le répertoire où elle est installée, ainsi que le répertoire qui contiendra les fichiers HTML et bitmap générés:
  - **`[CheminAPP]`** : répertoire d'installation de l'application (chemin vers le répertoir App)
  - **`[CheminWWW]`** : répertoire contenant les fichiers HTML et bitmap
