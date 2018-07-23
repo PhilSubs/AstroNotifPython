@@ -34,7 +34,7 @@ theLabels = ANLib.ParametersLocalization(theParameters.getLanguage())
 if len(theParameters.getNightlyBatchEmailAddress()) > 0:
     print "Preparation a l'envoi du mail<br>"
     sTo = theParameters.getNightlyBatchEmailAddress()
-    sSubject = theLabels.getLabel("EphemerisFor") + theCalendar.getFormattedDateForSlot(0, 0) + " (" + theParameters.getPlace().getName()  + ")"
+    sSubject = theLabels.getLabel("EphemerisFor") + " " + theCalendar.getFormattedDateForSlot(0, 0) + " (" + theParameters.getPlace().getName()  + ")"
     if (iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
         sSubject = sSubject + ": "
         if iNbPlanetsObservable > 0: 
