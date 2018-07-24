@@ -38,13 +38,13 @@ if len(theParameters.getNightlyBatchEmailAddress()) > 0:
     if (iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
         sSubject = sSubject + ": "
         if iNbPlanetsObservable > 0: 
-            sSubject = sSubject + theLabels.getLabel("ThePlanets") + ":" + str(iNbPlanetsObservable)
-            if (iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ", "
+            sSubject = sSubject + theLabels.getLabel("ThePlanets") + " [" + str(iNbPlanetsObservable) + "]"
+            if (iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ",  "
         if iNbLunarFeaturesobservable > 0: 
-            sSubject = sSubject + theLabels.getLabel("LunarFeatures") + ":" + str(iNbLunarFeaturesobservable)
-            if (iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ", "
+            sSubject = sSubject + theLabels.getLabel("LunarFeatures") + " [" + str(iNbLunarFeaturesobservable) + "]"
+            if (iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ",  "
         if iNbDeepSkyobjectsObservable > 0: 
-            sSubject = sSubject + theLabels.getLabel("TheDeepSkyObjects") + ":" + str(iNbDeepSkyobjectsObservable)
+            sSubject = sSubject + theLabels.getLabel("TheDeepSkyObjects") + " [" + str(iNbDeepSkyobjectsObservable) + "]"
 
     # Send email
     print "Envoi du mail<br>"
