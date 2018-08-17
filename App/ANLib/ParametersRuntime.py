@@ -4,9 +4,6 @@
 # Class Parameters
 # 
 from toolObjectSerializable import toolObjectSerializable
-from Places import Places
-from SkyObjects import SkyObjects
-from LunarFeatures import LunarFeatures
 from toolJSON import toolJSON
 
 #from toolTrace import toolTrace
