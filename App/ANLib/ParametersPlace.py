@@ -4,7 +4,7 @@
 # Class Place
 # 
 from toolObjectSerializable import toolObjectSerializable
-from ObstructedSkyAreas import ObstructedSkyAreas
+from ParametersObstructedSkyAreas import ParametersObstructedSkyAreas
 
 #from toolTrace import toolTrace
 
@@ -15,7 +15,7 @@ class ParametersPlace(toolObjectSerializable):
         self._sName = sName
         self._fLongitude = fLongitude
         self._fLatitude = fLatitude
-        self._theObstructedSkyAreas = ObstructedSkyAreas()
+        self._theObstructedSkyAreas = None
     def getName(self): return self._sName
     def setName(self, sName): self._sName = sName
     def getLongitude(self): return self._fLongitude
@@ -24,4 +24,4 @@ class ParametersPlace(toolObjectSerializable):
     def setLatitude(self, fLatitude): self._fLatitude = fLatitude
     def getObstructedSkyAreas(self): return self._theObstructedSkyAreas
     def initObstructedSkyAreas(self, dataObstructedSkyAreas):
-        self._theObstructedSkyAreas.initObstructedSkyAreas(dataObstructedSkyAreas)
+        self._theObstructedSkyAreas= ParametersObstructedSkyAreas(dataObstructedSkyAreas)
