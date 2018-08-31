@@ -18,6 +18,7 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorSunAltitude = None
         self._tcolorObjectVisibilityStatus = None
         self._tcolorLunarFeatureVisibility = None
+        self._tDisplay = None
         self._tStyles = None
         self.__initWithData(dicJSONData)
         
@@ -28,24 +29,28 @@ class ParametersRendering(toolObjectSerializable):
     def getColorObjectVisibilityStatus(self, sCode): return self._tcolorObjectVisibilityStatus[sCode]
     def getColorLunarFeatureVisibility(self, sCode): return self._tcolorLunarFeatureVisibility[sCode]
     def getStyles(self, sCode): return self._tStyles[sCode]
+    def getDisplay(self, sCode): return self._tDisplay[sCode]
     
     def __initWithData(self, dicJSONData):
-        # init properties
+        # Color Visibility
         self._tcolorVisibilityFlags = {}
         self._tcolorVisibilityFlags['NotObservable'] = eval(dicJSONData["colorVisibilityFlagsNotObservable"])
         self._tcolorVisibilityFlags['AtLEastOneDayObservable'] = eval(dicJSONData["colorVisibilityFlagsAtLEastOneDayObservable"])
         self._tcolorVisibilityFlags['Observable'] = eval(dicJSONData["colorVisibilityFlagsObservable"])
+        # Color Heliocentric Graph
         self._tcolorHeliocentricGraph = {}
         self._tcolorHeliocentricGraph['Background'] = eval(dicJSONData["colorHeliocentricGraphBackground"])
         self._tcolorHeliocentricGraph['Lines'] = eval(dicJSONData["colorHeliocentricGraphLines"])
         self._tcolorHeliocentricGraph['Sun'] = eval(dicJSONData["colorHeliocentricGraphSun"])
         self._tcolorHeliocentricGraph['Earth'] = eval(dicJSONData["colorHeliocentricGraphEarth"])
         self._tcolorHeliocentricGraph['Planet'] = eval(dicJSONData["colorHeliocentricGraphPlanet"])
+        # Color Moon minimap
         self._tcolorMoonMiniMap = {}
         self._tcolorMoonMiniMap['Background'] = eval(dicJSONData["colorMoonMiniMapBackground"])
         self._tcolorMoonMiniMap['Border'] = eval(dicJSONData["colorMoonMiniMapBorder"])
         self._tcolorMoonMiniMap['Light'] = eval(dicJSONData["colorMoonMiniMapLight"])
         self._tcolorMoonMiniMap['Dark'] = eval(dicJSONData["colorMoonMiniMapDark"])
+        # Color Sun Altitude
         self._tcolorSunAltitude = {}
         self._tcolorSunAltitude['MoreThan18DegBelow'] = eval(dicJSONData["colorSunAltitudeMoreThan18DegBelow"])
         self._tcolorSunAltitude['12To18DegBelow'] = eval(dicJSONData["colorSunAltitude12To18DegBelow"])
@@ -54,6 +59,7 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorSunAltitude['00To06DegAbove'] = eval(dicJSONData["colorSunAltitude00To06DegAbove"])
         self._tcolorSunAltitude['06To12DegAbove'] = eval(dicJSONData["colorSunAltitude06To12DegAbove"])
         self._tcolorSunAltitude['MoreThan12DegAbove'] = eval(dicJSONData["colorSunAltitudeMoreThan12DegAbove"])
+        # Color Object Visibility
         self._tcolorObjectVisibilityStatus = {}
         self._tcolorObjectVisibilityStatus['Below'] = eval(dicJSONData["colorObjectVisibilityStatusBelow"])
         self._tcolorObjectVisibilityStatus['Hidden'] = eval(dicJSONData["colorObjectVisibilityStatusHidden"])
@@ -63,6 +69,7 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorObjectVisibilityStatus['Impossible'] = eval(dicJSONData["colorObjectVisibilityStatusImpossible"])
         self._tcolorObjectVisibilityStatus['Good'] = eval(dicJSONData["colorObjectVisibilityStatusGood"])
         self._tcolorObjectVisibilityStatus['Unknown'] = eval(dicJSONData["colorObjectVisibilityStatusUnknown"])
+        # Color Lunar Feature Visibility
         self._tcolorLunarFeatureVisibility = {}
         self._tcolorLunarFeatureVisibility['TerminatorNearButNotObservable'] = eval(dicJSONData["colorLunarFeatureVisibilityTerminatorNearButNotObservable"])
         self._tcolorLunarFeatureVisibility['Good'] = eval(dicJSONData["colorLunarFeatureVisibilityGood"])
@@ -71,6 +78,27 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorLunarFeatureVisibility['MoonBelowHorizon'] = eval(dicJSONData["colorLunarFeatureVisibilityMoonBelowHorizon"])
         self._tcolorLunarFeatureVisibility['MoonHidden'] = eval(dicJSONData["colorLunarFeatureVisibilityMoonHidden"])
         self._tcolorLunarFeatureVisibility['MoonImpossible'] = eval(dicJSONData["colorLunarFeatureVisibilityMoonImpossible"])
+        # Display
+        self._tDisplay = {}
+        self._tDisplay['Language'] = dicJSONData["displayLanguage"]
+        self._tDisplay['BitmapType'] = dicJSONData["displayBitmapType"]
+        self._tDisplay['BitmapExtension'] = dicJSONData["displayBitmapExtension"]
+        self._tDisplay['VisibilityTableAsBitmap'] = dicJSONData["displayVisibilityTableAsBitmap"]
+        self._tDisplay['NumberOfSlotsForMoon'] = dicJSONData["displayNumberOfSlotsForMoon"]
+        self._tDisplay['NumberOfSlotsForMoonFeatures'] = dicJSONData["displayNumberOfSlotsForMoonFeatures"]
+        self._tDisplay['NumberOfSlotsForPlanets'] = dicJSONData["displayNumberOfSlotsForPlanets"]
+        self._tDisplay['NumberOfSlotsForDeepSky'] = dicJSONData["displayNumberOfSlotsForDeepSky"]
+        self._tDisplay['NumberOfMinutesPerSlot'] = dicJSONData["displayNumberOfMinutesPerSlot"]
+        self._tDisplay['DaySlotForDataInfo'] = dicJSONData["displayDaySlotForDataInfo"]
+        self._tDisplay['MaxAltitudeForObjectLow'] = dicJSONData["displayMaxAltitudeForObjectLow"]
+        self._tDisplay['MaxAltitudeForObjectVeryLow'] = dicJSONData["displayMaxAltitudeForObjectVeryLow"]
+        self._tDisplay['MaxSunAltitudeForObservableDeepSky'] = dicJSONData["displayMaxSunAltitudeForObservableDeepSky"]
+        self._tDisplay['MaxSunAltitudeForObservableBrightObjects'] = dicJSONData["displayMaxSunAltitudeForObservableBrightObjects"]
+        self._tDisplay['MaxSunAltitudeForDifficultBrightObjects'] = dicJSONData["displayMaxSunAltitudeForDifficultBrightObjects"]
+        self._tDisplay['MaxSunAltitudeFoImpossibleBrightObjects'] = dicJSONData["displayMaxSunAltitudeFoImpossibleBrightObjects"]
+        self._tDisplay['MaxSunAltitudeForObservableMediumObjects'] = dicJSONData["displayMaxSunAltitudeForObservableMediumObjects"]
+        self._tDisplay['MaxSunAltitudeForDifficultMediumObjects'] = dicJSONData["displayMaxSunAltitudeForDifficultMediumObjects"]
+        # Text Styles
         self._tStyles = {}
         self._tStyles['DefaultFontSize'] = dicJSONData["styleDefaultFontSize"]
         self._tStyles['DefaultFontDirectory'] = dicJSONData["styleDefaultFontDirectory"]
