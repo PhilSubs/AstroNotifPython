@@ -36,10 +36,10 @@ class Parameters(toolObjectSerializable):
     def __load(self):
         self._ParametersRuntime       = ParametersRuntime(toolJSON.getContent('parameters_Runtime.json'))
 
-        self._ParametersLocalization  = ParametersLocalization(toolJSON.getContent('parameters_Localization.json'), self._ParametersRuntime.getLanguage())
-        self._ParametersLunarFeatures = ParametersLunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
         self._ParametersRendering     = ParametersRendering(toolJSON.getContent('parameters_Rendering.json'))
+        self._ParametersLocalization  = ParametersLocalization(toolJSON.getContent('parameters_Localization.json'), self._ParametersRendering.getDisplay('Language'))
         self._ParametersSkyObjects    = ParametersSkyObjects(toolJSON.getContent('parameters_SkyObjects.json'))
+        self._ParametersLunarFeatures = ParametersLunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
         self._ParametersPlaces        = ParametersPlaces(toolJSON.getContent('parameters_Places.json'))
 
-        self._ParametersRuntime.setPlace(self._ParametersPlaces.getPlaceByName(self._ParametersRuntime.getObservationPlaceName()))
+        self._ParametersRuntime.setPlace(self._ParametersPlaces.getPlaceByName(self._ParametersRuntime.getObservation('PlaceName')))
