@@ -31,15 +31,15 @@ class Calendar(toolObjectSerializable):
         #fDateValue = fDateValue # - 0.5
         fDateValue = self.getJulianDate() - MeeusAlgorithmsFormulas.JulianDay_07_01(2000, 1, 1, 0, 0, 0)
         return fDateValue
-    def getLocalDate(self): return self._date
-    def getGMTDate(self): return self._date
+    def getLocalStartDate(self): return self._date
+    def getGMTStartDate(self): return self._date
     def getJulianDate(self):
         return MeeusAlgorithmsFormulas.JulianDay_07_01(self._dtGMTLocalDateTime.year, self._dtGMTLocalDateTime.month, self._dtGMTLocalDateTime.day, self._dtGMTLocalDateTime.hour, self._dtGMTLocalDateTime.minute, self._dtGMTLocalDateTime.second)
     def getLocalDateForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtLocalDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%Y%m%d')
     def getGMTDateForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtGMTLocalDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%Y%m%d')
     def getFormattedLocalDateForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtLocalDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%d %b %Y')
     def getFormattedGMTDateForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtGMTLocalDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%d %b %Y')
-    def getTime(self): return self._time
+    def getLocalStartTime(self): return self._time
     def getLocalTimeForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtLocalDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%H%M%S') 
     def getGMTTimeForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtGMTLocalDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%H%M%S')
     def getLocalTimeForSlotAsHHMM(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtLocalDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%H:%M')  #TODO: compute local time based on DST and area
