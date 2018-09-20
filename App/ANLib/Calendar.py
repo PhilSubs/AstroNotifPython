@@ -9,20 +9,20 @@ import datetime
 from MeeusAlgorithmsFormulas import MeeusAlgorithmsFormulas
 
 class Calendar(toolObjectSerializable):
-    def __init__(self, sDate, sTime, fLocalTimeDifferenceWithGMT):
+    def __init__(self, sLocalStartDate, sLocalStartTime, fLocalTimeDifferenceWithGMT):
         toolObjectSerializable.__init__(self)
-        self._date = sDate # date as YYYYMMDD  (Local Time)
-        self._time = sTime # Time as HHMMSS    (Local Time)
+        self._LocalStartdate = sLocalStartDate # date as YYYYMMDD  (Local Time)
+        self._LocalStartTime = sLocalStartTime # Time as HHMMSS    (Local Time)
         self._fLocalTimeDifferenceWithGMT = fLocalTimeDifferenceWithGMT
-        self._iYear = int(sDate[0:4])
-        self._iMonth = int(sDate[4:6])
-        self._iDay = int(sDate[6:8])
-        self._iHours = int(sTime[0:2])
-        self._iMinutes = int(sTime[2:4])
-        self._iSeconds = int(sTime[4:8])
-        self._dtLocalDateTime =  datetime.datetime(int(sDate[0:4]),int(sDate[4:6]),int(sDate[6:8]),int(sTime[0:2]),int(sTime[2:4]),int(sTime[4:8]))
+        self._iYear = int(self._LocalStartdate[0:4])
+        self._iMonth = int(self._LocalStartdate[4:6])
+        self._iDay = int(self._LocalStartdate[6:8])
+        self._iHours = int(self._LocalStartTime[0:2])
+        self._iMinutes = int(self._LocalStartTime[2:4])
+        self._iSeconds = int(self._LocalStartTime[4:8])
+        self._dtLocalDateTime =  datetime.datetime(self._iYear, self._iMonth, self._iDay, self._iHours, self._iMinutes, self._iSeconds)
         self._dtGMTLocalDateTime =  self._dtLocalDateTime - datetime.timedelta(hours=self._fLocalTimeDifferenceWithGMT)
-        self._fLocalDateValue = self.__computeDateValueFromDateAndTime(sDate, sTime)
+        self._fLocalDateValue = self.__computeDateValueFromDateAndTime(self._LocalStartdate, self._LocalStartTime)
     def __computeDateValueFromDateAndTime(self, sDate, sTime):
         # Compute the number of days since 01/01/2000 at 00:00 which is the reference date
         # Split date and time 
