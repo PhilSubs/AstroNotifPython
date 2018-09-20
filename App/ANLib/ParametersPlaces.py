@@ -22,7 +22,7 @@ class ParametersPlaces(toolObjectSerializable):
     def __initWithData(self, dicJSONData):
         for iId in range (0, len(dicJSONData)):
             sPlaceKey = list(dicJSONData.keys())[iId]
-            newPlace = ParametersPlace(dicJSONData[sPlaceKey]["Name"], dicJSONData[sPlaceKey]["Longitude"], dicJSONData[sPlaceKey]["Latitude"])
+            newPlace = ParametersPlace(dicJSONData[sPlaceKey]["Name"], dicJSONData[sPlaceKey]["LocalTimeDifferenceWithGMT"], dicJSONData[sPlaceKey]["Longitude"], dicJSONData[sPlaceKey]["Latitude"])
             self._dictPlaces[newPlace.getName()] = newPlace
             newPlace.initObstructedSkyAreas(dicJSONData[sPlaceKey]["ObstructedSkyAreas"])
         self._iCount = len(self._dictPlaces)
