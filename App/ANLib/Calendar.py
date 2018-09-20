@@ -51,6 +51,6 @@ class Calendar(toolObjectSerializable):
         return fDateValue
     def getGMTDateValueForTimeSlot(self, iTimeSlot, iNumberOfMinutesPerSlot):
         # add delta corresponding to timeslot
-        fDateValue = self._fLocalDateValue + (float(iNumberOfMinutesPerSlot) / 1440.0 * float(iTimeSlot)) - (fLocalTimeDifferenceWithGMT / 24.0)
+        fDateValue = self._fLocalDateValue + (float(iNumberOfMinutesPerSlot) / 1440.0 * float(iTimeSlot)) - (self._fLocalTimeDifferenceWithGMT / 24.0)
         return fDateValue
     
