@@ -3,6 +3,7 @@
          "Name":"Location1", 
          "Longitude":0.000000000, 
          "Latitude":0.000000000, 
+         "LocalTimeDifferenceWithGMT":0,
          "ObstructedSkyAreas":
              {
                  "zone01":{"Comment":"", "Azimut-Min":0, "Azimut-Max":180, "Altitude-Min":0, "Altitude-Max":10},
