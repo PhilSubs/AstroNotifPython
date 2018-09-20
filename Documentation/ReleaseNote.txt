@@ -4,8 +4,8 @@ Version 2.0
      - #49:
         - Changed parameters_Places.default.json:
            - Added LocalTimeDifferenceWithGMT to handle local time
-        - Changed ParametersPlace.py  to take into account new LocalTimeDifferenceWithGMT parameter
-        - Changed ParametersPlaces.py  to take into account new LocalTimeDifferenceWithGMT parameter
+        - Changed ParametersPlace.py  to take into account new LocalTimeDifferenceWithGMT parameter and DST
+        - Changed ParametersPlaces.py  to take into account new LocalTimeDifferenceWithGMT parameter and DST
         - Changed Calendar.py
            - Added method getLocalTimeForSlotAsHHMM
            - Added method getLocalTimeForSlot
