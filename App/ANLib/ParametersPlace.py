@@ -5,6 +5,7 @@
 # 
 from toolObjectSerializable import toolObjectSerializable
 from ParametersObstructedSkyAreas import ParametersObstructedSkyAreas
+import time
 
 #from toolTrace import toolTrace
 
@@ -21,6 +22,10 @@ class ParametersPlace(toolObjectSerializable):
     def setName(self, sName): self._sName = sName
     def getLocalTimeDifferenceWithGMT(self): return self._fLocalTimeDifferenceWithGMT
     def setLocalTimeDifferenceWithGMT(self, fLocalTimeDifferenceWithGMT): self._fLocalTimeDifferenceWithGMT = fLocalTimeDifferenceWithGMT
+    def getCurrentLocalTimeDifferenceWithGMT(self):
+        fReturnValue = self._fLocalTimeDifferenceWithGMT
+        if time.localtime().tm_isdst == 1: fReturnValue = fReturnValue + 1.0
+        return fReturnValue
     def getLongitude(self): return self._fLongitude
     def setLongitude(self, fLongitude): self._fLongitude = fLongitude
     def getLatitude(self): return self._fLatitude
