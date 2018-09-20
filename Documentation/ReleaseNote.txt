@@ -1,5 +1,18 @@
 Version 2.0
-     - Changed Parameters classes #52
+     - #52:
+        - Changed Parameters classes
+     - #49:
+        - Changed parameters_Places.default.json:
+           - Added LocalTimeDifferenceWithGMT to handle local time
+        - Changed ParametersPlace.py  to take into account new LocalTimeDifferenceWithGMT parameter
+        - Changed ParametersPlaces.py  to take into account new LocalTimeDifferenceWithGMT parameter
+        - Changed Calendar.py
+           - Added method getLocalTimeForSlotAsHHMM
+           - Added method getLocalTimeForSlot
+        - Changed RenderBitmap.py
+           - Removed display of GMT warning
+           - Replaced call to getLocalTimeForSlotAsHHMM with a call to getLocalTimeForSlotAsHHMM to display time as Local
+           - Replaced call to getLocalTimeForSlot with a call to getLocalTimeForSlot to display time as Local
 Version 1.7
      - 
 Version 1.6
