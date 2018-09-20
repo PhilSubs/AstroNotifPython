@@ -35,7 +35,9 @@ class Calendar(toolObjectSerializable):
     def getDateForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%Y%m%d')
     def getFormattedDateForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%d %b %Y')
     def getTime(self): return self._time
+    def getLocalTimeForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%H%M%S')  #TODO: compute local time based on DST and area
     def getTimeForSlot(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%H%M%S')
+    def getLocalTimeForSlotAsHHMM(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%H:%M')  #TODO: compute local time based on DST and area
     def getTimeForSlotAsHHMM(self, iSlot, iNumberOfMinutesPerSlot): return (self._dtDateTime + datetime.timedelta(minutes=(iNumberOfMinutesPerSlot * iSlot))).strftime('%H:%M')
     def getNumberOfDaysSinceRef(self): return self._fDateValue
     def getDateValueForTimeSlot(self, iTimeSlot, iNumberOfMinutesPerSlot):
