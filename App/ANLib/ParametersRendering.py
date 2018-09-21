@@ -116,6 +116,9 @@ class ParametersRendering(toolObjectSerializable):
         self._tStyles['RowHeaderDateFont'] = dicJSONData["styleRowHeaderDateFont"]
         self._tStyles['RowHeaderTimeFontSize'] = dicJSONData["styleRowHeaderTimeFontSize"]
         self._tStyles['ObjectNameFontSize'] = dicJSONData["styleObjectNameFontSize"]
+        self._tStyles['ObjectNameFontColor'] = eval(dicJSONData["styleObjectNameFontColor"])
+        self._tStyles['ObjectNameNotifiedFontSize'] = dicJSONData["styleObjectNameNotifiedFontSize"]
+        self._tStyles['ObjectNameNotifiedFontColor'] = eval(dicJSONData["styleObjectNameNotifiedFontColor"])
         self._tStyles['ObjectDataFontSize'] = dicJSONData["styleObjectDataFontSize"]
         self._tStyles['ObjectAdditionalDailyDataFontSize'] = dicJSONData["styleObjectAdditionalDailyDataFontSize"]
         self._tStyles['SectionTitleH0FontSize'] = dicJSONData["styleSectionTitleH0FontSize"]
@@ -136,6 +139,9 @@ class ParametersRendering(toolObjectSerializable):
         self._tStyles['SectionTitleH2BottomMargin'] = dicJSONData["styleSectionTitleH2BottomMargin"]
         self._tStyles['SectionTitleH2PaddingTopBottom'] = dicJSONData["styleSectionTitleH2PaddingTopBottom"]
         self._tStyles['LunarFeatureNameFontSize'] = dicJSONData["styleLunarFeatureNameFontSize"]
+        self._tStyles['LunarFeatureNameFontColor'] = eval(dicJSONData["styleLunarFeatureNameFontColor"])
+        self._tStyles['LunarFeatureNameNotifiedFontSize'] = dicJSONData["styleLunarFeatureNameNotifiedFontSize"]
+        self._tStyles['LunarFeatureNameNotifiedFontColor'] = eval(dicJSONData["styleLunarFeatureNameNotifiedFontColor"])
         self._tStyles['LunarFeatureDataFontSize'] = dicJSONData["styleLunarFeatureDataFontSize"]
         self._tStyles['LunarFeatureDataFont'] = dicJSONData["styleLunarFeatureDataFont"]
         self._tStyles['BitmapHeaderH0FontSize'] = dicJSONData["styleBitmapHeaderH0FontSize"]
