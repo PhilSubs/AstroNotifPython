@@ -1,5 +1,6 @@
 Version 2.0
      - #52:
+        - Added styles BitmapHeaderH0, BitmapHeaderH1, BitmapHeaderH2 in parameters_Rendering.default.json
         - Changed Parameters classes
      - #49:
         - Changed parameters_Places.default.json:
