@@ -9,7 +9,7 @@ from CommonAstroFormulaes import CommonAstroFormulaes
 
 
 class ParametersSkyObject(toolObjectSerializable):
-    def __init__(self, iIndex, sCategory, sID, sType, sName, sRA, fDec, sPictureName, sComment1, sComment2, fDistance, sDistanceUnit, fDmensionX, sDmensionXUnit, fDmensionY, sDmensionYUnit, fApparentMagnitude,sIsFavourite):
+    def __init__(self, iIndex, sCategory, sID, sType, sName, sRA, fDec, sPictureName, sComment1, sComment2, fDistance, sDistanceUnit, fDmensionX, sDmensionXUnit, fDmensionY, sDmensionYUnit, fApparentMagnitude, sIsFavourite, sIsNotifyWhenObservable):
         toolObjectSerializable.__init__(self)
         self._sCategory = sCategory
         self._iIndex = iIndex
@@ -29,6 +29,7 @@ class ParametersSkyObject(toolObjectSerializable):
         self._sDmensionYUnit = sDmensionYUnit
         self._fApparentMagnitude = fApparentMagnitude
         self._bIsFavourite = (sIsFavourite == "Yes")
+        self._bIsNotifyWhenObservable = (sIsNotifyWhenObservable == "Yes")
 
     def getCategory(self): return self._sCategory
     def setCategory(self, sCategory): self._sCategory = sCategory
@@ -65,3 +66,5 @@ class ParametersSkyObject(toolObjectSerializable):
     def setApparentMagnitude(self, fApparentMagnitude): self._fApparentMagnitude = fApparentMagnitude
     def getIsFavourite(self): return self._bIsFavourite
     def setIsFavourite(self, bIsFavourite): self._bIsFavourite = bIsFavourite
+    def getIsNotifyWhenObservable(self): return self._bIsNotifyWhenObservable
+    def setIsNotifyWhenObservable(self, bIsNotifyWhenObservable): self._bIsNotifyWhenObservable = bIsNotifyWhenObservable

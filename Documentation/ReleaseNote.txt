@@ -23,7 +23,27 @@ Version 2.0
            - Changed method  getHTML:
                - Added call to   _addBitmapHeader
                - Removed location and comment from title in HTML header displayed
-           
+      - #11
+         - Added parameter  NotifyWhenObservable  in parameters_LunarFeatures.default.json  and  parameters_SkyObjects.default.json
+         - Changed following classes to add new parameter  NotifyWhenObservable:
+             - ParametersLunarFeature.py
+             - ParametersLunarFeatures.py
+             - ParametersSkyObject.py
+             - ParametersSkyObjects.py
+         - Changed RenderBitmap.py:
+             - Changed  getEphemeridesBitmapForPeriod  to handle parameters NotifyWhenObservable
+             - Changed  getStyle  to handle new styles
+             - Changed  _addObjectRowHeader to handle NotifyWhenObservable
+             - Changed  _addLunarFeatureRowHeader to handle NotifyWhenObservable
+             - Changed  getHTML  to handle parameters NotifyWhenObservable
+         - Changed  nightlyBatch.py  in order to send email only for  objects observables having NotifyWhenObservable=True
+         - Changed Parameters_Rendering.default.json:
+             - Added style  ObjectNameNotified
+             - Added style  LunarFeatureNameNotified
+         - Changed ParametersRendering.py:
+             - Added style  ObjectNameNotified
+             - Added style  LunarFeatureNameNotified
+         
 Version 1.7
      - 
      
