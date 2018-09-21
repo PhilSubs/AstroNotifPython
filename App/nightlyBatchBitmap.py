@@ -23,7 +23,7 @@ print "Calcul des ephemerides<br>"
 theEphemeridesData.computeEphemeridesForPeriod(theParameters, theCalendar)
 print "Generation de la page HTML et du bitmap<br>"
 theRendererBitmap = ANLib.RendererBitmap( theParameters, theParameters.Runtime().getGlobal('PathToWWWFolder') + '/', "http://" + theParameters.Runtime().getNightlyBatch('Domain') + "/", True)
-sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
+sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename, bNotificationToBeSent = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
 
 # Save as default html file
 ANLib.Tools.saveAsFileEncoded(theParameters.Runtime().getGlobal('PathToWWWFolder') + ANLib.Tools.get_path_separator() + theParameters.Runtime().getNightlyBatch('HTMLFilname'), sHTMLContent)
@@ -34,7 +34,7 @@ if len(theParameters.Runtime().getNightlyBatch('EmailAddress')) > 0:
     print "Preparation a l'envoi du mail<br>"
     sTo = theParameters.Runtime().getNightlyBatch('EmailAddress')
     sSubject = theParameters.Localization().getLabel("EphemerisFor") + " " + theCalendar.getFormattedDateForSlot(0, 0) + " (" + theParameters.Runtime().getPlace().getName()  + ")"
-    if (iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
+    if bNotificationToBeSent: #(iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
         sSubject = sSubject + ": "
         if iNbPlanetsObservable > 0: 
             sSubject = sSubject + theParameters.Localization().getLabel("ThePlanets") + " [" + str(iNbPlanetsObservable) + "]"
