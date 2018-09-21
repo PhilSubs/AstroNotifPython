@@ -101,6 +101,10 @@ class RendererBitmap(toolObjectSerializable):
             iStyleFontSize = self._oParameters.Rendering().getStyles('RowHeaderTimeFontSize')
         elif sStyle == "ObjectName":
             iStyleFontSize = self._oParameters.Rendering().getStyles('ObjectNameFontSize')
+            tStyleFontColor = self._oParameters.Rendering().getStyles('ObjectNameFontColor')
+        elif sStyle == "ObjectNameNotified":
+            iStyleFontSize = self._oParameters.Rendering().getStyles('ObjectNameNotifiedFontSize')
+            tStyleFontColor = self._oParameters.Rendering().getStyles('ObjectNameNotifiedFontColor')
         elif sStyle == "ObjectData":
             iStyleFontSize = self._oParameters.Rendering().getStyles('ObjectDataFontSize')
         elif sStyle == "ObjectAdditionalDailyData":
@@ -118,6 +122,10 @@ class RendererBitmap(toolObjectSerializable):
             tStyleFontColor = self._oParameters.Rendering().getStyles('SectionTitleH2FontColor')
         elif sStyle == "LunarFeatureName":
             iStyleFontSize = self._oParameters.Rendering().getStyles('LunarFeatureNameFontSize')
+            tStyleFontColor = self._oParameters.Rendering().getStyles('LunarFeatureNameFontColor')
+        elif sStyle == "LunarFeatureNameNotified":
+            iStyleFontSize = self._oParameters.Rendering().getStyles('LunarFeatureNameNotifiedFontSize')
+            tStyleFontColor = self._oParameters.Rendering().getStyles('LunarFeatureNameNotifiedFontColor')
         elif sStyle == "LunarFeatureData":
             iStyleFontSize = self._oParameters.Rendering().getStyles('LunarFeatureDataFontSize')
             sFont = sFontDirectory + self._oParameters.Rendering().getStyles('LunarFeatureDataFont')
@@ -167,7 +175,7 @@ class RendererBitmap(toolObjectSerializable):
         if oLunarFeatureObject.getLength() != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getLabel("Length") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.getLength()) + " " + self._oParameters.Localization().getLabel("KilometerAbrev")
         if oLunarFeatureObject.getBreadth() != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getLabel("Breadth") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.getBreadth()) + " " + self._oParameters.Localization().getLabel("KilometerAbrev")
         if oLunarFeatureObject.getRukl() != "": sComment3 += ("  -  " if len(sComment3) > 0 else "") + self._oParameters.Localization().getLabel("Rukl") + ": " + oLunarFeatureObject.getRukl()
-        iRowPositionY, theNewImg = self._addLunarFeatureRowHeader(oLunarFeatureObject.getName(), sComment1, sComment2, sComment3, oImg)
+        iRowPositionY, theNewImg = self._addLunarFeatureRowHeader(oLunarFeatureObject, sComment1, sComment2, sComment3, oImg)
         iTmpX, iTmpY = theNewImg.size
         iTableObjectRowHeight = RendererBitmap.iAltitudeRowHeight * 18 + RendererBitmap.iTableObjectRowGraphAdditionalDataHeight
         
@@ -211,7 +219,7 @@ class RendererBitmap(toolObjectSerializable):
         else:
             return False, bAtLeastOneDayIsObservable, oImg
                 
-    def _addLunarFeatureRowHeader(self, sObjectName, sComment1,  sComment2,  sComment3, oImg):
+    def _addLunarFeatureRowHeader(self, oLunarFeatureObject, sComment1,  sComment2,  sComment3, oImg):
         # Resize Image and define starting point to draw header
         iImgWidth, iImgHeight = oImg.size
         iTableObjectRowHeight = RendererBitmap.iAltitudeRowHeight * 18 + RendererBitmap.iTableObjectRowGraphAdditionalDataHeight
@@ -226,7 +234,13 @@ class RendererBitmap(toolObjectSerializable):
         theNewDraw.rectangle((iStartX, iStartY, iStartX + RendererBitmap.iTableWidthObjectLabel, iStartY + iTableObjectRowHeight), fill=(255, 255, 255))
 
         # Display name and infos
-        theNewDraw.text((iStartX + 3, iStartY + 5), self._oParameters.Localization().getLabel(sObjectName), (0,0,0), font=self._getFont("LunarFeatureName"))
+        iStyleFontSize, theStyleFont, tStyleFontColor, tStyleBackColor = self._getStyle("LunarFeatureName")
+        iStyleFontSizeNotified, theStyleFontNotified, tStyleFontColorNotified, tStyleBackColorNotified = self._getStyle("LunarFeatureNameNotified")
+        
+        if self._oParameters.LunarFeatures().getLunarFeatureByName(oLunarFeatureObject.getName()).getIsNotifyWhenObservable():
+            theNewDraw.text((iStartX + 3, iStartY + 5), self._oParameters.Localization().getLabel(oLunarFeatureObject.getName()), tStyleFontColorNotified, font=theStyleFontNotified)
+        else:
+            theNewDraw.text((iStartX + 3, iStartY + 5), self._oParameters.Localization().getLabel(oLunarFeatureObject.getName()), tStyleFontColor, font=theStyleFont)
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10), self._oParameters.Localization().getLabel(sComment1), (0,0,0), font=self._getFont("LunarFeatureData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), self._oParameters.Localization().getLabel(sComment2), (0,0,0), font=self._getFont("LunarFeatureData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 + 12), self._oParameters.Localization().getLabel(sComment3), (0,0,0), font=self._getFont("LunarFeatureData"))
@@ -503,7 +517,13 @@ class RendererBitmap(toolObjectSerializable):
 
         theNewDraw.rectangle((iStartX, iStartY, iStartX + RendererBitmap.iTableWidthObjectLabel, iStartY + iTableObjectRowHeight), fill=(255, 255, 255))
 
-        theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getLabel(oEphemeridesDataObject.getName()), (0,0,0), font=self._getFont("ObjectName"))
+        iStyleFontSize, theStyleFont, tStyleFontColor, tStyleBackColor = self._getStyle("ObjectName")
+        iStyleFontSizeNotified, theStyleFontNotified, tStyleFontColorNotified, tStyleBackColorNotified = self._getStyle("ObjectNameNotified")
+        
+        if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getIsNotifyWhenObservable():
+            theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getLabel(oEphemeridesDataObject.getName()), tStyleFontColorNotified, font=theStyleFontNotified)
+        else:
+            theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getLabel(oEphemeridesDataObject.getName()), tStyleFontColor, font=theStyleFont)
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10), self._oParameters.Localization().getLabel(Tools.removeHTMLTags(sObjectDataRow1)), (0,0,0), font=self._getFont("ObjectData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), self._oParameters.Localization().getLabel(Tools.removeHTMLTags(sObjectDataRow2)), (0,0,0), font=self._getFont("ObjectData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 * 2), self._oParameters.Localization().getLabel(Tools.removeHTMLTags(sObjectDataRow3)), (0,0,0), font=self._getFont("ObjectData"))
@@ -700,6 +720,7 @@ class RendererBitmap(toolObjectSerializable):
         iNbLunarFeaturesobservable = 0
         iNbDeepSkyobjectsObservable = 0
         
+        bNotificationToBeSent = False
         
         #
         # HEADER
@@ -725,6 +746,9 @@ class RendererBitmap(toolObjectSerializable):
                     bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID()), oCalendar, oEphemeridesData, theNewImg)
                     if bIsObservable:
                         iCount = iCount + 1
+                        if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
+                            bNotificationToBeSent = True
+                            print "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName() + "<b>"
                     if bIsDisplayed:
                         bAtLeastOnePlanetIsDisplayed = True
         if not bAtLeastOnePlanetIsDisplayed:
@@ -747,6 +771,10 @@ class RendererBitmap(toolObjectSerializable):
         theNewImg = self._addObjectVisibilityTableHeader(oCalendar, oEphemeridesData, "Moon", theNewImg)
         # Add object row for Moon
         isMoonDisplayed, isMoonObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject("Moon"), oCalendar, oEphemeridesData, theNewImg)
+        if isMoonObservable:
+            if self._oParameters.SkyObjects().getSkyObjectByID("Moon").getIsNotifyWhenObservable():
+                bNotificationToBeSent = True
+
         if isMoonDisplayed:
             # Add legend
             theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
@@ -763,6 +791,9 @@ class RendererBitmap(toolObjectSerializable):
                     bIsDisplayed, bIsObservable, theNewImg = self._addLunarFeatureRow(self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex), oCalendar, oEphemeridesData, theNewImg)
                     if bIsObservable:
                         iCount = iCount + 1
+                        if self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getIsNotifyWhenObservable():
+                            bNotificationToBeSent = True
+                            print "Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getName() + "<b>"
                     if bIsDisplayed:
                         bAtLeastOneLunarFeatureIsDisplayed = True
             if not bAtLeastOneLunarFeatureIsDisplayed:
@@ -797,6 +828,9 @@ class RendererBitmap(toolObjectSerializable):
                     bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID()), oCalendar, oEphemeridesData, theNewImg)
                     if bIsObservable:
                         iCount = iCount + 1
+                        if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
+                            bNotificationToBeSent = True
+                            print "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName() + "<b>"
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -824,6 +858,9 @@ class RendererBitmap(toolObjectSerializable):
                     bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID()), oCalendar, oEphemeridesData, theNewImg)
                     if bIsObservable:
                         iCount = iCount + 1
+                        if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
+                            bNotificationToBeSent = True
+                            print "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName() + "<b>"
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -841,7 +878,7 @@ class RendererBitmap(toolObjectSerializable):
         
         # Return bitmap URL and size
         iWidth, iHeight = theNewImg.size
-        return iWidth, iHeight, self._sURLFolderForBitmaps + sBitmapName, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, self._sRelativeFolderForBitmaps + sBitmapName
+        return iWidth, iHeight, self._sURLFolderForBitmaps + sBitmapName, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, self._sRelativeFolderForBitmaps + sBitmapName, bNotificationToBeSent
 
     def getHTML(self, oCalendar, oEphemeridesData):
         iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
@@ -856,7 +893,7 @@ class RendererBitmap(toolObjectSerializable):
         sHTML += '	</head>' + "\n"
         sHTML += '<BODY>' + "\n"
 
-        iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename = self.getEphemeridesBitmapForPeriod(oCalendar, oEphemeridesData)
+        iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename, bNotificationToBeSent = self.getEphemeridesBitmapForPeriod(oCalendar, oEphemeridesData)
         
         sHTML += '    <H1 class="PageHeader">&nbsp;&nbsp;'
         sHTML += '<A href="http://' + self._oParameters.Runtime().getNightlyBatch('Domain') + '" target="_blank">' + self._oParameters.Localization().getLabel("EphemerisFor") + ' <SPAN style="font-weight: bold">' + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')) + '</SPAN></A>'
@@ -864,7 +901,7 @@ class RendererBitmap(toolObjectSerializable):
         sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' +  self._oParameters.Localization().getLabel("EphemerisFor") + " " + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')) +  '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
         sHTML += '    </BODY>' + "\n"
         sHTML += '</HTML>' + "\n"
-        return sHTML, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename
+        return sHTML, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename, bNotificationToBeSent
 
     def getHTMLHeaderComment(self, oCalendar):
         return ('<!-- Parameters... Date:'  + oCalendar.getLocalStartDate() + '  - Place:'  + self._oParameters.Runtime().getPlace().getName() + ' - Longitude:'  + str(self._oParameters.Runtime().getPlace().getLongitude()) + ' - Latitude:'  + str(self._oParameters.Runtime().getPlace().getLatitude()) + '  -->'  )
