@@ -20,6 +20,9 @@ Version 2.0
         - Changed RenderBitmap.py
            - Added method _addBitmapHeader
            - Changed method _getStyle to take into account the new styles
+           - Changed method  getHTML:
+               - Added call to   _addBitmapHeader
+               - Removed location and comment from title in HTML header displayed
            
 Version 1.7
      - 
