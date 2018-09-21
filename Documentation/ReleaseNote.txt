@@ -1,5 +1,19 @@
 Version 2.0
-     - Changed Parameters classes #52
+     - #52:
+        - Changed Parameters classes
+     - #49:
+        - Changed parameters_Places.default.json:
+           - Added LocalTimeDifferenceWithGMT to handle local time
+        - Changed ParametersPlace.py  to take into account new LocalTimeDifferenceWithGMT parameter and DST
+        - Changed ParametersPlaces.py  to take into account new LocalTimeDifferenceWithGMT parameter and DST
+        - Changed Calendar.py
+           - Changed methods to make distinction between Local and GMT time and date
+        - Changed EphemeridesData.py  to take into account method names in Calendar
+        - Changed RenderBitmap.py
+           - Removed display of GMT warning
+           - Vhanged call to some methods from Calendar (due to method's name change)
+        - nightlyBatch.py
+           - Changed creation of Calendar object to take into account new parameters
 Version 1.7
      - 
 Version 1.6

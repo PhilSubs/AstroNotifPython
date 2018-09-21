@@ -112,8 +112,8 @@ class EphemeridesData(toolObjectSerializable):
     
     def computeEphemeridesForPeriod(self, oParameters, oCalendar):
         # init display parameters
-        self._sStartDate = oCalendar.getDate()
-        self._sStartTime = oCalendar.getTime()
+        self._sStartDate = oCalendar.getLocalStartDate()
+        self._sStartTime = oCalendar.getLocalStartTime()
         self._iNbSlotsMoon = oParameters.Rendering().getDisplay('NumberOfSlotsForMoon')
         self._iNbSlots = self._iNbSlotsMoon
         self._iNbSlotsPlanets = oParameters.Rendering().getDisplay('NumberOfSlotsForPlanets')
@@ -145,15 +145,15 @@ class EphemeridesData(toolObjectSerializable):
         thePlanetUranus = EphemeridesPlanet("Uranus")
         thePlanetNeptune = EphemeridesPlanet("Neptune")
         for iSlot in range (0, self._iNbSlots):
-            fDateValue = oCalendar.getDateValueForTimeSlot(iSlot, oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+            fDateValue = oCalendar.getGMTDateValueForTimeSlot(iSlot, oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
             #
             theSun.computeEphemerides(fDateValue)
-            fLocalSideralTime = CommonAstroFormulaes.getSideralTimeForTime(oCalendar.getTimeForSlot(iSlot,oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')), theSun.getTrueAnoInDeg(), theSun.getArgPerihelInDeg(), oParameters.Runtime().getPlace().getLongitude())
+            fLocalSideralTime = CommonAstroFormulaes.getSideralTimeForTime(oCalendar.getGMTTimeForSlot(iSlot,oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')), theSun.getTrueAnoInDeg(), theSun.getArgPerihelInDeg(), oParameters.Runtime().getPlace().getLongitude())
             self._sunAltitude[str(iSlot)] = CommonAstroFormulaes.getAltitudeFromEquatCoord(theSun.getRAInDeg(), theSun.getDecInDeg(), self._observerLatitude, fLocalSideralTime)
             self._sunMeanLongInDeg[str(iSlot)] = theSun.getMeanLongInDeg()
             #
             if iSlot <= self._iNbSlotsMoon:
-                theMoon.computeEphemerides(oCalendar.getDateForSlot(iSlot,oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')), oCalendar.getTimeForSlot(iSlot,oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')), theSun.getMeanAnoInDeg(), theSun.getArgPerihelInDeg())
+                theMoon.computeEphemerides(oCalendar.getGMTDateForSlot(iSlot,oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')), oCalendar.getGMTTimeForSlot(iSlot,oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')), theSun.getMeanAnoInDeg(), theSun.getArgPerihelInDeg())
                 #fMoonAzimut = CommonAstroFormulaes.getAzimutFromEquatCoord(theMoon.getRightAscension(), theMoon.getDeclination(), self._observerLatitude, fLocalSideralTime)
                 #fMoonAltitude = CommonAstroFormulaes.getAltitudeFromEquatCoord(theMoon.getRightAscension(), theMoon.getDeclination(), self._observerLatitude, fLocalSideralTime)
                 fMoonAltitude = theMoon.getElevation(self._observerLongitude, self._observerLatitude)

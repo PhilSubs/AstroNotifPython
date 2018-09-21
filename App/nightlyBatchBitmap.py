@@ -15,7 +15,7 @@ iNbDeepSkyobjectsObservable = 0
 print "Lecture des parametres du fichier parameters_run.json<br>"
 theParameters = ANLib.Parameters() # read parameters file parameters_run.json
 sParamDate = (datetime.now() + timedelta(hours=theParameters.Runtime().getNightlyBatch('TimeDeltaInHours'))).strftime("%Y%m%d")  # start date from current date at 00:00 + delta hours
-theCalendar = ANLib.Calendar(sParamDate,"000000")
+theCalendar = ANLib.Calendar(sParamDate,"000000", theParameters.Runtime().getPlace().getCurrentLocalTimeDifferenceWithGMT())
 theEphemeridesData = ANLib.EphemeridesData()
 
 # Compute ephemeris and produce new HTML
