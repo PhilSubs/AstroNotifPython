@@ -121,6 +121,16 @@ class RendererBitmap(toolObjectSerializable):
         elif sStyle == "LunarFeatureData":
             iStyleFontSize = self._oParameters.Rendering().getStyles('LunarFeatureDataFontSize')
             sFont = sFontDirectory + self._oParameters.Rendering().getStyles('LunarFeatureDataFont')
+        elif sStyle == "BitmapHeaderH0":
+            iStyleFontSize = self._oParameters.Rendering().getStyles('BitmapHeaderH0FontSize')
+            tStyleBackColor = self._oParameters.Rendering().getStyles('BitmapHeaderH0BackColor')
+            tStyleFontColor = self._oParameters.Rendering().getStyles('BitmapHeaderH0FontColor')
+        elif sStyle == "BitmapHeaderH1":
+            iStyleFontSize = self._oParameters.Rendering().getStyles('BitmapHeaderH1FontSize')
+            tStyleFontColor = self._oParameters.Rendering().getStyles('BitmapHeaderH1FontColor')
+        elif sStyle == "BitmapHeaderH2":
+            iStyleFontSize = self._oParameters.Rendering().getStyles('BitmapHeaderH2FontSize')
+            tStyleFontColor = self._oParameters.Rendering().getStyles('BitmapHeaderH2FontColor')
         
         # return all values for style
         try:
@@ -690,10 +700,16 @@ class RendererBitmap(toolObjectSerializable):
         iNbLunarFeaturesobservable = 0
         iNbDeepSkyobjectsObservable = 0
         
+        
+        #
+        # HEADER
+        #
+        iTitlePosY, theNewImg = self._addBitmapHeader(oCalendar, theInitialImg)
+        
         #
         # PLANETS
         #
-        theBackupImg = self._getImageCopy(theInitialImg)
+        theBackupImg = self._getImageCopy(theNewImg)
         # Add Title
         iTitlePosY, theNewImg = self._addTitleForSection(self._oParameters.Localization().getLabel("ThePlanets"), "SectionTitleH1", theBackupImg, True, -1)
         # add header with date and time for Planets
@@ -844,10 +860,6 @@ class RendererBitmap(toolObjectSerializable):
         
         sHTML += '    <H1 class="PageHeader">&nbsp;&nbsp;'
         sHTML += '<A href="http://' + self._oParameters.Runtime().getNightlyBatch('Domain') + '" target="_blank">' + self._oParameters.Localization().getLabel("EphemerisFor") + ' <SPAN style="font-weight: bold">' + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')) + '</SPAN></A>'
-        sHTML += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-        sHTML += '<SPAN style="font-size:20px">' + self._oParameters.Localization().getLabel("Place") + ': ' + self._oParameters.Runtime().getPlace().getName() + ' </SPAN>'
-        sHTML += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-        sHTML += '<SPAN style="font-size:10px">' + self._oParameters.Localization().getLabel("CalculusFor") + ' ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' ' + self._oParameters.Localization().getLabel("By") + ' AstroNotifPython ' + self._oParameters.Runtime().getGlobal('CurrentVersion') + '</SPAN>'
         sHTML += '</H1>' + "\n"
         sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' +  self._oParameters.Localization().getLabel("EphemerisFor") + " " + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')) +  '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
         sHTML += '    </BODY>' + "\n"
@@ -967,3 +979,49 @@ class RendererBitmap(toolObjectSerializable):
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("AtFeatureSunTooHigh"), font=self._getFont("Legend"))[0] + 25
         
         return imgLegend          
+
+        
+        
+            
+    def _addBitmapHeader(self, oCalendar, oImg):
+        # Get Style
+        iStyleFontSizeH0, theStyleFontH0, tStyleFontColorH0, tStyleBackColorH0 = self._getStyle("BitmapHeaderH0")
+        iStyleFontSizeH1, theStyleFontH1, tStyleFontColorH1, tStyleBackColorH1 = self._getStyle("BitmapHeaderH1")
+        iStyleFontSizeH2, theStyleFontH2, tStyleFontColorH2, tStyleBackColorH2 = self._getStyle("BitmapHeaderH2")
+
+        # Resize Image and define starting point to draw header
+        iImgWidth, iImgHeight = oImg.size
+        iTopMarginH0 = self._oParameters.Rendering().getStyles('BitmapHeaderH0TopMargin')
+        iBottomMarginH0 = self._oParameters.Rendering().getStyles('BitmapHeaderH0BottomMargin')
+        iPaddingTopBottomH0 = self._oParameters.Rendering().getStyles('BitmapHeaderH0PaddingTopBottom')
+        iTopMarginH1 = self._oParameters.Rendering().getStyles('BitmapHeaderH1TopMargin')
+        iBottomMarginH1 = self._oParameters.Rendering().getStyles('BitmapHeaderH1BottomMargin')
+        iPaddingTopBottomH1 = self._oParameters.Rendering().getStyles('BitmapHeaderH1PaddingTopBottom')
+        iTopMarginH2 = self._oParameters.Rendering().getStyles('BitmapHeaderH2TopMargin')
+        iBottomMarginH2 = self._oParameters.Rendering().getStyles('BitmapHeaderH2BottomMargin')
+        iPaddingTopBottomH2 = self._oParameters.Rendering().getStyles('BitmapHeaderH2PaddingTopBottom')
+        
+        iNewHeight = iImgHeight + iTopMarginH0 + iStyleFontSizeH0 + iBottomMarginH0 + iPaddingTopBottomH0*2 + iTopMarginH1 + iStyleFontSizeH1 + iBottomMarginH1 + iPaddingTopBottomH1*2 + iTopMarginH2 + iStyleFontSizeH2 + iBottomMarginH2 + iPaddingTopBottomH2*2
+        
+        oNewImg = self._changeImageSize(oImg, iImgWidth, iNewHeight)
+        theNewDraw = ImageDraw.Draw(oNewImg) 
+        
+        # Draw Row 0
+        iStartY = iTopMarginH0 + iPaddingTopBottomH0
+        sText0 = self._oParameters.Localization().getLabel("EphemerisFor") + ' ' + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        theNewDraw.text((10, iStartY), sText0, tStyleFontColorH0, font=theStyleFontH0)
+        iStartY = iStartY + iStyleFontSizeH0 + iPaddingTopBottomH0 + iBottomMarginH0
+
+        # Draw Row 1
+        iStartY = iStartY + iTopMarginH1 + iPaddingTopBottomH1
+        sText1 = self._oParameters.Localization().getLabel("Place") + ': ' + self._oParameters.Runtime().getPlace().getName()
+        theNewDraw.text((10, iStartY), sText1, tStyleFontColorH1, font=theStyleFontH1)
+        iStartY = iStartY + iStyleFontSizeH1 + iPaddingTopBottomH1 + iBottomMarginH1
+        
+        # Draw Row 2
+        iStartY = iStartY + iTopMarginH2 + iPaddingTopBottomH2
+        sText2 = self._oParameters.Localization().getLabel("CalculusFor") + ' ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' ' + self._oParameters.Localization().getLabel("By") + ' AstroNotifPython ' + self._oParameters.Runtime().getGlobal('CurrentVersion')
+        theNewDraw.text((10, iStartY), sText2, tStyleFontColorH2, font=theStyleFontH2)
+        iStartY = iStartY + iStyleFontSizeH2 + iPaddingTopBottomH2 + iBottomMarginH2
+        
+        return iStartY, oNewImg
