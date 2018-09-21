@@ -30,6 +30,8 @@ Version 2.0
              - ParametersLunarFeatures.py
              - ParametersSkyObject.py
              - ParametersSkyObjects.py
+         - Changed RenderBitmap.py:
+             - Changed  getEphemeridesBitmapForPeriod  to handle parameters NotifyWhenObservable
          
 Version 1.7
      - 
