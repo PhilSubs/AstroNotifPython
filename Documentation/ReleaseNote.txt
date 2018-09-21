@@ -16,6 +16,7 @@ Version 2.0
            - Changed creation of Calendar object to take into account new parameters
      - #47
         - Added styles BitmapHeaderH0, BitmapHeaderH1, BitmapHeaderH2 in parameters_Rendering.default.json
+        - Changed parametersRendering.py   to take into account the new styles
         - Changed RenderBitmap.py
            - Added method _addBitmapHeader
            - Changed method _getStyle to take into account the new styles
