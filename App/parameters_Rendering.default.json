@@ -107,7 +107,7 @@
         "styleObjectNameFontSize":24,
         "styleObjectNameFontColor":"(0, 0, 0)",
         "styleObjectNameNotifiedFontSize":24,
-        "styleObjectNameNotifiedFontColor":"(255, 159, 63)",
+        "styleObjectNameNotifiedFontColor":"(244, 122, 60)",
         "styleObjectDataFontSize":9,
         "styleObjectAdditionalDailyDataFontSize":9,
         "styleSectionTitleH0FontSize":35,
@@ -130,7 +130,7 @@
         "styleLunarFeatureNameFontSize":20,
         "styleLunarFeatureNameFontColor":"(0, 0, 0)",
         "styleLunarFeatureNameNotifiedFontSize":20,
-        "styleLunarFeatureNameNotifiedFontColor":"(255, 159, 63)",
+        "styleLunarFeatureNameNotifiedFontColor":"(244, 122, 60)",
         "styleLunarFeatureDataFontSize":9,
         "styleLunarFeatureDataFont":"arialbi.ttf"
 }
