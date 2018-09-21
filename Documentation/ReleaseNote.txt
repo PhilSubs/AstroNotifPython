@@ -32,6 +32,7 @@ Version 2.0
              - ParametersSkyObjects.py
          - Changed RenderBitmap.py:
              - Changed  getEphemeridesBitmapForPeriod  to handle parameters NotifyWhenObservable
+         - Changed  nightlyBatch.py  in order to send email only for  objects observables having NotifyWhenObservable=True
          
 Version 1.7
      - 
