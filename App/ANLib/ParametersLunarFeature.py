@@ -8,7 +8,7 @@ from toolObjectSerializable import toolObjectSerializable
 
 
 class ParametersLunarFeature(toolObjectSerializable):
-    def __init__(self, iIndex, sID, sName, fLongitude, fLongitudeMin, fLongitudeMax, fLatitude, sIsFavourite, sType, fHeight, fDiameter, fDepth, fLength, fBreadth, sRukl):
+    def __init__(self, iIndex, sID, sName, fLongitude, fLongitudeMin, fLongitudeMax, fLatitude, sIsFavourite, sIsNotifyWhenObservable, sType, fHeight, fDiameter, fDepth, fLength, fBreadth, sRukl):
         toolObjectSerializable.__init__(self)
         self._sID = sID
         self._sName = sName
@@ -18,6 +18,7 @@ class ParametersLunarFeature(toolObjectSerializable):
         self._fLatitude = fLatitude
         self._iIndex = iIndex
         self._bIsFavourite = (sIsFavourite == "Yes")
+        self._bIsNotifyWhenObservable = (sIsNotifyWhenObservable == "Yes")
         self._sType = sType
         self._fHeight = fHeight
         self._fDiameter = fDiameter
@@ -40,6 +41,8 @@ class ParametersLunarFeature(toolObjectSerializable):
     def setLatitude(self, fLatitude): self._fLatitude = fLatitude
     def getIsFavourite(self): return self._bIsFavourite
     def setIsFavourite(self, bIsFavourite): self._bIsFavourite = bIsFavourite
+    def getIsNotifyWhenObservable(self): return self._bIsNotifyWhenObservable
+    def setIsNotifyWhenObservable(self, bIsNotifyWhenObservable): self._bIsNotifyWhenObservable = bIsNotifyWhenObservable
     def getType(self): return self._sType
     def setType(self, sType): self._sType = sType
     def getHeight(self): return self._fHeight
