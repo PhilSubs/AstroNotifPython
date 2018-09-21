@@ -25,6 +25,11 @@ Version 2.0
                - Removed location and comment from title in HTML header displayed
       - #11
          - Added parameter  NotifyWhenObservable  in parameters_LunarFeatures.default.json  and  parameters_SkyObjects.default.json
+         - Changed following classes to add new parameter  NotifyWhenObservable:
+             - ParametersLunarFeature.py
+             - ParametersLunarFeatures.py
+             - ParametersSkyObject.py
+             - ParametersSkyObjects.py
          
 Version 1.7
      - 
