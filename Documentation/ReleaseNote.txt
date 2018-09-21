@@ -23,7 +23,9 @@ Version 2.0
            - Changed method  getHTML:
                - Added call to   _addBitmapHeader
                - Removed location and comment from title in HTML header displayed
-           
+      - #11
+         - Added parameter  NotifyWhenObservable  in parameters_LunarFeatures.default.json  and  parameters_SkyObjects.default.json
+         
 Version 1.7
      - 
      
