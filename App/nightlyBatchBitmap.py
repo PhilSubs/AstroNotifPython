@@ -33,7 +33,7 @@ print "La page HTML et le bitmap sont generes dans " + theParameters.Runtime().g
 if len(theParameters.Runtime().getNightlyBatch('EmailAddress')) > 0:
     print "Preparation a l'envoi du mail<br>"
     sTo = theParameters.Runtime().getNightlyBatch('EmailAddress')
-    sSubject = theParameters.Localization().getLabel("EphemerisFor") + " " + theCalendar.getFormattedDateForSlot(0, 0) + " (" + theParameters.Runtime().getPlace().getName()  + ")"
+    sSubject = theParameters.Localization().getLabel("EphemerisFor") + " " + theCalendar.getFormattedLocalDateForSlot(0, 0) + " (" + theParameters.Runtime().getPlace().getName()  + ")"
     if bNotificationToBeSent: #(iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
         sSubject = sSubject + ": "
         if iNbPlanetsObservable > 0: 
