@@ -199,7 +199,7 @@ class RendererBitmap(toolObjectSerializable):
             iPosYMoonMap = iRowPositionY 
             theNewImg = self._addMoonMinimapBitmap( oEphemeridesData.getEphemerideDataObject("Moon").getPhaseForSlot(iDataSlot), oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
 
-        if bAtLeastOneDayToBeDisplayed:
+        if bAtLeastOneDayIsObservable:
             if not bAtLeastOneDayIsNotObservable:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
             else:
