@@ -22,7 +22,10 @@ class MeeusAlgorithms(toolObjectSerializable):
     def getSunAzimutFromMoonFeature(fFeatureLongitudeOnTheMoon, fFeatureLatitudeOnTheMoon, fMoonSelenographicLongitude, fMoonSelenographicLatitude):
         fSunToFeatureAzimut = math.degrees(math.atan2( math.cos(math.radians(fMoonSelenographicLatitude)) * math.sin(math.radians(fMoonSelenographicLongitude - fFeatureLongitudeOnTheMoon)), math.cos(math.radians(fFeatureLatitudeOnTheMoon)) * math.sin(math.radians(fMoonSelenographicLatitude)) - math.sin(math.radians(fFeatureLatitudeOnTheMoon)) * math.cos(math.radians(fMoonSelenographicLatitude)) * math.cos(math.radians(fMoonSelenographicLongitude - fFeatureLongitudeOnTheMoon))))
         return ((fSunToFeatureAzimut + 360.0) % 360.0)
-
+    @staticmethod
+    def getAngularSeparation(fRightAscensionA, fDeclinationA, fRightAscensionB, fDeclinationB):
+        return MeeusAlgorithmsFormulas.AngularSeparation_16_01(fRightAscensionA, fDeclinationA, fRightAscensionB, fDeclinationB)
+        
     # Constructor
     def __init__(self, sDate, sTime):
         toolObjectSerializable.__init__(self)
