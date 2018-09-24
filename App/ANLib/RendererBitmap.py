@@ -144,7 +144,6 @@ class RendererBitmap(toolObjectSerializable):
         try:
             theStyleFont = ImageFont.truetype(sFont, iStyleFontSize)
         except:
-            print ">>> Font:" + sFont
             theStyleFont = ImageFont.truetype(sFont + ".ttf", iStyleFontSize)
         return (iStyleFontSize, theStyleFont, tStyleFontColor, tStyleBackColor)
 
@@ -199,7 +198,7 @@ class RendererBitmap(toolObjectSerializable):
             iPosYMoonMap = iRowPositionY 
             theNewImg = self._addMoonMinimapBitmap( oEphemeridesData.getEphemerideDataObject("Moon").getPhaseForSlot(iDataSlot), oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
 
-        if bAtLeastOneDayIsObservable:
+        if bAtLeastOneDayToBeDisplayed:
             if not bAtLeastOneDayIsNotObservable:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
             else:
@@ -748,7 +747,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            print "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName() + "<b>"
+                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOnePlanetIsDisplayed = True
         if not bAtLeastOnePlanetIsDisplayed:
@@ -793,7 +792,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            print "Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getName() + "<b>"
+                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneLunarFeatureIsDisplayed = True
             if not bAtLeastOneLunarFeatureIsDisplayed:
@@ -830,7 +829,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            print "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName() + "<b>"
+                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -860,7 +859,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            print "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName() + "<b>"
+                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
