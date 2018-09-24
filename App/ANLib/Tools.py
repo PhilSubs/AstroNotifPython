@@ -223,6 +223,7 @@ class Tools:
         if not(sFilename == "" or sText == ""):
             with open(sFilename, "a") as logFile:
                 logFile.write(sText + "\n")
+                logFile.close()
             
     @staticmethod
     def getTrace(sFilename):
@@ -230,6 +231,7 @@ class Tools:
         if not(sFilename == ""):
             with open(sFilename, 'r') as logFile:
                 data=logFile.read()
+                logFile.close()
         else:
             data = ""
         return data
@@ -240,5 +242,6 @@ class Tools:
         if not(sFilename == ""):
             with open(sFilename, "w") as logFile:
                 logFile.write("") 
+                logFile.close()
         else:
             print "Tools.resetTrace:  Log File name is missing !"
