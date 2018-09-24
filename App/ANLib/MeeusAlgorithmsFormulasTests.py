@@ -49,6 +49,7 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         print MeeusAlgorithmsFormulasTests.Test_TransformationCoordinates_12_03()
         print MeeusAlgorithmsFormulasTests.Test_TransformationCoordinates_12_04()
         print MeeusAlgorithmsFormulasTests.Test_11_SideralTimeGreenwich_11_01()
+        print MeeusAlgorithmsFormulasTests.Test_AngularSeparation_16_01()
         print MeeusAlgorithmsFormulasTests.Test_NutationObliquity_21_00()
         print MeeusAlgorithmsFormulasTests.Test_NutationObliquity_21_01()
         print MeeusAlgorithmsFormulasTests.Test_NutationObliquity_21_02()
@@ -214,6 +215,13 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fJuliandEphemerisDay, 2446895.5, 1, "NutationObliquity_21_00",str(fJulianDay),"Juliand Ephemeris Day")
         sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fJulianCenturies, -0.127296372348, 11, "NutationObliquity_21_00","JulianDay_07_01(1987, 4, 10, 0, 0, 0)","Julian Centuries")
         sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fJulianEphemerisCenturies, -0.127296344738, 11, "NutationObliquity_21_00","JulianDay_07_01(1987, 4, 10, 0, 0, 0)","Julian Centuries from Ephemeris Day")
+        # Return result
+        return sComment
+
+    @staticmethod
+    def Test_AngularSeparation_16_01():
+        fAngularSeparationDeg = MeeusAlgorithmsFormulas.AngularSeparation_16_01(213.9154, 19.1825, 201.2983, -11.1614)
+        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fAngularSeparationDeg, 32.7930, 4, "AngularSeparation_16_01","213.9154, 19.1825, 201.2983, -11.1614","Angular Separation")
         # Return result
         return sComment
 

@@ -43,6 +43,20 @@ Version 2.0
          - Changed ParametersRendering.py:
              - Added style  ObjectNameNotified
              - Added style  LunarFeatureNameNotified
+     - #60
+         - Changed  MeeusAlgorithms.py:  added formula AngularSeparation_16_01
+         - Changed  MeeusAlgorithmsTest.py:  added test for formula AngularSeparation_16_01
+         - Changed  MeeusAlgorithms.py : added method getAngularSeparation
+         - Changed  EphemeridesData.py:
+             - Changed getObjectVisibilityStatusForSlot:
+                 - Added status  DifficultMoonlight
+             - Changed  computeEphemeridesForPeriod:  added RA and Dec for deep sky objects
+         - Changed ParametersRendering:  Added parameters  colorObjectVisibilityStatusDifficultMoonlight
+         - Changed Parameters_Rendering.default.json:  Added parameters  colorObjectVisibilityStatusDifficultMoonlight
+         - Changed Parameters_Localization.default.json:  added label  DifficultMoonlight
+         - Changed RendererBitmap.py:
+             - Changed  _addVisibilityMapLegend:  added new value
+         
          
 Version 1.7
      - 

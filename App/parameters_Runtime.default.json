@@ -1,6 +1,6 @@
 {
     "Global":"Global parameters",
-        "currentVersion":"v2.0-beta-Issue11",
+        "currentVersion":"v2.0-beta-Issue60",
         "GlobalPathToWWWFolder":"",
         "GlobalPathToWWWFolder_comment":"Absolute path to WWW folder containing files served by web server",
         "GlobalPathToAPPFolder":"",
