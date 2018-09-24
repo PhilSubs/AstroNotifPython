@@ -34,6 +34,7 @@ class ParametersRuntime(toolObjectSerializable):
         self._tGlobal['CurrentVersion'] = dicJSONData["currentVersion"]
         self._tGlobal['PathToWWWFolder'] = dicJSONData["GlobalPathToWWWFolder"]
         self._tGlobal['PathToAPPFolder'] = dicJSONData["GlobalPathToAPPFolder"]
+        self._tGlobal['LogFileName'] = dicJSONData["GlobalLogFileName"]
         # Nihtly Batch parameters
         self._tNightlyBatch = {}
         self._tNightlyBatch['TimeDeltaInHours'] = dicJSONData["NightlyBatchTimeDeltaInHours"]
