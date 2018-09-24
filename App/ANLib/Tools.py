@@ -152,20 +152,20 @@ class Tools:
 
 
         # Send the message via local SMTP server.
-        print "smtp..."
+        print "Envoi du mail..."
         theSender = smtplib.SMTP(sSMTPServer, 587)
         theSender.set_debuglevel(False)
         theSender.ehlo()
         theSender.starttls()
-        print "login(" + sUser + ")..."
+        print "Connexion au serveur SMTP (" + sUser + ")..."
         theSender.login(sUser, sPassword)
-        print "logged in..."
+        print "Connexion OK..."
         try:
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
-            print "sending..."
+            print "Emvoi du mail en cours..."
             theSender.sendmail(sFrom, sTo, theMsg.as_string())
-            print "sent..."
+            print "Le mail a ete envoye..."
         finally:
             theSender.quit()
 
@@ -215,4 +215,22 @@ class Tools:
         sText = sText.replace('&nbsp;',' ')
         
         return sText
-        
+
+    @staticmethod
+    def logToTrace(sFilename, sText):
+        # add text to the log file
+        with open(sFilename, "a") as logFile:
+            logFile.write(sText + "\n")
+            
+    @staticmethod
+    def getTrace(sFilename):
+        # get the content of the log file
+        with open(sFilename, 'r') as logFile:
+            data=logFile.read()
+        return data
+
+    @staticmethod
+    def resetTrace(sFilename):
+        # reset the log file content
+        with open(sFilename, "w") as logFile:
+            logFile.write(“”) 
