@@ -44,6 +44,8 @@
         "ObservationShowWhenTerminatorIsOnLunarFeature": "Yes",
         "ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg": 10.0,
         "ObservationShowWhenTerminatorIsOnLunarFeature_comment": "if Yes, a special color is used for showing that terminator is within ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg deg of the lunar feature, based on Min Longitude and Max Longitude",
+        "ObservationDeepSkyObjectMinAngularSeparationWithMooninDeg":60.0,
+        "ObservationDeepSkyObjectMinAngularSeparationWithMooninDeg_comment":"Minimum angular separation between Deep Sky object and Moon (* Illum %) for observation",
     
     "Comment":"explain the field above",
         "Field NotificationType":"Display,Email",
