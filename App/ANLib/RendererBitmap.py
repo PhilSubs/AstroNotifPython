@@ -839,7 +839,7 @@ class RendererBitmap(toolObjectSerializable):
             iTitlePosY, theNewImg = self._addTitleForSection(self._oParameters.Localization().getLabel("FavouriteDeepSkyObjects") + " (" + str(iCount) + "/" + str(iNumber) + ")", "SectionTitleH2", theNewImg, True, iTitlePosY)
             iNbDeepSkyobjectsObservable = iCount
             # Add legend
-            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
+            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph, True)
         # Other Deep Sky Objects
         theBackupImg = self._getImageCopy(theNewImg)
         if self._bForFavouriteOnly:
@@ -869,7 +869,7 @@ class RendererBitmap(toolObjectSerializable):
             iTitlePosY, theNewImg = self._addTitleForSection(self._oParameters.Localization().getLabel("OtherDeepSkyObjects") + " (" + str(iCount) + "/" + str(iNumber) + ")", "SectionTitleH2", theNewImg, True, iTitlePosY)
             iNbDeepSkyobjectsObservable = iNbDeepSkyobjectsObservable + iCount
             # Add legend
-            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
+            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph, True)
             
         # Save and return bitmap name
         sBitmapName = 'Ephemerides_' + self._oParameters.Runtime().getPlace().getName().replace(' ','') + '.' + self._oParameters.Rendering().getDisplay('BitmapExtension')
@@ -923,7 +923,7 @@ class RendererBitmap(toolObjectSerializable):
         finalDraw.text((300, 220),"Sample Text:  00 01 02 03 04 05 06 07" + " --> " + str(draw.textsize("Sample Text:  00 01 02 03 04 05 06 07", font=self._getFont("RowHeaderTime"))[0]),(255,255,255),font=self._getFont("RowHeaderTime"))
         finalImg.save('bitmapRenderer_sample.jpg')
                 
-    def _addVisibilityMapLegend(self, oImg, iPastePosX):
+    def _addVisibilityMapLegend(self, oImg, iPastePosX, bWithStatusDifficultMoonLight = False):
         # Add legend at bottom of the bitmap (resized to add the legend)
         
         iImgWidth, iImgHeight = oImg.size
@@ -955,6 +955,12 @@ class RendererBitmap(toolObjectSerializable):
         drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('VeryLow'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("VeryLow"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("VeryLow"), font=self._getFont("Legend"))[0] + 25
+        
+        if bWithStatusDifficultMoonLight:
+            drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('DifficultMoonlight'))
+            drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('DifficultMoonlight'))
+            drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("DifficultMoonlight"), (255,255,255), font=self._getFont("Legend"))
+            iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("DifficultMoonlight"), font=self._getFont("Legend"))[0] + 25
         
         drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Low'))
         drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Low'))

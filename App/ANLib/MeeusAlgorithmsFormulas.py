@@ -182,6 +182,20 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         return fElevation
 
     @staticmethod
+    def AngularSeparation_16_01(fRightAscensionA, fDeclinationA, fRightAscensionB, fDeclinationB):     # return fAngularSeparationDeg
+        # Chapter 16 - Angular Separation - Formula 16.1
+        #
+        #     Input: Right Ascension for object A
+        #            Declination for Object A
+        #            Right Ascension for object B
+        #            Declination for Object B
+        #
+        #     Output: Angular Separation in Deg
+        #
+        fAngularSeparationDeg = math.acos( math.sin(math.radians(fDeclinationA)) * math.sin(math.radians(fDeclinationB))  +  math.cos(math.radians(fDeclinationA)) * math.cos(math.radians(fDeclinationB)) * math.cos(math.radians(fRightAscensionA - fRightAscensionB)) )
+        return CommonAstroFormulaes.FormatDegreesTo360(math.degrees(fAngularSeparationDeg))
+
+    @staticmethod
     def NutationObliquity_21_00(fJulianDay):     # return fJuliandEphemerisDay, fJulianCenturies, fJulianEphemerisCenturies
         # Chapter 21 - Nutation And Obliquity - Formula 21.0
         #
