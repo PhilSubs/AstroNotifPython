@@ -43,6 +43,14 @@ Version 2.0
          - Changed ParametersRendering.py:
              - Added style  ObjectNameNotified
              - Added style  LunarFeatureNameNotified
+      - #61 (logging)
+         - Added parameter  GlobalPathToLogFileName  in parameters_Runtime.default.json
+         - Changed  ParametersRuntime.py  for new parameter  GlobalPathToLogFileName
+         - Changed Tools.py:
+             - Added  resetTrace
+             - Added  getTrace
+             - Added  logToTrace
+         - Changed nightlyBatch.py  to use log functions
      - #60
          - Changed  MeeusAlgorithms.py:  added formula AngularSeparation_16_01
          - Changed  MeeusAlgorithmsTest.py:  added test for formula AngularSeparation_16_01
@@ -56,7 +64,6 @@ Version 2.0
          - Changed Parameters_Localization.default.json:  added label  DifficultMoonlight
          - Changed RendererBitmap.py:
              - Changed  _addVisibilityMapLegend:  added new value
-         
          
 Version 1.7
      - 
