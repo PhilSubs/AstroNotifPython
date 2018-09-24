@@ -218,19 +218,27 @@ class Tools:
 
     @staticmethod
     def logToTrace(sFilename, sText):
+        print sText
         # add text to the log file
-        with open(sFilename, "a") as logFile:
-            logFile.write(sText + "\n")
+        if not(sFilename == "" or sText == ""):
+            with open(sFilename, "a") as logFile:
+                logFile.write(sText + "\n")
             
     @staticmethod
     def getTrace(sFilename):
         # get the content of the log file
-        with open(sFilename, 'r') as logFile:
-            data=logFile.read()
+        if not(sFilename == ""):
+            with open(sFilename, 'r') as logFile:
+                data=logFile.read()
+        else:
+            data = ""
         return data
 
     @staticmethod
     def resetTrace(sFilename):
         # reset the log file content
-        with open(sFilename, "w") as logFile:
-            logFile.write(“”) 
+        if not(sFilename == ""):
+            with open(sFilename, "w") as logFile:
+                logFile.write("") 
+        else:
+            print "Tools.resetTrace:  Log File name is missing !"
