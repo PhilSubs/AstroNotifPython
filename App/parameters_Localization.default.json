@@ -87,7 +87,8 @@
             "MoonFeatureRim":"Rim",
             "MoonFeatureValley":"Valley",
             "MoonFeatureFault":"Fault",
-            "MoonFeaturePlain":"Plain"
+            "MoonFeaturePlain":"Plain",
+            "DifficultMoonlight":"Difficult due to Moon"
             
 		},
 
@@ -175,6 +176,7 @@
             "MoonFeatureRim":"Faille",
             "MoonFeatureValley":"Vallée",
             "MoonFeatureFault":"Accident",
-            "MoonFeaturePlain":"Plaine"
+            "MoonFeaturePlain":"Plaine",
+            "DifficultMoonlight":"Difficile à cause de la Lune"
 		}
 }
