@@ -23,6 +23,7 @@
         "colorObjectVisibilityStatusVeryLow":"(242, 84, 0)",
         "colorObjectVisibilityStatusLow":"(255, 159, 63)",
         "colorObjectVisibilityStatusDifficult":"(255, 0, 0)",
+        "colorObjectVisibilityStatusDifficultMoonlight":"(255, 255, 0)",
         "colorObjectVisibilityStatusImpossible":"(127, 127, 127)",
         "colorObjectVisibilityStatusGood":"(0, 255, 0)",
         "colorObjectVisibilityStatusUnknown":"(0, 0, 255)",
@@ -107,7 +108,7 @@
         "styleObjectNameFontSize":24,
         "styleObjectNameFontColor":"(0, 0, 0)",
         "styleObjectNameNotifiedFontSize":24,
-        "styleObjectNameNotifiedFontColor":"(244, 122, 60)",
+        "styleObjectNameNotifiedFontColor":"(255, 159, 63)",
         "styleObjectDataFontSize":9,
         "styleObjectAdditionalDailyDataFontSize":9,
         "styleSectionTitleH0FontSize":35,
@@ -130,7 +131,7 @@
         "styleLunarFeatureNameFontSize":20,
         "styleLunarFeatureNameFontColor":"(0, 0, 0)",
         "styleLunarFeatureNameNotifiedFontSize":20,
-        "styleLunarFeatureNameNotifiedFontColor":"(244, 122, 60)",
+        "styleLunarFeatureNameNotifiedFontColor":"(255, 159, 63)",
         "styleLunarFeatureDataFontSize":9,
         "styleLunarFeatureDataFont":"arialbi.ttf"
 }
