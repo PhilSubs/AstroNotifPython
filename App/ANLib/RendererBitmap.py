@@ -839,7 +839,7 @@ class RendererBitmap(toolObjectSerializable):
             iTitlePosY, theNewImg = self._addTitleForSection(self._oParameters.Localization().getLabel("FavouriteDeepSkyObjects") + " (" + str(iCount) + "/" + str(iNumber) + ")", "SectionTitleH2", theNewImg, True, iTitlePosY)
             iNbDeepSkyobjectsObservable = iCount
             # Add legend
-            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
+            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph, True)
         # Other Deep Sky Objects
         theBackupImg = self._getImageCopy(theNewImg)
         if self._bForFavouriteOnly:
@@ -869,7 +869,7 @@ class RendererBitmap(toolObjectSerializable):
             iTitlePosY, theNewImg = self._addTitleForSection(self._oParameters.Localization().getLabel("OtherDeepSkyObjects") + " (" + str(iCount) + "/" + str(iNumber) + ")", "SectionTitleH2", theNewImg, True, iTitlePosY)
             iNbDeepSkyobjectsObservable = iNbDeepSkyobjectsObservable + iCount
             # Add legend
-            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph)
+            theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph, True)
             
         # Save and return bitmap name
         sBitmapName = 'Ephemerides_' + self._oParameters.Runtime().getPlace().getName().replace(' ','') + '.' + self._oParameters.Rendering().getDisplay('BitmapExtension')
