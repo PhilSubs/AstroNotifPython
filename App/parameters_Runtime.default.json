@@ -1,10 +1,12 @@
 {
     "Global":"Global parameters",
-        "currentVersion":"v2.0-beta-Issue11",
+        "currentVersion":"v2.0-beta-24SEP2018",
         "GlobalPathToWWWFolder":"",
         "GlobalPathToWWWFolder_comment":"Absolute path to WWW folder containing files served by web server",
         "GlobalPathToAPPFolder":"",
         "GlobalPathToAPPFolder_comment":"Absolute path to AstroNotif application folder containing python files",
+        "GlobalLogFileName":"trace.log",
+        "GlobalLogFileName_comment":"Name of the logfile that will be created in APP Folder",
     
     "NightlyBatch":"Parameters for nightly batch",
         "NightlyBatchTimeDeltaInHours":0,
