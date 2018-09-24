@@ -19,7 +19,9 @@ import sys
 
 # get command line values
 sAction = sys.argv[1]
-sParameter1 = sys.argv[2]
+sParameter1 = ""
+if len(sys.argv) > 2:
+    sParameter1 = sys.argv[2]
 
 # Read the parameters files
 theParameters = ANLib.Parameters() # read parameters file parameters_run.json
@@ -35,7 +37,7 @@ elif sAction == "getTrace":
         print ANLib.Tools.getTrace(theParameters.Runtime().getGlobal("PathToLogFileName")).replace("\n","<BR>\n")
     else:
         print ANLib.Tools.getTrace(theParameters.Runtime().getGlobal("PathToLogFileName"))
-elif sAction = "generateHTMLPageForTrace":
+elif sAction == "generateHTMLPageForTrace":
     sPageContent = "<HTML>"
     sPageContent += "	<HEAD>"
     sPageContent += '      <TITLE>AstroNotifLog</TITLE>'
