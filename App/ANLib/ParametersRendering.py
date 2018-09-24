@@ -66,6 +66,7 @@ class ParametersRendering(toolObjectSerializable):
         self._tcolorObjectVisibilityStatus['VeryLow'] = eval(dicJSONData["colorObjectVisibilityStatusVeryLow"])
         self._tcolorObjectVisibilityStatus['Low'] = eval(dicJSONData["colorObjectVisibilityStatusLow"])
         self._tcolorObjectVisibilityStatus['Difficult'] = eval(dicJSONData["colorObjectVisibilityStatusDifficult"])
+        self._tcolorObjectVisibilityStatus['DifficultMoonlight'] = eval(dicJSONData["colorObjectVisibilityStatusDifficultMoonlight"])
         self._tcolorObjectVisibilityStatus['Impossible'] = eval(dicJSONData["colorObjectVisibilityStatusImpossible"])
         self._tcolorObjectVisibilityStatus['Good'] = eval(dicJSONData["colorObjectVisibilityStatusGood"])
         self._tcolorObjectVisibilityStatus['Unknown'] = eval(dicJSONData["colorObjectVisibilityStatusUnknown"])
