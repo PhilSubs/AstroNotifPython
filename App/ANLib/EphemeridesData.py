@@ -9,6 +9,7 @@ from EphemeridesMoon import EphemeridesMoon
 from EphemeridesMoonMeeus import EphemeridesMoonMeeus
 from EphemeridesSun import EphemeridesSun
 from EphemeridesPlanet import EphemeridesPlanet
+from MeeusAlgorithms import MeeusAlgorithms
 from Calendar import Calendar
 from Parameters import Parameters
 from CommonAstroFormulaes import CommonAstroFormulaes
@@ -36,6 +37,7 @@ class EphemeridesData(toolObjectSerializable):
         #     - VeryLow: object is visible but very low   (<15)
         #     - Low: object is visible but low  (<35)
         #     - Difficult: object is visible but sun makes it difficult to see
+        #     - DifficultMoonlight: object is visible but moon makes it difficult to see
         #     - Impossible:  object is visible but sun makes it impossible to see
         #     - Hidden: object is visible but hidden by something
         #     - Good: object is visible in good conditions
@@ -63,7 +65,12 @@ class EphemeridesData(toolObjectSerializable):
         # Deepsky
         elif sObjectCategory == "DeepSky":
             if fSunAltitude <= fDisplayMaxSunAltitudeForObservableDeepSky:
-                if fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
+                fAngularSeparationCheck = 90.0 * self._objects['Moon'].getIlluminationForSlot(iSlot)
+                fAngularSeparation = MeeusAlgorithms.getAngularSeparation(self._objects['Moon'].getRightAscensionForSlot(iSlot), self._objects['Moon'].getDeclinationForSlot(iSlot), self._objects[sObjectID].getRightAscensionForSlot(iSlot), self._objects[sObjectID].getDeclinationForSlot(iSlot))
+                print sObjectID + "   Angular Sep: " + str(fAngularSeparation) + "    Angular Sep Min: " + str(fAngularSeparationCheck) + "   Moon Ill: " + str(self._objects['Moon'].getIlluminationForSlot(iSlot)) + "     Moon: " + str(self._objects['Moon'].getRightAscensionForSlot(iSlot)) + ", " + str(self._objects['Moon'].getDeclinationForSlot(iSlot)) + "   object: " + str( self._objects[sObjectID].getRightAscensionForSlot(iSlot)) + ", " + str(self._objects[sObjectID].getDeclinationForSlot(iSlot))
+                if self._objects['Moon'].getAltitudeForSlot(iSlot) > 0 and fAngularSeparation <= fAngularSeparationCheck:
+                    sStatus = "DifficultMoonlight"
+                elif fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
                    sStatus = "VeryLow"
                 elif fObjectAltitude < fDisplayMaxAltitudeForObjectLow:
                     sStatus = "Low"
@@ -201,7 +208,7 @@ class EphemeridesData(toolObjectSerializable):
                     if not(oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getCategory() == "Planetary") and not(oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getCategory() == "Moon"):
                         fAzimut = CommonAstroFormulaes.getAzimutFromEquatCoord(oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getRA(), oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getDec(), self._observerLatitude, fLocalSideralTime)
                         fAltitude = CommonAstroFormulaes.getAltitudeFromEquatCoord(oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getRA(), oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getDec(), self._observerLatitude, fLocalSideralTime)
-                        self._objects[oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getID()].setDataForSlot(iSlot, fAzimut, fAltitude, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+                        self._objects[oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getID()].setDataForSlot(iSlot, fAzimut, fAltitude, oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getRA(), oParameters.SkyObjects().getSkyObjectByIndex(iIndex).getDec(), 0.0, 0.0, 0.0, 0.0, 0.0)
                     
         
     
