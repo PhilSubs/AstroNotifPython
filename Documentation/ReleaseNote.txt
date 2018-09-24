@@ -44,8 +44,13 @@ Version 2.0
              - Added style  ObjectNameNotified
              - Added style  LunarFeatureNameNotified
       - #61 (logging)
-         - Added parameter  GlobalLogFileName  in parameters_Runtime.default.json
-         - Changed  ParametersRuntime.py  for new parameter  GlobalLogFileName
+         - Added parameter  GlobalPathToLogFileName  in parameters_Runtime.default.json
+         - Changed  ParametersRuntime.py  for new parameter  GlobalPathToLogFileName
+         - Changed Tools.py:
+             - Added  resetTrace
+             - Added  getTrace
+             - Added  logToTrace
+         - Changed nightlyBatch.py  to use log functions
          
 Version 1.7
      - 
