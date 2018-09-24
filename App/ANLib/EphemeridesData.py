@@ -67,7 +67,6 @@ class EphemeridesData(toolObjectSerializable):
             if fSunAltitude <= fDisplayMaxSunAltitudeForObservableDeepSky:
                 fAngularSeparationCheck = 90.0 * self._objects['Moon'].getIlluminationForSlot(iSlot)
                 fAngularSeparation = MeeusAlgorithms.getAngularSeparation(self._objects['Moon'].getRightAscensionForSlot(iSlot), self._objects['Moon'].getDeclinationForSlot(iSlot), self._objects[sObjectID].getRightAscensionForSlot(iSlot), self._objects[sObjectID].getDeclinationForSlot(iSlot))
-                print sObjectID + "   Angular Sep: " + str(fAngularSeparation) + "    Angular Sep Min: " + str(fAngularSeparationCheck) + "   Moon Ill: " + str(self._objects['Moon'].getIlluminationForSlot(iSlot)) + "     Moon: " + str(self._objects['Moon'].getRightAscensionForSlot(iSlot)) + ", " + str(self._objects['Moon'].getDeclinationForSlot(iSlot)) + "   object: " + str( self._objects[sObjectID].getRightAscensionForSlot(iSlot)) + ", " + str(self._objects[sObjectID].getDeclinationForSlot(iSlot))
                 if self._objects['Moon'].getAltitudeForSlot(iSlot) > 0 and fAngularSeparation <= fAngularSeparationCheck:
                     sStatus = "DifficultMoonlight"
                 elif fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
