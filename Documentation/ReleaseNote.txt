@@ -46,6 +46,7 @@ Version 2.0
      - #60
          - Changed  MeeusAlgorithms.py:  added formula AngularSeparation_16_01
          - Changed  MeeusAlgorithmsTest.py:  added test for formula AngularSeparation_16_01
+         - Changed  MeeusAlgorithms.py : added method getAngularSeparation
          
 Version 1.7
      - 
