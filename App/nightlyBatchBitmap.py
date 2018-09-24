@@ -13,10 +13,7 @@ iNbDeepSkyobjectsObservable = 0
 
 # Read the parameters files
 theParameters = ANLib.Parameters() # read parameters file parameters_run.json
-# Reset the logfile
-ANLib.Tools.resetTrace(theParameters.Runtime().getGlobal("PathToLogFileName"))
-
-ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Parametres et trace initialises")
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Parametres initialises")
 
 # Prepare objects for computing ephemeris
 sParamDate = (datetime.now() + timedelta(hours=theParameters.Runtime().getNightlyBatch('TimeDeltaInHours'))).strftime("%Y%m%d")  # start date from current date at 00:00 + delta hours
