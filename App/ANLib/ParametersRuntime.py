@@ -56,4 +56,5 @@ class ParametersRuntime(toolObjectSerializable):
         self._tObservation['ShowWhenTerminatorIsOnLunarFeature'] = ( dicJSONData["ObservationShowWhenTerminatorIsOnLunarFeature"] == "Yes")
         self._tObservation['ShowWhenTerminatorIsOnLunarFeatureWithinDeg'] = dicJSONData["ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg"]
         self._tObservation['PlaceName'] = dicJSONData["ObservationPlaceName"]
+        self._tObservation['DeepSkyObjectMinAngularSeparationWithMoonInDeg'] = dicJSONData["ObservationDeepSkyObjectMinAngularSeparationWithMoonInDeg"]
 
