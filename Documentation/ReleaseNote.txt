@@ -43,6 +43,9 @@ Version 2.0
          - Changed ParametersRendering.py:
              - Added style  ObjectNameNotified
              - Added style  LunarFeatureNameNotified
+     - #60
+         - Changed  MeeusAlgorithms.py:  added formula AngularSeparation_16_01
+         - Changed  MeeusAlgorithmsTest.py:  added test for formula AngularSeparation_16_01
          
 Version 1.7
      - 
