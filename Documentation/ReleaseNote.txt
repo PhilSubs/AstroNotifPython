@@ -43,6 +43,9 @@ Version 2.0
          - Changed ParametersRendering.py:
              - Added style  ObjectNameNotified
              - Added style  LunarFeatureNameNotified
+      - #61 (logging)
+         - Added parameter  GlobalLogFileName  in parameters_Runtime.default.json
+         - Changed  ParametersRuntime.py  for new parameter  GlobalLogFileName
          
 Version 1.7
      - 
