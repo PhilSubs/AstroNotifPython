@@ -50,7 +50,13 @@ Version 2.0
          - Changed  EphemeridesData.py:
              - Changed getObjectVisibilityStatusForSlot:
                  - Added status  DifficultMoonlight
-             - 
+             - Changed  computeEphemeridesForPeriod:  added RA and Dec for deep sky objects
+         - Changed ParametersRendering:  Added parameters  colorObjectVisibilityStatusDifficultMoonlight
+         - Changed Parameters_Rendering.default.json:  Added parameters  colorObjectVisibilityStatusDifficultMoonlight
+         - Changed Parameters_Localization.default.json:  added label  DifficultMoonlight
+         - Changed RendererBitmap.py:
+             - Changed  _addVisibilityMapLegend:  added new value
+         
          
 Version 1.7
      - 
