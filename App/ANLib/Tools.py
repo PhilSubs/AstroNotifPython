@@ -148,26 +148,27 @@ class Tools:
         # According to RFC 2046, the last part of a multipart message, in this case
         # the HTML message, is best and preferred.
         theMsg.attach(theMIMEpart)
-	if sBitmapFilename !="": theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
-
+        if sBitmapFilename !="": theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
 
         # Send the message via local SMTP server.
-        print "Envoi du mail..."
+        sLog = "  Starts sending mail...\n"
         theSender = smtplib.SMTP(sSMTPServer, 587)
         theSender.set_debuglevel(False)
         theSender.ehlo()
         theSender.starttls()
-        print "Connexion au serveur SMTP (" + sUser + ")..."
+        sLog += "  Log in SMTP server (" + sUser + ")...\n"
         theSender.login(sUser, sPassword)
-        print "Connexion OK..."
+        sLog += "  Connected...\n"
         try:
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
-            print "Emvoi du mail en cours..."
+            sLog += "  Sending email...\n"
             theSender.sendmail(sFrom, sTo, theMsg.as_string())
-            print "Le mail a ete envoye..."
+            sLog += "  Email is sent...\n"
         finally:
             theSender.quit()
+        
+        return sLog
 
     @staticmethod
     def saveAsFileEncoded(sFileName, sContent ):
