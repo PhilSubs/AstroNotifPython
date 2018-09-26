@@ -3,17 +3,18 @@
 #
 # Class SkyObjects
 # 
-from SkyObject import SkyObject
+from ParametersSkyObject import ParametersSkyObject
 from toolObjectSerializable import toolObjectSerializable
 #from toolTrace import toolTrace
 
-class SkyObjects(toolObjectSerializable):
-    def __init__(self, dataSkyObjects):
+class ParametersSkyObjects(toolObjectSerializable):
+    def __init__(self, dicJSONData):
         toolObjectSerializable.__init__(self)
         self._dicSkyObjects = {}
         self._dicLinkIDWithIndex = {}
         self._iCountDeepSky = 0
-        self.__initSkyObjects(dataSkyObjects)
+        self.__initWithData(dicJSONData)
+
     def getCount(self): return len(self._dicSkyObjects)
     def getCountDeepSky(self): return self._iCountDeepSky
     def getSkyObjectByID(self, sID): return self._dicSkyObjects[self._dicLinkIDWithIndex[sID]]
@@ -32,13 +33,14 @@ class SkyObjects(toolObjectSerializable):
             return self._dicSkyObjects.values()[x]
         else:
             raise NameError('Error in getSkyObjectByIndex: ' + str(x) + ' value reached while searching index ' + str(iIndex) + '/' + str(len(self._dicSkyObjects)) + '.')
-    def __initSkyObjects(self, dataSkyObjects):
+            
+    def __initWithData(self, dicJSONData):
         # init Sky Objects array of SkyObject objects
-        for iId in range (0, len(dataSkyObjects)):
-            sObjectKey = list(dataSkyObjects.keys())[iId]
-            newSkyObject = SkyObject(iId, dataSkyObjects[sObjectKey]["Category"], dataSkyObjects[sObjectKey]["ID"], dataSkyObjects[sObjectKey]["Type"], dataSkyObjects[sObjectKey]["Name"], dataSkyObjects[sObjectKey]["RA"], dataSkyObjects[sObjectKey]["Dec"], dataSkyObjects[sObjectKey]["PictureName"], dataSkyObjects[sObjectKey]["Comment1"], dataSkyObjects[sObjectKey]["Comment2"], dataSkyObjects[sObjectKey]["Distance"], dataSkyObjects[sObjectKey]["DistanceUnit"], dataSkyObjects[sObjectKey]["DimensionX"], dataSkyObjects[sObjectKey]["DimensionXUnit"], dataSkyObjects[sObjectKey]["DimensionY"], dataSkyObjects[sObjectKey]["DimensionYUnit"], dataSkyObjects[sObjectKey]["ApparentMagnitude"], dataSkyObjects[sObjectKey]["IsFavourite"] )
-#            self._dicSkyObjects[dataSkyObjects[sObjectKey]["ID"]] = newSkyObject
+        for iId in range (0, len(dicJSONData)):
+            sObjectKey = list(dicJSONData.keys())[iId]
+            newSkyObject = ParametersSkyObject(iId, dicJSONData[sObjectKey]["Category"], dicJSONData[sObjectKey]["ID"], dicJSONData[sObjectKey]["Type"], dicJSONData[sObjectKey]["Name"], dicJSONData[sObjectKey]["RA"], dicJSONData[sObjectKey]["Dec"], dicJSONData[sObjectKey]["PictureName"], dicJSONData[sObjectKey]["Comment1"], dicJSONData[sObjectKey]["Comment2"], dicJSONData[sObjectKey]["Distance"], dicJSONData[sObjectKey]["DistanceUnit"], dicJSONData[sObjectKey]["DimensionX"], dicJSONData[sObjectKey]["DimensionXUnit"], dicJSONData[sObjectKey]["DimensionY"], dicJSONData[sObjectKey]["DimensionYUnit"], dicJSONData[sObjectKey]["ApparentMagnitude"], dicJSONData[sObjectKey]["IsFavourite"], dicJSONData[sObjectKey]["NotifyWhenObservable"] )
+#            self._dicSkyObjects[dicJSONData[sObjectKey]["ID"]] = newSkyObject
             self._dicSkyObjects[sObjectKey] = newSkyObject
-            self._dicLinkIDWithIndex[dataSkyObjects[sObjectKey]["ID"]] = sObjectKey
-            if dataSkyObjects[sObjectKey]["Category"] == "DeepSky": self._iCountDeepSky = self._iCountDeepSky + 1
+            self._dicLinkIDWithIndex[dicJSONData[sObjectKey]["ID"]] = sObjectKey
+            if dicJSONData[sObjectKey]["Category"] == "DeepSky": self._iCountDeepSky = self._iCountDeepSky + 1
             

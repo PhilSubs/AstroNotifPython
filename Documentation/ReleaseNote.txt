@@ -1,5 +1,73 @@
+Version 2.0
+     - #52:
+        - Changed Parameters classes
+     - #49:
+        - Changed parameters_Places.default.json:
+           - Added LocalTimeDifferenceWithGMT to handle local time
+        - Changed ParametersPlace.py  to take into account new LocalTimeDifferenceWithGMT parameter and DST
+        - Changed ParametersPlaces.py  to take into account new LocalTimeDifferenceWithGMT parameter and DST
+        - Changed Calendar.py
+           - Changed methods to make distinction between Local and GMT time and date
+        - Changed EphemeridesData.py  to take into account method names in Calendar
+        - Changed RenderBitmap.py
+           - Removed display of GMT warning
+           - Vhanged call to some methods from Calendar (due to method's name change)
+        - nightlyBatch.py
+           - Changed creation of Calendar object to take into account new parameters
+     - #47
+        - Added styles BitmapHeaderH0, BitmapHeaderH1, BitmapHeaderH2 in parameters_Rendering.default.json
+        - Changed parametersRendering.py   to take into account the new styles
+        - Changed RenderBitmap.py
+           - Added method _addBitmapHeader
+           - Changed method _getStyle to take into account the new styles
+           - Changed method  getHTML:
+               - Added call to   _addBitmapHeader
+               - Removed location and comment from title in HTML header displayed
+      - #11
+         - Added parameter  NotifyWhenObservable  in parameters_LunarFeatures.default.json  and  parameters_SkyObjects.default.json
+         - Changed following classes to add new parameter  NotifyWhenObservable:
+             - ParametersLunarFeature.py
+             - ParametersLunarFeatures.py
+             - ParametersSkyObject.py
+             - ParametersSkyObjects.py
+         - Changed RenderBitmap.py:
+             - Changed  getEphemeridesBitmapForPeriod  to handle parameters NotifyWhenObservable
+             - Changed  getStyle  to handle new styles
+             - Changed  _addObjectRowHeader to handle NotifyWhenObservable
+             - Changed  _addLunarFeatureRowHeader to handle NotifyWhenObservable
+             - Changed  getHTML  to handle parameters NotifyWhenObservable
+         - Changed  nightlyBatch.py  in order to send email only for  objects observables having NotifyWhenObservable=True
+         - Changed Parameters_Rendering.default.json:
+             - Added style  ObjectNameNotified
+             - Added style  LunarFeatureNameNotified
+         - Changed ParametersRendering.py:
+             - Added style  ObjectNameNotified
+             - Added style  LunarFeatureNameNotified
+      - #61 (logging)
+         - Added parameter  GlobalPathToLogFileName  in parameters_Runtime.default.json
+         - Changed  ParametersRuntime.py  for new parameter  GlobalPathToLogFileName
+         - Changed Tools.py:
+             - Added  resetTrace
+             - Added  getTrace
+             - Added  logToTrace
+         - Changed nightlyBatch.py  to use log functions
+     - #60
+         - Changed  MeeusAlgorithms.py:  added formula AngularSeparation_16_01
+         - Changed  MeeusAlgorithmsTest.py:  added test for formula AngularSeparation_16_01
+         - Changed  MeeusAlgorithms.py : added method getAngularSeparation
+         - Changed  EphemeridesData.py:
+             - Changed getObjectVisibilityStatusForSlot:
+                 - Added status  DifficultMoonlight
+             - Changed  computeEphemeridesForPeriod:  added RA and Dec for deep sky objects
+         - Changed ParametersRendering:  Added parameters  colorObjectVisibilityStatusDifficultMoonlight
+         - Changed Parameters_Rendering.default.json:  Added parameters  colorObjectVisibilityStatusDifficultMoonlight
+         - Changed Parameters_Localization.default.json:  added label  DifficultMoonlight
+         - Changed RendererBitmap.py:
+             - Changed  _addVisibilityMapLegend:  added new value
+         
 Version 1.7
      - 
+     
 Version 1.6
      - Changed Parameters.py and parameters_runtime.json:
          - added NightlyBatchEmailAddress
@@ -15,6 +83,7 @@ Version 1.6
      - RenderBitmap.py:
          - Changed method _getBitmapColorForObjectAltitudeDependingOnSunAltitude to use EphemeridesData.getObjectVisibilityStatusForSlot
          - remove hardcoded domain in HTML generated (uses value in Parameters)
+         
 Version 1.5
      - Parameters_run.json: Added Lunar Features
      - Split Parameters_run.json in 3 files:
@@ -29,6 +98,7 @@ Version 1.5
      - RenderBitmap.py:
          - Changed _addLunarFeatureVisibilityBitmapForDay to take into account parameter ObservationShowWhenTerminatorIsOnLunarFeature
          - Changed _addMoonMinimapBitmap: added 1 or 2 pixel in mini moon map bitmap size to fix the issue of the circle cropped on the right
+         
 Version 1.4
  - Changed RenderBitmap:
      - Renamed some methods to be compliant with underscore standard
@@ -52,10 +122,12 @@ Version 1.4
 Version 1.3
  - Added nightlyBatchBitmap.py for generating ephemerides in only 1 bitmap
  - Changed Tools.py: added RemoveHTML tags function used to remove HTML tags when generating ephemerides as bitmap
+ 
 Version 1.2
  - Changed nightlyBatch.py:
      Changed Tools.sendEmailHTML
         Added connection SMTP parameter and Try/Catch
+        
 Version 1.1
  - Changed parameters_run.json file:
      Changed section "Notification" to "NightlyBatch", and parameters renamed accordingly:

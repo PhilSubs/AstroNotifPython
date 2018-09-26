@@ -7,7 +7,7 @@ from toolObjectSerializable import toolObjectSerializable
 #from toolTrace import toolTrace
 
 
-class ObstructedSkyArea(toolObjectSerializable):
+class ParametersObstructedSkyArea(toolObjectSerializable):
     def __init__(self, fAzimutMinInDeg, fAzimutMaxInDeg, fAltitudeMinInDeg, fAltitudeMaxInDeg):
         toolObjectSerializable.__init__(self)
         self._fAzimutMinInDeg = fAzimutMinInDeg

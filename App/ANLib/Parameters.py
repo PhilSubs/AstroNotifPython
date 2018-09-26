@@ -4,9 +4,12 @@
 # Class Parameters
 # 
 from toolObjectSerializable import toolObjectSerializable
-from Places import Places
-from SkyObjects import SkyObjects
-from LunarFeatures import LunarFeatures
+from ParametersLocalization import ParametersLocalization
+from ParametersLunarFeatures import ParametersLunarFeatures
+from ParametersRendering import ParametersRendering
+from ParametersRuntime import ParametersRuntime
+from ParametersSkyObjects import ParametersSkyObjects
+from ParametersPlaces import ParametersPlaces
 from toolJSON import toolJSON
 
 #from toolTrace import toolTrace
@@ -15,137 +18,28 @@ from toolJSON import toolJSON
 class Parameters(toolObjectSerializable):
     def __init__(self):
         toolObjectSerializable.__init__(self)
-        self._sGlobalCurrentVersion = ""
-        self._sGlobalPathToWWWFolder = ""
-        self._sGlobalPathToAPPFolder = ""
-        self._sNightlyBatchDomain = ""
-        self._sNightlyBatchEmailAddress = ""
-        self._sNightlyEmailSMTPServer = ""
-        self._sNightlyEmailSMTPUser = ""
-        self._sNightlyEmailSMTPPassword = ""
-        self._sNightlyEmailFromAddress = ""
-        self._sNightlyBatchHTMLFilname = ""
-        self._fObservationMinAltitudeInDeg = 0.0
-        self._sObservationStartTimeAsHHMM = ""
-        self._iObservationMaxDurationInHours = 0
-        self._bObservationAlways = True
-        self._bObservationForceDisplayPlanetMoon = False
-        self._fObservationMaximumLunarFeatureSunAltitude = 90.0
-        self._bObservationShowWhenTerminatorIsOnLunarFeature = False
-        self._fObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg = 0.0
-        self._sObservationPlaceName = ""
-        self._bDisplayVisibilityTableAsBitmap = True
-        self._iDisplayLanguage = "EN"
-        self._iDisplayNumberOfSlotsForMoon = 0
-        self._iDisplayNumberOfSlotsForMoonFeatures = 0
-        self._iDisplayNumberOfSlotsForPlanets = 0
-        self._iDisplayNumberOfSlotsForDeepSky = 0
-        self._iDisplayNumberOfMinutesPerSlot = 0
-        self._iDisplayDaySlotForDataInfo = 0
-        self._fDisplayMaxObjectAltitudeForLow = 0.0
-        self._fDisplayMaxObjectAltitudeForVeryLow = 0.0
-        self._fDisplayMaxSunAltitudeForObservableDeepSky = 0.0
-        self._fDisplayMaxSunAltitudeForObservableBrightObjects = 0.0
-        self._fDisplayMaxSunAltitudeForDifficultBrightObjects = 0.0
-        self._fDisplayMaxSunAltitudeFoImpossibleBrightObjects = 0.0
-        self._fDisplayMaxSunAltitudeForObservableMediumObjects = 0.0
-        self._fDisplayMaxSunAltitudeForDifficultMediumObjects = 0.0
-        self._Place = None
-        self._SkyObjects = {}
-        self._LunarFeatures = {}
-        self.__loadFromFile()
-    def getLanguage(self): return self._iDisplayLanguage
-    def getGlobalCurrentVersion(self): return self._sGlobalCurrentVersion
-    def getGlobalPathToWWWFolder(self): return self._sGlobalPathToWWWFolder
-    def getGlobalPathToAPPFolder(self): return self._sGlobalPathToAPPFolder
-    def getNightlyBatchTimeDeltaInHours(self): return self._iNightlyBatchTimeDeltaInHours
-    def getNightlyBatchEmailAddress(self): return self._sNightlyBatchEmailAddress
-    def getNightlyBatchEmailSMTPServer(self): return self._sNightlyBatchEmailSMTPServer
-    def getNightlyBatchEmailSMTPUser(self): return self._sNightlyBatchEmailSMTPUser
-    def getNightlyBatchEmailSMTPPassword(self): return self._sNightlyBatchEmailSMTPPassword
-    def getNightlyBatchEmailFromAddress(self): return self._sNightlyBatchEmailFromAddress
-    def getNightlyBatchDomain(self): return self._sNightlyBatchDomain
-    def getNightlyBatchHTMLFilname(self): return self._sNightlyBatchHTMLFilname
-    def getObservationStartTimeAsHHMM(self): return self._sObservationStartTimeAsHHMM
-    def getObservationMaxDurationInHours(self): return self._iObservationMaxDurationInHours
-    def getObservationMinAltitudeInDeg(self): return self._fObservationMinAltitudeInDeg
-    def getObservationAlways(self): return self._bObservationAlways
-    def getObservationForceDisplayPlanetMoon(self): return self._bObservationForceDisplayPlanetMoon
-    def getObservationMaximumLunarFeatureSunAltitude(self): return self._fObservationMaximumLunarFeatureSunAltitude
-    def getObservationShowWhenTerminatorIsOnLunarFeature(self): return self._bObservationShowWhenTerminatorIsOnLunarFeature
-    def getObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg(self): return self._fObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg
-    def getObservationPlaceName(self): return self._sObservationPlaceName
-    def getDisplayVisibilityTableAsBitmap(self): return self._bDisplayVisibilityTableAsBitmap
-    def getDisplayNumberOfSlotsForMoon(self): return self._iDisplayNumberOfSlotsForMoon
-    def getDisplayNumberOfSlotsForMoonFeatures(self): return self._iDisplayNumberOfSlotsForMoonFeatures
-    def getDisplayNumberOfSlotsForPlanets(self): return self._iDisplayNumberOfSlotsForPlanets
-    def getDisplayNumberOfSlotsForDeepSky(self): return self._iDisplayNumberOfSlotsForDeepSky
-    def getDisplayNumberOfMinutesPerSlot(self): return self._iDisplayNumberOfMinutesPerSlot
-    def getDisplayDaySlotForDataInfo(self): return self._iDisplayDaySlotForDataInfo
-    def getDisplayMaxAltitudeForObjectLow(self): return self._fDisplayMaxAltitudeForObjectLow
-    def getDisplayMaxAltitudeForObjectVeryLow(self): return self._fDisplayMaxAltitudeForObjectVeryLow
-    def getDisplayMaxSunAltitudeForObservableDeepSky(self): return self._fDisplayMaxSunAltitudeForObservableDeepSky
-    def getDisplayMaxSunAltitudeForObservableBrightObjects(self): return self._fDisplayMaxSunAltitudeForObservableBrightObjects
-    def getDisplayMaxSunAltitudeForDifficultBrightObjects(self): return self._fDisplayMaxSunAltitudeForDifficultBrightObjects
-    def getDisplayMaxSunAltitudeFoImpossibleBrightObjects(self): return self._fDisplayMaxSunAltitudeFoImpossibleBrightObjects
-    def getDisplayMaxSunAltitudeForObservableMediumObjects(self): return self._fDisplayMaxSunAltitudeForObservableMediumObjects
-    def getDisplayMaxSunAltitudeForDifficultMediumObjects(self): return self._fDisplayMaxSunAltitudeForDifficultMediumObjects
-    def getPlace(self): return self._Place
-    def getSkyObjects(self): return self._SkyObjects
-    def getLunarFeatures(self): return self._LunarFeatures
-    def __loadFromFile(self):
-        # load parameters file
-        data = toolJSON.getContent('parameters_Runtime.json')
-        # init properties
-        self._sGlobalCurrentVersion = data["currentVersion"]
-        self._sGlobalPathToWWWFolder = data["GlobalPathToWWWFolder"]
-        self._sGlobalPathToAPPFolder = data["GlobalPathToAPPFolder"]
-        self._iNightlyBatchTimeDeltaInHours = data["NightlyBatchTimeDeltaInHours"]
-        self._sNightlyBatchEmailAddress = data["NightlyBatchEmailAddress"]
-        self._sNightlyBatchEmailSMTPServer = data["NightlyBatchEmailSMTPServer"]
-        self._sNightlyBatchEmailSMTPUser = data["NightlyBatchEmailSMTPUser"]
-        self._sNightlyBatchEmailSMTPPassword = data["NightlyBatchEmailSMTPPassword"]
-        self._sNightlyBatchEmailFromAddress = data["NightlyBatchEmailFromAddress"]
-        self._sNightlyBatchDomain = data["NightlyBatchDomain"]
-        self._sNightlyBatchHTMLFilname = data["NightlyBatchHTMLFilname"]
-        self._sObservationStartTimeAsHHMM = data["ObservationStartTimeAsHHMM"]
-        self._iObservationMaxDurationInHours = data["ObservationMaxDurationInHours"]
-        self._fObservationMinAltitudeInDeg = data["ObservationMinAltitudeInDeg"]
-        self._bObservationAlways = ( data["ObservationAlways"] == "Yes")
-        self._bObservationForceDisplayPlanetMoon = ( data["ObservationForceDisplayPlanetMoon"] == "Yes")
-        self._fObservationMaximumLunarFeatureSunAltitude = data["ObservationMaximumLunarFeatureSunAltitude"]
-        self._bObservationShowWhenTerminatorIsOnLunarFeature = ( data["ObservationShowWhenTerminatorIsOnLunarFeature"] == "Yes")
-        self._fObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg = data["ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg"]
-        self._sObservationPlaceName = data["ObservationPlaceName"]
-        self._iDisplayLanguage = data["DisplayLanguage"]
-        self._bDisplayVisibilityTableAsBitmap = ( data["DisplayVisibilityTableAsBitmap"] == "Yes" )
-        self._iDisplayNumberOfSlotsForMoon = data["DisplayNumberOfSlotsForMoon"]
-        self._iDisplayNumberOfSlotsForMoonFeatures = data["DisplayNumberOfSlotsForMoonFeatures"]
-        self._iDisplayNumberOfSlotsForPlanets = data["DisplayNumberOfSlotsForPlanets"]
-        self._iDisplayNumberOfSlotsForDeepSky = data["DisplayNumberOfSlotsForDeepSky"]
-        self._iDisplayNumberOfMinutesPerSlot = data["DisplayNumberOfMinutesPerSlot"]
-        self._iDisplayDaySlotForDataInfo = data["DisplayDaySlotForDataInfo"]
-        self._fDisplayMaxAltitudeForObjectLow = data["DisplayMaxAltitudeForObjectLow"]
-        self._fDisplayMaxAltitudeForObjectVeryLow = data["DisplayMaxAltitudeForObjectVeryLow"]
-        self._fDisplayMaxSunAltitudeForObservableDeepSky = data["DisplayMaxSunAltitudeForObservableDeepSky"]
-        self._fDisplayMaxSunAltitudeForObservableBrightObjects = data["DisplayMaxSunAltitudeForObservableBrightObjects"]
-        self._fDisplayMaxSunAltitudeForDifficultBrightObjects = data["DisplayMaxSunAltitudeForDifficultBrightObjects"]
-        self._fDisplayMaxSunAltitudeFoImpossibleBrightObjects = data["DisplayMaxSunAltitudeFoImpossibleBrightObjects"]
-        self._fDisplayMaxSunAltitudeForObservableMediumObjects = data["DisplayMaxSunAltitudeForObservableMediumObjects"]
-        self._fDisplayMaxSunAltitudeForDifficultMediumObjects = data["DisplayMaxSunAltitudeForDifficultMediumObjects"]
-        fDisplayMaxSunAltitudeForObservableDeepSky = -18.0
-        fDisplayMaxSunAltitudeForObservableBrightObjects = -6.0
-        fDisplayMaxSunAltitudeForDifficultBrightObjects = 6.0
-        fDisplayMaxSunAltitudeFoImpossibleBrightObjects = 12.0
-        fDisplayMaxSunAltitudeForObservableMediumObjects = -12.0
-        fDisplayMaxSunAltitudeForDifficultMediumObjects = -6.0
-        
-        # load places and get place set in parameters
-        thePlaces = Places()
-        self._Place = thePlaces.getPlaceByName(self._sObservationPlaceName)
+        self._ParametersLocalization = None
+        self._ParametersLunarFeatures = None
+        self._ParametersRendering = None
+        self._ParametersRuntime = None
+        self._ParametersSkyObjects = None
+        self._ParametersPlaces = None
+        self.__load()
 
-        # init sky objects
-        self._SkyObjects = SkyObjects(toolJSON.getContent('parameters_SkyObjects.json'))
-        
-        # init Lunar features
-        self._LunarFeatures = LunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
+    def Localization(self): return self._ParametersLocalization
+    def LunarFeatures(self): return self._ParametersLunarFeatures
+    def Rendering(self): return self._ParametersRendering
+    def Runtime(self): return self._ParametersRuntime
+    def SkyObjects(self): return self._ParametersSkyObjects
+    def Places(self): return self._ParametersPlaces
+    
+    def __load(self):
+        self._ParametersRuntime       = ParametersRuntime(toolJSON.getContent('parameters_Runtime.json'))
+
+        self._ParametersRendering     = ParametersRendering(toolJSON.getContent('parameters_Rendering.json'))
+        self._ParametersLocalization  = ParametersLocalization(toolJSON.getContent('parameters_Localization.json'), self._ParametersRendering.getDisplay('Language'))
+        self._ParametersSkyObjects    = ParametersSkyObjects(toolJSON.getContent('parameters_SkyObjects.json'))
+        self._ParametersLunarFeatures = ParametersLunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
+        self._ParametersPlaces        = ParametersPlaces(toolJSON.getContent('parameters_Places.json'))
+
+        self._ParametersRuntime.setPlace(self._ParametersPlaces.getPlaceByName(self._ParametersRuntime.getObservation('PlaceName')))

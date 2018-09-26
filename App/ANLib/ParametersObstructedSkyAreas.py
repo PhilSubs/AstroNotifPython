@@ -3,24 +3,42 @@
 #
 # Class ObstructedSkyAreas
 # 
-from ObstructedSkyArea import ObstructedSkyArea
+from ParametersObstructedSkyArea import ParametersObstructedSkyArea
 from toolObjectSerializable import toolObjectSerializable
 import math
 #from toolTrace import toolTrace
 
-class ObstructedSkyAreas(toolObjectSerializable):
-    def __init__(self):
+class ParametersObstructedSkyAreas(toolObjectSerializable):
+    def __init__(self, dicJSONData):
         toolObjectSerializable.__init__(self)
         self._iCount = None
         self._arrObstructedSkyAreas = []
         self._sObstructedSkyAreasMap = ""
+        self.__initWithData(dicJSONData)
+        
     def getCount(self): return self._iCount
     def getObstructedSkyAreaByIndex(self, iIndex): return self._arrObstructedSkyAreas[iIndex]
-    def initObstructedSkyAreas(self, dataObstructedSkyAreas):
+    def getObstructedSkyAreasMap(self): return self._sObstructedSkyAreasMap
+    def getVisibilityStatus(self, fAzimut, fAltitude): 
+        # Visibility Status:
+        #         0: Obstructed
+        #         1: Clear unobstructed
+        return self._sObstructedSkyAreasMap[self.__getIndexFromAzimutAltitude(fAzimut, fAltitude)]
+    def __getIndexFromAzimutAltitude(self, fAzimut, fAltitude): 
+        # Azimut between 0.0 and 359.9
+        # Altitude between -89.9 and 89.9
+        iAzimut = math.floor(fAzimut)
+        if (fAltitude > 0):
+            iAltitude = math.ceil(fAltitude)
+        else:
+            iAltitude = math.floor(fAltitude)
+        return int(iAzimut*180 + (90 + iAltitude))
+            
+    def __initWithData(self, dicJSONData):
         # init ObstructedSkyAreas array of ObstructedSkyArea objects
-        for iId in range (0, len(dataObstructedSkyAreas)):
-            sObstructedSkyAreaKey = list(dataObstructedSkyAreas.keys())[iId]
-            newObstructedSkyArea = ObstructedSkyArea(dataObstructedSkyAreas[sObstructedSkyAreaKey]["Azimut-Min"], dataObstructedSkyAreas[sObstructedSkyAreaKey]["Azimut-Max"], dataObstructedSkyAreas[sObstructedSkyAreaKey]["Altitude-Min"], dataObstructedSkyAreas[sObstructedSkyAreaKey]["Altitude-Max"])
+        for iId in range (0, len(dicJSONData)):
+            sObstructedSkyAreaKey = list(dicJSONData.keys())[iId]
+            newObstructedSkyArea = ParametersObstructedSkyArea(dicJSONData[sObstructedSkyAreaKey]["Azimut-Min"], dicJSONData[sObstructedSkyAreaKey]["Azimut-Max"], dicJSONData[sObstructedSkyAreaKey]["Altitude-Min"], dicJSONData[sObstructedSkyAreaKey]["Altitude-Max"])
             self._arrObstructedSkyAreas.append(newObstructedSkyArea)
         self._iCount = len(self._arrObstructedSkyAreas)
         # init Visibility Zones maps
@@ -41,19 +59,3 @@ class ObstructedSkyAreas(toolObjectSerializable):
                         self._sObstructedSkyAreasMap = self._sObstructedSkyAreasMap[:iPos] + "0" + self._sObstructedSkyAreasMap[iPos + 1:]
                     fAlt = fAlt + 1.0
                 fAz = fAz + 1.0
-    def getObstructedSkyAreasMap(self): return self._sObstructedSkyAreasMap
-    def getVisibilityStatus(self, fAzimut, fAltitude): 
-        # Visibility Status:
-        #         0: Obstructed
-        #         1: Clear unobstructed
-        return self._sObstructedSkyAreasMap[self.__getIndexFromAzimutAltitude(fAzimut, fAltitude)]
-    def __getIndexFromAzimutAltitude(self, fAzimut, fAltitude): 
-        # Azimut between 0.0 and 359.9
-        # Altitude between -89.9 and 89.9
-        iAzimut = math.floor(fAzimut)
-        if (fAltitude > 0):
-            iAltitude = math.ceil(fAltitude)
-        else:
-            iAltitude = math.floor(fAltitude)
-        return int(iAzimut*180 + (90 + iAltitude))
-            

@@ -148,26 +148,27 @@ class Tools:
         # According to RFC 2046, the last part of a multipart message, in this case
         # the HTML message, is best and preferred.
         theMsg.attach(theMIMEpart)
-	if sBitmapFilename !="": theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
-
+        if sBitmapFilename !="": theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
 
         # Send the message via local SMTP server.
-        print "smtp..."
+        sLog = "  Starts sending mail...\n"
         theSender = smtplib.SMTP(sSMTPServer, 587)
         theSender.set_debuglevel(False)
         theSender.ehlo()
         theSender.starttls()
-        print "login(" + sUser + ")..."
+        sLog += "  Log in SMTP server (" + sUser + ")...\n"
         theSender.login(sUser, sPassword)
-        print "logged in..."
+        sLog += "  Connected...\n"
         try:
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
-            print "sending..."
+            sLog += "  Sending email...\n"
             theSender.sendmail(sFrom, sTo, theMsg.as_string())
-            print "sent..."
+            sLog += "  Email is sent...\n"
         finally:
             theSender.quit()
+        
+        return sLog
 
     @staticmethod
     def saveAsFileEncoded(sFileName, sContent ):
@@ -215,4 +216,33 @@ class Tools:
         sText = sText.replace('&nbsp;',' ')
         
         return sText
-        
+
+    @staticmethod
+    def logToTrace(sFilename, sText):
+        print sText
+        # add text to the log file
+        if not(sFilename == "" or sText == ""):
+            with open(sFilename, "a") as logFile:
+                logFile.write(sText + "\n")
+                logFile.close()
+            
+    @staticmethod
+    def getTrace(sFilename):
+        # get the content of the log file
+        if not(sFilename == ""):
+            with open(sFilename, 'r') as logFile:
+                data=logFile.read()
+                logFile.close()
+        else:
+            data = ""
+        return data
+
+    @staticmethod
+    def resetTrace(sFilename):
+        # reset the log file content
+        if not(sFilename == ""):
+            with open(sFilename, "w") as logFile:
+                logFile.write("") 
+                logFile.close()
+        else:
+            print "Tools.resetTrace:  Log File name is missing !"

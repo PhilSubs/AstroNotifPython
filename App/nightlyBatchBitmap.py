@@ -11,42 +11,43 @@ iNbPlanetsObservable = 0
 iNbLunarFeaturesobservable = 0
 iNbDeepSkyobjectsObservable = 0
 
-# Prepare objects for computing ephemeris
-print "Lecture des parametres du fichier parameters_run.json<br>"
+# Read the parameters files
 theParameters = ANLib.Parameters() # read parameters file parameters_run.json
-sParamDate = (datetime.now() + timedelta(hours=theParameters.getNightlyBatchTimeDeltaInHours())).strftime("%Y%m%d")  # start date from current date at 00:00 + delta hours
-theCalendar = ANLib.Calendar(sParamDate,"000000")
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Parameters read from json files...")
+
+# Prepare objects for computing ephemeris
+sParamDate = (datetime.now() + timedelta(hours=theParameters.Runtime().getNightlyBatch('TimeDeltaInHours'))).strftime("%Y%m%d")  # start date from current date at 00:00 + delta hours
+theCalendar = ANLib.Calendar(sParamDate,"000000", theParameters.Runtime().getPlace().getCurrentLocalTimeDifferenceWithGMT())
 theEphemeridesData = ANLib.EphemeridesData()
 
 # Compute ephemeris and produce new HTML
-print "Calcul des ephemerides<br>"
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Compute ephemeris...")
 theEphemeridesData.computeEphemeridesForPeriod(theParameters, theCalendar)
-print "Generation de la page HTML et du bitmap<br>"
-theRendererBitmap = ANLib.RendererBitmap( theParameters, theParameters.getGlobalPathToWWWFolder() + '/', "http://" + theParameters.getNightlyBatchDomain() + "/", True)
-sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Generate HTML page and bitmap...")
+theRendererBitmap = ANLib.RendererBitmap( theParameters, theParameters.Runtime().getGlobal('PathToWWWFolder') + '/', "http://" + theParameters.Runtime().getNightlyBatch('Domain') + "/", True)
+sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename, bNotificationToBeSent = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
 
 # Save as default html file
-ANLib.Tools.saveAsFileEncoded(theParameters.getGlobalPathToWWWFolder() + ANLib.Tools.get_path_separator() + theParameters.getNightlyBatchHTMLFilname(), sHTMLContent)
-print "La page HTML et le bitmap sont generes dans " + theParameters.getGlobalPathToWWWFolder() + ANLib.Tools.get_path_separator() + '<br>'
+ANLib.Tools.saveAsFileEncoded(theParameters.Runtime().getGlobal('PathToWWWFolder') + ANLib.Tools.get_path_separator() + theParameters.Runtime().getNightlyBatch('HTMLFilname'), sHTMLContent)
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "HTML page and bitmap are generated in " + theParameters.Runtime().getGlobal('PathToWWWFolder') + ANLib.Tools.get_path_separator())
 
 # Prepare email for daily notification
-theLabels = ANLib.ParametersLocalization(theParameters.getLanguage())
-if len(theParameters.getNightlyBatchEmailAddress()) > 0:
-    print "Preparation a l'envoi du mail<br>"
-    sTo = theParameters.getNightlyBatchEmailAddress()
-    sSubject = theLabels.getLabel("EphemerisFor") + theCalendar.getFormattedDateForSlot(0, 0) + " (" + theParameters.getPlace().getName()  + ")"
-    if (iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
+if len(theParameters.Runtime().getNightlyBatch('EmailAddress')) > 0:
+    ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Preparing email to be sent")
+    sTo = theParameters.Runtime().getNightlyBatch('EmailAddress')
+    sSubject = theParameters.Localization().getLabel("EphemerisFor") + " " + theCalendar.getFormattedLocalDateForSlot(0, 0) + " (" + theParameters.Runtime().getPlace().getName()  + ")"
+    if bNotificationToBeSent: #(iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
         sSubject = sSubject + ": "
         if iNbPlanetsObservable > 0: 
-            sSubject = sSubject + theLabels.getLabel("ThePlanets") + ":" + str(iNbPlanetsObservable)
-            if (iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ", "
+            sSubject = sSubject + theParameters.Localization().getLabel("ThePlanets") + " [" + str(iNbPlanetsObservable) + "]"
+            if (iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ",  "
         if iNbLunarFeaturesobservable > 0: 
-            sSubject = sSubject + theLabels.getLabel("LunarFeatures") + ":" + str(iNbLunarFeaturesobservable)
-            if (iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ", "
+            sSubject = sSubject + theParameters.Localization().getLabel("LunarFeatures") + " [" + str(iNbLunarFeaturesobservable) + "]"
+            if (iNbDeepSkyobjectsObservable) > 0: sSubject = sSubject + ",  "
         if iNbDeepSkyobjectsObservable > 0: 
-            sSubject = sSubject + theLabels.getLabel("TheDeepSkyObjects") + ":" + str(iNbDeepSkyobjectsObservable)
+            sSubject = sSubject + theParameters.Localization().getLabel("TheDeepSkyObjects") + " [" + str(iNbDeepSkyobjectsObservable) + "]"
 
     # Send email
-    print "Envoi du mail<br>"
-    sHTMLContent = '<HTML><BODY><A href="http://' + theParameters.getNightlyBatchDomain() + '/">Lieu: ' + theParameters.getPlace().getName()  + '</A></BODY></HTML>'
-    ANLib.Tools.sendEmailHTML(theParameters.getNightlyBatchEmailFromAddress(), sTo, sSubject, sHTMLContent, sBitmapFilename, theParameters.getNightlyBatchEmailSMTPServer(), theParameters.getNightlyBatchEmailSMTPUser(), theParameters.getNightlyBatchEmailSMTPPassword() )
+    sHTMLContent = '<HTML><BODY><A href="http://' + theParameters.Runtime().getNightlyBatch('Domain') + '/">Lieu: ' + theParameters.Runtime().getPlace().getName()  + '</A></BODY></HTML>'
+    sLogEmailSending = ANLib.Tools.sendEmailHTML(theParameters.Runtime().getNightlyBatch('EmailFromAddress'), sTo, sSubject, sHTMLContent, sBitmapFilename, theParameters.Runtime().getNightlyBatch('EmailSMTPServer'), theParameters.Runtime().getNightlyBatch('EmailSMTPUser'), theParameters.Runtime().getNightlyBatch('EmailSMTPPassword') )
+    ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), sLogEmailSending)
