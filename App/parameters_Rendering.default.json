@@ -70,6 +70,9 @@
         "displayNumberOfSlotsForMoonFeatures": 384,
         "displayNumberOfSlotsForPlanets": 384,
         "displayVisibilityTableAsBitmap": "Yes",
+        "displayShowObstructionOnGraph": "Yes",
+        "displayShowObstructionOnGraphColor": "(45, 0, 80)",
+        "displayShowAzimutInformationOnGraph": "Yes",
         
     "Styles":"styles attributes for text displayed",
         "styleDefaultFontSize":16,
