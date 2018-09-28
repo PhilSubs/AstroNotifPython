@@ -1,3 +1,7 @@
+Version 2.1
+     -  #67: Ajout graphe obstruction
+        - Changed ParametersObstructedSkyAreas
+            - Added method  getMinMaxAltitudeObstructedForAzimut(self, fAzimut)    returning    fMinAltitude, fMaxAltitude
 Version 2.0
      - #52:
         - Changed Parameters classes
