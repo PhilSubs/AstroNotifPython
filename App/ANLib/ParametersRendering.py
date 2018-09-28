@@ -99,6 +99,9 @@ class ParametersRendering(toolObjectSerializable):
         self._tDisplay['MaxSunAltitudeFoImpossibleBrightObjects'] = dicJSONData["displayMaxSunAltitudeFoImpossibleBrightObjects"]
         self._tDisplay['MaxSunAltitudeForObservableMediumObjects'] = dicJSONData["displayMaxSunAltitudeForObservableMediumObjects"]
         self._tDisplay['MaxSunAltitudeForDifficultMediumObjects'] = dicJSONData["displayMaxSunAltitudeForDifficultMediumObjects"]
+        self._tDisplay['ShowObstructionOnGraph'] = dicJSONData["displayShowObstructionOnGraph"]
+        self._tDisplay['ShowObstructionOnGraphColor'] = eval(dicJSONData["displayShowObstructionOnGraphColor"])
+        self._tDisplay['ShowAzimutInformationOnGraph'] = dicJSONData["displayShowAzimutInformationOnGraph"]
         # Text Styles
         self._tStyles = {}
         self._tStyles['DefaultFontSize'] = dicJSONData["styleDefaultFontSize"]
