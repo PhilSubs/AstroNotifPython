@@ -2,6 +2,14 @@ Version 2.1
      -  #67: Ajout graphe obstruction
         - Changed ParametersObstructedSkyAreas
             - Added method  getMinMaxAltitudeObstructedForAzimut(self, fAzimut)    returning    fMinAltitude, fMaxAltitude
+        - Changed RenderBitmap.py
+            - Changed  _addObjectVisibilityBitmapForDay   for drawing the obstruction
+        - Changed  parameters_Rendering.default.json:
+            Added parameter displayShowObstructionOnGraph  for displaying obstructionon graph
+            Added parameter displayShowObstructionOnGraphColor  for displaying obstructionon graph
+            Added parameter displayShowAzimutInformationOnGraph  for displaying azimut information on graph
+        - Changed parametersRendering.py:
+            Added parameters 
 Version 2.0
      - #52:
         - Changed Parameters classes
