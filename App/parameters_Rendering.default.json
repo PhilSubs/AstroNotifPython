@@ -114,6 +114,8 @@
         "styleObjectNameNotifiedFontColor":"(255, 159, 63)",
         "styleObjectDataFontSize":9,
         "styleObjectAdditionalDailyDataFontSize":9,
+        "styleAzimutInformationFontSize":9,
+        "styleAzimutInformationFontColor":"(255, 255, 255)",
         "styleSectionTitleH0FontSize":35,
         "styleSectionTitleH0BackColor":"(109, 199, 255)",
         "styleSectionTitleH0FontColor":"(0, 0, 0)",
