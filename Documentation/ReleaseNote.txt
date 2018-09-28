@@ -5,11 +5,18 @@ Version 2.1
         - Changed RenderBitmap.py
             - Changed  _addObjectVisibilityBitmapForDay   for drawing the obstruction
         - Changed  parameters_Rendering.default.json:
-            Added parameter displayShowObstructionOnGraph  for displaying obstructionon graph
-            Added parameter displayShowObstructionOnGraphColor  for displaying obstructionon graph
-            Added parameter displayShowAzimutInformationOnGraph  for displaying azimut information on graph
+            - Added parameter displayShowObstructionOnGraph  for displaying obstructionon graph
+            - Added parameter displayShowObstructionOnGraphColor  for displaying obstructionon graph
+            - Added parameter displayShowAzimutInformationOnGraph  for displaying azimut information on graph
+            - Added parameter styleAzimutInformationFontSize
+            - Added parameter styleAzimutInformationFontColor
         - Changed parametersRendering.py:
-            Added parameters 
+            - Added parameter ShowObstructionOnGraph
+            - Added parameter ShowObstructionOnGraphColor
+            - Added parameter ShowAzimutInformationOnGraph
+            - Added parameter AzimutInformationFontSize
+            - Added parameter AzimutInformationFontColor
+        
 Version 2.0
      - #52:
         - Changed Parameters classes
