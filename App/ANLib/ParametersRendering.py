@@ -125,6 +125,8 @@ class ParametersRendering(toolObjectSerializable):
         self._tStyles['ObjectNameNotifiedFontColor'] = eval(dicJSONData["styleObjectNameNotifiedFontColor"])
         self._tStyles['ObjectDataFontSize'] = dicJSONData["styleObjectDataFontSize"]
         self._tStyles['ObjectAdditionalDailyDataFontSize'] = dicJSONData["styleObjectAdditionalDailyDataFontSize"]
+        self._tStyles['AzimutInformationFontSize'] = dicJSONData["styleAzimutInformationFontSize"]
+        self._tStyles['AzimutInformationFontColor'] = eval(dicJSONData["styleAzimutInformationFontColor"])
         self._tStyles['SectionTitleH0FontSize'] = dicJSONData["styleSectionTitleH0FontSize"]
         self._tStyles['SectionTitleH0BackColor'] = eval(dicJSONData["styleSectionTitleH0BackColor"])
         self._tStyles['SectionTitleH0FontColor'] = eval(dicJSONData["styleSectionTitleH0FontColor"])
