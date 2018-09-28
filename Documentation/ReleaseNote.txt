@@ -4,6 +4,7 @@ Version 2.1
             - Added method  getMinMaxAltitudeObstructedForAzimut(self, fAzimut)    returning    fMinAltitude, fMaxAltitude
         - Changed RenderBitmap.py
             - Changed  _addObjectVisibilityBitmapForDay   for drawing the obstruction
+            - Changed  _getStyle for adding new style
         - Changed  parameters_Rendering.default.json:
             - Added parameter displayShowObstructionOnGraph  for displaying obstructionon graph
             - Added parameter displayShowObstructionOnGraphColor  for displaying obstructionon graph
