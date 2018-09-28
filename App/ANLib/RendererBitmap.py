@@ -139,6 +139,9 @@ class RendererBitmap(toolObjectSerializable):
         elif sStyle == "BitmapHeaderH2":
             iStyleFontSize = self._oParameters.Rendering().getStyles('BitmapHeaderH2FontSize')
             tStyleFontColor = self._oParameters.Rendering().getStyles('BitmapHeaderH2FontColor')
+        elif sStyle == "AzimutInformation":
+            iStyleFontSize = self._oParameters.Rendering().getStyles('AzimutInformationFontSize')
+            tStyleFontColor = self._oParameters.Rendering().getStyles('AzimutInformationFontColor')
         
         # return all values for style
         try:
@@ -569,6 +572,14 @@ class RendererBitmap(toolObjectSerializable):
             for iSlot in range(iStartSlot, iEndSlot):
                 x = (iSlot - iStartSlot) * iSlotWidthInPx + (iSlotWidthInPx/2) - 1
                 y = iBitmapHeight - int(float( oEphemeridesDataObject.getAltitudeForSlot(iSlot) / 90.0) * float(iBitmapHeight))
+                # Draw obstruction
+                if self._oParameters.Rendering().getDisplay("ShowObstructionOnGraph"):
+                    fObstructionMinAlt, fObstructionMaxAlt = self._oParameters.Runtime().getPlace().getObstructedSkyAreas().getMinMaxAltitudeObstructedForAzimut(oEphemeridesDataObject.getAzimutForSlot(iSlot))
+                    if not(fObstructionMinAlt == 0.0 and fObstructionMaxAlt == 0.0):
+                        yObstructedMin = iBitmapHeight - int(float( fObstructionMinAlt / 90.0) * float(iBitmapHeight))
+                        yObstructedMax = iBitmapHeight - int(float( fObstructionMaxAlt / 90.0) * float(iBitmapHeight))   
+                        theNewDraw.rectangle((iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx, iRowPositionY + 1 + yObstructedMin, iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx + iSlotWidthInPx - 1, iRowPositionY + 1 + yObstructedMax), fill=self._oParameters.Rendering().getDisplay("ShowObstructionOnGraphColor"))               
+                # Draw object altitude line
                 if oEphemeridesDataObject.getAltitudeForSlot(iSlot) > 0:
                     sObjectVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot(oEphemeridesDataObject.getID(), iSlot, self._oParameters)
                     tColor = self._getBitmapColorForObjectAltitudeDependingOnSunAltitude(sObjectVisibilityStatus)
@@ -578,6 +589,36 @@ class RendererBitmap(toolObjectSerializable):
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY -1, iRowPositionX - 1 + x, iRowPositionY + 1 + y -1 ), fill=tColor)
                 iPrevX = x
                 iPrevY = y
+                
+            # Draw Azimut information
+            if self._oParameters.Rendering().getDisplay("ShowAzimutInformationOnGraph"):
+                bAzimutInfoNdone = False
+                bAzimutInfoSdone = False
+                bAzimutInfoEdone = False
+                bAzimutInfoOdone = False
+                for iSlot in range(iStartSlot, iEndSlot):
+                    if abs(oEphemeridesDataObject.getAzimutForSlot(iSlot) - 0.0) <= 1.4 and not bAzimutInfoNdone:
+                        fAzimutInfo = "Nord"
+#                        fAzimutInfo = str(int(round(oEphemeridesDataObject.getAzimutForSlot(iSlot), 0)))
+                        bAzimutInfoNdone = True
+                    elif abs(oEphemeridesDataObject.getAzimutForSlot(iSlot) - 90.0) <= 1.4 and not bAzimutInfoEdone:
+                        fAzimutInfo = "Est"
+#                        fAzimutInfo = str(int(round(oEphemeridesDataObject.getAzimutForSlot(iSlot), 0)))
+                        bAzimutInfoEdone = True
+                    elif abs(oEphemeridesDataObject.getAzimutForSlot(iSlot) - 180.0) <= 1.4 and not bAzimutInfoSdone:
+                        fAzimutInfo = "Sud"
+#                        fAzimutInfo = str(int(round(oEphemeridesDataObject.getAzimutForSlot(iSlot), 0)))
+                        bAzimutInfoSdone = True
+                    elif abs(oEphemeridesDataObject.getAzimutForSlot(iSlot) - 270.0) <= 1.4 and not bAzimutInfoOdone:
+                        fAzimutInfo = "Ouest"
+#                        fAzimutInfo = str(int(round(oEphemeridesDataObject.getAzimutForSlot(iSlot), 0)))
+                        bAzimutInfoOdone = True
+                    else:
+                        fAzimutInfo = ""
+                    if fAzimutInfo != "":
+                        iStyleFontSizeAzimutInfo, theStyleFontAzimutInfo, tStyleFontColorAzimutInfo, tStyleBackColorAzimutInfo = self._getStyle("AzimutInformation")
+                        theNewDraw.text((iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx, iRowPositionY + iBitmapHeight - iStyleFontSizeAzimutInfo), fAzimutInfo, tStyleFontColorAzimutInfo, font=theStyleFontAzimutInfo)
+                
         # Redraw border
         theNewDraw.rectangle((iBorderStartX, iBorderStartY, iBorderEndX, iBorderEndY), outline=(127, 127, 127))
         
