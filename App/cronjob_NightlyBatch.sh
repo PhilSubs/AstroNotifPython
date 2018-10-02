@@ -7,13 +7,13 @@
 
 main_function() {
     current_date_time="`date "+%Y-%m-%d %H:%M:%S"`"
+    currentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    cd $currentDir
     python nightlyBatchLog.py "resetTrace"
     python nightlyBatchLog.py "logToTrace" "$current_date_time --- Start nightly batch script -----------------------------"
-    python nightlyBatchLog.py "logToTrace" "Get path to script folder..."
-    currentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    python nightlyBatchLog.py "logToTrace" "Path to script folder..."
     python nightlyBatchLog.py "logToTrace" "&nbsp;&nbsp;&nbsp;&nbsp;--> script folder is : $currentDir"
-    python nightlyBatchLog.py "logToTrace" "Set current dir to $currentDir ..."
-    cd $currentDir
+    python nightlyBatchLog.py "logToTrace" "Current dir set to $currentDir ..."
     python nightlyBatchLog.py "logToTrace" "Run script nightlyBatchBitmap.py ..."
     
     python nightlyBatchBitmap.py
