@@ -148,7 +148,12 @@ class Tools:
         # According to RFC 2046, the last part of a multipart message, in this case
         # the HTML message, is best and preferred.
         theMsg.attach(theMIMEpart)
-        if sBitmapFilename !="": theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
+        if sBitmapFilename !="": 
+            msgImage = MIMEImage(fp.read(), filename=sBitmapFilename)
+            msgImage.add_header('Content-ID', '')
+            msgImage.add_header('Content-Disposition', 'inline', filename=sBitmapFilename)
+            theMsg.attach(msgImage)
+            #theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
 
         # Send the message via local SMTP server.
         sLog = "  Starts sending mail...\n"
