@@ -27,10 +27,10 @@ class ParametersObstructedSkyAreas(toolObjectSerializable):
     def getMinMaxAltitudeObstructedForAzimut(self, fAzimut):
         fMinAltitude = 999.0
         fMaxAltitude = -999.0
+        fAzimut360 = (fAzimut + 360.0) % 360.0
         for iAltitude in range (0, 90):
             fAltitude = float(iAltitude)
-#            print "     VisibilityStatus (" + str(fAzimut) + ", " + str(fAltitude) + ") = " + self.getVisibilityStatus(fAzimut, fAltitude)
-            if self.getVisibilityStatus(fAzimut, fAltitude) == "0":
+            if self.getVisibilityStatus(fAzimut360, fAltitude) == "0":
                 if fAltitude > fMaxAltitude: fMaxAltitude = fAltitude
                 if fAltitude < fMinAltitude: fMinAltitude = fAltitude
         if fMinAltitude == 999.0:
