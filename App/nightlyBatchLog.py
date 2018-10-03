@@ -47,7 +47,7 @@ elif sAction == "generateHTMLPageForTrace":
     sPageContent += "	</HEAD>\n"
     sPageContent += "  <BODY>\n"
 
-    sPageContent += ANLib.Tools.getTrace(theParameters.Runtime().getGlobal("PathToLogFileName")).replace("\n","<BR>\n") + "\n\n"
+    sPageContent += ANLib.Tools.getTrace(theParameters.Runtime().getGlobal("PathToLogFileName")).replace("\n","<BR>").replace("<BR>","<BR>\n") + "\n\n"
 
     sPageContent += "  </BODY>\n"    
     sPageContent += "</HTML>\n"

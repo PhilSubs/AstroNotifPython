@@ -13,7 +13,7 @@ iNbDeepSkyobjectsObservable = 0
 
 # Read the parameters files
 theParameters = ANLib.Parameters() # read parameters file parameters_run.json
-ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Parameters read from json files...")
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "   Parameters read from json files...")
 
 # Prepare objects for computing ephemeris
 sParamDate = (datetime.now() + timedelta(hours=theParameters.Runtime().getNightlyBatch('TimeDeltaInHours'))).strftime("%Y%m%d")  # start date from current date at 00:00 + delta hours
@@ -21,19 +21,19 @@ theCalendar = ANLib.Calendar(sParamDate,"000000", theParameters.Runtime().getPla
 theEphemeridesData = ANLib.EphemeridesData()
 
 # Compute ephemeris and produce new HTML
-ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Compute ephemeris...")
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "   Compute ephemeris...")
 theEphemeridesData.computeEphemeridesForPeriod(theParameters, theCalendar)
-ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Generate HTML page and bitmap...")
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "   Generate HTML page and bitmap...")
 theRendererBitmap = ANLib.RendererBitmap( theParameters, theParameters.Runtime().getGlobal('PathToWWWFolder') + '/', "http://" + theParameters.Runtime().getNightlyBatch('Domain') + "/", True)
 sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilename, bNotificationToBeSent = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
 
 # Save as default html file
 ANLib.Tools.saveAsFileEncoded(theParameters.Runtime().getGlobal('PathToWWWFolder') + ANLib.Tools.get_path_separator() + theParameters.Runtime().getNightlyBatch('HTMLFilname'), sHTMLContent)
-ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "HTML page and bitmap are generated in " + theParameters.Runtime().getGlobal('PathToWWWFolder') + ANLib.Tools.get_path_separator())
+ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "   HTML page and bitmap are generated in " + theParameters.Runtime().getGlobal('PathToWWWFolder') + ANLib.Tools.get_path_separator())
 
 # Prepare email for daily notification
 if len(theParameters.Runtime().getNightlyBatch('EmailAddress')) > 0:
-    ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "Preparing email to be sent")
+    ANLib.Tools.logToTrace(theParameters.Runtime().getGlobal("PathToLogFileName"), "   Preparing email to be sent")
     sTo = theParameters.Runtime().getNightlyBatch('EmailAddress')
     sSubject = theParameters.Localization().getLabel("EphemerisFor") + " " + theCalendar.getFormattedLocalDateForSlot(0, 0) + " (" + theParameters.Runtime().getPlace().getName()  + ")"
     if bNotificationToBeSent: #(iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
