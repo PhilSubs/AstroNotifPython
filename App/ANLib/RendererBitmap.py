@@ -788,7 +788,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "    Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOnePlanetIsDisplayed = True
         if not bAtLeastOnePlanetIsDisplayed:
@@ -833,7 +833,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "    Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneLunarFeatureIsDisplayed = True
             if not bAtLeastOneLunarFeatureIsDisplayed:
@@ -870,7 +870,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "    Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -900,7 +900,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "    Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -918,7 +918,7 @@ class RendererBitmap(toolObjectSerializable):
         
         # Return bitmap URL and size
         iWidth, iHeight = theNewImg.size
-        return iWidth, iHeight, self._sURLFolderForBitmaps + sBitmapName, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, self._sRelativeFolderForBitmaps + sBitmapName, bNotificationToBeSent
+        return iWidth, iHeight, self._sURLFolderForBitmaps + sBitmapName, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, self._sRelativeFolderForBitmaps + sBitmapName, sBitmapName, bNotificationToBeSent
 
     def getHTML(self, oCalendar, oEphemeridesData):
         iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
