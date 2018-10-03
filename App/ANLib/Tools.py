@@ -134,7 +134,7 @@ class Tools:
 
 
     @staticmethod
-    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sBitmapFilename, sSMTPServer, sUser, sPassword):
+    def sendEmailHTML(sFrom, sTo, sSubject, sHTMLContent, sBitmapFilenameAndPath, sBitmapFilename, sSMTPServer, sUser, sPassword):
         # Create message container - the correct MIME type is multipart/alternative.
         theMsg = MIMEMultipart('alternative')
         theMsg['Subject'] = sSubject
@@ -149,27 +149,26 @@ class Tools:
         # the HTML message, is best and preferred.
         theMsg.attach(theMIMEpart)
         if sBitmapFilename !="": 
-            msgImage = MIMEImage(file(sBitmapFilename).read())#, filename=sBitmapFilename)
+            msgImage = MIMEImage(fp.read(), filename=sBitmapFilenameAndPath)
             msgImage.add_header('Content-ID', '')
             msgImage.add_header('Content-Disposition', 'inline', filename=sBitmapFilename)
             theMsg.attach(msgImage)
-            #theMsg.attach(MIMEImage(file(sBitmapFilename).read()))
 
         # Send the message via local SMTP server.
-        sLog = "     Starts sending mail...\n"
+        sLog = "  Starts sending mail...\n"
         theSender = smtplib.SMTP(sSMTPServer, 587)
         theSender.set_debuglevel(False)
         theSender.ehlo()
         theSender.starttls()
-        sLog += "     Log in SMTP server (" + sUser + ")...\n"
+        sLog += "  Log in SMTP server (" + sUser + ")...\n"
         theSender.login(sUser, sPassword)
-        sLog += "     Connected...\n"
+        sLog += "  Connected...\n"
         try:
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
-            sLog += "     Sending email...\n"
+            sLog += "  Sending email...\n"
             theSender.sendmail(sFrom, sTo, theMsg.as_string())
-            sLog += "     Email is sent...\n"
+            sLog += "  Email is sent...\n"
         finally:
             theSender.quit()
         
