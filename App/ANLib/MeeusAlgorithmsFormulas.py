@@ -163,7 +163,7 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         #
         fLocalHourAngle = fGreenwichSideralTime - (- fObserverLongitude) - fRightAscension
         fAzimut = math.degrees( math.atan2( math.sin( math.radians( fLocalHourAngle ) ) , ( math.cos( math.radians( fLocalHourAngle ) ) * math.sin( math.radians( fObserverLatitude ) ) - math.tan( math.radians(fDeclination) ) * math.cos( math.radians( fObserverLatitude ) ) ) ) )
-        return fAzimut
+        return (fAzimut + 360.0) % 360.0
 
     @staticmethod
     def TransformationCoordinates_12_06(fRightAscension, fDeclination, fObserverLongitude, fObserverLatitude, fGreenwichSideralTime):     # return fElevation
