@@ -51,7 +51,7 @@ class ParametersObstructedSkyAreas(toolObjectSerializable):
         # init ObstructedSkyAreas array of ObstructedSkyArea objects
         for iId in range (0, len(dicJSONData)):
             sObstructedSkyAreaKey = list(dicJSONData.keys())[iId]
-            newObstructedSkyArea = ParametersObstructedSkyArea(dicJSONData[sObstructedSkyAreaKey]["Azimut-Min"], dicJSONData[sObstructedSkyAreaKey]["Azimut-Max"], dicJSONData[sObstructedSkyAreaKey]["Altitude-Min"], dicJSONData[sObstructedSkyAreaKey]["Altitude-Max"])
+            newObstructedSkyArea = ParametersObstructedSkyArea(dicJSONData[sObstructedSkyAreaKey]["Comment"], eval(dicJSONData[sObstructedSkyAreaKey]["Color"]), dicJSONData[sObstructedSkyAreaKey]["Azimut-Min"], dicJSONData[sObstructedSkyAreaKey]["Azimut-Max"], dicJSONData[sObstructedSkyAreaKey]["Altitude-Min"], dicJSONData[sObstructedSkyAreaKey]["Altitude-Max"])
             self._arrObstructedSkyAreas.append(newObstructedSkyArea)
         self._iCount = len(self._arrObstructedSkyAreas)
         # init Visibility Zones maps
