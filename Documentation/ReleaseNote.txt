@@ -17,6 +17,11 @@ Version 2.1
             - Added parameter ShowAzimutInformationOnGraph
             - Added parameter AzimutInformationFontSize
             - Added parameter AzimutInformationFontColor
+    - #76: Ajout attribut Color sur les Obstructed Sky Ares
+        - Changed RenderBitmap.py
+        - Changed parameters_Places.defualt.json
+        - Changed ParametersObstructedSkyArea.py
+        - Changed ParametersObstructedSkyAreas.py
         
 Version 2.0
      - #52:
