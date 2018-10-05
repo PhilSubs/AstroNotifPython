@@ -22,6 +22,7 @@ Version 2.1
         - Changed parameters_Places.defualt.json
         - Changed ParametersObstructedSkyArea.py
         - Changed ParametersObstructedSkyAreas.py
+    - Changed RenderBitmap.py: redefined visibility status condition for Lunar Features (taking into account the Moon visbility status)
         
 Version 2.0
      - #52:
