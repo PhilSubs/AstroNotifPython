@@ -577,8 +577,11 @@ class RendererBitmap(toolObjectSerializable):
                     fObstructionMinAlt, fObstructionMaxAlt = self._oParameters.Runtime().getPlace().getObstructedSkyAreas().getMinMaxAltitudeObstructedForAzimut(oEphemeridesDataObject.getAzimutForSlot(iSlot))
                     if not(fObstructionMinAlt == 0.0 and fObstructionMaxAlt == 0.0):
                         yObstructedMin = iBitmapHeight - int(float( fObstructionMinAlt / 90.0) * float(iBitmapHeight))
-                        yObstructedMax = iBitmapHeight - int(float( fObstructionMaxAlt / 90.0) * float(iBitmapHeight))   
-                        theNewDraw.rectangle((iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx, iRowPositionY + 1 + yObstructedMin, iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx + iSlotWidthInPx - 1, iRowPositionY + 1 + yObstructedMax), fill=self._oParameters.Rendering().getDisplay("ShowObstructionOnGraphColor"))               
+                        yObstructedMax = iBitmapHeight - int(float( fObstructionMaxAlt / 90.0) * float(iBitmapHeight))
+                        tColorObstruction = self._oParameters.Runtime().getPlace().getObstructedSkyAreas().getColorForAzimutAltitude(oEphemeridesDataObject.getAzimutForSlot(iSlot), fObstructionMinAlt)
+                        if tColorObstruction == None:
+                            tColorObstruction = self._oParameters.Rendering().getDisplay("ShowObstructionOnGraphColor")
+                        theNewDraw.rectangle((iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx, iRowPositionY + 1 + yObstructedMin, iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx + iSlotWidthInPx - 1, iRowPositionY + 1 + yObstructedMax), fill=tColorObstruction)
                 # Draw object altitude line
                 if oEphemeridesDataObject.getAltitudeForSlot(iSlot) > 0:
                     sObjectVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot(oEphemeridesDataObject.getID(), iSlot, self._oParameters)
