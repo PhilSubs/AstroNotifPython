@@ -13,6 +13,7 @@ class ParametersObstructedSkyAreas(toolObjectSerializable):
         toolObjectSerializable.__init__(self)
         self._iCount = None
         self._arrObstructedSkyAreas = []
+        self._arrObstructedSkyAreasColor = {}
         self._sObstructedSkyAreasMap = ""
         self.__initWithData(dicJSONData)
         
@@ -37,6 +38,15 @@ class ParametersObstructedSkyAreas(toolObjectSerializable):
             fMinAltitude = 0
             fMaxAltitude = 0
         return fMinAltitude, fMaxAltitude
+        
+    def getColorForAzimutAltitude(self, fAzimut, fAltitude):
+        sKey = str(self.__getIndexFromAzimutAltitude(fAzimut, fAltitude))
+        try:
+            tColor = self._arrObstructedSkyAreasColor[sKey]
+        except:
+            tColor = None
+        return tColor
+        
     def __getIndexFromAzimutAltitude(self, fAzimut, fAltitude): 
         # Azimut between 0.0 and 359.9
         # Altitude between -89.9 and 89.9
@@ -70,5 +80,7 @@ class ParametersObstructedSkyAreas(toolObjectSerializable):
                         self._sObstructedSkyAreasMap = self._sObstructedSkyAreasMap[:iPos] + "0"
                     else:
                         self._sObstructedSkyAreasMap = self._sObstructedSkyAreasMap[:iPos] + "0" + self._sObstructedSkyAreasMap[iPos + 1:]
+                    # Add color in dictionary with key = index
+                    self._arrObstructedSkyAreasColor[str(iPos)] = self._arrObstructedSkyAreas[i].getColor()
                     fAlt = fAlt + 1.0
                 fAz = fAz + 1.0
