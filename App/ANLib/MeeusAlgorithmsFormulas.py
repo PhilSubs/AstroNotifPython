@@ -161,8 +161,10 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         #
         #     Output: Azimut
         #
-        fLocalHourAngle = fGreenwichSideralTime - (- fObserverLongitude) - fRightAscension
-        fAzimut = math.degrees( math.atan2( math.sin( math.radians( fLocalHourAngle ) ) , ( math.cos( math.radians( fLocalHourAngle ) ) * math.sin( math.radians( fObserverLatitude ) ) - math.tan( math.radians(fDeclination) ) * math.cos( math.radians( fObserverLatitude ) ) ) ) )
+        fLocalHourAngle = (((fGreenwichSideralTime - ( fObserverLongitude) - fRightAscension) % 360.0) + 360.0) % 360.0
+        fP1 = math.sin(math.radians(fLocalHourAngle))
+        fP2 = math.cos(math.radians(fLocalHourAngle)) * math.sin(math.radians(fObserverLatitude)) - math.tan(math.radians(fDeclination)) * math.cos(math.radians(fObserverLatitude))
+        fAzimut = math.degrees( math.atan2( fP1 , fP2) ) + 180.0
         return (fAzimut + 360.0) % 360.0
 
     @staticmethod
@@ -177,7 +179,7 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         #
         #     Output: Elevation
         #
-        fLocalHourAngle = fGreenwichSideralTime - (- fObserverLongitude) - fRightAscension
+        fLocalHourAngle = (((fGreenwichSideralTime - ( fObserverLongitude) - fRightAscension) % 360.0) + 360.0) % 360.0
         fElevation = math.degrees(math.asin( math.sin(math.radians(fObserverLatitude)) * math.sin(math.radians(fDeclination)) + math.cos(math.radians(fObserverLatitude)) * math.cos(math.radians(fDeclination)) * math.cos(math.radians(fLocalHourAngle)) ))
         return fElevation
 
@@ -368,7 +370,7 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         #     Output: Sun Geocentric Longitude (degrees)
         #             Sun Geocentric Latitude (degrees)
         #
-        fSunGeocentricLongitude = fSunTrueGeometricLongitude #+ 180.0
+        fSunGeocentricLongitude = fSunTrueGeometricLongitude + 180.0
         fSunGeocentricLatitude = - fSunTrueGeometricLatitude
         return CommonAstroFormulaes.FormatDegreesTo360(fSunGeocentricLongitude), CommonAstroFormulaes.FormatDegreesTo360(fSunGeocentricLatitude)
        
