@@ -8,12 +8,18 @@ from toolObjectSerializable import toolObjectSerializable
 
 
 class ParametersObstructedSkyArea(toolObjectSerializable):
-    def __init__(self, fAzimutMinInDeg, fAzimutMaxInDeg, fAltitudeMinInDeg, fAltitudeMaxInDeg):
+    def __init__(self, sComment, tColor, fAzimutMinInDeg, fAzimutMaxInDeg, fAltitudeMinInDeg, fAltitudeMaxInDeg):
         toolObjectSerializable.__init__(self)
+        self._sComment = sComment
+        self._tColor = tColor
         self._fAzimutMinInDeg = fAzimutMinInDeg
         self._fAzimutMaxInDeg = fAzimutMaxInDeg
         self._fAltitudeMinInDeg = fAltitudeMinInDeg
         self._fAltitudeMaxInDeg = fAltitudeMaxInDeg
+    def getComment(self): return self._sComment
+    def setComment(self, sComment): self._sComment = sComment
+    def getColor(self): return self._tColor
+    def setColor(self, tColor): self._tColor = tColor
     def getAzimutMinInDeg(self): return self._fAzimutMinInDeg
     def setAzimutMinInDeg(self, fAzimutMinInDeg): self._fAzimutMinInDeg = fAzimutMinInDeg
     def getAzimutMaxInDeg(self): return self._fAzimutMaxInDeg

@@ -1,4 +1,4 @@
-# AstroNotifPython v2.0
+# AstroNotifPython v2.1
 Notify Astronomy objects observability
 
 # Pré-requis:

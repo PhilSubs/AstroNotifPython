@@ -6,8 +6,8 @@
          "LocalTimeDifferenceWithGMT":0,
          "ObstructedSkyAreas":
              {
-                 "zone01":{"Comment":"", "Azimut-Min":0, "Azimut-Max":180, "Altitude-Min":0, "Altitude-Max":10},
-                 "zone02":{"Comment":"", "Azimut-Min":181, "Azimut-Max":359, "Altitude-Min":0, "Altitude-Max":10}
+                 "zone01":{"Comment":"", "Color":"(63, 0, 0)", "Azimut-Min":0, "Azimut-Max":180, "Altitude-Min":0, "Altitude-Max":10},
+                 "zone02":{"Comment":"", "Color":"(0, 63, 0)", "Azimut-Min":181, "Azimut-Max":359, "Altitude-Min":0, "Altitude-Max":10}
              }
     }
 }
