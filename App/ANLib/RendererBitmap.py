@@ -201,20 +201,13 @@ class RendererBitmap(toolObjectSerializable):
             iPosYMoonMap = iRowPositionY 
             theNewImg = self._addMoonMinimapBitmap( oEphemeridesData.getEphemerideDataObject("Moon").getPhaseForSlot(iDataSlot), oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
 
-        if bAtLeastOneDayToBeDisplayed:
+        if bAtLeastOneDayIsObservable:
             if not bAtLeastOneDayIsNotObservable:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
             else:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
         else:
             theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
-                
-#        if not bAtLeastOneDayIsNotObservable:
-#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
-#        elif not bAtLeastOneDayIsObservable:
-#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
-#        else:
-#                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
             
         if bAtLeastOneDayToBeDisplayed:
             return True, bAtLeastOneDayIsObservable, theNewImg
@@ -275,8 +268,6 @@ class RendererBitmap(toolObjectSerializable):
         for iSlot in range(iStartSlot, iEndSlot):
             fSunAltitudeOverFeature = MeeusAlgorithms.getSunAltitudeFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iSlot))
             sMoonVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot("Moon", iSlot, self._oParameters)
-            if fSunAltitudeOverFeature > 0.0 and fSunAltitudeOverFeature <= self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude'):
-                bIsObservable = True
             fLongitudeMin = (oLunarFeatureObject.getLongitudeMin() - self._oParameters.Runtime().getObservation('ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
             fLongitudeMax = (oLunarFeatureObject.getLongitudeMax() + self._oParameters.Runtime().getObservation('ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
             fTerminatorLongitudeRise = (oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot) - 90.0) % 360.0
@@ -288,6 +279,11 @@ class RendererBitmap(toolObjectSerializable):
             
             bIsTerminatorNearFeature = ((fTerminatorLongitudeRise >= fLongitudeMin and fTerminatorLongitudeRise <= fLongitudeMax) or (fTerminatorLongitudeSet >= fLongitudeMin and fTerminatorLongitudeSet <= fLongitudeMax))
             
+            # Define condition when Lunar feature is observable:
+            #    - Moon must not be Hidden, Below or Impossible
+            #    - Lunar feature must be  NearTerminator or sun altitude over feature must be > 0 and <= MaximumLunarFeatureSunAltitude
+            if not (sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Impossible") and (bIsTerminatorNearFeature or (fSunAltitudeOverFeature > 0.0 and fSunAltitudeOverFeature <= self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude'))):
+                bIsObservable = True
             
             iTransparency = 255
             if sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Impossible" :
@@ -296,7 +292,7 @@ class RendererBitmap(toolObjectSerializable):
                 iTransparency = 0
             if self._oParameters.Runtime().getObservation('ShowWhenTerminatorIsOnLunarFeature') and bIsTerminatorNearFeature:
                 tColor = self._oParameters.Rendering().getColorLunarFeatureVisibility('Good')
-            elif fSunAltitudeOverFeature <= 0.0:  
+            elif fSunAltitudeOverFeature < 0.0:  
                 tColor = self._oParameters.Rendering().getColorLunarFeatureVisibility('SunBelowHorizon')
             elif fSunAltitudeOverFeature >= self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude'):
                 tColor = self._oParameters.Rendering().getColorLunarFeatureVisibility('SunTooHigh')
