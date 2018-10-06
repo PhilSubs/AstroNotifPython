@@ -582,7 +582,7 @@ class RendererBitmap(toolObjectSerializable):
                 if oEphemeridesDataObject.getAltitudeForSlot(iSlot) > 0:
                     sObjectVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot(oEphemeridesDataObject.getID(), iSlot, self._oParameters)
                     tColor = self._getBitmapColorForObjectAltitudeDependingOnSunAltitude(sObjectVisibilityStatus)
-                    bIsObservable = ((sObjectVisibilityStatus == "Good" or sObjectVisibilityStatus == "Low") or bIsObservable)
+                    bIsObservable = (not(sObjectVisibilityStatus == "Hidden" or sObjectVisibilityStatus == "Below" or sObjectVisibilityStatus == "Impossible") or bIsObservable)
                     if iPrevX > -1 and iPrevY > -1:
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY, iRowPositionX - 1 + x, iRowPositionY + 1 + y), fill=tColor)
                         theNewDraw.line((iRowPositionX - 1 + iPrevX, iRowPositionY + 1 + iPrevY -1, iRowPositionX - 1 + x, iRowPositionY + 1 + y -1 ), fill=tColor)
