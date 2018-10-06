@@ -149,7 +149,8 @@ class Tools:
         # the HTML message, is best and preferred.
         theMsg.attach(theMIMEpart)
         if sBitmapFilename !="": 
-            msgImage = MIMEImage(file.read(sBitmapFilenameAndPath))
+            with open(sBitmapFilenameAndPath, 'rb') as fp:
+                msgImage = MIMEImage(fp.read())
             msgImage.add_header('Content-ID', '')
             msgImage.add_header('Content-Disposition', 'inline', filename=sBitmapFilename)
             theMsg.attach(msgImage)
