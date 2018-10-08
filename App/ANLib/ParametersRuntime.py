@@ -31,7 +31,7 @@ class ParametersRuntime(toolObjectSerializable):
     def __initWithData(self, dicJSONData):
         # Global parameters
         self._tGlobal = {}
-        self._tGlobal['CurrentVersion'] = dicJSONData["currentVersion"]
+        self._tGlobal['CurrentVersion'] = dicJSONData["GlobalCurrentVersion"]
         self._tGlobal['PathToWWWFolder'] = dicJSONData["GlobalPathToWWWFolder"]
         self._tGlobal['PathToAPPFolder'] = dicJSONData["GlobalPathToAPPFolder"]
         self._tGlobal['PathToLogFileName'] = dicJSONData["GlobalPathToLogFileName"]
