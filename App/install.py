@@ -13,7 +13,7 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault, bForceUpd
     for iId in range (0, len(dictDataDefault)):
         sKeyLabel = list(dictDataDefault.keys())[iId]
         sFormattedKeyLabel = ("'" + sLevel + sKeyLabel + "'                                ")[-0:40]
-        if sKeyLabel == "currentVersion" and sJsonFilename == "parameters_Runtime.json":
+        if sKeyLabel == "GlobalCurrentVersion" and sJsonFilename == "parameters_Runtime.json":
             dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
             bChangeDone = True
             sFormattedNewValue = dictData[sKeyLabel]
@@ -109,10 +109,10 @@ bContinue = True
 sUpgradeFromVersion = ""
 if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
     dataParametersRuntime = ANLib.toolJSON.getContent('parameters_Runtime.json')
-    sUpgradeFromVersion = dataParametersRuntime['currentVersion']
+    sUpgradeFromVersion = dataParametersRuntime['GlobalCurrentVersion']
 # load parameters file default
 dataParametersRuntimeDefault = ANLib.toolJSON.getContent('parameters_Runtime.default.json')
-sNewVersion = dataParametersRuntimeDefault['currentVersion']
+sNewVersion = dataParametersRuntimeDefault['GlobalCurrentVersion']
 
 # Afficher du message de changement de version
 if sUpgradeFromVersion == "":
