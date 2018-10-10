@@ -17,7 +17,7 @@ ANLib.Tools.logToTrace(theParameters.Runtime().get("Global.PathToLogFileName"), 
 
 # Prepare objects for computing ephemeris
 sParamDate = (datetime.now() + timedelta(hours=theParameters.Runtime().get('NightlyBatch.TimeDeltaInHours'))).strftime("%Y%m%d")  # start date from current date at 00:00 + delta hours
-theCalendar = ANLib.Calendar(sParamDate,"000000", theParameters.Runtime().getPlace().getCurrentLocalTimeDifferenceWithGMT())
+theCalendar = ANLib.Calendar(sParamDate,"000000", theParameters.Runtime().get("Place").getCurrentLocalTimeDifferenceWithGMT())
 theEphemeridesData = ANLib.EphemeridesData()
 
 # Compute ephemeris and produce new HTML
@@ -35,7 +35,7 @@ ANLib.Tools.logToTrace(theParameters.Runtime().get("Global.PathToLogFileName"), 
 if len(theParameters.Runtime().get('NightlyBatch.EmailAddress')) > 0:
     ANLib.Tools.logToTrace(theParameters.Runtime().get("Global.PathToLogFileName"), "Preparing email to be sent")
     sTo = theParameters.Runtime().get('NightlyBatch.EmailAddress')
-    sSubject = theParameters.Localization().getLabel("EphemerisFor") + " " + theCalendar.getFormattedLocalDateForSlot(0, 0) + " (" + theParameters.Runtime().getPlace().getName()  + ")"
+    sSubject = theParameters.Localization().getLabel("EphemerisFor") + " " + theCalendar.getFormattedLocalDateForSlot(0, 0) + " (" + theParameters.Runtime().get("Place").getName()  + ")"
     if bNotificationToBeSent: #(iNbPlanetsObservable + iNbLunarFeaturesobservable + iNbDeepSkyobjectsObservable) > 0:
         sSubject = sSubject + ": "
         if iNbPlanetsObservable > 0: 
@@ -48,6 +48,6 @@ if len(theParameters.Runtime().get('NightlyBatch.EmailAddress')) > 0:
             sSubject = sSubject + theParameters.Localization().getLabel("TheDeepSkyObjects") + " [" + str(iNbDeepSkyobjectsObservable) + "]"
 
     # Send email
-    sHTMLContent = '<HTML><BODY><A href="http://' + theParameters.Runtime().get('NightlyBatch.Domain') + '/">Lieu: ' + theParameters.Runtime().getPlace().getName()  + '</A></BODY></HTML>'
+    sHTMLContent = '<HTML><BODY><A href="http://' + theParameters.Runtime().get('NightlyBatch.Domain') + '/">Lieu: ' + theParameters.Runtime().get("Place").getName()  + '</A></BODY></HTML>'
     sLogEmailSending = ANLib.Tools.sendEmailHTML(theParameters.Runtime().get('NightlyBatch.EmailFromAddress'), sTo, sSubject, sHTMLContent, sBitmapFilenameAndPath, sBitmapFilename, theParameters.Runtime().get('NightlyBatch.EmailSMTPServer'), theParameters.Runtime().get('NightlyBatch.EmailSMTPUser'), theParameters.Runtime().get('NightlyBatch.EmailSMTPPassword') )
     ANLib.Tools.logToTrace(theParameters.Runtime().get("Global.PathToLogFileName"), sLogEmailSending)
