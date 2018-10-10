@@ -14,7 +14,7 @@ class ParametersLocalization(ParametersJsonGeneric):
     def getActiveLanguage(self): return self._sActiveLanguageCode
         
     def getLabel(self, sCode, bNotifyMissing = True): 
-        # Remov the indicator [Label] from the code requested if any
+        # Remove the indicator [Label] from the code requested if any
         if sCode[0:7] == "[label]":
             sCodeSearched = sCode[7:]
         else:
