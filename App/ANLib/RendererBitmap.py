@@ -41,24 +41,24 @@ class RendererBitmap(toolObjectSerializable):
         self._oParameters = oParameters
 
     def _getBitmapColorForObjectAltitudeDependingOnSunAltitude(self, sObjectVisibilityStatus):
-        tColor = self._oParameters.Rendering().getColorObjectVisibilityStatus(sObjectVisibilityStatus)
+        tColor = self._oParameters.Rendering().get("ObjectVisibilityGraph.LineColorForStatus." + sObjectVisibilityStatus)
         return tColor
 
     def _getBitmapColorforSunAltitude(self, fSunAltitude):
         if fSunAltitude < -18.0:
-            tColor = self._oParameters.Rendering().getColorSunAltitude('MoreThan18DegBelow')
+            tColor = self._oParameters.Rendering().get('ObjectVisibilityGraph.SkyColorForSunAltitude.MoreThan18DegBelow')
         elif fSunAltitude < -12.0:
-            tColor = self._oParameters.Rendering().getColorSunAltitude('12To18DegBelow')
+            tColor = self._oParameters.Rendering().get('ObjectVisibilityGraph.SkyColorForSunAltitude.12To18DegBelow')
         elif fSunAltitude < -6.0:
-            tColor = self._oParameters.Rendering().getColorSunAltitude('06To12DegBelow')
+            tColor = self._oParameters.Rendering().get('ObjectVisibilityGraph.SkyColorForSunAltitude.06To12DegBelow')
         elif fSunAltitude < -0.0:
-            tColor = self._oParameters.Rendering().getColorSunAltitude('00To06DegBelow')
+            tColor = self._oParameters.Rendering().get('ObjectVisibilityGraph.SkyColorForSunAltitude.00To06DegBelow')
         elif fSunAltitude < 6.0:
-            tColor = self._oParameters.Rendering().getColorSunAltitude('00To06DegAbove')
+            tColor = self._oParameters.Rendering().get('ObjectVisibilityGraph.SkyColorForSunAltitude.00To06DegAbove')
         elif fSunAltitude < 12.0:
-            tColor = self._oParameters.Rendering().getColorSunAltitude('06To12DegAbove')
+            tColor = self._oParameters.Rendering().get('ObjectVisibilityGraph.SkyColorForSunAltitude.06To12DegAbove')
         else:
-            tColor = self._oParameters.Rendering().getColorSunAltitude('MoreThan12DegAbove')
+            tColor = self._oParameters.Rendering().get('ObjectVisibilityGraph.SkyColorForSunAltitude.MoreThan12DegAbove')
         return tColor
 
     def _getFont(self, sStyle = ""):
@@ -80,68 +80,68 @@ class RendererBitmap(toolObjectSerializable):
             
     def _getStyle(self, sStyle = ""):
         # Default values
-        iStyleFontSize = self._oParameters.Rendering().getStyles('DefaultFontSize')
-        sFontDirectory = self._oParameters.Rendering().getStyles('DefaultFontDirectory')
+        iStyleFontSize = self._oParameters.Rendering().get('Styles.Default.FontSize')
+        sFontDirectory = self._oParameters.Rendering().get('Styles.Default.FontDirectory')
         if sFontDirectory == "": sFontDirectory = Tools.get_ResourceSubfolder_path("Fonts")
-        sFont = sFontDirectory + self._oParameters.Rendering().getStyles('DefaultFont')
-        tStyleFontColor = self._oParameters.Rendering().getStyles('DefaultFontColor')
-        tStyleBackColor = self._oParameters.Rendering().getStyles('DefaultBackColor')
+        sFont = sFontDirectory + self._oParameters.Rendering().get('Styles.Default.Font')
+        tStyleFontColor = self._oParameters.Rendering().get('Styles.Default.FontColor')
+        tStyleBackColor = self._oParameters.Rendering().get('Styles.Default.BackColor')
         
         # Style overlap
         if sStyle == "GMTWarning":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('GMTWarningFontSize')
-            sFont = sFontDirectory + self._oParameters.Rendering().getStyles('GMTWarningFont')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.GMTWarning.FontSize')
+            sFont = sFontDirectory + self._oParameters.Rendering().get('Styles.GMTWarning.Font')
         elif sStyle == "Legend":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('LegendFontSize')
-            sFont = sFontDirectory + self._oParameters.Rendering().getStyles('LegendFont')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.Legend.FontSize')
+            sFont = sFontDirectory + self._oParameters.Rendering().get('Styles.Legend.Font')
         elif sStyle == "RowHeaderDate":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('RowHeaderDateFontSize')
-            sFont = sFontDirectory + self._oParameters.Rendering().getStyles('RowHeaderDateFont')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.RowHeader.Date.FontSize')
+            sFont = sFontDirectory + self._oParameters.Rendering().get('Styles.RowHeader.Date.Font')
         elif sStyle == "RowHeaderTime":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('RowHeaderTimeFontSize')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.RowHeader.Time.FontSize')
         elif sStyle == "ObjectName":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('ObjectNameFontSize')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('ObjectNameFontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.Object.Name.FontSize')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.Object.Name.FontColor')
         elif sStyle == "ObjectNameNotified":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('ObjectNameNotifiedFontSize')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('ObjectNameNotifiedFontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.Object.NameNotified.FontSize')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.Object.NameNotified.FontColor')
         elif sStyle == "ObjectData":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('ObjectDataFontSize')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.Object.Data.FontSize')
         elif sStyle == "ObjectAdditionalDailyData":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('ObjectAdditionalDailyDataFontSize')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.Object.AdditionalDailyData.FontSize')
         elif sStyle == "SectionTitleH0":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('SectionTitleH0FontSize')
-            tStyleBackColor = self._oParameters.Rendering().getStyles('SectionTitleH0BackColor')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('SectionTitleH0FontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.SectionTitle.H0.FontSize')
+            tStyleBackColor = self._oParameters.Rendering().get('Styles.SectionTitle.H0.BackColor')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.SectionTitle.H0.FontColor')
         elif sStyle == "SectionTitleH1":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('SectionTitleH1FontSize')
-            tStyleBackColor = self._oParameters.Rendering().getStyles('SectionTitleH1BackColor')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('SectionTitleH1FontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.SectionTitle.H1.FontSize')
+            tStyleBackColor = self._oParameters.Rendering().get('Styles.SectionTitle.H1.BackColor')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.SectionTitle.H1.FontColor')
         elif sStyle == "SectionTitleH2":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('SectionTitleH2FontSize')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('SectionTitleH2FontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.SectionTitle.H2.FontSize')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.SectionTitle.H2.FontColor')
         elif sStyle == "LunarFeatureName":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('LunarFeatureNameFontSize')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('LunarFeatureNameFontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.LunarFeature.Name.FontSize')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.LunarFeature.Name.FontColor')
         elif sStyle == "LunarFeatureNameNotified":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('LunarFeatureNameNotifiedFontSize')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('LunarFeatureNameNotifiedFontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.LunarFeature.NameNotified.FontSize')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.LunarFeature.NameNotified.FontColor')
         elif sStyle == "LunarFeatureData":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('LunarFeatureDataFontSize')
-            sFont = sFontDirectory + self._oParameters.Rendering().getStyles('LunarFeatureDataFont')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.LunarFeature.Data.FontSize')
+            sFont = sFontDirectory + self._oParameters.Rendering().get('Styles.LunarFeature.Data.Font')
         elif sStyle == "BitmapHeaderH0":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('BitmapHeaderH0FontSize')
-            tStyleBackColor = self._oParameters.Rendering().getStyles('BitmapHeaderH0BackColor')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('BitmapHeaderH0FontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.BitmapHeader.H0.FontSize')
+            tStyleBackColor = self._oParameters.Rendering().get('Styles.BitmapHeader.H0.BackColor')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.BitmapHeader.H0.FontColor')
         elif sStyle == "BitmapHeaderH1":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('BitmapHeaderH1FontSize')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('BitmapHeaderH1FontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.BitmapHeader.H1.FontSize')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.BitmapHeader.H1.FontColor')
         elif sStyle == "BitmapHeaderH2":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('BitmapHeaderH2FontSize')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('BitmapHeaderH2FontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.BitmapHeader.H2.FontSize')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.BitmapHeader.H2.FontColor')
         elif sStyle == "AzimutInformation":
-            iStyleFontSize = self._oParameters.Rendering().getStyles('AzimutInformationFontSize')
-            tStyleFontColor = self._oParameters.Rendering().getStyles('AzimutInformationFontColor')
+            iStyleFontSize = self._oParameters.Rendering().get('Styles.VisiblityGraphAzimutInformation.FontSize')
+            tStyleFontColor = self._oParameters.Rendering().get('Styles.VisiblityGraphAzimutInformation.FontColor')
         
         # return all values for style
         try:
@@ -164,8 +164,8 @@ class RendererBitmap(toolObjectSerializable):
         return x,y
         
     def _addLunarFeatureRow(self, oLunarFeatureObject, oCalendar, oEphemeridesData, oImg):
-        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
-        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
+        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
 
         sComment1 = self._oParameters.Localization().getLabel(oLunarFeatureObject.getType()) + "    -    " + self._oParameters.Localization().getLabel("LongitudeAbrev") + ": " + str(oLunarFeatureObject.getLongitude()) + "  -  "  + self._oParameters.Localization().getLabel("LatitudeAbrev") + ": " + str(oLunarFeatureObject.getLatitude())
         sComment2 = ""
@@ -184,9 +184,9 @@ class RendererBitmap(toolObjectSerializable):
         bAtLeastOneDayToBeDisplayed = False
         bAtLeastOneDayIsObservable = False
         bAtLeastOneDayIsNotObservable = False
-        for iDaySlot in range (0,  self._oParameters.Rendering().getDisplay('NumberOfSlotsForMoonFeatures'), iNbSlotsPerDay ):
+        for iDaySlot in range (0,  self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForMoonFeatures'), iNbSlotsPerDay ):
             iDay = int(iDaySlot / iNbSlotsPerDay)
-            iDataSlot = iDaySlot + self._oParameters.Rendering().getDisplay('DaySlotForDataInfo')
+            iDataSlot = iDaySlot + self._oParameters.Rendering().get('RenderingOptions.DaySlotForDataInfo')
             iStartX = RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph + (iDay * iNbSlotsPerDay * iSlotWidthInPx) + (iDay * RendererBitmap.iTableSpaceBetweenDays)
             bToBeDisplayed, bIsObservable, theNewImg =  self._addLunarFeatureVisibilityBitmapForDay(iDaySlot, iDaySlot + iNbSlotsPerDay, iDataSlot, oLunarFeatureObject, oCalendar, oEphemeridesData, theNewImg, iStartX, iRowPositionY)
             if bToBeDisplayed:
@@ -203,11 +203,11 @@ class RendererBitmap(toolObjectSerializable):
 
         if bAtLeastOneDayIsObservable:
             if not bAtLeastOneDayIsNotObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.Observable'), iRowPositionY, theNewImg)
             else:
-                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.AtLeastOneDayObservable'), iRowPositionY, theNewImg)
         else:
-            theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
+            theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.NotObservable'), iRowPositionY, theNewImg)
             
         if bAtLeastOneDayToBeDisplayed:
             return True, bAtLeastOneDayIsObservable, theNewImg
@@ -243,8 +243,8 @@ class RendererBitmap(toolObjectSerializable):
         return iStartY, oNewImg
 
     def _addLunarFeatureVisibilityBitmapForDay(self, iStartSlot, iEndSlot, iDataSlot, oLunarFeatureObject, oCalendar, oEphemeridesData, oImg, iRowPositionX, iRowPositionY):
-        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
-        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
+        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
         bToBeDisplayed = False
         bIsObservable = False
         iNbRow = 90 / 5
@@ -268,8 +268,8 @@ class RendererBitmap(toolObjectSerializable):
         for iSlot in range(iStartSlot, iEndSlot):
             fSunAltitudeOverFeature = MeeusAlgorithms.getSunAltitudeFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iSlot))
             sMoonVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot("Moon", iSlot, self._oParameters)
-            fLongitudeMin = (oLunarFeatureObject.getLongitudeMin() - self._oParameters.Runtime().getObservation('ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
-            fLongitudeMax = (oLunarFeatureObject.getLongitudeMax() + self._oParameters.Runtime().getObservation('ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
+            fLongitudeMin = (oLunarFeatureObject.getLongitudeMin() - self._oParameters.Rendering().get('RenderingOptions.ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
+            fLongitudeMax = (oLunarFeatureObject.getLongitudeMax() + self._oParameters.Rendering().get('RenderingOptions.ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
             fTerminatorLongitudeRise = (oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot) - 90.0) % 360.0
             fTerminatorLongitudeSet = (oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot) + 90.0) % 360.0
 
@@ -282,7 +282,7 @@ class RendererBitmap(toolObjectSerializable):
             # Define condition when Lunar feature is observable:
             #    - Moon must not be Hidden, Below or Impossible
             #    - Lunar feature must be  NearTerminator or sun altitude over feature must be > 0 and <= MaximumLunarFeatureSunAltitude
-            if not (sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Impossible") and (bIsTerminatorNearFeature or (fSunAltitudeOverFeature > 0.0 and fSunAltitudeOverFeature <= self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude'))):
+            if not (sMoonVisibilityStatus == "Hidden" or sMoonVisibilityStatus == "Below" or sMoonVisibilityStatus == "Impossible") and (bIsTerminatorNearFeature or (fSunAltitudeOverFeature > 0.0 and fSunAltitudeOverFeature <= self._oParameters.Rendering().get('RenderingOptions.MaximumLunarFeatureSunAltitude'))):
                 bIsObservable = True
             
             iTransparency = 255
@@ -290,14 +290,14 @@ class RendererBitmap(toolObjectSerializable):
                 iTransparency = 250
             if sMoonVisibilityStatus == "Below":
                 iTransparency = 0
-            if self._oParameters.Runtime().getObservation('ShowWhenTerminatorIsOnLunarFeature') and bIsTerminatorNearFeature:
-                tColor = self._oParameters.Rendering().getColorLunarFeatureVisibility('Good')
+            if self._oParameters.Rendering().get('RenderingOptions.ShowWhenTerminatorIsOnLunarFeature') and bIsTerminatorNearFeature:
+                tColor = self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.Good')
             elif fSunAltitudeOverFeature < 0.0:  
-                tColor = self._oParameters.Rendering().getColorLunarFeatureVisibility('SunBelowHorizon')
-            elif fSunAltitudeOverFeature >= self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude'):
-                tColor = self._oParameters.Rendering().getColorLunarFeatureVisibility('SunTooHigh')
+                tColor = self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.SunBelowHorizon')
+            elif fSunAltitudeOverFeature >= self._oParameters.Rendering().get('RenderingOptions.MaximumLunarFeatureSunAltitude'):
+                tColor = self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.SunTooHigh')
             else:
-                tColor = (255, 127 + int(fSunAltitudeOverFeature / self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude') * 128.0), int(fSunAltitudeOverFeature / self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude') * 255.0))
+                tColor = (255, 127 + int(fSunAltitudeOverFeature / self._oParameters.Rendering().get('RenderingOptions.MaximumLunarFeatureSunAltitude') * 128.0), int(fSunAltitudeOverFeature / self._oParameters.Rendering().get('RenderingOptions.MaximumLunarFeatureSunAltitude') * 255.0))
             tColor = (tColor[0], tColor[1], tColor[2], iTransparency)
 
                     
@@ -311,10 +311,10 @@ class RendererBitmap(toolObjectSerializable):
         theNewDraw.rectangle((iBorderStartX, iBorderStartY, iBorderEndX, iBorderEndY), outline=(127, 127, 127, 255))
 
         # Additional data
-        sAdditionalText = 'At ' + oCalendar.getLocalTimeForSlotAsHHMM(iDataSlot, self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')) + ':   Sun Altitude: ' + str(int(round(MeeusAlgorithms.getSunAltitudeFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iDataSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iDataSlot))))) + '  Sun Azimut: ' + str(int(round(MeeusAlgorithms.getSunAzimutFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iDataSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iDataSlot)))))
+        sAdditionalText = 'At ' + oCalendar.getLocalTimeForSlotAsHHMM(iDataSlot, self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')) + ':   Sun Altitude: ' + str(int(round(MeeusAlgorithms.getSunAltitudeFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iDataSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iDataSlot))))) + '  Sun Azimut: ' + str(int(round(MeeusAlgorithms.getSunAzimutFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iDataSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iDataSlot)))))
         theNewDraw.text((iRowPositionX + 3, iRowPositionY + RendererBitmap.iAltitudeRowHeight * 18 + 3), sAdditionalText, (255,255,255, 255), font=self._getFont("ObjectAdditionalDailyData"))
         
-        bToBeDisplayed = (bIsObservable or self._oParameters.Runtime().getObservation('Always'))
+        bToBeDisplayed = (bIsObservable or self._oParameters.Rendering().get('RenderingOptions.ForceObservable'))
         if bToBeDisplayed:        
             return True, bIsObservable, oNewImg
         else:
@@ -323,10 +323,10 @@ class RendererBitmap(toolObjectSerializable):
     def _addMoonMinimapBitmap(self, iPhase, fLongitude, fLatitude, oImg, iPosX, iPosY, iBitmapSize):
         iIndicatorSizeInPx = 3
         
-        tColorMoonMapBorder = self._oParameters.Rendering().getColorMoonMiniMap('Border')
-        tColorMoonMapBackground = self._oParameters.Rendering().getColorMoonMiniMap('Background')
-        tColorMoonMapLight = self._oParameters.Rendering().getColorMoonMiniMap('Light')
-        tColorMoonMapDark = self._oParameters.Rendering().getColorMoonMiniMap('Dark')
+        tColorMoonMapBorder = self._oParameters.Rendering().get('MoonMiniMap.Color.Border')
+        tColorMoonMapBackground = self._oParameters.Rendering().get('MoonMiniMap.Color.Background')
+        tColorMoonMapLight = self._oParameters.Rendering().get('MoonMiniMap.Color.Light')
+        tColorMoonMapDark = self._oParameters.Rendering().get('MoonMiniMap.Color.Dark')
         
         # Draw intermediary bitmaps
         imgFullLight = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
@@ -407,11 +407,11 @@ class RendererBitmap(toolObjectSerializable):
         iTableObjectRowHeight = RendererBitmap.iAltitudeRowHeight * 18 + RendererBitmap.iTableObjectRowGraphAdditionalDataHeight
         iBitmapSize = iTableObjectRowHeight
         iPositionX = RendererBitmap.iTableWidthObjectLabel - iBitmapSize - RendererBitmap.iTableVisibilityFlagWidth - 1
-        tColorBackground = self._oParameters.Rendering().getColorHeliocentricGraph('Background')
-        tColorLines = self._oParameters.Rendering().getColorHeliocentricGraph('Lines')
-        tColorSun = self._oParameters.Rendering().getColorHeliocentricGraph('Sun')
-        tColorEarth = self._oParameters.Rendering().getColorHeliocentricGraph('Earth')
-        tColorPlanet = self._oParameters.Rendering().getColorHeliocentricGraph('Planet')
+        tColorBackground = self._oParameters.Rendering().get('HeliocentricGraph.Color.Background')
+        tColorLines = self._oParameters.Rendering().get('HeliocentricGraph.Color.Lines')
+        tColorSun = self._oParameters.Rendering().get('HeliocentricGraph.Color.Sun')
+        tColorEarth = self._oParameters.Rendering().get('HeliocentricGraph.Color.Earth')
+        tColorPlanet = self._oParameters.Rendering().get('HeliocentricGraph.Color.Planet')
 
         iSunSize = 6
         iEarthSize = 4 
@@ -437,15 +437,15 @@ class RendererBitmap(toolObjectSerializable):
         return oNewImg
         
     def _addObjectRow(self, oEphemeridesDataObject, oCalendar, oEphemeridesData, oImg):
-        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
-        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
+        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
         bIsObservable = False
         sHTMLObjectRow = ""
         if (oEphemeridesDataObject.getCategory() == "Moon"):
             iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject, "", "", "", oImg)
-            iMaxSlot = self._oParameters.Rendering().getDisplay('NumberOfSlotsForMoon')
+            iMaxSlot = self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForMoon')
         elif (oEphemeridesDataObject.getCategory() == "Planetary"):
-            iMaxSlot = self._oParameters.Rendering().getDisplay('NumberOfSlotsForPlanets')
+            iMaxSlot = self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForPlanets')
             fDiffMeanLong = oEphemeridesData.getSunMeanLongInDegForSlot(0) - 180.0 - oEphemeridesDataObject.getMeanLongForSlot(0)
             while fDiffMeanLong < 0:  
                 fDiffMeanLong = fDiffMeanLong + 360
@@ -457,7 +457,7 @@ class RendererBitmap(toolObjectSerializable):
             # add heliocentric schema
             theNewImg = self._addHeliocentricBitmap(oEphemeridesDataObject.getName(), oEphemeridesData.getSunMeanLongInDegForSlot(0) - 180.0, oEphemeridesDataObject.getMeanLongForSlot(0), iRowPositionY, theNewImg)
         else:
-            iMaxSlot = self._oParameters.Rendering().getDisplay('NumberOfSlotsForDeepSky')
+            iMaxSlot = self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForDeepSky')
             sDataRow1 = self._oParameters.Localization().getLabel(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getType())
             if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistanceUnit() != "":
                 sDataRow1 += "     "  + self._oParameters.Localization().getLabel("DistanceAbrev") + ": " + str(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistance()) + " "  + self._oParameters.Localization().getLabel(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistanceUnit())
@@ -479,7 +479,7 @@ class RendererBitmap(toolObjectSerializable):
         bAtLeastOneDayNotObservable = False
         for iDaySlot in range (0,  iMaxSlot, iNbSlotsPerDay ):
             iDay = int(iDaySlot / iNbSlotsPerDay)
-            iDataSlot = iDaySlot + self._oParameters.Rendering().getDisplay('DaySlotForDataInfo')
+            iDataSlot = iDaySlot + self._oParameters.Rendering().get('RenderingOptions.DaySlotForDataInfo')
             iStartX = RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph + (iDay * iNbSlotsPerDay * iSlotWidthInPx) + (iDay * RendererBitmap.iTableSpaceBetweenDays)
             bIsDisplayed, bIsObservable, theNewImg =  self._addObjectVisibilityInfoForDay( oEphemeridesDataObject, oCalendar, iDaySlot, iDaySlot + iNbSlotsPerDay, iDataSlot, oEphemeridesData, theNewImg, iStartX, iRowPositionY)
             if bIsDisplayed:
@@ -491,11 +491,11 @@ class RendererBitmap(toolObjectSerializable):
 
         if bAtLeastOneDayObservable:
             if not bAtLeastOneDayNotObservable:
-                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('Observable'), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.Observable'), iRowPositionY, theNewImg)
             else:            
-                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('AtLEastOneDayObservable'), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.AtLEastOneDayObservable'), iRowPositionY, theNewImg)
         else:
-            theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().getColorVisibilityFlags('NotObservable'), iRowPositionY, theNewImg)
+            theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.NotObservable'), iRowPositionY, theNewImg)
             
         if bAtLeastOneDayToBeDisplayed:
             return bAtLeastOneDayToBeDisplayed, bAtLeastOneDayObservable, theNewImg
@@ -533,8 +533,8 @@ class RendererBitmap(toolObjectSerializable):
         return iStartY, oNewImg
 
     def _addObjectVisibilityBitmapForDay(self, oEphemeridesDataObject, oCalendar, iStartSlot, iEndSlot, oEphemeridesData, oImg, iRowPositionX, iRowPositionY):
-        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
-        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
+        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
         iNbRow = 90 / 5
         bIsObservable = False
         
@@ -562,6 +562,7 @@ class RendererBitmap(toolObjectSerializable):
                 y2 = y1 + RendererBitmap.iAltitudeRowHeight - 1
                 for iSlot in range(iStartSlot, iEndSlot):
                     x1 = (iSlot - iStartSlot) * iSlotWidthInPx
+                    x1 = (iSlot - iStartSlot) * iSlotWidthInPx
                     x2 = x1 + iSlotWidthInPx - 1
                     tColor = self._getBitmapColorforSunAltitude(oEphemeridesData.getSunAltitudeForSlot(iSlot))
                     theNewDraw.rectangle((iRowPositionX - 1 + x1, iRowPositionY + 1 + y1, iRowPositionX - 1 + x2, iRowPositionY + 1 + y2), fill=tColor)
@@ -569,14 +570,14 @@ class RendererBitmap(toolObjectSerializable):
                 x = (iSlot - iStartSlot) * iSlotWidthInPx + (iSlotWidthInPx/2) - 1
                 y = iBitmapHeight - int(float( oEphemeridesDataObject.getAltitudeForSlot(iSlot) / 90.0) * float(iBitmapHeight))
                 # Draw obstruction
-                if self._oParameters.Rendering().getDisplay("ShowObstructionOnGraph"):
+                if self._oParameters.Rendering().get("RenderingOptions.ShowObstructionOnGraph"):
                     fObstructionMinAlt, fObstructionMaxAlt = self._oParameters.Runtime().getPlace().getObstructedSkyAreas().getMinMaxAltitudeObstructedForAzimut(oEphemeridesDataObject.getAzimutForSlot(iSlot))
                     if not(fObstructionMinAlt == 0.0 and fObstructionMaxAlt == 0.0):
                         yObstructedMin = iBitmapHeight - int(float( fObstructionMinAlt / 90.0) * float(iBitmapHeight))
                         yObstructedMax = iBitmapHeight - int(float( fObstructionMaxAlt / 90.0) * float(iBitmapHeight))
                         tColorObstruction = self._oParameters.Runtime().getPlace().getObstructedSkyAreas().getColorForAzimutAltitude(oEphemeridesDataObject.getAzimutForSlot(iSlot), fObstructionMinAlt)
                         if tColorObstruction == None:
-                            tColorObstruction = self._oParameters.Rendering().getDisplay("ShowObstructionOnGraphColor")
+                            tColorObstruction = self._oParameters.Rendering().get("RenderingOptions.ShowObstructionOnGraphColor")
                         theNewDraw.rectangle((iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx, iRowPositionY + 1 + yObstructedMin, iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx + iSlotWidthInPx - 1, iRowPositionY + 1 + yObstructedMax), fill=tColorObstruction)
                 # Draw object altitude line
                 if oEphemeridesDataObject.getAltitudeForSlot(iSlot) > 0:
@@ -590,7 +591,7 @@ class RendererBitmap(toolObjectSerializable):
                 iPrevY = y
                 
             # Draw Azimut information
-            if self._oParameters.Rendering().getDisplay("ShowAzimutInformationOnGraph"):
+            if self._oParameters.Rendering().get("RenderingOptions.ShowAzimutInformationOnGraph"):
                 bAzimutInfoNdone = False
                 bAzimutInfoSdone = False
                 bAzimutInfoEdone = False
@@ -624,7 +625,7 @@ class RendererBitmap(toolObjectSerializable):
         # delete useless objects
         del theNewDraw        
 
-        bIsDisplayed = (bIsObservable or self._oParameters.Runtime().getObservation('Always') or (self._oParameters.Runtime().getObservation('ForceDisplayPlanetMoon') and (oEphemeridesDataObject.getCategory() == "Planetary" or oEphemeridesDataObject.getCategory() == "Moon")))
+        bIsDisplayed = (bIsObservable or self._oParameters.Rendering().get('RenderingOptions.ForceObservable') or (self._oParameters.Rendering().get('RenderingOptions.ForceDisplayPlanetMoon') and (oEphemeridesDataObject.getCategory() == "Planetary" or oEphemeridesDataObject.getCategory() == "Moon")))
         if bIsDisplayed:        
             return bIsDisplayed, bIsObservable, oNewImg
         else:
@@ -632,8 +633,8 @@ class RendererBitmap(toolObjectSerializable):
         
     def _addObjectVisibilityInfoForDay(self, oEphemeridesDataObject, oCalendar, iStartSlot, iEndSlot, iDataSlot, oEphemeridesData, oImg, iRowPositionX, iRowPositionY):
         bIsObservable = False
-        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
-        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
+        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
         
         bIsDisplayed, bIsObservable, theNewImg = self._addObjectVisibilityBitmapForDay(oEphemeridesDataObject, oCalendar, iStartSlot, iEndSlot, oEphemeridesData, oImg, iRowPositionX + 3, iRowPositionY)
 
@@ -647,7 +648,7 @@ class RendererBitmap(toolObjectSerializable):
             if fDiffMeanLong > 155: sMeanLongComment = sMeanLongComment + ' ('  + self._oParameters.Localization().getLabel("NearOpposition") + ')'
             sAdditionalText = self._oParameters.Localization().getLabel("CulminationAbrev") + ' ' + str(oEphemeridesDataObject.getCulminAltitude(iStartSlot, iEndSlot)) + ', ' + self._oParameters.Localization().getLabel("Azimut") + ' ' + str(oEphemeridesDataObject.getCulminAzimut(iStartSlot, iEndSlot))
         elif oEphemeridesDataObject.getCategory() == "Moon":
-            sAdditionalText = self._oParameters.Localization().getLabel("A") + ' ' + oCalendar.getLocalTimeForSlotAsHHMM(iDataSlot, self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')) + ':  ' + self._oParameters.Localization().getLabel("DistanceAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getDistanceForSlot(iDataSlot)))) + ' ' + self._oParameters.Localization().getLabel("KilometerAbrev") + ', ' + self._oParameters.Localization().getLabel("Phase") + ': ' + str(int(round(abs(oEphemeridesDataObject.getPhaseForSlot(iDataSlot))))) + ', ' + self._oParameters.Localization().getLabel("IlluminationAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getIlluminationForSlot(iDataSlot) * 100))) + '%, ' + self._oParameters.Localization().getLabel("ColongitudeAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getColongitudeForSlot(iDataSlot)))) + ' -=- ' + self._oParameters.Localization().getLabel("CulminationAbrev") + ' ' + str(oEphemeridesDataObject.getCulminAltitude(iStartSlot, iEndSlot)) + ', ' + self._oParameters.Localization().getLabel("Azimut") + ' ' + str(oEphemeridesDataObject.getCulminAzimut(iStartSlot, iEndSlot))
+            sAdditionalText = self._oParameters.Localization().getLabel("A") + ' ' + oCalendar.getLocalTimeForSlotAsHHMM(iDataSlot, self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')) + ':  ' + self._oParameters.Localization().getLabel("DistanceAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getDistanceForSlot(iDataSlot)))) + ' ' + self._oParameters.Localization().getLabel("KilometerAbrev") + ', ' + self._oParameters.Localization().getLabel("Phase") + ': ' + str(int(round(abs(oEphemeridesDataObject.getPhaseForSlot(iDataSlot))))) + ', ' + self._oParameters.Localization().getLabel("IlluminationAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getIlluminationForSlot(iDataSlot) * 100))) + '%, ' + self._oParameters.Localization().getLabel("ColongitudeAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getColongitudeForSlot(iDataSlot)))) + ' -=- ' + self._oParameters.Localization().getLabel("CulminationAbrev") + ' ' + str(oEphemeridesDataObject.getCulminAltitude(iStartSlot, iEndSlot)) + ', ' + self._oParameters.Localization().getLabel("Azimut") + ' ' + str(oEphemeridesDataObject.getCulminAzimut(iStartSlot, iEndSlot))
         else:
             sAdditionalText = self._oParameters.Localization().getLabel("CulminationAbrev") + ' ' + str(oEphemeridesDataObject.getCulminAltitude(iStartSlot, iEndSlot)) + ', ' + self._oParameters.Localization().getLabel("Azimut") + ' ' + str(oEphemeridesDataObject.getCulminAzimut(iStartSlot, iEndSlot))
 
@@ -657,18 +658,18 @@ class RendererBitmap(toolObjectSerializable):
         return bIsDisplayed, bIsObservable, theNewImg
             
     def _addObjectVisibilityTableHeader(self, oCalendar, oEphemeridesData, sType, oImg):
-        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
-        iNbSlotsPerHour = 60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')
-        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        iNbSlotsPerDay = (1440 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
+        iNbSlotsPerHour = 60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')
+        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
         iTableHeaderHeight = RendererBitmap.iTableHeaderRowHeight * 2 + RendererBitmap.iTableHeaderRowInterline # 2 rows + 5 pixel in between
         if sType == "Moon":
-            iMaxSlot = self._oParameters.Rendering().getDisplay('NumberOfSlotsForMoon')
+            iMaxSlot = self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForMoon')
         elif sType == "MoonFeatures":
-            iMaxSlot = self._oParameters.Rendering().getDisplay('NumberOfSlotsForMoonFeatures')
+            iMaxSlot = self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForMoonFeatures')
         elif sType == "Planet":
-            iMaxSlot = self._oParameters.Rendering().getDisplay('NumberOfSlotsForPlanets')
+            iMaxSlot = self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForPlanets')
         else:
-            iMaxSlot = self._oParameters.Rendering().getDisplay('NumberOfSlotsForDeepSky')
+            iMaxSlot = self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForDeepSky')
         
         # Resize Image and define starting point to draw header
         iImgWidth, iImgHeight = oImg.size
@@ -691,13 +692,13 @@ class RendererBitmap(toolObjectSerializable):
             theNewDraw.rectangle((iHeaderStartX, iHeaderStartY, iHeaderEndX, iHeaderEndY), fill=(255, 255, 255))
             theNewDraw.rectangle((iHeaderStartX + 1, iHeaderStartY + 1, iHeaderEndX - 1, iHeaderEndY - 1), fill=(0, 0, 0))
             # Display date
-            theNewDraw.text((iHeaderStartX + 3, iHeaderStartY + 3), oCalendar.getFormattedLocalDateForSlot(iSlot,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')), (255,255,255), font=self._getFont("RowHeaderDate"))
+            theNewDraw.text((iHeaderStartX + 3, iHeaderStartY + 3), oCalendar.getFormattedLocalDateForSlot(iSlot,self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')), (255,255,255), font=self._getFont("RowHeaderDate"))
             # Display GMT warning
 #            sLabel = self._oParameters.Localization().getLabel("GMTWarning")
 #            theNewDraw.text((iHeaderEndX - 3 - theNewDraw.textsize(sLabel, font=self._getFont("GMTWarning"))[0], iHeaderStartY + 3), sLabel, (255,255,255), font=self._getFont("GMTWarning"))            
             # Display hours
             for iDaySlot in range (iSlot,  iSlot + iNbSlotsPerDay, iNbSlotsPerHour ):
-                theNewDraw.text((iHeaderStartX + 3 + (iDaySlot - iSlot) * iSlotWidthInPx, iStartY + RendererBitmap.iTableHeaderRowHeight + 4 + RendererBitmap.iTableHeaderRowInterline), oCalendar.getLocalTimeForSlot(iDaySlot, self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))[0:2], (255,255,255), font=self._getFont("RowHeaderTime"))
+                theNewDraw.text((iHeaderStartX + 3 + (iDaySlot - iSlot) * iSlotWidthInPx, iStartY + RendererBitmap.iTableHeaderRowHeight + 4 + RendererBitmap.iTableHeaderRowInterline), oCalendar.getLocalTimeForSlot(iDaySlot, self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))[0:2], (255,255,255), font=self._getFont("RowHeaderTime"))
         
         return oNewImg
 
@@ -708,21 +709,21 @@ class RendererBitmap(toolObjectSerializable):
         # Resize Image and define starting point to draw header
         iImgWidth, iImgHeight = oImg.size
         if sStyle == "SectionTitleH0":
-            iTopMargin = self._oParameters.Rendering().getStyles('SectionTitleH0TopMargin')
-            iBottomMargin = self._oParameters.Rendering().getStyles('SectionTitleH0BottomMargin')
-            iPaddingTopBottom = self._oParameters.Rendering().getStyles('SectionTitleH0PaddingTopBottom')
+            iTopMargin = self._oParameters.Rendering().get('Styles.SectionTitle.H0.TopMargin')
+            iBottomMargin = self._oParameters.Rendering().get('Styles.SectionTitle.H0.BottomMargin')
+            iPaddingTopBottom = self._oParameters.Rendering().get('Styles.SectionTitle.H0.PaddingTopBottom')
         elif sStyle == "SectionTitleH1":
-            iTopMargin = self._oParameters.Rendering().getStyles('SectionTitleH1TopMargin')
-            iBottomMargin = self._oParameters.Rendering().getStyles('SectionTitleH1BottomMargin')
-            iPaddingTopBottom = self._oParameters.Rendering().getStyles('SectionTitleH1PaddingTopBottom')
+            iTopMargin = self._oParameters.Rendering().get('Styles.SectionTitle.H1.TopMargin')
+            iBottomMargin = self._oParameters.Rendering().get('Styles.SectionTitle.H1.BottomMargin')
+            iPaddingTopBottom = self._oParameters.Rendering().get('Styles.SectionTitle.H1.PaddingTopBottom')
         elif sStyle == "SectionTitleH2":
-            iTopMargin = self._oParameters.Rendering().getStyles('SectionTitleH2TopMargin')
-            iBottomMargin = self._oParameters.Rendering().getStyles('SectionTitleH2BottomMargin')
-            iPaddingTopBottom = self._oParameters.Rendering().getStyles('SectionTitleH2PaddingTopBottom')
+            iTopMargin = self._oParameters.Rendering().get('Styles.SectionTitle.H2.TopMargin')
+            iBottomMargin = self._oParameters.Rendering().get('Styles.SectionTitle.H2.BottomMargin')
+            iPaddingTopBottom = self._oParameters.Rendering().get('Styles.SectionTitle.H2.PaddingTopBottom')
         else:
-            iTopMargin = self._oParameters.Rendering().getStyles('DefaultTopMargin')
-            iBottomMargin = self._oParameters.Rendering().getStyles('DefaultBottomMargin')
-            iPaddingTopBottom = self._oParameters.Rendering().getStyles('DefaultPaddingTopBottom')
+            iTopMargin = self._oParameters.Rendering().get('Styles.Default.TopMargin')
+            iBottomMargin = self._oParameters.Rendering().get('Styles.Default.BottomMargin')
+            iPaddingTopBottom = self._oParameters.Rendering().get('Styles.Default.PaddingTopBottom')
         
         if iStartY == -1:
             iNewHeight = iImgHeight + iTopMargin + iStyleFontSize + iBottomMargin + iPaddingTopBottom*2
@@ -787,7 +788,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOnePlanetIsDisplayed = True
         if not bAtLeastOnePlanetIsDisplayed:
@@ -832,7 +833,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "     Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneLunarFeatureIsDisplayed = True
             if not bAtLeastOneLunarFeatureIsDisplayed:
@@ -869,7 +870,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -899,7 +900,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -912,23 +913,23 @@ class RendererBitmap(toolObjectSerializable):
             theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph, True)
             
         # Save and return bitmap name
-        sBitmapName = 'Ephemerides_' + self._oParameters.Runtime().getPlace().getName().replace(' ','') + '.' + self._oParameters.Rendering().getDisplay('BitmapExtension')
-        theNewImg.save(self._sRelativeFolderForBitmaps + sBitmapName, self._oParameters.Rendering().getDisplay('BitmapType'))
-        Tools.logToTrace(self._oParameters.Runtime().getGlobal("PathToLogFileName"), "     Bitmap generated: " + self._sRelativeFolderForBitmaps + sBitmapName)
+        sBitmapName = 'Ephemerides_' + self._oParameters.Runtime().getPlace().getName().replace(' ','') + '.' + self._oParameters.Rendering().get('RenderingOptions.BitmapExtension')
+        theNewImg.save(self._sRelativeFolderForBitmaps + sBitmapName, self._oParameters.Rendering().get('RenderingOptions.BitmapType'))
+        Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Bitmap generated: " + self._sRelativeFolderForBitmaps + sBitmapName)
         
         # Return bitmap URL and size
         iWidth, iHeight = theNewImg.size
         return iWidth, iHeight, self._sURLFolderForBitmaps + sBitmapName, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, self._sRelativeFolderForBitmaps + sBitmapName, sBitmapName, bNotificationToBeSent
 
     def getHTML(self, oCalendar, oEphemeridesData):
-        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
         sHTML = self.getHTMLHeaderComment(oCalendar) + "\n"
         sHTML += '<HTML>' + "\n"
         sHTML += '	<HEAD>' + "\n"
         sHTML += '      <title>'+ self._oParameters.Localization().getLabel("HTMLPageTitle") + '</title>' + "\n"
-        sHTML += '      <link rel="icon" href="http://' + self._oParameters.Runtime().getNightlyBatch('Domain') + '/favicon.png">' 
+        sHTML += '      <link rel="icon" href="http://' + self._oParameters.Runtime().get('NightlyBatch.Domain') + '/favicon.png">' 
         sHTML += '      <base href="">' + "\n"
-        sHTML += '      <link rel="stylesheet" href="http://' + self._oParameters.Runtime().getNightlyBatch('Domain') + '/AstroNotif.css">' + "\n"
+        sHTML += '      <link rel="stylesheet" href="http://' + self._oParameters.Runtime().get('NightlyBatch.Domain') + '/AstroNotif.css">' + "\n"
         sHTML += '      <meta charset="UTF-8">' + "\n"
         sHTML += '	</head>' + "\n"
         sHTML += '<BODY>' + "\n"
@@ -936,9 +937,9 @@ class RendererBitmap(toolObjectSerializable):
         iWidth, iHeight, sBitmapNameURL, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilenameWithPath, sBitmapFilename, bNotificationToBeSent = self.getEphemeridesBitmapForPeriod(oCalendar, oEphemeridesData)
         
         sHTML += '    <H1 class="PageHeader">&nbsp;&nbsp;'
-        sHTML += '<A href="http://' + self._oParameters.Runtime().getNightlyBatch('Domain') + '" target="_blank">' + self._oParameters.Localization().getLabel("EphemerisFor") + ' <SPAN style="font-weight: bold">' + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')) + '</SPAN></A>'
+        sHTML += '<A href="http://' + self._oParameters.Runtime().get('NightlyBatch.Domain') + '" target="_blank">' + self._oParameters.Localization().getLabel("EphemerisFor") + ' <SPAN style="font-weight: bold">' + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')) + '</SPAN></A>'
         sHTML += '</H1>' + "\n"
-        sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' +  self._oParameters.Localization().getLabel("EphemerisFor") + " " + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot')) +  '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
+        sHTML += '    <IMG class="EphemeridesBitmap" src="' + sBitmapNameURL + '" alt="' +  self._oParameters.Localization().getLabel("EphemerisFor") + " " + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')) +  '" height="' + str(iHeight) + '" width="' + str(iWidth) + '">' + "\n"
         sHTML += '    </BODY>' + "\n"
         sHTML += '</HTML>' + "\n"
         return sHTML, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilenameWithPath, sBitmapFilename, bNotificationToBeSent
@@ -977,49 +978,49 @@ class RendererBitmap(toolObjectSerializable):
         
         iHeightText = self._getFontSize("Legend")
 
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Impossible'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Impossible'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Impossible'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Impossible'))
         drawLegend.text((iPosX + 25, iPosY),  self._oParameters.Localization().getLabel("ImpossibleDuringDay"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("ImpossibleDuringDay"), font=self._getFont("Legend"))[0] + 25
 
-#        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Below'))
-#        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Below'))
+#        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Below'))
+#        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Below'))
 #        drawLegend.text((iPosX + 25, iPosY),  self._oParameters.Localization().getLabel("BelowHorizon"), (255,255,255), font=self._getFont("Legend"))
 #        iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("BelowHorizon"), font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Hidden'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Hidden'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Hidden'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Hidden'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("HiddenByObstacle"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("HiddenByObstacle"), font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('VeryLow'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('VeryLow'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.VeryLow'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.VeryLow'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("VeryLow"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("VeryLow"), font=self._getFont("Legend"))[0] + 25
         
         if bWithStatusDifficultMoonLight:
-            drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('DifficultMoonlight'))
-            drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('DifficultMoonlight'))
+            drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.DifficultMoonlight'))
+            drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.DifficultMoonlight'))
             drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("DifficultMoonlight"), (255,255,255), font=self._getFont("Legend"))
             iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("DifficultMoonlight"), font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Low'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Low'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Low'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Low'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("Low"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("Low"), font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Difficult'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Difficult'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Difficult'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Difficult'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("DifficultToSee"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("DifficultToSee"), font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Good'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Good'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Good'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Good'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("GoodVisibility"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("GoodVisibility"), font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Unknown'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorObjectVisibilityStatus('Unknown'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Unknown'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('ObjectVisibilityGraph.LineColorForStatus.Unknown'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("Unknown"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("Unknown"), font=self._getFont("Legend"))[0] + 25
         
@@ -1038,26 +1039,26 @@ class RendererBitmap(toolObjectSerializable):
         
         iHeightText = self._getFontSize("Legend")
 
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorLunarFeatureVisibility('SunBelowHorizon'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorLunarFeatureVisibility('SunBelowHorizon'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.SunBelowHorizon'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.SunBelowHorizon'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("AtFeatureSunBelowHorizon"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("AtFeatureSunBelowHorizon"), font=self._getFont("Legend"))[0] + 25
         
         for iOcc in range(20, 0, -1):
-            fAlt = self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude') / 20.0 * float(iOcc)
-            tColor = (255, 127 + int(fAlt / self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude') * 128.0), int(fAlt / self._oParameters.Runtime().getObservation('MaximumLunarFeatureSunAltitude') * 255.0))
+            fAlt = self._oParameters.Rendering().get('RenderingOptions.MaximumLunarFeatureSunAltitude') / 20.0 * float(iOcc)
+            tColor = (255, 127 + int(fAlt / self._oParameters.Rendering().get('RenderingOptions.MaximumLunarFeatureSunAltitude') * 128.0), int(fAlt / self._oParameters.Rendering().get('RenderingOptions.MaximumLunarFeatureSunAltitude') * 255.0))
             drawLegend.line((iPosX + iOcc, iPosY + (iHeightText / 2), iPosX + iOcc, iPosY + (iHeightText / 2)), fill=tColor)
             drawLegend.line((iPosX + iOcc, iPosY + (iHeightText / 2 + 1), iPosX + iOcc, iPosY + (iHeightText / 2 + 1)), fill=tColor)
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("Observable"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("Observable"), font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorLunarFeatureVisibility('Good'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorLunarFeatureVisibility('Good'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.Good'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.Good'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("NearTerminatorGoodVisibility"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("NearTerminatorGoodVisibility"), font=self._getFont("Legend"))[0] + 25
         
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().getColorLunarFeatureVisibility('SunTooHigh'))
-        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().getColorLunarFeatureVisibility('SunTooHigh'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2), iPosX + 20, iPosY + (iHeightText / 2)), fill=self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.SunTooHigh'))
+        drawLegend.line((iPosX, iPosY + (iHeightText / 2 + 1), iPosX + 20, iPosY + (iHeightText / 2 + 1)), fill=self._oParameters.Rendering().get('LunarFeatureVisibilityGraph.ColorForStatus.SunTooHigh'))
         drawLegend.text((iPosX + 25, iPosY), self._oParameters.Localization().getLabel("AtFeatureSunTooHigh"), (255,255,255), font=self._getFont("Legend"))
         iPosX += 25 + drawLegend.textsize(self._oParameters.Localization().getLabel("AtFeatureSunTooHigh"), font=self._getFont("Legend"))[0] + 25
         
@@ -1074,15 +1075,15 @@ class RendererBitmap(toolObjectSerializable):
 
         # Resize Image and define starting point to draw header
         iImgWidth, iImgHeight = oImg.size
-        iTopMarginH0 = self._oParameters.Rendering().getStyles('BitmapHeaderH0TopMargin')
-        iBottomMarginH0 = self._oParameters.Rendering().getStyles('BitmapHeaderH0BottomMargin')
-        iPaddingTopBottomH0 = self._oParameters.Rendering().getStyles('BitmapHeaderH0PaddingTopBottom')
-        iTopMarginH1 = self._oParameters.Rendering().getStyles('BitmapHeaderH1TopMargin')
-        iBottomMarginH1 = self._oParameters.Rendering().getStyles('BitmapHeaderH1BottomMargin')
-        iPaddingTopBottomH1 = self._oParameters.Rendering().getStyles('BitmapHeaderH1PaddingTopBottom')
-        iTopMarginH2 = self._oParameters.Rendering().getStyles('BitmapHeaderH2TopMargin')
-        iBottomMarginH2 = self._oParameters.Rendering().getStyles('BitmapHeaderH2BottomMargin')
-        iPaddingTopBottomH2 = self._oParameters.Rendering().getStyles('BitmapHeaderH2PaddingTopBottom')
+        iTopMarginH0 = self._oParameters.Rendering().get('Styles.BitmapHeader.H0.TopMargin')
+        iBottomMarginH0 = self._oParameters.Rendering().get('Styles.BitmapHeader.H0.BottomMargin')
+        iPaddingTopBottomH0 = self._oParameters.Rendering().get('Styles.BitmapHeader.H0.PaddingTopBottom')
+        iTopMarginH1 = self._oParameters.Rendering().get('Styles.BitmapHeader.H1.TopMargin')
+        iBottomMarginH1 = self._oParameters.Rendering().get('Styles.BitmapHeader.H1.BottomMargin')
+        iPaddingTopBottomH1 = self._oParameters.Rendering().get('Styles.BitmapHeader.H1.PaddingTopBottom')
+        iTopMarginH2 = self._oParameters.Rendering().get('Styles.BitmapHeader.H2.TopMargin')
+        iBottomMarginH2 = self._oParameters.Rendering().get('Styles.BitmapHeader.H2.BottomMargin')
+        iPaddingTopBottomH2 = self._oParameters.Rendering().get('Styles.BitmapHeader.H2.PaddingTopBottom')
         
         iNewHeight = iImgHeight + iTopMarginH0 + iStyleFontSizeH0 + iBottomMarginH0 + iPaddingTopBottomH0*2 + iTopMarginH1 + iStyleFontSizeH1 + iBottomMarginH1 + iPaddingTopBottomH1*2 + iTopMarginH2 + iStyleFontSizeH2 + iBottomMarginH2 + iPaddingTopBottomH2*2
         
@@ -1091,7 +1092,7 @@ class RendererBitmap(toolObjectSerializable):
         
         # Draw Row 0
         iStartY = iTopMarginH0 + iPaddingTopBottomH0
-        sText0 = self._oParameters.Localization().getLabel("EphemerisFor") + ' ' + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().getDisplay('NumberOfMinutesPerSlot'))
+        sText0 = self._oParameters.Localization().getLabel("EphemerisFor") + ' ' + oCalendar.getFormattedLocalDateForSlot(0,self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
         theNewDraw.text((10, iStartY), sText0, tStyleFontColorH0, font=theStyleFontH0)
         iStartY = iStartY + iStyleFontSizeH0 + iPaddingTopBottomH0 + iBottomMarginH0
 
@@ -1103,7 +1104,7 @@ class RendererBitmap(toolObjectSerializable):
         
         # Draw Row 2
         iStartY = iStartY + iTopMarginH2 + iPaddingTopBottomH2
-        sText2 = self._oParameters.Localization().getLabel("CalculusFor") + ' ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' ' + self._oParameters.Localization().getLabel("By") + ' AstroNotifPython ' + self._oParameters.Runtime().getGlobal('CurrentVersion')
+        sText2 = self._oParameters.Localization().getLabel("CalculusFor") + ' ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' ' + self._oParameters.Localization().getLabel("By") + ' AstroNotifPython ' + self._oParameters.Runtime().get('Global.CurrentVersion')
         theNewDraw.text((10, iStartY), sText2, tStyleFontColorH2, font=theStyleFontH2)
         iStartY = iStartY + iStyleFontSizeH2 + iPaddingTopBottomH2 + iBottomMarginH2
         
