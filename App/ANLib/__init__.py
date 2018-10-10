@@ -15,6 +15,7 @@ from MeeusAlgorithmsFormulas import MeeusAlgorithmsFormulas
 from MeeusAlgorithmsFormulasTests import MeeusAlgorithmsFormulasTests
 from MeeusTable45A import MeeusTable45A
 from MeeusTable45B import MeeusTable45B
+from ParametersJsonGeneric import ParametersJsonGeneric
 from Parameters import Parameters
 from ParametersRuntime import ParametersRuntime
 from ParametersRendering import ParametersRendering
