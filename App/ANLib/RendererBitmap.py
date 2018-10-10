@@ -233,12 +233,12 @@ class RendererBitmap(toolObjectSerializable):
         iStyleFontSizeNotified, theStyleFontNotified, tStyleFontColorNotified, tStyleBackColorNotified = self._getStyle("LunarFeatureNameNotified")
         
         if self._oParameters.LunarFeatures().getLunarFeatureByName(oLunarFeatureObject.getName()).getIsNotifyWhenObservable():
-            theNewDraw.text((iStartX + 3, iStartY + 5), self._oParameters.Localization().getLabel(oLunarFeatureObject.getName()), tStyleFontColorNotified, font=theStyleFontNotified)
+            theNewDraw.text((iStartX + 3, iStartY + 5), oLunarFeatureObject.getName(), tStyleFontColorNotified, font=theStyleFontNotified)
         else:
-            theNewDraw.text((iStartX + 3, iStartY + 5), self._oParameters.Localization().getLabel(oLunarFeatureObject.getName()), tStyleFontColor, font=theStyleFont)
-        theNewDraw.text((iStartX + 3, iStartY + 22 + 10), self._oParameters.Localization().getLabel(sComment1), (0,0,0), font=self._getFont("LunarFeatureData"))
-        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), self._oParameters.Localization().getLabel(sComment2), (0,0,0), font=self._getFont("LunarFeatureData"))
-        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 + 12), self._oParameters.Localization().getLabel(sComment3), (0,0,0), font=self._getFont("LunarFeatureData"))
+            theNewDraw.text((iStartX + 3, iStartY + 5), oLunarFeatureObject.getName(), tStyleFontColor, font=theStyleFont)
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10), sComment1, (0,0,0), font=self._getFont("LunarFeatureData"))
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), sComment2, (0,0,0), font=self._getFont("LunarFeatureData"))
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 + 12), sComment3, (0,0,0), font=self._getFont("LunarFeatureData"))
 
         return iStartY, oNewImg
 
@@ -519,12 +519,12 @@ class RendererBitmap(toolObjectSerializable):
         iStyleFontSizeNotified, theStyleFontNotified, tStyleFontColorNotified, tStyleBackColorNotified = self._getStyle("ObjectNameNotified")
         
         if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getIsNotifyWhenObservable():
-            theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getLabel(oEphemeridesDataObject.getName()), tStyleFontColorNotified, font=theStyleFontNotified)
+            theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getLabel(oEphemeridesDataObject.getName(), False), tStyleFontColorNotified, font=theStyleFontNotified)
         else:
-            theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getLabel(oEphemeridesDataObject.getName()), tStyleFontColor, font=theStyleFont)
-        theNewDraw.text((iStartX + 3, iStartY + 22 + 10), self._oParameters.Localization().getLabel(Tools.removeHTMLTags(sObjectDataRow1)), (0,0,0), font=self._getFont("ObjectData"))
-        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), self._oParameters.Localization().getLabel(Tools.removeHTMLTags(sObjectDataRow2)), (0,0,0), font=self._getFont("ObjectData"))
-        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 * 2), self._oParameters.Localization().getLabel(Tools.removeHTMLTags(sObjectDataRow3)), (0,0,0), font=self._getFont("ObjectData"))
+            theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getLabel(oEphemeridesDataObject.getName(), False), tStyleFontColor, font=theStyleFont)
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10), Tools.removeHTMLTags(sObjectDataRow1), (0,0,0), font=self._getFont("ObjectData"))
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), Tools.removeHTMLTags(sObjectDataRow2), (0,0,0), font=self._getFont("ObjectData"))
+        theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 * 2), Tools.removeHTMLTags(sObjectDataRow3), (0,0,0), font=self._getFont("ObjectData"))
         
         if oEphemeridesDataObject.getPictureName() <> "":
             imgObjectThumbnail = Image.open(Tools.get_ResourceSubfolder_path("Bitmaps") + oEphemeridesDataObject.getPictureName())
@@ -648,7 +648,7 @@ class RendererBitmap(toolObjectSerializable):
             if fDiffMeanLong > 155: sMeanLongComment = sMeanLongComment + ' ('  + self._oParameters.Localization().getLabel("NearOpposition") + ')'
             sAdditionalText = self._oParameters.Localization().getLabel("CulminationAbrev") + ' ' + str(oEphemeridesDataObject.getCulminAltitude(iStartSlot, iEndSlot)) + ', ' + self._oParameters.Localization().getLabel("Azimut") + ' ' + str(oEphemeridesDataObject.getCulminAzimut(iStartSlot, iEndSlot))
         elif oEphemeridesDataObject.getCategory() == "Moon":
-            sAdditionalText = self._oParameters.Localization().getLabel("A") + ' ' + oCalendar.getLocalTimeForSlotAsHHMM(iDataSlot, self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')) + ':  ' + self._oParameters.Localization().getLabel("DistanceAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getDistanceForSlot(iDataSlot)))) + ' ' + self._oParameters.Localization().getLabel("KilometerAbrev") + ', ' + self._oParameters.Localization().getLabel("Phase") + ': ' + str(int(round(abs(oEphemeridesDataObject.getPhaseForSlot(iDataSlot))))) + ', ' + self._oParameters.Localization().getLabel("IlluminationAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getIlluminationForSlot(iDataSlot) * 100))) + '%, ' + self._oParameters.Localization().getLabel("ColongitudeAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getColongitudeForSlot(iDataSlot)))) + ' -=- ' + self._oParameters.Localization().getLabel("CulminationAbrev") + ' ' + str(oEphemeridesDataObject.getCulminAltitude(iStartSlot, iEndSlot)) + ', ' + self._oParameters.Localization().getLabel("Azimut") + ' ' + str(oEphemeridesDataObject.getCulminAzimut(iStartSlot, iEndSlot))
+            sAdditionalText = self._oParameters.Localization().getLabel("At") + ' ' + oCalendar.getLocalTimeForSlotAsHHMM(iDataSlot, self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')) + ':  ' + self._oParameters.Localization().getLabel("DistanceAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getDistanceForSlot(iDataSlot)))) + ' ' + self._oParameters.Localization().getLabel("KilometerAbrev") + ', ' + self._oParameters.Localization().getLabel("Phase") + ': ' + str(int(round(abs(oEphemeridesDataObject.getPhaseForSlot(iDataSlot))))) + ', ' + self._oParameters.Localization().getLabel("IlluminationAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getIlluminationForSlot(iDataSlot) * 100))) + '%, ' + self._oParameters.Localization().getLabel("ColongitudeAbrev") + ': ' + str(int(round(oEphemeridesDataObject.getColongitudeForSlot(iDataSlot)))) + ' -=- ' + self._oParameters.Localization().getLabel("CulminationAbrev") + ' ' + str(oEphemeridesDataObject.getCulminAltitude(iStartSlot, iEndSlot)) + ', ' + self._oParameters.Localization().getLabel("Azimut") + ' ' + str(oEphemeridesDataObject.getCulminAzimut(iStartSlot, iEndSlot))
         else:
             sAdditionalText = self._oParameters.Localization().getLabel("CulminationAbrev") + ' ' + str(oEphemeridesDataObject.getCulminAltitude(iStartSlot, iEndSlot)) + ', ' + self._oParameters.Localization().getLabel("Azimut") + ' ' + str(oEphemeridesDataObject.getCulminAzimut(iStartSlot, iEndSlot))
 
@@ -788,7 +788,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID())
                     if bIsDisplayed:
                         bAtLeastOnePlanetIsDisplayed = True
         if not bAtLeastOnePlanetIsDisplayed:
@@ -833,7 +833,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getID())
                     if bIsDisplayed:
                         bAtLeastOneLunarFeatureIsDisplayed = True
             if not bAtLeastOneLunarFeatureIsDisplayed:
@@ -870,7 +870,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID())
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -900,7 +900,7 @@ class RendererBitmap(toolObjectSerializable):
                         iCount = iCount + 1
                         if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getName())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID())
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
