@@ -38,8 +38,8 @@ class Parameters(toolObjectSerializable):
         self._ParametersRuntime       = ParametersRuntime("parameters_Runtime.json")
 
         self._ParametersRendering     = ParametersJsonGeneric('parameters_Rendering.json')
+        self._ParametersLocalization  = ParametersLocalization('parameters_Localization.json', self._ParametersRendering.get('RenderingOptions.Language'))
 
-        self._ParametersLocalization  = ParametersLocalization(toolJSON.getContent('parameters_Localization.json'), self._ParametersRendering.get('RenderingOptions.Language'))
         self._ParametersSkyObjects    = ParametersSkyObjects(toolJSON.getContent('parameters_SkyObjects.json'))
         self._ParametersLunarFeatures = ParametersLunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
         self._ParametersPlaces        = ParametersPlaces(toolJSON.getContent('parameters_Places.json'))
