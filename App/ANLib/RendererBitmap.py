@@ -571,11 +571,11 @@ class RendererBitmap(toolObjectSerializable):
                 y = iBitmapHeight - int(float( oEphemeridesDataObject.getAltitudeForSlot(iSlot) / 90.0) * float(iBitmapHeight))
                 # Draw obstruction
                 if self._oParameters.Rendering().get("RenderingOptions.ShowObstructionOnGraph"):
-                    fObstructionMinAlt, fObstructionMaxAlt = self._oParameters.Runtime().getPlace().getObstructedSkyAreas().getMinMaxAltitudeObstructedForAzimut(oEphemeridesDataObject.getAzimutForSlot(iSlot))
+                    fObstructionMinAlt, fObstructionMaxAlt = self._oParameters.Runtime().get("Place").getObstructedSkyAreas().getMinMaxAltitudeObstructedForAzimut(oEphemeridesDataObject.getAzimutForSlot(iSlot))
                     if not(fObstructionMinAlt == 0.0 and fObstructionMaxAlt == 0.0):
                         yObstructedMin = iBitmapHeight - int(float( fObstructionMinAlt / 90.0) * float(iBitmapHeight))
                         yObstructedMax = iBitmapHeight - int(float( fObstructionMaxAlt / 90.0) * float(iBitmapHeight))
-                        tColorObstruction = self._oParameters.Runtime().getPlace().getObstructedSkyAreas().getColorForAzimutAltitude(oEphemeridesDataObject.getAzimutForSlot(iSlot), fObstructionMinAlt)
+                        tColorObstruction = self._oParameters.Runtime().get("Place").getObstructedSkyAreas().getColorForAzimutAltitude(oEphemeridesDataObject.getAzimutForSlot(iSlot), fObstructionMinAlt)
                         if tColorObstruction == None:
                             tColorObstruction = self._oParameters.Rendering().get("RenderingOptions.ShowObstructionOnGraphColor")
                         theNewDraw.rectangle((iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx, iRowPositionY + 1 + yObstructedMin, iRowPositionX - 1 + (iSlot - iStartSlot) * iSlotWidthInPx + iSlotWidthInPx - 1, iRowPositionY + 1 + yObstructedMax), fill=tColorObstruction)
@@ -913,7 +913,7 @@ class RendererBitmap(toolObjectSerializable):
             theNewImg = self._addVisibilityMapLegend(theNewImg, RendererBitmap.iTableMarginLeft + RendererBitmap.iTableWidthObjectLabel + RendererBitmap.iTableSpaceBetweenLabelAndGraph, True)
             
         # Save and return bitmap name
-        sBitmapName = 'Ephemerides_' + self._oParameters.Runtime().getPlace().getName().replace(' ','') + '.' + self._oParameters.Rendering().get('RenderingOptions.BitmapExtension')
+        sBitmapName = 'Ephemerides_' + self._oParameters.Runtime().get("Place").getName().replace(' ','') + '.' + self._oParameters.Rendering().get('RenderingOptions.BitmapExtension')
         theNewImg.save(self._sRelativeFolderForBitmaps + sBitmapName, self._oParameters.Rendering().get('RenderingOptions.BitmapType'))
         Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Bitmap generated: " + self._sRelativeFolderForBitmaps + sBitmapName)
         
@@ -945,7 +945,7 @@ class RendererBitmap(toolObjectSerializable):
         return sHTML, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilenameWithPath, sBitmapFilename, bNotificationToBeSent
 
     def getHTMLHeaderComment(self, oCalendar):
-        return ('<!-- Parameters... Date:'  + oCalendar.getLocalStartDate() + '  - Place:'  + self._oParameters.Runtime().getPlace().getName() + ' - Longitude:'  + str(self._oParameters.Runtime().getPlace().getLongitude()) + ' - Latitude:'  + str(self._oParameters.Runtime().getPlace().getLatitude()) + '  -->'  )
+        return ('<!-- Parameters... Date:'  + oCalendar.getLocalStartDate() + '  - Place:'  + self._oParameters.Runtime().get("Place").getName() + ' - Longitude:'  + str(self._oParameters.Runtime().get("Place").getLongitude()) + ' - Latitude:'  + str(self._oParameters.Runtime().get("Place").getLatitude()) + '  -->'  )
                 
     def test(self):
         img = Image.new( 'RGB', (200, 50), "black") # create a new black image
@@ -1098,7 +1098,7 @@ class RendererBitmap(toolObjectSerializable):
 
         # Draw Row 1
         iStartY = iStartY + iTopMarginH1 + iPaddingTopBottomH1
-        sText1 = self._oParameters.Localization().getLabel("Place") + ': ' + self._oParameters.Runtime().getPlace().getName()
+        sText1 = self._oParameters.Localization().getLabel("Place") + ': ' + self._oParameters.Runtime().get("Place").getName()
         theNewDraw.text((10, iStartY), sText1, tStyleFontColorH1, font=theStyleFontH1)
         iStartY = iStartY + iStyleFontSizeH1 + iPaddingTopBottomH1 + iBottomMarginH1
         
