@@ -8,7 +8,13 @@ from toolJSON import toolJSON
 class ParametersJsonGeneric:
     def __init__(self, sJsonFileName):
         self._jsonFileName = sJsonFileName
-        self._dicJSONData = toolJSON.getContent(self._jsonFileName)
+        self._dicParameters = toolJSON.getContent(self._jsonFileName)
+    
+    def set(self, sParameterName, aValue, sType):
+        sDic = {}
+        sDic["value"] = aValue
+        sDic["type"] = sType
+        self._dicParameters[sParameterName] = sDic
         
     def get(self, sParameterName, bNotifyMissing = True):
         # Parameter name has following form :  param1.param2.param3...
@@ -18,7 +24,7 @@ class ParametersJsonGeneric:
         for i in range (0, len(arrPath)):
             sDicPath = sDicPath + '["' + arrPath[i] + '"]'
         try:
-            dicParameter = eval("self._dicJSONData" + sDicPath)
+            dicParameter = eval("self._dicParameters" + sDicPath)
         except:
             if bNotifyMissing:
                 print ""
@@ -55,6 +61,8 @@ class ParametersJsonGeneric:
                 sReturn = eval(dicParameter["value"])
             elif sParameterType == "dict":
                 sReturn = dicParameter
+            elif sParameterType == "object":
+                sReturn = dicParameter["value"]
         except:
             if bNotifyMissing:
                 print ""
