@@ -28,3 +28,9 @@ class ParametersLocalization(ParametersJsonGeneric):
             sReturn = sCode
         # returns result
         return sReturn
+
+        
+#TODO:
+#   - Remove [Label]  from json files
+#   - handle the language code in the parameter path ???
+#   - replace with generic class
