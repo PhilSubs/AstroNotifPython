@@ -5,10 +5,7 @@
 # 
 from toolObjectSerializable import toolObjectSerializable
 from ParametersJsonGeneric import ParametersJsonGeneric
-from ParametersLocalization import ParametersLocalization
 from ParametersLunarFeatures import ParametersLunarFeatures
-from ParametersRendering import ParametersRendering
-from ParametersRuntime import ParametersRuntime
 from ParametersSkyObjects import ParametersSkyObjects
 from ParametersPlaces import ParametersPlaces
 from toolJSON import toolJSON
@@ -37,7 +34,7 @@ class Parameters(toolObjectSerializable):
     def __load(self):
         self._ParametersRuntime       = ParametersJsonGeneric("parameters_Runtime.json")
         self._ParametersRendering     = ParametersJsonGeneric('parameters_Rendering.json')
-        self._ParametersLocalization  = ParametersLocalization('parameters_Localization.json', self._ParametersRendering.get('RenderingOptions.Language'))
+        self._ParametersLocalization  = ParametersJsonGeneric('parameters_Localization.json', self._ParametersRendering.get('RenderingOptions.Language'))
 
         self._ParametersSkyObjects    = ParametersSkyObjects(toolJSON.getContent('parameters_SkyObjects.json'))
         self._ParametersLunarFeatures = ParametersLunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
