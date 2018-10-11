@@ -84,3 +84,5 @@ class ParametersJsonGeneric:
         if sReturn is None and bReturnDefaultValue:
             sReturn = sCode
         return sReturn
+
+    def getWithDefault(self, sCode): return self.get(sCode, bNotifyMissing = False, bReturnDefaultValue = True)
