@@ -6,48 +6,56 @@
 from toolJSON import toolJSON
 
 class ParametersJsonGeneric:
-    def __init__(self, sJsonFileName):
+    def __init__(self, sJsonFileName, sDefaultPrefix = ""):
         self._jsonFileName = sJsonFileName
         self._dicParameters = toolJSON.getContent(self._jsonFileName)
+        self._sDefaultPrefix = sDefaultPrefix  #  Default prefix used for any get
     
-    def set(self, sParameterName, aValue, sType):
+    def setDefaultPrefix(self, sDefaultPrefix): self._sDefaultPrefix = sDefaultPrefix
+    def getDefaultPrefix(self): return self._sDefaultPrefix 
+    
+    def set(self, sCode, aValue, sType):
         sDic = {}
         sDic["value"] = aValue
         sDic["type"] = sType
-        self._dicParameters[sParameterName] = sDic
+        self._dicParameters[sCode] = sDic
         
-    def get(self, sParameterName, bNotifyMissing = True):
+    def get(self, sCode, bNotifyMissing = True, bReturnDefaultValue = False):
         # Parameter name has following form :  param1.param2.param3...
         # Compute path from parameter name in order to have something like: ["param1"]["param2"]["param3"
-        arrPath = sParameterName.split(".")
+        arrPath = sCode.split(".")
         sDicPath = ""
         for i in range (0, len(arrPath)):
             sDicPath = sDicPath + '["' + arrPath[i] + '"]'
+        # Add default prefix if any
+        if self._sDefaultPrefix != "": sDicPath = '["' + self._sDefaultPrefix + '"]' + sDicPath
+        # Retrieve the parameter, based on the path, as a dict
+        dicParameter = None
         try:
             dicParameter = eval("self._dicParameters" + sDicPath)
         except:
             if bNotifyMissing:
                 print ""
-                print "   >>> ERROR >>> get json parameter '" + sParameterName + "' from  file  '" + self._jsonFileName + "'  FAILED !!"
+                print "   >>> ERROR >>> get json parameter '" + sCode + "' from  file  '" + self._jsonFileName + "'  FAILED !!"
                 print "                 Unknown parameter !!"
                 print ""
-            raise
+                raise
         # get the parameter type from the JSON file content
         sParameterType = "unknown"
-        try:
-            sParameterType = dicParameter["type"].lower()
-        except:
-            if isinstance(dicParameter, dict):
-                sParameterType = "dict"
-            else:
-                if bNotifyMissing:
-                    print ""
-                    print "   >>> ERROR >>> get json parameter '" + sParameterName + "' from  file  '" + self._jsonFileName + "'  FAILED !!"
-                    print "                 Can't find parameter type !!"
-                    print ""
-                raise
+        if not dicParameter is None:
+            try:
+                sParameterType = dicParameter["type"].lower()
+            except:
+                if isinstance(dicParameter, dict):
+                    sParameterType = "dict"
+                else:
+                    if bNotifyMissing:
+                        print ""
+                        print "   >>> ERROR >>> get json parameter '" + sCode + "' from  file  '" + self._jsonFileName + "'  FAILED !!"
+                        print "                 Can't find parameter type !!"
+                        print ""
+                    raise
         #Compute the return value depending on the parameter type
-        sReturn = None
         try:
             if sParameterType == "string":
                 sReturn = dicParameter["value"]
@@ -63,12 +71,16 @@ class ParametersJsonGeneric:
                 sReturn = dicParameter
             elif sParameterType == "object":
                 sReturn = dicParameter["value"]
+            else:
+                sReturn = None
         except:
             if bNotifyMissing:
                 print ""
-                print "   >>> ERROR >>> get json parameter '" + sParameterName + "' from  file  '" + self._jsonFileName + "'  FAILED !!"
+                print "   >>> ERROR >>> get json parameter '" + sCode + "' from  file  '" + self._jsonFileName + "'  FAILED !!"
                 print "                 Can't find parameter value !!"
                 print ""
-            raise
+                raise
         # return the parameter value as string, int, float, tuple, boolean or dict
+        if sReturn is None and bReturnDefaultValue:
+            sReturn = sCode
         return sReturn
