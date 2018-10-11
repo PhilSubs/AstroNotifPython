@@ -64,7 +64,7 @@ class ParametersJsonGeneric:
             elif sParameterType == "float":
                 sReturn = dicParameter["value"]
             elif sParameterType == "bool":
-                sReturn = (dicParameter["value"].lower() == "true")
+                sReturn = dicParameter["value"]
             elif sParameterType == "tuple":
                 sReturn = eval(dicParameter["value"])
             elif sParameterType == "dict":
