@@ -13,6 +13,7 @@ from MeeusAlgorithms import MeeusAlgorithms
 from Calendar import Calendar
 from Parameters import Parameters
 from CommonAstroFormulaes import CommonAstroFormulaes
+from Tools import Tools
 
 #from toolTrace import toolTrace
 
@@ -60,7 +61,7 @@ class EphemeridesData(toolObjectSerializable):
         # Below horizon and hidden
         if fObjectAltitude < 0.0:
             sStatus = "Below"
-        elif oParameters.Runtime().get("Place").getObstructedSkyAreas().getVisibilityStatus(fObjectAZimut, fObjectAltitude) == "0":
+        elif oParameters.Runtime().get("Place").get("VisibilityStatus")[Tools.getIndexFromAzimutAltitude(fObjectAZimut, fObjectAltitude)] == "0":
             sStatus = "Hidden"
         # Deepsky
         elif sObjectCategory == "DeepSky":
@@ -126,8 +127,8 @@ class EphemeridesData(toolObjectSerializable):
         if self._iNbSlotsPlanets> self._iNbSlots: self._iNbSlots = self._iNbSlotsPlanets
         self._iNbSlotsDeepSky = oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForDeepSky')
         if self._iNbSlotsDeepSky> self._iNbSlots: self._iNbSlots = self._iNbSlotsDeepSky
-        self._observerLongitude = oParameters.Runtime().get("Place").getLongitude()
-        self._observerLatitude = oParameters.Runtime().get("Place").getLatitude()
+        self._observerLongitude = oParameters.Runtime().get("Place").get("Longitude")
+        self._observerLatitude = oParameters.Runtime().get("Place").get("Latitude")
         # init objects list
         self._objects['Moon'] = EphemeridesDataObject("Moon", "Moon", "Moon", "Moon", "")
         self._objects['Mercury'] = EphemeridesDataObject("Mercury", "Planet", "Planetary", "Mercury", "")
@@ -156,7 +157,7 @@ class EphemeridesData(toolObjectSerializable):
             fDateValue = oCalendar.getGMTDateValueForTimeSlot(iSlot, oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
             #
             theSun.computeEphemerides(fDateValue)
-            fLocalSideralTime = CommonAstroFormulaes.getSideralTimeForTime(oCalendar.getGMTTimeForSlot(iSlot,oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')), theSun.getTrueAnoInDeg(), theSun.getArgPerihelInDeg(), oParameters.Runtime().get("Place").getLongitude())
+            fLocalSideralTime = CommonAstroFormulaes.getSideralTimeForTime(oCalendar.getGMTTimeForSlot(iSlot,oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')), theSun.getTrueAnoInDeg(), theSun.getArgPerihelInDeg(), oParameters.Runtime().get("Place").get("Longitude"))
             self._sunAltitude[str(iSlot)] = CommonAstroFormulaes.getAltitudeFromEquatCoord(theSun.getRAInDeg(), theSun.getDecInDeg(), self._observerLatitude, fLocalSideralTime)
             self._sunMeanLongInDeg[str(iSlot)] = theSun.getMeanLongInDeg()
             #
