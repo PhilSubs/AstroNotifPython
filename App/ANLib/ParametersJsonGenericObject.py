@@ -30,9 +30,12 @@ class ParametersJsonGenericObject():
                 except:
                     sType = None
                 if sType == "tuple":    
-                    aReturnValue = eval(sDic["value"])
+                    aReturnValue = eval(aAttribute["value"])
                 else:
-                    aReturnValue = sDic["value"]
+                    try:
+                        aReturnValue = aAttribute["value"]
+                    except:
+                        aReturnValue = aAttribute
             else:
                 aReturnValue = aAttribute
         return aReturnValue
