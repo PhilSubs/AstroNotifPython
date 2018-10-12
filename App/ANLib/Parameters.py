@@ -5,6 +5,7 @@
 # 
 from toolObjectSerializable import toolObjectSerializable
 from ParametersJsonGeneric import ParametersJsonGeneric
+from ParametersJsonGenericObjects import ParametersJsonGenericObjects
 from ParametersLunarFeatures import ParametersLunarFeatures
 from ParametersSkyObjects import ParametersSkyObjects
 from ParametersPlaces import ParametersPlaces
@@ -33,11 +34,11 @@ class Parameters(toolObjectSerializable):
     
     def __load(self):
         self._ParametersRuntime       = ParametersJsonGeneric("parameters_Runtime.json")
-        self._ParametersRendering     = ParametersJsonGeneric('parameters_Rendering.json')
-        self._ParametersLocalization  = ParametersJsonGeneric('parameters_Localization.json', self._ParametersRendering.get('RenderingOptions.Language'))
-
-        self._ParametersSkyObjects    = ParametersSkyObjects(toolJSON.getContent('parameters_SkyObjects.json'))
-        self._ParametersLunarFeatures = ParametersLunarFeatures(toolJSON.getContent('parameters_LunarFeatures.json'))
+        self._ParametersRendering     = ParametersJsonGeneric("parameters_Rendering.json")
+        self._ParametersLocalization  = ParametersJsonGeneric("parameters_Localization.json", self._ParametersRendering.get("RenderingOptions.Language"))
+        self._ParametersSkyObjects    = ParametersJsonGenericObjects("parameters_SkyObjects.json")
+        self._ParametersLunarFeatures = ParametersJsonGenericObjects("parameters_LunarFeatures.json")
+        
         self._ParametersPlaces        = ParametersPlaces(toolJSON.getContent('parameters_Places.json'))
 
         self._ParametersRuntime.set("Place" , self._ParametersPlaces.getPlaceByName(self._ParametersRuntime.get('Observation.PlaceName')), "object")
