@@ -167,16 +167,16 @@ class RendererBitmap(toolObjectSerializable):
         iNbSlotsPerDay = (1440 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
         iSlotWidthInPx = RendererBitmap.iHourSlotWidthInPx / (60 / self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
 
-        sComment1 = self._oParameters.Localization().getWithDefault(oLunarFeatureObject.getType()) + "    -    " + self._oParameters.Localization().getWithDefault("LongitudeAbrev") + ": " + str(oLunarFeatureObject.getLongitude()) + "  -  "  + self._oParameters.Localization().getWithDefault("LatitudeAbrev") + ": " + str(oLunarFeatureObject.getLatitude())
+        sComment1 = self._oParameters.Localization().getWithDefault(oLunarFeatureObject.get("Type")) + "    -    " + self._oParameters.Localization().getWithDefault("LongitudeAbrev") + ": " + str(oLunarFeatureObject.get("Longitude")) + "  -  "  + self._oParameters.Localization().getWithDefault("LatitudeAbrev") + ": " + str(oLunarFeatureObject.get("Latitude"))
         sComment2 = ""
         sComment3 = ""
         sFormatForFloatValues = "{0:.1f}"
-        if oLunarFeatureObject.getDiameter() != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Diameter") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.getDiameter()) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
-        if oLunarFeatureObject.getDepth() != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Depth") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.getDepth()) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
-        if oLunarFeatureObject.getHeight() != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Height") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.getHeight()) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
-        if oLunarFeatureObject.getLength() != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Length") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.getLength()) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
-        if oLunarFeatureObject.getBreadth() != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Breadth") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.getBreadth()) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
-        if oLunarFeatureObject.getRukl() != "": sComment3 += ("  -  " if len(sComment3) > 0 else "") + self._oParameters.Localization().getWithDefault("Rukl") + ": " + oLunarFeatureObject.getRukl()
+        if oLunarFeatureObject.get("Diameter") != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Diameter") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.get("Diameter")) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
+        if oLunarFeatureObject.get("Depth") != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Depth") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.get("Depth")) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
+        if oLunarFeatureObject.get("Height") != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Height") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.get("Height")) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
+        if oLunarFeatureObject.get("Length") != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Length") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.get("Length")) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
+        if oLunarFeatureObject.get("Breadth") != 0.0: sComment2 += ("  -  " if len(sComment2) > 0 else "") + self._oParameters.Localization().getWithDefault("Breadth") + ": " + sFormatForFloatValues.format(oLunarFeatureObject.get("Breadth")) + " " + self._oParameters.Localization().getWithDefault("KilometerAbrev")
+        if oLunarFeatureObject.get("Rukl") != "": sComment3 += ("  -  " if len(sComment3) > 0 else "") + self._oParameters.Localization().getWithDefault("Rukl") + ": " + oLunarFeatureObject.get("Rukl")
         iRowPositionY, theNewImg = self._addLunarFeatureRowHeader(oLunarFeatureObject, sComment1, sComment2, sComment3, oImg)
         iTmpX, iTmpY = theNewImg.size
         iTableObjectRowHeight = RendererBitmap.iAltitudeRowHeight * 18 + RendererBitmap.iTableObjectRowGraphAdditionalDataHeight
@@ -199,7 +199,7 @@ class RendererBitmap(toolObjectSerializable):
             iBitmapSize = 50
             iPosXMoonMap = iStartX + 1
             iPosYMoonMap = iRowPositionY 
-            theNewImg = self._addMoonMinimapBitmap( oEphemeridesData.getEphemerideDataObject("Moon").getPhaseForSlot(iDataSlot), oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
+            theNewImg = self._addMoonMinimapBitmap( oEphemeridesData.getEphemerideDataObject("Moon").getPhaseForSlot(iDataSlot), oLunarFeatureObject.get("Longitude"), oLunarFeatureObject.get("Latitude"), theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
 
         if bAtLeastOneDayIsObservable:
             if not bAtLeastOneDayIsNotObservable:
@@ -232,10 +232,10 @@ class RendererBitmap(toolObjectSerializable):
         iStyleFontSize, theStyleFont, tStyleFontColor, tStyleBackColor = self._getStyle("LunarFeatureName")
         iStyleFontSizeNotified, theStyleFontNotified, tStyleFontColorNotified, tStyleBackColorNotified = self._getStyle("LunarFeatureNameNotified")
         
-        if self._oParameters.LunarFeatures().getLunarFeatureByName(oLunarFeatureObject.getName()).getIsNotifyWhenObservable():
-            theNewDraw.text((iStartX + 3, iStartY + 5), oLunarFeatureObject.getName(), tStyleFontColorNotified, font=theStyleFontNotified)
+        if oLunarFeatureObject.get("NotifyWhenObservable"):
+            theNewDraw.text((iStartX + 3, iStartY + 5), oLunarFeatureObject.get("Name"), tStyleFontColorNotified, font=theStyleFontNotified)
         else:
-            theNewDraw.text((iStartX + 3, iStartY + 5), oLunarFeatureObject.getName(), tStyleFontColor, font=theStyleFont)
+            theNewDraw.text((iStartX + 3, iStartY + 5), oLunarFeatureObject.get("Name"), tStyleFontColor, font=theStyleFont)
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10), sComment1, (0,0,0), font=self._getFont("LunarFeatureData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), sComment2, (0,0,0), font=self._getFont("LunarFeatureData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 + 12), sComment3, (0,0,0), font=self._getFont("LunarFeatureData"))
@@ -266,10 +266,10 @@ class RendererBitmap(toolObjectSerializable):
         # create image and draw objects
         # draw table
         for iSlot in range(iStartSlot, iEndSlot):
-            fSunAltitudeOverFeature = MeeusAlgorithms.getSunAltitudeFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iSlot))
+            fSunAltitudeOverFeature = MeeusAlgorithms.getSunAltitudeFromMoonFeature(oLunarFeatureObject.get("Longitude"), oLunarFeatureObject.get("Latitude"), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iSlot))
             sMoonVisibilityStatus = oEphemeridesData.getObjectVisibilityStatusForSlot("Moon", iSlot, self._oParameters)
-            fLongitudeMin = (oLunarFeatureObject.getLongitudeMin() - self._oParameters.Rendering().get('RenderingOptions.ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
-            fLongitudeMax = (oLunarFeatureObject.getLongitudeMax() + self._oParameters.Rendering().get('RenderingOptions.ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
+            fLongitudeMin = (oLunarFeatureObject.get("LongitudeMin") - self._oParameters.Rendering().get('RenderingOptions.ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
+            fLongitudeMax = (oLunarFeatureObject.get("LongitudeMax") + self._oParameters.Rendering().get('RenderingOptions.ShowWhenTerminatorIsOnLunarFeatureWithinDeg') + 360.0) % 360.0
             fTerminatorLongitudeRise = (oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot) - 90.0) % 360.0
             fTerminatorLongitudeSet = (oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iSlot) + 90.0) % 360.0
 
@@ -311,7 +311,7 @@ class RendererBitmap(toolObjectSerializable):
         theNewDraw.rectangle((iBorderStartX, iBorderStartY, iBorderEndX, iBorderEndY), outline=(127, 127, 127, 255))
 
         # Additional data
-        sAdditionalText = 'At ' + oCalendar.getLocalTimeForSlotAsHHMM(iDataSlot, self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')) + ':   Sun Altitude: ' + str(int(round(MeeusAlgorithms.getSunAltitudeFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iDataSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iDataSlot))))) + '  Sun Azimut: ' + str(int(round(MeeusAlgorithms.getSunAzimutFromMoonFeature(oLunarFeatureObject.getLongitude(), oLunarFeatureObject.getLatitude(), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iDataSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iDataSlot)))))
+        sAdditionalText = 'At ' + oCalendar.getLocalTimeForSlotAsHHMM(iDataSlot, self._oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')) + ':   Sun Altitude: ' + str(int(round(MeeusAlgorithms.getSunAltitudeFromMoonFeature(oLunarFeatureObject.get("Longitude"), oLunarFeatureObject.get("Latitude"), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iDataSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iDataSlot))))) + '  Sun Azimut: ' + str(int(round(MeeusAlgorithms.getSunAzimutFromMoonFeature(oLunarFeatureObject.get("Longitude"), oLunarFeatureObject.get("Latitude"), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLongitudeForSlot(iDataSlot), oEphemeridesData.getEphemerideDataObject("Moon").getSelenographicLatitudeForSlot(iDataSlot)))))
         theNewDraw.text((iRowPositionX + 3, iRowPositionY + RendererBitmap.iAltitudeRowHeight * 18 + 3), sAdditionalText, (255,255,255, 255), font=self._getFont("ObjectAdditionalDailyData"))
         
         bToBeDisplayed = (bIsObservable or self._oParameters.Rendering().get('RenderingOptions.ForceObservable'))
@@ -458,20 +458,21 @@ class RendererBitmap(toolObjectSerializable):
             theNewImg = self._addHeliocentricBitmap(oEphemeridesDataObject.getName(), oEphemeridesData.getSunMeanLongInDegForSlot(0) - 180.0, oEphemeridesDataObject.getMeanLongForSlot(0), iRowPositionY, theNewImg)
         else:
             iMaxSlot = self._oParameters.Rendering().get('RenderingOptions.NumberOfSlotsForDeepSky')
-            sDataRow1 = self._oParameters.Localization().getWithDefault(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getType())
-            if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistanceUnit() != "":
-                sDataRow1 += "     "  + self._oParameters.Localization().getWithDefault("DistanceAbrev") + ": " + str(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistance()) + " "  + self._oParameters.Localization().getWithDefault(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDistanceUnit())
-            sDataRow2 = self._oParameters.Localization().getWithDefault("RightAscensionAbrev") + ": " + CommonAstroFormulaes.getHMSFromDeg(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getRA()) + "    " + self._oParameters.Localization().getWithDefault("DeclinationAbrev") + ": " +  str(round(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDec(),2))
-            if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getApparentMagnitude() != "":
-                sDataRow3 = self._oParameters.Localization().getWithDefault("ApparentMagnitudeAbrev") + ": " + str(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getApparentMagnitude())
-            if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionXUnit() != "":
+            aSkyObject = self._oParameters.SkyObjects().getObjectByID(oEphemeridesDataObject.getID())
+            sDataRow1 = self._oParameters.Localization().getWithDefault(aSkyObject.get("Type"))
+            if aSkyObject.get("DistanceUnit") != "":
+                sDataRow1 += "     "  + self._oParameters.Localization().getWithDefault("DistanceAbrev") + ": " + str(aSkyObject.get("Distance")) + " "  + self._oParameters.Localization().getWithDefault(aSkyObject.get("DistanceUnit"))
+            sDataRow2 = self._oParameters.Localization().getWithDefault("RightAscensionAbrev") + ": " + aSkyObject.get("RA")[0:2] + "h" + aSkyObject.get("RA")[2:4] + "'" + aSkyObject.get("RA")[4:] + '"'  + "    " + self._oParameters.Localization().getWithDefault("DeclinationAbrev") + ": " +  str(round(aSkyObject.get("Dec"),2))
+            if aSkyObject.get("ApparentMagnitude") != "":
+                sDataRow3 = self._oParameters.Localization().getWithDefault("ApparentMagnitudeAbrev") + ": " + str(aSkyObject.get("ApparentMagnitude"))
+            if aSkyObject.get("DimensionXUnit") != "":
                 if sDataRow3 != "": sDataRow3 += "     "
-                sDataRow3 += self._oParameters.Localization().getWithDefault("DimensionAbrev") + ": " + str(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionX()) + " "  + self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionXUnit()
-                if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionYUnit() != "":
-                    sDataRow3 += " x "  + str(self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionY()) + " "  + self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getDmensionYUnit()
-            if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getComment1() != "":
+                sDataRow3 += self._oParameters.Localization().getWithDefault("DimensionAbrev") + ": " + str(aSkyObject.get("DimensionX")) + " "  + aSkyObject.get("DimensionXUnit")
+                if aSkyObject.get("DimensionYUnit") != "":
+                    sDataRow3 += " x "  + str(aSkyObject.get("DimensionY")) + " "  + aSkyObject.get("DimensionYUnit")
+            if aSkyObject.get("Comment1") != "":
                 if sDataRow3 != "": sDataRow3 += "     "
-                sDataRow3 += self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getComment1()
+                sDataRow3 += aSkyObject.get("Comment1")
             iRowPositionY, theNewImg = self._addObjectRowHeader(oEphemeridesDataObject, sDataRow1, sDataRow2, sDataRow3, oImg)
         
         bAtLeastOneDayToBeDisplayed = False
@@ -493,7 +494,7 @@ class RendererBitmap(toolObjectSerializable):
             if not bAtLeastOneDayNotObservable:
                 theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.Observable'), iRowPositionY, theNewImg)
             else:            
-                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.AtLEastOneDayObservable'), iRowPositionY, theNewImg)
+                theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.AtLeastOneDayObservable'), iRowPositionY, theNewImg)
         else:
             theNewImg = self._addVisibilityFlagOnRowHeader(self._oParameters.Rendering().get('VisibilityFlags.Color.NotObservable'), iRowPositionY, theNewImg)
             
@@ -518,7 +519,7 @@ class RendererBitmap(toolObjectSerializable):
         iStyleFontSize, theStyleFont, tStyleFontColor, tStyleBackColor = self._getStyle("ObjectName")
         iStyleFontSizeNotified, theStyleFontNotified, tStyleFontColorNotified, tStyleBackColorNotified = self._getStyle("ObjectNameNotified")
         
-        if self._oParameters.SkyObjects().getSkyObjectByID(oEphemeridesDataObject.getID()).getIsNotifyWhenObservable():
+        if self._oParameters.SkyObjects().getObjectByID(oEphemeridesDataObject.getID()).get("NotifyWhenObservable"):
             theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getWithDefault(oEphemeridesDataObject.getName()), tStyleFontColorNotified, font=theStyleFontNotified)
         else:
             theNewDraw.text((iStartX + 3, iStartY), self._oParameters.Localization().getWithDefault(oEphemeridesDataObject.getName()), tStyleFontColor, font=theStyleFont)
@@ -779,16 +780,17 @@ class RendererBitmap(toolObjectSerializable):
         bAtLeastOnePlanetIsDisplayed = False
         iNumber = 0
         iCount = 0
-        for iObjectIndex in range(0, self._oParameters.SkyObjects().getCount()):
-            if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getCategory() == 'Planetary':
-                if not self._bForFavouriteOnly or self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsFavourite():
+        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount()):
+            aSkyObject = self._oParameters.SkyObjects().getObjectByIndex(iObjectIndex)
+            if aSkyObject.get("Category") == 'Planetary':
+                if not self._bForFavouriteOnly or aSkyObject.get("IsFavourite"):
                     iNumber = iNumber + 1
-                    bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID()), oCalendar, oEphemeridesData, theNewImg)
+                    bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(aSkyObject.get("ID")), oCalendar, oEphemeridesData, theNewImg)
                     if bIsObservable:
                         iCount = iCount + 1
-                        if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
+                        if aSkyObject.get("NotifyWhenObservable"):
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + aSkyObject.get("ID"))
                     if bIsDisplayed:
                         bAtLeastOnePlanetIsDisplayed = True
         if not bAtLeastOnePlanetIsDisplayed:
@@ -812,7 +814,7 @@ class RendererBitmap(toolObjectSerializable):
         # Add object row for Moon
         isMoonDisplayed, isMoonObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject("Moon"), oCalendar, oEphemeridesData, theNewImg)
         if isMoonObservable:
-            if self._oParameters.SkyObjects().getSkyObjectByID("Moon").getIsNotifyWhenObservable():
+            if self._oParameters.SkyObjects().getObjectByID("Moon").get("NotifyWhenObservable"):
                 bNotificationToBeSent = True
 
         if isMoonDisplayed:
@@ -826,14 +828,15 @@ class RendererBitmap(toolObjectSerializable):
             # Add rows for Lunar Features
             bAtLeastOneLunarFeatureIsDisplayed = False
             iCount = 0
-            for iObjectIndex in range(0, self._oParameters.LunarFeatures().getCount()):
-                if not self._bForFavouriteOnly or self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getIsFavourite():
-                    bIsDisplayed, bIsObservable, theNewImg = self._addLunarFeatureRow(self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex), oCalendar, oEphemeridesData, theNewImg)
+            for iObjectIndex in range(1, self._oParameters.LunarFeatures().getCount()):
+                aLunarFeature = self._oParameters.LunarFeatures().getObjectByIndex(iObjectIndex)
+                if not self._bForFavouriteOnly or aLunarFeature.get("IsFavourite"):
+                    bIsDisplayed, bIsObservable, theNewImg = self._addLunarFeatureRow(aLunarFeature, oCalendar, oEphemeridesData, theNewImg)
                     if bIsObservable:
                         iCount = iCount + 1
-                        if self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getIsNotifyWhenObservable():
+                        if aLunarFeature.get("NotifyWhenObservable"):
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for lunar feature  " + self._oParameters.LunarFeatures().getLunarFeatureByIndex(iObjectIndex).getID())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for lunar feature  " + aLunarFeature.get("ID"))
                     if bIsDisplayed:
                         bAtLeastOneLunarFeatureIsDisplayed = True
             if not bAtLeastOneLunarFeatureIsDisplayed:
@@ -861,16 +864,17 @@ class RendererBitmap(toolObjectSerializable):
         bAtLeastOneObjectIsDisplayed = False
         iNumber = 0
         iCount = 0
-        for iObjectIndex in range(0, self._oParameters.SkyObjects().getCount()):
-            if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getCategory() == 'DeepSky':
-                if not self._bForFavouriteOnly or self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsFavourite():
+        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount()):
+            aSkyObject = self._oParameters.SkyObjects().getObjectByIndex(iObjectIndex)
+            if aSkyObject.get("Category") == 'DeepSky':
+                if not self._bForFavouriteOnly or aSkyObject.get("IsFavourite"):
                     iNumber = iNumber + 1
-                    bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID()), oCalendar, oEphemeridesData, theNewImg)
+                    bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(aSkyObject.get("ID")), oCalendar, oEphemeridesData, theNewImg)
                     if bIsObservable:
                         iCount = iCount + 1
-                        if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
+                        if aSkyObject.get("NotifyWhenObservable"):
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + aSkyObject.get("ID"))
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
@@ -891,16 +895,17 @@ class RendererBitmap(toolObjectSerializable):
         bAtLeastOneObjectIsDisplayed = False
         iNumber = 0
         iCount = 0
-        for iObjectIndex in range(0, self._oParameters.SkyObjects().getCount()):
-            if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getCategory() == 'DeepSky':
-                if not self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsFavourite():
+        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount()):
+            aSkyObject = self._oParameters.SkyObjects().getObjectByIndex(iObjectIndex)
+            if aSkyObject.get("Category") == 'DeepSky':
+                if not aSkyObject.get("IsFavourite"):
                     iNumber = iNumber + 1
-                    bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID()), oCalendar, oEphemeridesData, theNewImg)
+                    bIsDisplayed, bIsObservable, theNewImg = self._addObjectRow(oEphemeridesData.getEphemerideDataObject(aSkyObject.get("ID")), oCalendar, oEphemeridesData, theNewImg)
                     if bIsObservable:
                         iCount = iCount + 1
-                        if self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getIsNotifyWhenObservable():
+                        if aSkyObject.get("NotifyWhenObservable"):
                             bNotificationToBeSent = True
-                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + self._oParameters.SkyObjects().getSkyObjectByIndex(iObjectIndex).getID())
+                            Tools.logToTrace(self._oParameters.Runtime().get("Global.PathToLogFileName"), "     Notification for object  " + aSkyObject.get("ID"))
                     if bIsDisplayed:
                         bAtLeastOneObjectIsDisplayed = True
         if not bAtLeastOneObjectIsDisplayed:
