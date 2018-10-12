@@ -3,20 +3,15 @@
 #
 # Class Parameters
 # 
-from toolObjectSerializable import toolObjectSerializable
 from ParametersJsonGeneric import ParametersJsonGeneric
 from ParametersJsonGenericObjects import ParametersJsonGenericObjects
-from ParametersLunarFeatures import ParametersLunarFeatures
-from ParametersSkyObjects import ParametersSkyObjects
-from ParametersPlaces import ParametersPlaces
 from toolJSON import toolJSON
+from Tools import Tools
+import time
 
-#from toolTrace import toolTrace
 
-
-class Parameters(toolObjectSerializable):
+class Parameters():
     def __init__(self):
-        toolObjectSerializable.__init__(self)
         self._ParametersLocalization = None
         self._ParametersLunarFeatures = None
         self._ParametersRendering = None
@@ -38,7 +33,62 @@ class Parameters(toolObjectSerializable):
         self._ParametersLocalization  = ParametersJsonGeneric("parameters_Localization.json", self._ParametersRendering.get("RenderingOptions.Language"))
         self._ParametersSkyObjects    = ParametersJsonGenericObjects("parameters_SkyObjects.json")
         self._ParametersLunarFeatures = ParametersJsonGenericObjects("parameters_LunarFeatures.json")
+        self._ParametersPlaces        = ParametersJsonGenericObjects('parameters_Places.json')
         
-        self._ParametersPlaces        = ParametersPlaces(toolJSON.getContent('parameters_Places.json'))
-
-        self._ParametersRuntime.set("Place" , self._ParametersPlaces.getPlaceByName(self._ParametersRuntime.get('Observation.PlaceName')), "object")
+        for iPlace in range (1, self._ParametersPlaces.getCount()):
+            aPlace = self._ParametersPlaces.getObjectByIndex(iPlace)
+            #
+            # Handle property CurrentLocalTimeDifferenceWithGMT
+            #
+            fTimeDiff = aPlace.get("LocalTimeDifferenceWithGMT")
+            if time.localtime().tm_isdst == 1: fTimeDiff = fTimeDiff + 1.0
+            aPlace.set("CurrentLocalTimeDifferenceWithGMT", fTimeDiff, "float")
+            #
+            # Handle property   getIndexFromAzimutAltitude
+            #                   getVisibilityStatus
+            #
+            dicObjstructedSkyAreas = aPlace.get("ObstructedSkyAreas")
+            sObstructedSkyAreasMap = "1"*180*360
+            arrObstructedSkyAreasColor = {}
+            for i in range(1, len(dicObjstructedSkyAreas)):
+                aArea = dicObjstructedSkyAreas[str(i)]
+                fAz = aArea["Azimut-Min"]
+                fAzMax = aArea["Azimut-Max"]
+                while (fAz <= fAzMax):
+                    fAlt = aArea["Altitude-Min"]
+                    fAltMax = aArea["Altitude-Max"]
+                    while (fAlt <= fAltMax):
+                        iPos = Tools.getIndexFromAzimutAltitude(fAz, fAlt)
+                        if (iPos == 0):
+                            sObstructedSkyAreasMap = "0" + sObstructedSkyAreasMap[1:]
+                        elif (iPos == 64799):
+                            sObstructedSkyAreasMap = sObstructedSkyAreasMap[:iPos] + "0"
+                        else:
+                            sObstructedSkyAreasMap = sObstructedSkyAreasMap[:iPos] + "0" + sObstructedSkyAreasMap[iPos + 1:]
+                        # Add color in dictionary with key = index
+                        arrObstructedSkyAreasColor[str(iPos)] = eval(aArea["Color"])
+                        fAlt = fAlt + 1.0
+                    fAz = fAz + 1.0
+            aPlace.set("VisibilityStatus", sObstructedSkyAreasMap, "string")
+            aPlace.set("ColorForAzimutAltitude", arrObstructedSkyAreasColor, "object")
+            #
+            # handle getMinMaxAltitudeObstructedForAzimut
+            #
+            dicMinMaxAltitudeObstructedForAzimut = {}
+            for iAzimut in range (0, 360):
+                fAzimut = float(iAzimut)
+                fMinAltitude = 999.0
+                fMaxAltitude = -999.0
+                fAzimut360 = (fAzimut + 360.0) % 360.0
+                for iAltitude in range (0, 90):
+                    fAltitude = float(iAltitude)
+                    if sObstructedSkyAreasMap[Tools.getIndexFromAzimutAltitude(fAzimut360, fAltitude)] == "0":
+                        if fAltitude > fMaxAltitude: fMaxAltitude = fAltitude
+                        if fAltitude < fMinAltitude: fMinAltitude = fAltitude
+                if fMinAltitude == 999.0:
+                    fMinAltitude = 0
+                    fMaxAltitude = 0
+                dicMinMaxAltitudeObstructedForAzimut[str(int(fAzimut))] = (fMinAltitude, fMaxAltitude)
+            aPlace.set("MinMaxAltitudeObstructedForAzimut", dicMinMaxAltitudeObstructedForAzimut, "object")
+            
+        self._ParametersRuntime.set("Place" , self._ParametersPlaces.getObjectByID(self._ParametersRuntime.get('Observation.PlaceName')), "object")
