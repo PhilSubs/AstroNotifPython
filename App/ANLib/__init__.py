@@ -19,10 +19,6 @@ from ParametersJsonGeneric import ParametersJsonGeneric
 from ParametersJsonGenericObject import ParametersJsonGenericObject
 from ParametersJsonGenericObjects import ParametersJsonGenericObjects
 from Parameters import Parameters
-from ParametersObstructedSkyArea import ParametersObstructedSkyArea
-from ParametersObstructedSkyAreas import ParametersObstructedSkyAreas
-from ParametersPlace import ParametersPlace
-from ParametersPlaces import ParametersPlaces
 from RendererBitmap import RendererBitmap
 from RendererHTML import RendererHTML
 from Tools import Tools
