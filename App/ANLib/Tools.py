@@ -7,6 +7,7 @@ import os.path
 import sys
 import shutil
 import io
+import math
 
 # Import PIL or PILLOW libraries for bitmaps
 from PIL import Image, ImageDraw
@@ -20,6 +21,17 @@ from email.MIMEImage import MIMEImage
 
 
 class Tools:
+    @staticmethod
+    def getIndexFromAzimutAltitude(fAzimut, fAltitude): 
+        # Azimut between 0.0 and 359.9
+        # Altitude between -89.9 and 89.9
+        iAzimut = math.floor(fAzimut)
+        if (fAltitude > 0):
+            iAltitude = math.ceil(fAltitude)
+        else:
+            iAltitude = math.floor(fAltitude)
+        return int(iAzimut*180 + (90 + iAltitude))
+    
     @staticmethod
     def copyFile(sFilenameOrig, sFilenameDest):
         """ backup a file in the same directory"""
