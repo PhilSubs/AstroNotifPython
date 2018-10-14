@@ -35,7 +35,7 @@ class Parameters():
         self._ParametersLunarFeatures = ParametersJsonGenericObjects("parameters_LunarFeatures.json")
         self._ParametersPlaces        = ParametersJsonGenericObjects('parameters_Places.json')
         
-        for iPlace in range (1, self._ParametersPlaces.getCount()):
+        for iPlace in range (1, self._ParametersPlaces.getCount() +1 ):
             aPlace = self._ParametersPlaces.getObjectByIndex(iPlace)
             #
             # Handle property CurrentLocalTimeDifferenceWithGMT
@@ -50,7 +50,7 @@ class Parameters():
             dicObjstructedSkyAreas = aPlace.get("ObstructedSkyAreas")
             sObstructedSkyAreasMap = "1"*180*360
             arrObstructedSkyAreasColor = {}
-            for i in range(1, len(dicObjstructedSkyAreas)):
+            for i in range(1, len(dicObjstructedSkyAreas) +1):
                 aArea = dicObjstructedSkyAreas[str(i)]
                 fAz = aArea["Azimut-Min"]
                 fAzMax = aArea["Azimut-Max"]
@@ -90,5 +90,5 @@ class Parameters():
                     fMaxAltitude = 0
                 dicMinMaxAltitudeObstructedForAzimut[str(int(fAzimut))] = (fMinAltitude, fMaxAltitude)
             aPlace.set("MinMaxAltitudeObstructedForAzimut", dicMinMaxAltitudeObstructedForAzimut, "object")
-            
+        
         self._ParametersRuntime.set("Place" , self._ParametersPlaces.getObjectByID(self._ParametersRuntime.get('Observation.PlaceName')), "object")
