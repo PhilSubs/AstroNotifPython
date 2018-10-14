@@ -138,7 +138,7 @@ class EphemeridesData(toolObjectSerializable):
         self._objects['Saturn'] = EphemeridesDataObject("Saturn", "Planet", "Planetary", "Saturn", "")
         self._objects['Uranus'] = EphemeridesDataObject("Uranus", "Planet", "Planetary", "Uranus", "")
         self._objects['Neptune'] = EphemeridesDataObject("Neptune", "Planet", "Planetary", "Neptune", "")
-        for iIndex in range(1, oParameters.SkyObjects().getCount()):
+        for iIndex in range(1, oParameters.SkyObjects().getCount() +1):
             aSkyObject = oParameters.SkyObjects().getObjectByIndex(iIndex)
             if aSkyObject.get("Category") != "Planetary" and aSkyObject.get("Category") != "Moon":
                 sSkyObjectID = aSkyObject.get("ID")
@@ -206,7 +206,7 @@ class EphemeridesData(toolObjectSerializable):
                 self._objects['Neptune'].setDataForSlot(iSlot, fNeptuneAzimut, fNeptuneAltitude, thePlanetNeptune.getRAInDeg(), thePlanetNeptune.getDecInDeg(), thePlanetNeptune.getSunDistInUA(), thePlanetNeptune.getMeanLongInDeg(), 0.0, 0.0, 0.0, 0.0, 0.0)
             #
             if iSlot <= self._iNbSlotsDeepSky:
-                for iIndex in range(1, oParameters.SkyObjects().getCount()):
+                for iIndex in range(1, oParameters.SkyObjects().getCount() +1):
                     aSkyobject = oParameters.SkyObjects().getObjectByIndex(iIndex)
                     if not(aSkyobject.get("Category") == "Planetary") and not(aSkyobject.get("Category") == "Moon"):
                         fRA = CommonAstroFormulaes.getDegFromHMS(aSkyobject.get("RA"))
