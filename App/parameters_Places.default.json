@@ -1,6 +1,7 @@
 {
     "1":{
          "Name":"Location1", 
+         "ID":"Location1", 
          "Longitude":0.000000000, 
          "Latitude":0.000000000, 
          "LocalTimeDifferenceWithGMT":0,
