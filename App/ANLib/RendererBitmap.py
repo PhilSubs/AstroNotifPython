@@ -10,8 +10,6 @@ from Tools import Tools
 from PIL import Image, ImageDraw, ImageFont
 import math
 from datetime import datetime
-from ParametersRendering import ParametersRendering
-from ParametersLocalization import ParametersLocalization
 
 
 class RendererBitmap(toolObjectSerializable):
