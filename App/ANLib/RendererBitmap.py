@@ -780,7 +780,7 @@ class RendererBitmap(toolObjectSerializable):
         bAtLeastOnePlanetIsDisplayed = False
         iNumber = 0
         iCount = 0
-        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount()):
+        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount() +1):
             aSkyObject = self._oParameters.SkyObjects().getObjectByIndex(iObjectIndex)
             if aSkyObject.get("Category") == 'Planetary':
                 if not self._bForFavouriteOnly or aSkyObject.get("IsFavourite"):
@@ -828,7 +828,7 @@ class RendererBitmap(toolObjectSerializable):
             # Add rows for Lunar Features
             bAtLeastOneLunarFeatureIsDisplayed = False
             iCount = 0
-            for iObjectIndex in range(1, self._oParameters.LunarFeatures().getCount()):
+            for iObjectIndex in range(1, self._oParameters.LunarFeatures().getCount() +1):
                 aLunarFeature = self._oParameters.LunarFeatures().getObjectByIndex(iObjectIndex)
                 if not self._bForFavouriteOnly or aLunarFeature.get("IsFavourite"):
                     bIsDisplayed, bIsObservable, theNewImg = self._addLunarFeatureRow(aLunarFeature, oCalendar, oEphemeridesData, theNewImg)
@@ -864,7 +864,7 @@ class RendererBitmap(toolObjectSerializable):
         bAtLeastOneObjectIsDisplayed = False
         iNumber = 0
         iCount = 0
-        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount()):
+        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount() +1):
             aSkyObject = self._oParameters.SkyObjects().getObjectByIndex(iObjectIndex)
             if aSkyObject.get("Category") == 'DeepSky':
                 if not self._bForFavouriteOnly or aSkyObject.get("IsFavourite"):
@@ -895,7 +895,7 @@ class RendererBitmap(toolObjectSerializable):
         bAtLeastOneObjectIsDisplayed = False
         iNumber = 0
         iCount = 0
-        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount()):
+        for iObjectIndex in range(1, self._oParameters.SkyObjects().getCount() +1):
             aSkyObject = self._oParameters.SkyObjects().getObjectByIndex(iObjectIndex)
             if aSkyObject.get("Category") == 'DeepSky':
                 if not aSkyObject.get("IsFavourite"):
