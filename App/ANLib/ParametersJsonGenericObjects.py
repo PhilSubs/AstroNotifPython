@@ -10,6 +10,7 @@ class ParametersJsonGenericObjects:
     def __init__(self, sJsonFileName):
         self._jsonFileName = sJsonFileName
         self._dicObjects = {}
+        self._buffer = {}
         self._dicAttributes = {}
         self._dicIDToIndex = {}
         dicJSONData = toolJSON.getContent(self._jsonFileName)
@@ -39,15 +40,20 @@ class ParametersJsonGenericObjects:
         self._dicAttributes[sCode] = sDic
     
     def get(self, sCode): 
-        try:
-            sDic = self._dicAttributes[sCode]
-            sType = sDic["type"]
-        except:
-            sDic = None
-            sType = None
-        if not sDic is None:
-           if sType == "tuple":
-               sReturn = eval(sDic["value"])
-           else:
-               sReturn = sDic["value"]
-        return sReturn
+        if not self._buffer.get(sCode) is None :
+            aReturnValue = self._buffer[sCode]
+        else:
+            try:
+                sDic = self._dicAttributes[sCode]
+                sType = sDic["type"]
+            except:
+                sDic = None
+                sType = None
+                print "   >>>> ERROR >>>>  attribute " + sCode + " not found !!!"
+            if not sDic is None:
+               if sType == "tuple":
+                   aReturnValue = eval(sDic["value"])
+               else:
+                   aReturnValue = sDic["value"]
+               self._buffer[sCode] = aReturnValue
+        return aReturnValue
