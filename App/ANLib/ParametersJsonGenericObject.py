@@ -7,6 +7,7 @@
 class ParametersJsonGenericObject():
     def __init__(self, dicData):
         self._dicData = dicData
+        self._buffer = {}
 
     
     def set(self, sCode, aValue, sType):
@@ -16,26 +17,30 @@ class ParametersJsonGenericObject():
         self._dicData[sCode] = sDic
     
     def get(self, sCode): 
-        aReturnValue = None
-        sType = None
-        try:
-            aAttribute = self._dicData[sCode]
-        except:
-            aAttribute = None
-            print "   >>>> ERROR >>>>  attribute " + sCode + " not found !!!"
-        if not aAttribute is None:
-            if isinstance(aAttribute, dict):
-                try:
-                    sType = aAttribute["type"]
-                except:
-                    sType = None
-                if sType == "tuple":    
-                    aReturnValue = eval(aAttribute["value"])
-                else:
+        if not self._buffer.get(sCode) is None :
+            aReturnValue = self._buffer[sCode]
+        else:
+            aReturnValue = None
+            sType = None
+            try:
+                aAttribute = self._dicData[sCode]
+            except:
+                aAttribute = None
+                print "   >>>> ERROR >>>>  attribute " + sCode + " not found !!!"
+            if not aAttribute is None:
+                if isinstance(aAttribute, dict):
                     try:
-                        aReturnValue = aAttribute["value"]
+                        sType = aAttribute["type"]
                     except:
-                        aReturnValue = aAttribute
-            else:
-                aReturnValue = aAttribute
+                        sType = None
+                    if sType == "tuple":    
+                        aReturnValue = eval(aAttribute["value"])
+                    else:
+                        try:
+                            aReturnValue = aAttribute["value"]
+                        except:
+                            aReturnValue = aAttribute
+                else:
+                    aReturnValue = aAttribute
+                self._buffer[sCode] = aReturnValue
         return aReturnValue

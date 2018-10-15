@@ -31,7 +31,22 @@ class EphemeridesData(toolObjectSerializable):
         self._sunAltitude = {}        # sun's altitude for each slot   (key=slotID)
         self._sunMeanLongInDeg = {}   # sun's mean longitude for each slot   (key=slotID)
         self._objects = {}            # ephemerides for each objects (dictionary of EphemeridesDataObject, with key = ObjectID)
-    
+        self._dicMemBuffer = {}
+        self._bBufferInitialized = False
+
+    def _initBuffers(self, oParameters):
+        if not self._bBufferInitialized:
+            self._dicMemBuffer["MaxAltitudeForObjectVeryLow"] = oParameters.Rendering().get('RenderingOptions.MaxAltitudeForObjectVeryLow')
+            self._dicMemBuffer["MaxAltitudeForObjectLow"] = oParameters.Rendering().get('RenderingOptions.MaxAltitudeForObjectLow')
+            self._dicMemBuffer["MaxSunAltitudeForObservableDeepSky"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableDeepSky')
+            self._dicMemBuffer["MaxSunAltitudeForObservableBrightObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableBrightObjects')
+            self._dicMemBuffer["MaxSunAltitudeForDifficultBrightObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForDifficultBrightObjects')
+            self._dicMemBuffer["MaxSunAltitudeFoImpossibleBrightObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeFoImpossibleBrightObjects')
+            self._dicMemBuffer["MaxSunAltitudeForObservableMediumObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableMediumObjects')
+            self._dicMemBuffer["MaxSunAltitudeForDifficultMediumObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForDifficultMediumObjects')
+            self._dicMemBuffer["DeepSkyObjectMinAngularSeparationWithMoonInDeg"] = oParameters.Rendering().get("RenderingOptions.DeepSkyObjectMinAngularSeparationWithMoonInDeg")
+            self._bBufferInitialized = True
+        
     def getObjectVisibilityStatusForSlot(self, sObjectID, iSlot, oParameters):
         # Return object visibility status depending on object altitude and Azimut, Place, and Sun Altitude
         #     - Below : object is below horizon
@@ -42,14 +57,15 @@ class EphemeridesData(toolObjectSerializable):
         #     - Impossible:  object is visible but sun makes it impossible to see
         #     - Hidden: object is visible but hidden by something
         #     - Good: object is visible in good conditions
-        fDisplayMaxAltitudeForObjectVeryLow = oParameters.Rendering().get('RenderingOptions.MaxAltitudeForObjectVeryLow')
-        fDisplayMaxAltitudeForObjectLow = oParameters.Rendering().get('RenderingOptions.MaxAltitudeForObjectLow')
-        fDisplayMaxSunAltitudeForObservableDeepSky = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableDeepSky')
-        fDisplayMaxSunAltitudeForObservableBrightObjects = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableBrightObjects')
-        fDisplayMaxSunAltitudeForDifficultBrightObjects = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForDifficultBrightObjects')
-        fDisplayMaxSunAltitudeFoImpossibleBrightObjects = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeFoImpossibleBrightObjects')
-        fDisplayMaxSunAltitudeForObservableMediumObjects = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableMediumObjects')
-        fDisplayMaxSunAltitudeForDifficultMediumObjects = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForDifficultMediumObjects')
+        self._initBuffers(oParameters)
+        fDisplayMaxAltitudeForObjectVeryLow = self._dicMemBuffer["MaxAltitudeForObjectVeryLow"]
+        fDisplayMaxAltitudeForObjectLow = self._dicMemBuffer["MaxAltitudeForObjectLow"] 
+        fDisplayMaxSunAltitudeForObservableDeepSky = self._dicMemBuffer["MaxSunAltitudeForObservableDeepSky"]
+        fDisplayMaxSunAltitudeForObservableBrightObjects = self._dicMemBuffer["MaxSunAltitudeForObservableBrightObjects"]
+        fDisplayMaxSunAltitudeForDifficultBrightObjects = self._dicMemBuffer["MaxSunAltitudeForDifficultBrightObjects"]
+        fDisplayMaxSunAltitudeFoImpossibleBrightObjects = self._dicMemBuffer["MaxSunAltitudeFoImpossibleBrightObjects"]
+        fDisplayMaxSunAltitudeForObservableMediumObjects = self._dicMemBuffer["MaxSunAltitudeForObservableMediumObjects"]
+        fDisplayMaxSunAltitudeForDifficultMediumObjects = self._dicMemBuffer["MaxSunAltitudeForDifficultMediumObjects"]
 
         fObjectAltitude = self._objects[sObjectID].getAltitudeForSlot(iSlot)
         fObjectAZimut = self._objects[sObjectID].getAzimutForSlot(iSlot)
@@ -66,7 +82,7 @@ class EphemeridesData(toolObjectSerializable):
         # Deepsky
         elif sObjectCategory == "DeepSky":
             if fSunAltitude <= fDisplayMaxSunAltitudeForObservableDeepSky:
-                fAngularSeparationCheck = oParameters.Rendering().get("RenderingOptions.DeepSkyObjectMinAngularSeparationWithMoonInDeg") * self._objects['Moon'].getIlluminationForSlot(iSlot)
+                fAngularSeparationCheck = self._dicMemBuffer["DeepSkyObjectMinAngularSeparationWithMoonInDeg"]  * self._objects['Moon'].getIlluminationForSlot(iSlot)
                 fAngularSeparation = MeeusAlgorithms.getAngularSeparation(self._objects['Moon'].getRightAscensionForSlot(iSlot), self._objects['Moon'].getDeclinationForSlot(iSlot), self._objects[sObjectID].getRightAscensionForSlot(iSlot), self._objects[sObjectID].getDeclinationForSlot(iSlot))
                 if self._objects['Moon'].getAltitudeForSlot(iSlot) > 0 and fAngularSeparation <= fAngularSeparationCheck:
                     sStatus = "DifficultMoonlight"
@@ -153,16 +169,19 @@ class EphemeridesData(toolObjectSerializable):
         thePlanetSaturn = EphemeridesPlanet("Saturn")
         thePlanetUranus = EphemeridesPlanet("Uranus")
         thePlanetNeptune = EphemeridesPlanet("Neptune")
+        buffNumberOfMinutesPerSlot = oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')
+        buffPlaceLongitude = oParameters.Runtime().get("Place").get("Longitude")
+        
         for iSlot in range (0, self._iNbSlots):
-            fDateValue = oCalendar.getGMTDateValueForTimeSlot(iSlot, oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot'))
+            fDateValue = oCalendar.getGMTDateValueForTimeSlot(iSlot, buffNumberOfMinutesPerSlot)
             #
             theSun.computeEphemerides(fDateValue)
-            fLocalSideralTime = CommonAstroFormulaes.getSideralTimeForTime(oCalendar.getGMTTimeForSlot(iSlot,oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')), theSun.getTrueAnoInDeg(), theSun.getArgPerihelInDeg(), oParameters.Runtime().get("Place").get("Longitude"))
+            fLocalSideralTime = CommonAstroFormulaes.getSideralTimeForTime(oCalendar.getGMTTimeForSlot(iSlot,buffNumberOfMinutesPerSlot), theSun.getTrueAnoInDeg(), theSun.getArgPerihelInDeg(), buffPlaceLongitude)
             self._sunAltitude[str(iSlot)] = CommonAstroFormulaes.getAltitudeFromEquatCoord(theSun.getRAInDeg(), theSun.getDecInDeg(), self._observerLatitude, fLocalSideralTime)
             self._sunMeanLongInDeg[str(iSlot)] = theSun.getMeanLongInDeg()
             #
             if iSlot <= self._iNbSlotsMoon:
-                theMoon.computeEphemerides(oCalendar.getGMTDateForSlot(iSlot,oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')), oCalendar.getGMTTimeForSlot(iSlot,oParameters.Rendering().get('RenderingOptions.NumberOfMinutesPerSlot')), theSun.getMeanAnoInDeg(), theSun.getArgPerihelInDeg())
+                theMoon.computeEphemerides(oCalendar.getGMTDateForSlot(iSlot,buffNumberOfMinutesPerSlot), oCalendar.getGMTTimeForSlot(iSlot, buffNumberOfMinutesPerSlot), theSun.getMeanAnoInDeg(), theSun.getArgPerihelInDeg())
                 #fMoonAzimut = CommonAstroFormulaes.getAzimutFromEquatCoord(theMoon.getRightAscension(), theMoon.getDeclination(), self._observerLatitude, fLocalSideralTime)
                 #fMoonAltitude = CommonAstroFormulaes.getAltitudeFromEquatCoord(theMoon.getRightAscension(), theMoon.getDeclination(), self._observerLatitude, fLocalSideralTime)
                 fMoonAltitude = theMoon.getElevation(self._observerLongitude, self._observerLatitude)
@@ -210,9 +229,10 @@ class EphemeridesData(toolObjectSerializable):
                     aSkyobject = oParameters.SkyObjects().getObjectByIndex(iIndex)
                     if not(aSkyobject.get("Category") == "Planetary") and not(aSkyobject.get("Category") == "Moon"):
                         fRA = CommonAstroFormulaes.getDegFromHMS(aSkyobject.get("RA"))
-                        fAzimut = CommonAstroFormulaes.getAzimutFromEquatCoord(fRA, aSkyobject.get("Dec"), self._observerLatitude, fLocalSideralTime)
-                        fAltitude = CommonAstroFormulaes.getAltitudeFromEquatCoord(fRA, aSkyobject.get("Dec"), self._observerLatitude, fLocalSideralTime)
-                        self._objects[aSkyobject.get("ID")].setDataForSlot(iSlot, fAzimut, fAltitude, fRA, aSkyobject.get("Dec"), 0.0, 0.0, 0.0, 0.0, 0.0)
+                        fDec = aSkyobject.get("Dec")
+                        fAzimut = CommonAstroFormulaes.getAzimutFromEquatCoord(fRA, fDec, self._observerLatitude, fLocalSideralTime)
+                        fAltitude = CommonAstroFormulaes.getAltitudeFromEquatCoord(fRA, fDec, self._observerLatitude, fLocalSideralTime)
+                        self._objects[aSkyobject.get("ID")].setDataForSlot(iSlot, fAzimut, fAltitude, fRA, fDec, 0.0, 0.0, 0.0, 0.0, 0.0)
                     
         
     
