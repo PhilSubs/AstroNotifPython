@@ -20,7 +20,6 @@ from ParametersJsonGenericObject import ParametersJsonGenericObject
 from ParametersJsonGenericObjects import ParametersJsonGenericObjects
 from Parameters import Parameters
 from RendererBitmap import RendererBitmap
-from RendererHTML import RendererHTML
 from Tools import Tools
 from toolObjectSerializable import toolObjectSerializable
 from toolJSON import toolJSON
