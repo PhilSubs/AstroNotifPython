@@ -13,7 +13,7 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault, bForceUpd
     for iId in range (0, len(dictDataDefault)):
         sKeyLabel = list(dictDataDefault.keys())[iId]
         sFormattedKeyLabel = ("'" + sLevel + sKeyLabel + "'                                ")[-0:40]
-        if sKeyLabel == "GlobalCurrentVersion" and sJsonFilename == "parameters_Runtime.json":
+        if sKeyLabel == "CurrentVersion" and sJsonFilename == "parameters_Runtime.json":
             dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
             bChangeDone = True
             sFormattedNewValue = dictData[sKeyLabel]
@@ -21,16 +21,27 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault, bForceUpd
                 sFormattedNewValue.encode("iso-8859-1" )
             elif not(type(sFormattedNewValue) is str): 
                 sFormattedNewValue = str(sFormattedNewValue)
-            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + sFormattedNewValue
-        elif sKeyLabel == "GlobalPathToAPPFolder" and sJsonFilename == "parameters_Runtime.json":
-            dictData[sKeyLabel] = ANLib.Tools.get_script_path()
+            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    ==>   " + sFormattedNewValue
+        elif sKeyLabel == "PathToAPPFolder" and sJsonFilename == "parameters_Runtime.json":
+            dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
+            dictData[sKeyLabel]["value"] = ANLib.Tools.get_script_path()
             bChangeDone = True
             sFormattedNewValue = dictData[sKeyLabel]
             if type(sFormattedNewValue) is unicode:
                 sFormattedNewValue.encode("iso-8859-1" )
             elif not(type(sFormattedNewValue) is str): 
                 sFormattedNewValue = str(sFormattedNewValue)
-            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + sFormattedNewValue
+            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    ==>   " + sFormattedNewValue
+        elif sKeyLabel == "PathToLogFileName" and sJsonFilename == "parameters_Runtime.json":
+            dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
+            dictData[sKeyLabel]["value"] = ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + "trace.log"
+            bChangeDone = True
+            sFormattedNewValue = dictData[sKeyLabel]
+            if type(sFormattedNewValue) is unicode:
+                sFormattedNewValue.encode("iso-8859-1" )
+            elif not(type(sFormattedNewValue) is str): 
+                sFormattedNewValue = str(sFormattedNewValue)
+            print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    ==>   " + sFormattedNewValue
         else:
             if sKeyLabel in dictData:
                 if type(dictDataDefault[sKeyLabel]) is dict:
@@ -58,7 +69,7 @@ def updateDictValues(sJsonFilename, sLevel, dictData, dictDataDefault, bForceUpd
                                 sFormattedNewValue = str(sFormattedNewValue)
                             print "      " + sFormattedFilename + ":     " + sFormattedKeyLabel + "    -->   " + sFormattedNewValue
                         else:
-                            print "      " + sFormattedFilename + ":  #  " + sFormattedKeyLabel + "          " + sCurrentValue + "    <-->    " +  sDefaultValue
+                            print "      " + sFormattedFilename + ":  #  " + sFormattedKeyLabel + "          " + sCurrentValue + "    <-current--=--default->    " +  sDefaultValue
             else:
                 dictData[sKeyLabel] = dictDataDefault[sKeyLabel]
                 bChangeDone = True
@@ -109,10 +120,10 @@ bContinue = True
 sUpgradeFromVersion = ""
 if os.path.isfile(ANLib.Tools.get_script_path() + ANLib.Tools.get_path_separator() + 'parameters_Runtime.json'):
     dataParametersRuntime = ANLib.toolJSON.getContent('parameters_Runtime.json')
-    sUpgradeFromVersion = dataParametersRuntime['GlobalCurrentVersion']
+    sUpgradeFromVersion = dataParametersRuntime['Global']['CurrentVersion']['value']
 # load parameters file default
 dataParametersRuntimeDefault = ANLib.toolJSON.getContent('parameters_Runtime.default.json')
-sNewVersion = dataParametersRuntimeDefault['GlobalCurrentVersion']
+sNewVersion = dataParametersRuntimeDefault['Global']['CurrentVersion']['value']
 
 # Afficher du message de changement de version
 if sUpgradeFromVersion == "":
@@ -149,7 +160,7 @@ if sUpgradeFromVersion != "":
         bContinue = True
     else:
         print ""
-        print "   >>> ERREUR pendant lle backup. Installation interrompue."
+        print "   >>> ERREUR pendant le backup. Installation interrompue."
         print ""    
         bContinue = False
 
