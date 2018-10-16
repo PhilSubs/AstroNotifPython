@@ -10,6 +10,7 @@ from Tools import Tools
 from PIL import Image, ImageDraw, ImageFont
 import math
 from datetime import datetime
+import platform
 
 
 class RendererBitmap(toolObjectSerializable):
@@ -1191,7 +1192,7 @@ class RendererBitmap(toolObjectSerializable):
         
         # Draw Row 2
         iStartY = iStartY + iTopMarginH2 + iPaddingTopBottomH2
-        sText2 = self._oParameters.Localization().getWithDefault("CalculusFor") + ' ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' ' + self._oParameters.Localization().getWithDefault("By") + ' AstroNotifPython ' + self._oParameters.Runtime().get('Global.CurrentVersion')
+        sText2 = self._oParameters.Localization().getWithDefault("CalculusFor") + ' ' + (datetime.now()).strftime("%d/%m/%Y %H:%M") + ' ' + self._oParameters.Localization().getWithDefault("By") + ' AstroNotifPython ' + self._oParameters.Runtime().get('Global.CurrentVersion') + " " + self._oParameters.Localization().getWithDefault("RunningOn") + " " + platform.node()
         theNewDraw.text((10, iStartY), sText2, tStyleFontColorH2, font=theStyleFontH2)
         iStartY = iStartY + iStyleFontSizeH2 + iPaddingTopBottomH2 + iBottomMarginH2
         
