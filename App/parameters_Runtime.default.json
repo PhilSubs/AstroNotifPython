@@ -1,7 +1,7 @@
 {
     "Global": {
         "__description__":"Global parameters",
-        "CurrentVersion": {"value":"v2.1-beta-20181004", "type":"string", "allowed":"", "description":""},
+        "CurrentVersion": {"value":"v2.1", "type":"string", "allowed":"", "description":""},
         "PathToWWWFolder": {"value":"", "type":"string", "allowed":"", "description":"Absolute path to WWW folder containing files served by web server"},
         "PathToAPPFolder": {"value":"", "type":"string", "allowed":"", "description":"Absolute path to AstroNotif application folder containing python files"},
         "PathToLogFileName": {"value":"", "type":"string", "allowed":"", "description":"Name of the logfile that will be created in APP Folder"}
