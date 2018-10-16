@@ -35,6 +35,6 @@ class toolJSON(toolObjectSerializable):
     @staticmethod
     def saveContent(sFilename, oContent):
         with open(sFilename, "w") as fJSONFile:
-            json.dump(oContent, fJSONFile)
+            json.dump(oContent, fJSONFile, indent=4)
     
     

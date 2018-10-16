@@ -48,6 +48,8 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         print MeeusAlgorithmsFormulasTests.Test_09_DynamicalTime_09_01()
         print MeeusAlgorithmsFormulasTests.Test_TransformationCoordinates_12_03()
         print MeeusAlgorithmsFormulasTests.Test_TransformationCoordinates_12_04()
+        print MeeusAlgorithmsFormulasTests.Test_TransformationCoordinates_12_05()
+        print MeeusAlgorithmsFormulasTests.Test_TransformationCoordinates_12_06()
         print MeeusAlgorithmsFormulasTests.Test_11_SideralTimeGreenwich_11_01()
         print MeeusAlgorithmsFormulasTests.Test_AngularSeparation_16_01()
         print MeeusAlgorithmsFormulasTests.Test_NutationObliquity_21_00()
@@ -101,6 +103,8 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         fIllumination_Moon = MeeusAlgorithmsFormulas.IlluminatedFractionMoon_46_01(fPhaseAngle_Moon)
         fRightAscension_Moon = MeeusAlgorithmsFormulas.TransformationCoordinates_12_03(fMeanObliquityEcliptic_Earth, fGeocentricLongitude_Moon, fGeocentricLatitude_Moon)
         fDeclination_Moon = MeeusAlgorithmsFormulas.TransformationCoordinates_12_04(fMeanObliquityEcliptic_Earth, fGeocentricLongitude_Moon, fGeocentricLatitude_Moon)
+        fAzimut_Moon = MeeusAlgorithmsFormulas.TransformationCoordinates_12_05(fRightAscension_Moon, fDeclination_Moon, -6.977777778, 43.636666667, fMeanSideralTimeGreenwich)
+        fAltitude_Moon = MeeusAlgorithmsFormulas.TransformationCoordinates_12_06(fRightAscension_Moon, fDeclination_Moon, -6.977777778, 43.636666667, fMeanSideralTimeGreenwich)
 
         fOpticalLibrationInLongitude_Moon, fOpticalLibrationInLatitude_Moon, fSubSolarSelenographicLongitude_Moon, fSubSolarSelenographicLatitude_Moon, fSelenographicColongitude_Moon = MeeusAlgorithmsFormulas.PhysicalEphemerisMoon_51(fJulianCenturies, fApparentGeocentricLongitude_Sun, fDistanceInKm_Moon, fDistanceInKm_Sun, fMeanAnomaly_Moon, fMeanAnomaly_Sun, fMeanElongation_Moon, fGeocentricLongitude_Moon, fGeocentricLatitude_Moon, fNutationInLongitude_Earth, fMeanAscendingNodeLongitude_Moon, fArgumentOfLatitude_Moon)
 
@@ -159,6 +163,8 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         MeeusAlgorithmsFormulasTests.displayValue(fIllumination_Moon, 2, "Illumination (Moon)", "IlluminatedFractionMoon_46_01")
         MeeusAlgorithmsFormulasTests.displayValue(fRightAscension_Moon, 2, "Right Ascension (Moon)", "TransformationCoordinates_12_03")
         MeeusAlgorithmsFormulasTests.displayValue(fDeclination_Moon, 2, "Declination (Moon)", "TransformationCoordinates_12_04")
+        MeeusAlgorithmsFormulasTests.displayValue(fAzimut_Moon, 2, "Azimut (Moon)", "TransformationCoordinates_12_05")
+        MeeusAlgorithmsFormulasTests.displayValue(fAltitude_Moon, 2, "Elevation (Moon)", "TransformationCoordinates_12_06")
         MeeusAlgorithmsFormulasTests.displayValue(fOpticalLibrationInLongitude_Moon, 2, "Optical Libration In Longitude (Moon)", "PhysicalEphemerisMoon_51")
         MeeusAlgorithmsFormulasTests.displayValue(fOpticalLibrationInLatitude_Moon, 2, "Optical Libration In Latitude (Moon)", "PhysicalEphemerisMoon_51")
         MeeusAlgorithmsFormulasTests.displayValue(fSubSolarSelenographicLongitude_Moon, 2, "SubSolar Selenographic Longitude (Moon)", "PhysicalEphemerisMoon_51")
@@ -205,6 +211,20 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
     def Test_TransformationCoordinates_12_04():        
         fDeclination = MeeusAlgorithmsFormulas.TransformationCoordinates_12_04(23.4392911, 113.205630, 6.684170)
         sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fDeclination, 28.0279470188, 4, "TransformationCoordinates_12_04","23.4392911, 113.205630, 6.684170","Declination")
+        # Return result
+        return sComment
+
+    @staticmethod
+    def Test_TransformationCoordinates_12_05():        
+        fAzimut = MeeusAlgorithmsFormulas.TransformationCoordinates_12_05(347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875)
+        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fAzimut, 64.352133, 4, "TransformationCoordinates_12_05","347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875","Azimut")
+        # Return result
+        return sComment
+
+    @staticmethod
+    def Test_TransformationCoordinates_12_06():        
+        fElevation = MeeusAlgorithmsFormulas.TransformationCoordinates_12_06(347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875)
+        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fElevation, 15.1249, 4, "TransformationCoordinates_12_06","347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875","Elevation")
         # Return result
         return sComment
 

@@ -1,3 +1,29 @@
+Version 2.1
+     -  #67: Ajout graphe obstruction
+        - Changed ParametersObstructedSkyAreas
+            - Added method  getMinMaxAltitudeObstructedForAzimut(self, fAzimut)    returning    fMinAltitude, fMaxAltitude
+        - Changed RenderBitmap.py
+            - Changed  _addObjectVisibilityBitmapForDay   for drawing the obstruction
+            - Changed  _getStyle for adding new style
+        - Changed  parameters_Rendering.default.json:
+            - Added parameter displayShowObstructionOnGraph  for displaying obstructionon graph
+            - Added parameter displayShowObstructionOnGraphColor  for displaying obstructionon graph
+            - Added parameter displayShowAzimutInformationOnGraph  for displaying azimut information on graph
+            - Added parameter styleAzimutInformationFontSize
+            - Added parameter styleAzimutInformationFontColor
+        - Changed parametersRendering.py:
+            - Added parameter ShowObstructionOnGraph
+            - Added parameter ShowObstructionOnGraphColor
+            - Added parameter ShowAzimutInformationOnGraph
+            - Added parameter AzimutInformationFontSize
+            - Added parameter AzimutInformationFontColor
+    - #76: Ajout attribut Color sur les Obstructed Sky Ares
+        - Changed RenderBitmap.py
+        - Changed parameters_Places.defualt.json
+        - Changed ParametersObstructedSkyArea.py
+        - Changed ParametersObstructedSkyAreas.py
+    - Changed RenderBitmap.py: redefined visibility status condition for Lunar Features (taking into account the Moon visbility status)
+        
 Version 2.0
      - #52:
         - Changed Parameters classes

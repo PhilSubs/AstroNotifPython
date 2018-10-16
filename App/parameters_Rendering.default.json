@@ -1,137 +1,238 @@
 {
-    "Global":"Global rendering parameters",
-        "GlobalParam":"",
-        "GlobalParam_comment":"",
-        
-    "VisibilityFlags":"colors for visibility flags as (r,g,b)",
-        "colorVisibilityFlagsNotObservable":"(255, 0, 0)",
-        "colorVisibilityFlagsAtLEastOneDayObservable":"(255, 159, 63)",
-        "colorVisibilityFlagsObservable":"(0,255,0)",
-        
-    "SunAltitude":"colors for Sun Altitude as (r,g,b)",
-        "colorSunAltitudeMoreThan18DegBelow":"(0, 0, 0)",
-        "colorSunAltitude12To18DegBelow":"(28, 69, 135)",
-        "colorSunAltitude06To12DegBelow":"(17, 85, 204)",
-        "colorSunAltitude00To06DegBelow":"(60, 120, 216)",
-        "colorSunAltitude00To06DegAbove":"(249, 203, 156)",
-        "colorSunAltitude06To12DegAbove":"(255, 242, 204)",
-        "colorSunAltitudeMoreThan12DegAbove":"(255, 255, 255)",
-        
-    "ColorObject":"colors for object graph line dependeing on visibility status as (r,g,b)",
-        "colorObjectVisibilityStatusBelow":"(200, 200, 200)",
-        "colorObjectVisibilityStatusHidden":"(195, 0, 255)",
-        "colorObjectVisibilityStatusVeryLow":"(242, 84, 0)",
-        "colorObjectVisibilityStatusLow":"(255, 159, 63)",
-        "colorObjectVisibilityStatusDifficult":"(255, 0, 0)",
-        "colorObjectVisibilityStatusDifficultMoonlight":"(255, 255, 0)",
-        "colorObjectVisibilityStatusImpossible":"(127, 127, 127)",
-        "colorObjectVisibilityStatusGood":"(0, 255, 0)",
-        "colorObjectVisibilityStatusUnknown":"(0, 0, 255)",
-        
-    "colorLunarFeatureVisibility":"colors for lunar feature graph depending on terminator position, elevation, etc... as (r,g,b)",
-        "colorLunarFeatureVisibilityTerminatorNearButNotObservable":"(21, 76, 20, 255)",
-        "colorLunarFeatureVisibilityGood":"(0, 255, 0)",
-        "colorLunarFeatureVisibilitySunBelowHorizon":"(81, 8, 8)",
-        "colorLunarFeatureVisibilitySunTooHigh":"(255, 255, 255)",
-        "colorLunarFeatureVisibilityMoonBelowHorizon":"(0, 0, 0)",
-        "colorLunarFeatureVisibilityMoonHidden":"(195, 0, 255)",
-        "colorLunarFeatureVisibilityMoonImpossible":"(28, 69, 135)",
-        
-    "HeliocentricGraph":"colors for Heliocentric Graph as (r,g,b,t)",
-        "colorHeliocentricGraphBackground":"(0, 0, 0, 255)",
-        "colorHeliocentricGraphLines":"(50, 50, 50, 255)",
-        "colorHeliocentricGraphSun":"(255, 127, 80, 255)",
-        "colorHeliocentricGraphEarth":"(0, 0, 255, 255)",
-        "colorHeliocentricGraphPlanet":"(255, 0, 0, 255)",
-        
-    "MoonMiniMap":"colors for Moon Mini Map as (r,g,b,t)",
-        "colorMoonMiniMapBackground":"(255, 255, 255, 0)",
-        "colorMoonMiniMapBorder":"(0, 0, 0, 255)",
-        "colorMoonMiniMapLight":"(210, 210, 210, 255)",
-        "colorMoonMiniMapDark":"(64, 64, 64, 255)",
-        
-	"Display": "Display parameters",
-        "displayBitmapExtension": "jpg",
-        "displayBitmapType": "JPEG",
-        "displayDaySlotForDataInfo": 80,
-        "displayDaySlotForDataInfo_comment": "when data displayed for a day, value are taken from slot x of the day (ex: 80 => 20:00 if 4 slots per hour)",
-        "displayLanguage": "FR",
-        "displayMaxAltitudeForObjectLow": 20.0,
-        "displayMaxAltitudeForObjectVeryLow": 10.0,
-        "displayMaxSunAltitudeFoImpossibleBrightObjects": 12.0,
-        "displayMaxSunAltitudeForDifficultBrightObjects": 6.0,
-        "displayMaxSunAltitudeForDifficultMediumObjects": -6.0,
-        "displayMaxSunAltitudeForObservableBrightObjects": -6.0,
-        "displayMaxSunAltitudeForObservableDeepSky": -18.0,
-        "displayMaxSunAltitudeForObservableMediumObjects": -12.0,
-        "displayNumberOfMinutesPerSlot": 15,
-        "displayNumberOfSlotsForDeepSky": 192,
-        "displayNumberOfSlotsForMoon": 384,
-        "displayNumberOfSlotsForMoonFeatures": 384,
-        "displayNumberOfSlotsForPlanets": 384,
-        "displayVisibilityTableAsBitmap": "Yes",
-        
-    "Styles":"styles attributes for text displayed",
-        "styleDefaultFontSize":16,
-        "styleDefaultFontDirectory":"",
-        "styleDefaultFont":"arial.ttf",
-        "styleDefaultFontColor":"(255, 255, 255)",
-        "styleDefaultBackColor":"(0, 0, 0)",
-        "styleDefaultTopMargin":10,
-        "styleDefaultBottomMargin":10,
-        "styleDefaultPaddingTopBottom":2,
-        "styleBitmapHeaderH0FontSize":34,
-        "styleBitmapHeaderH0BackColor":"(0, 0, 0)",
-        "styleBitmapHeaderH0FontColor":"(109, 199, 255)",
-        "styleBitmapHeaderH0TopMargin":1,
-        "styleBitmapHeaderH0BottomMargin":10,
-        "styleBitmapHeaderH0PaddingTopBottom":6,
-        "styleBitmapHeaderH1FontSize":20,
-        "styleBitmapHeaderH1BackColor":"(0, 0, 0)",
-        "styleBitmapHeaderH1FontColor":"(255, 255, 255)",
-        "styleBitmapHeaderH1TopMargin":1,
-        "styleBitmapHeaderH1BottomMargin":5,
-        "styleBitmapHeaderH1PaddingTopBottom":3,
-        "styleBitmapHeaderH2FontSize":12,
-        "styleBitmapHeaderH2BackColor":"(0, 0, 0)",
-        "styleBitmapHeaderH2FontColor":"(128, 128, 128)",
-        "styleBitmapHeaderH2TopMargin":1,
-        "styleBitmapHeaderH2BottomMargin":5,
-        "styleBitmapHeaderH2PaddingTopBottom":3,
-        "styleGMTWarningFontSize":9,
-        "styleGMTWarningFont":"ariali.ttf",
-        "styleLegendFontSize":10,
-        "styleLegendFont":"arial.ttf",
-        "styleRowHeaderDateFontSize":16,
-        "styleRowHeaderDateFont":"ARIALNB.TTF",
-        "styleRowHeaderTimeFontSize":10,
-        "styleObjectNameFontSize":24,
-        "styleObjectNameFontColor":"(0, 0, 0)",
-        "styleObjectNameNotifiedFontSize":24,
-        "styleObjectNameNotifiedFontColor":"(255, 159, 63)",
-        "styleObjectDataFontSize":9,
-        "styleObjectAdditionalDailyDataFontSize":9,
-        "styleSectionTitleH0FontSize":35,
-        "styleSectionTitleH0BackColor":"(109, 199, 255)",
-        "styleSectionTitleH0FontColor":"(0, 0, 0)",
-        "styleSectionTitleH0TopMargin":1,
-        "styleSectionTitleH0BottomMargin":10,
-        "styleSectionTitleH0PaddingTopBottom":6,
-        "styleSectionTitleH1FontSize":30,
-        "styleSectionTitleH1BackColor":"(191, 218, 252)",
-        "styleSectionTitleH1FontColor":"(0, 0, 0)",
-        "styleSectionTitleH1TopMargin":60,
-        "styleSectionTitleH1BottomMargin":15,
-        "styleSectionTitleH1PaddingTopBottom":5,
-        "styleSectionTitleH2FontSize":24,
-        "styleSectionTitleH2FontColor":"(192, 192, 192)",
-        "styleSectionTitleH2TopMargin":20,
-        "styleSectionTitleH2BottomMargin":0,
-        "styleSectionTitleH2PaddingTopBottom":2,
-        "styleLunarFeatureNameFontSize":20,
-        "styleLunarFeatureNameFontColor":"(0, 0, 0)",
-        "styleLunarFeatureNameNotifiedFontSize":20,
-        "styleLunarFeatureNameNotifiedFontColor":"(255, 159, 63)",
-        "styleLunarFeatureDataFontSize":9,
-        "styleLunarFeatureDataFont":"arialbi.ttf"
+    "Global": {
+        "__description__":"Global rendering parameters"
+        }
+        ,
+    "VisibilityFlags": {
+        "Color": {
+            "__description__":"Colors for visibility flags as (r,g,b)",
+            "NotObservable": {"value":"(255, 0, 0)", "type":"tuple", "allowed":"", "description":"Color when no observation is possible"},
+            "AtLeastOneDayObservable": {"value":"(255, 159, 63)", "type":"tuple", "allowed":"", "description":"Color when there is at least one day observale"},
+            "Observable": {"value":"(0,255,0)", "type":"tuple", "allowed":"", "description":"Color when observation is always possible"}
+            }
+        }
+        ,
+    "ObjectVisibilityGraph": {
+        "SkyColorForSunAltitude": {
+            "__description__":"Sky colors for Sun Altitude as (r,g,b)",
+            "MoreThan18DegBelow": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":"Sky color for Sun Altitude < -18"},
+            "12To18DegBelow": {"value":"(28, 69, 135)", "type":"tuple", "allowed":"", "description":"Sky color for -18 < Sun Altitude < -12"},
+            "06To12DegBelow": {"value":"(17, 85, 204)", "type":"tuple", "allowed":"", "description":"Sky color for -12 < Sun Altitude < -6"},
+            "00To06DegBelow": {"value":"(60, 120, 216)", "type":"tuple", "allowed":"", "description":"Sky color for -6 < Sun Altitude < 0"},
+            "00To06DegAbove": {"value":"(249, 203, 156)", "type":"tuple", "allowed":"", "description":"Sky color for 0 < Sun Altitude < 6"},
+            "06To12DegAbove": {"value":"(255, 242, 204)", "type":"tuple", "allowed":"", "description":"Sky color for 6 < Sun Altitude < 12"},
+            "MoreThan12DegAbove": {"value":"(255, 255, 255)", "type":"tuple", "allowed":"", "description":"Sky color for Sun Altitude > 12"}
+            }
+            ,
+        "LineColorForStatus" : {
+            "__description__":"Colors for object visibility graph line depending on object visibility status as (r,g,b)",
+            "Below": {"value":"(200, 200, 200)", "type":"tuple", "allowed":"", "description":"Color for object visibility status Below"},
+            "Hidden": {"value":"(195, 0, 255)", "type":"tuple", "allowed":"", "description":"Color for object visibility status Hidden"},
+            "VeryLow": {"value":"(242, 84, 0)", "type":"tuple", "allowed":"", "description":"Color for object visibility status VeryLow"},
+            "Low": {"value":"(255, 159, 63)", "type":"tuple", "allowed":"", "description":"Color for object visibility status Low"},
+            "Difficult": {"value":"(255, 0, 0)", "type":"tuple", "allowed":"", "description":"Color for object visibility status Difficult"},
+            "DifficultMoonlight": {"value":"(255, 255, 0)", "type":"tuple", "allowed":"", "description":"Color for object visibility status DifficultMoonlight"},
+            "Impossible": {"value":"(127, 127, 127)", "type":"tuple", "allowed":"", "description":"Color for object visibility status Impossible"},
+            "Good": {"value":"(0, 255, 0)", "type":"tuple", "allowed":"", "description":"Color for object visibility status Good"},
+            "Unknown": {"value":"(0, 0, 255)", "type":"tuple", "allowed":"", "description":"Color for object visibility status Unknown"}
+            }
+        }
+        ,
+    "LunarFeatureVisibilityGraph": {
+        "ColorForStatus" : {
+            "__description__":"Colors for lunar feature graph depending on terminator position, sun elevation, etc... as (r,g,b)",
+            "TerminatorNearButNotObservable": {"value":"(21, 76, 20, 255)", "type":"tuple", "allowed":"", "description":"Color for lunar feature visibility status TerminatorNearButNotObservable"},
+            "Good": {"value":"(0, 255, 0)", "type":"tuple", "allowed":"", "description":"Color for lunar feature visibility status Good"},
+            "SunBelowHorizon": {"value":"(81, 8, 8)", "type":"tuple", "allowed":"", "description":"Color for lunar feature visibility status SunBelowHorizon"},
+            "SunTooHigh": {"value":"(255, 255, 255)", "type":"tuple", "allowed":"", "description":"Color for lunar feature visibility status SunTooHigh"},
+            "MoonBelowHorizon": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":"Color for lunar feature visibility status MoonBelowHorizon"},
+            "MoonHidden": {"value":"(195, 0, 255)", "type":"tuple", "allowed":"", "description":"Color for lunar feature visibility status MoonHidden"},
+            "MoonImpossible": {"value":"(28, 69, 135)", "type":"tuple", "allowed":"", "description":"Color for lunar feature visibility status MoonImpossible"}
+            }
+        }
+        ,
+    "HeliocentricGraph": {
+        "Color": {
+            "__description__":"Colors for Heliocentric Graph as (r,g,b,t)",
+            "Background": {"value":"(0, 0, 0, 255)", "type":"tuple", "allowed":"", "description":"Background colors for Heliocentric Graph"},
+            "Lines": {"value":"(50, 50, 50, 255)", "type":"tuple", "allowed":"", "description":"Lines colors for Heliocentric Graph"},
+            "Sun": {"value":"(255, 127, 80, 255)", "type":"tuple", "allowed":"", "description":"Sun colors for Heliocentric Graph"},
+            "Earth": {"value":"(0, 0, 255, 255)", "type":"tuple", "allowed":"", "description":"Earth colors for Heliocentric Graph"},
+            "Planet": {"value":"(255, 0, 0, 255)", "type":"tuple", "allowed":"", "description":"Planet colors for Heliocentric Graph"}
+            }
+        }
+        ,
+    "MoonMiniMap": {
+        "Color": {
+            "__description__":"Colors for Moon Mini Map as (r,g,b,t)",
+            "Background": {"value":"(255, 255, 255, 0)", "type":"tuple", "allowed":"", "description":""},
+            "Border": {"value":"(0, 0, 0, 255)", "type":"tuple", "allowed":"", "description":""},
+            "Light": {"value":"(210, 210, 210, 255)", "type":"tuple", "allowed":"", "description":""},
+            "Dark": {"value":"(64, 64, 64, 255)", "type":"tuple", "allowed":"", "description":""}
+            }
+        }
+        ,
+	"RenderingOptions": {
+        "__description__": "Display parameters",
+        "BitmapExtension": {"value":"png", "type":"string", "allowed":"", "description":""},
+        "BitmapType": {"value":"PNG", "type":"string", "allowed":"", "description":""},
+        "DaySlotForDataInfo": {"value":80, "type":"int", "allowed":"", "description":"when data displayed for a day, value are taken from slot x of the day (ex: 80 => 20:00 if 4 slots per hour)"},
+        "DeepSkyObjectMinAngularSeparationWithMoonInDeg": {"value":60.0, "type":"float", "allowed":"", "description":"Minimum angular separation between Deep Sky object and Moon (* Illum %) for observation"},
+        "ForceDisplayPlanetMoon": {"value":true, "type":"bool", "allowed":"", "description":"if Yes, planets and moon are always displayed"},
+        "ForceObservable": {"value":true, "type":"bool", "allowed":"", "description":"if Yes, object is always considered as observable"},
+        "Language": {"value":"FR", "type":"string", "allowed":"", "description":""},
+        "MaxAltitudeForObjectLow": {"value":20.0, "type":"float", "allowed":"", "description":""},
+        "MaxAltitudeForObjectVeryLow": {"value":10.0, "type":"float", "allowed":"", "description":""},
+        "MaxSunAltitudeFoImpossibleBrightObjects": {"value":12.0, "type":"float", "allowed":"", "description":""},
+        "MaxSunAltitudeForDifficultBrightObjects": {"value":6.0, "type":"float", "allowed":"", "description":""},
+        "MaxSunAltitudeForDifficultMediumObjects": {"value":-6.0, "type":"float", "allowed":"", "description":""},
+        "MaxSunAltitudeForObservableBrightObjects": {"value":-6.0, "type":"float", "allowed":"", "description":""},
+        "MaxSunAltitudeForObservableDeepSky": {"value":-18.0, "type":"float", "allowed":"", "description":""},
+        "MaxSunAltitudeForObservableMediumObjects": {"value":-12.0, "type":"float", "allowed":"", "description":""},
+        "MaximumLunarFeatureSunAltitude": {"value":45.0, "type":"float", "allowed":"", "description":"Max altitude of Sun over Lunar feature for defining if observable"},
+        "NumberOfMinutesPerSlot": {"value":15, "type":"int", "allowed":"", "description":""},
+        "NumberOfSlotsForDeepSky": {"value":480, "type":"int", "allowed":"", "description":""},
+        "NumberOfSlotsForMoon": {"value":480, "type":"int", "allowed":"", "description":""},
+        "NumberOfSlotsForMoonFeatures": {"value":480, "type":"int", "allowed":"", "description":""},
+        "NumberOfSlotsForPlanets": {"value":480, "type":"int", "allowed":"", "description":""},
+        "ShowAzimutInformationOnGraph": {"value":true, "type":"bool", "allowed":"", "description":""},
+        "ShowObstructionOnGraph": {"value":true, "type":"bool", "allowed":"", "description":""},
+        "ShowObstructionOnGraphColor": {"value":"(45, 0, 80)", "type":"tuple", "allowed":"", "description":""},
+        "ShowWhenTerminatorIsOnLunarFeature": {"value":true, "type":"bool", "allowed":"", "description":"if Yes, a special color is used for showing that terminator is within ObservationShowWhenTerminatorIsOnLunarFeatureWithinDeg deg of the lunar feature, based on Min Longitude and Max Longitude"},
+        "ShowWhenTerminatorIsOnLunarFeatureWithinDeg": {"value":10.0, "type":"float", "allowed":"", "description":"see description for ObservationShowWhenTerminatorIsOnLunarFeature"}
+        }
+        ,
+    "Styles": {
+        "__description__":"Styles attributes for text and sections displayed",
+        "Default": {
+            "FontSize": {"value":16, "type":"int", "allowed":"", "description":""},
+            "FontDirectory": {"value":"", "type":"string", "allowed":"", "description":""},
+            "Font": {"value":"arial.ttf", "type":"string", "allowed":"", "description":""},
+            "FontColor": {"value":"(255, 255, 255)", "type":"tuple", "allowed":"", "description":""},
+            "BackColor": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":""},
+            "TopMargin": {"value":10, "type":"int", "allowed":"", "description":""},
+            "BottomMargin": {"value":10, "type":"int", "allowed":"", "description":""},
+            "PaddingTopBottom": {"value":2, "type":"int", "allowed":"", "description":""}
+            }
+            ,
+        "BitmapHeader": {
+            "H0": {
+                "FontSize": {"value":34, "type":"int", "allowed":"", "description":""},
+                "BackColor": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":""},
+                "FontColor": {"value":"(109, 199, 255)", "type":"tuple", "allowed":"", "description":""},
+                "TopMargin": {"value":10, "type":"int", "allowed":"", "description":""},
+                "BottomMargin": {"value":10, "type":"int", "allowed":"", "description":""},
+                "PaddingTopBottom": {"value":6, "type":"int", "allowed":"", "description":""}
+                }
+                ,
+            "H1": {
+                "FontSize": {"value":20, "type":"int", "allowed":"", "description":""},
+                "BackColor": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":""},
+                "FontColor": {"value":"(255, 255, 255)", "type":"tuple", "allowed":"", "description":""},
+                "TopMargin": {"value":1, "type":"int", "allowed":"", "description":""},
+                "BottomMargin": {"value":5, "type":"int", "allowed":"", "description":""},
+                "PaddingTopBottom": {"value":3, "type":"int", "allowed":"", "description":""}
+                }
+                ,
+            "H2": {
+                "FontSize": {"value":12, "type":"int", "allowed":"", "description":""},
+                "BackColor": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":""},
+                "FontColor": {"value":"(128, 128, 128)", "type":"tuple", "allowed":"", "description":""},
+                "TopMargin": {"value":1, "type":"int", "allowed":"", "description":""},
+                "BottomMargin": {"value":5, "type":"int", "allowed":"", "description":""},
+                "PaddingTopBottom": {"value":3, "type":"int", "allowed":"", "description":""}
+                }
+            }
+            ,
+        "GMTWarning": {
+            "FontSize": {"value":9, "type":"int", "allowed":"", "description":""},
+            "Font": {"value":"ariali.ttf", "type":"string", "allowed":"", "description":""}
+            }
+            ,
+        "Legend": {
+            "FontSize": {"value":10, "type":"int", "allowed":"", "description":""},
+            "Font": {"value":"arial.ttf", "type":"string", "allowed":"", "description":""}
+            }
+            ,
+        "RowHeader": {
+            "Date": {
+                "FontSize": {"value":16, "type":"int", "allowed":"", "description":""},
+                "Font": {"value":"ARIALNB.TTF", "type":"string", "allowed":"", "description":""}
+                }
+                ,
+            "Time": {
+                "FontSize": {"value":10, "type":"int", "allowed":"", "description":""}
+                }
+            }
+            ,
+        "Object": {
+            "Name": {
+                "FontSize": {"value":24, "type":"int", "allowed":"", "description":""},
+                "FontColor": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":""}
+                }
+                ,
+            "NameNotified": {
+                "FontSize": {"value":24, "type":"int", "allowed":"", "description":""},
+                "FontColor": {"value":"(255, 159, 63)", "type":"tuple", "allowed":"", "description":""}
+                }
+                ,
+            "Data": {
+                "FontSize": {"value":9, "type":"int", "allowed":"", "description":""}
+                }
+                ,
+            "AdditionalDailyData": {
+                "FontSize": {"value":9, "type":"int", "allowed":"", "description":""}
+                }
+            }
+            ,
+        "VisiblityGraphAzimutInformation": {
+            "FontSize": {"value":9, "type":"int", "allowed":"", "description":""},
+            "FontColor": {"value":"(255, 255, 255)", "type":"tuple", "allowed":"", "description":""}
+            }
+            ,
+        "SectionTitle": {
+            "H0": {
+                "FontSize": {"value":35, "type":"int", "allowed":"", "description":""},
+                "BackColor": {"value":"(109, 199, 255)", "type":"tuple", "allowed":"", "description":""},
+                "FontColor": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":""},
+                "TopMargin": {"value":1, "type":"int", "allowed":"", "description":""},
+                "BottomMargin": {"value":10, "type":"int", "allowed":"", "description":""},
+                "PaddingTopBottom": {"value":6, "type":"int", "allowed":"", "description":""}
+                }
+                ,
+            "H1": {
+                "FontSize": {"value":30, "type":"int", "allowed":"", "description":""},
+                "BackColor": {"value":"(191, 218, 252)", "type":"tuple", "allowed":"", "description":""},
+                "FontColor": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":""},
+                "TopMargin": {"value":60, "type":"int", "allowed":"", "description":""},
+                "BottomMargin": {"value":15, "type":"int", "allowed":"", "description":""},
+                "PaddingTopBottom": {"value":5, "type":"int", "allowed":"", "description":""}
+                }
+                ,
+            "H2": {
+                "FontSize": {"value":24, "type":"int", "allowed":"", "description":""},
+                "FontColor": {"value":"(192, 192, 192)", "type":"tuple", "allowed":"", "description":""},
+                "TopMargin": {"value":20, "type":"int", "allowed":"", "description":""},
+                "BottomMargin": {"value":0, "type":"int", "allowed":"", "description":""},
+                "PaddingTopBottom": {"value":2, "type":"int", "allowed":"", "description":""}
+                }
+            } 
+            ,
+        "LunarFeature": {
+            "Name": {
+                "FontSize": {"value":20, "type":"int", "allowed":"", "description":""},
+                "FontColor": {"value":"(0, 0, 0)", "type":"tuple", "allowed":"", "description":""}
+                }
+                ,
+            "NameNotified": {
+                "FontSize": {"value":20, "type":"int", "allowed":"", "description":""},
+                "FontColor": {"value":"(255, 159, 63)", "type":"tuple", "allowed":"", "description":""}
+                }
+                ,
+            "Data": {
+                "FontSize": {"value":9, "type":"int", "allowed":"", "description":""},
+                "Font": {"value":"arialbi.ttf", "type":"string", "allowed":"", "description":""}
+                }
+            }
+        }
 }
