@@ -17,7 +17,7 @@ ANLib.Tools.logToTrace(theParameters.Runtime().get("Global.PathToLogFileName"), 
 
 # Prepare objects for computing ephemeris
 sParamDate = (datetime.now() + timedelta(hours=theParameters.Runtime().get('NightlyBatch.TimeDeltaInHours'))).strftime("%Y%m%d")  # start date from current date at 00:00 + delta hours
-theCalendar = ANLib.Calendar(sParamDate,"000000", theParameters.Runtime().get("Place").get("CurrentLocalTimeDifferenceWithGMT"))
+theCalendar = ANLib.Calendar(sParamDate,"130000", theParameters.Runtime().get("Place").get("CurrentLocalTimeDifferenceWithGMT"))
 theEphemeridesData = ANLib.EphemeridesData()
 
 # Compute ephemeris and produce new HTML
