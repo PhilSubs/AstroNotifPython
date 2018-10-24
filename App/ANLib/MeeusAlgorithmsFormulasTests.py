@@ -216,15 +216,15 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
 
     @staticmethod
     def Test_TransformationCoordinates_12_05():        
-        fAzimut = MeeusAlgorithmsFormulas.TransformationCoordinates_12_05(347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875)
-        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fAzimut, 64.352133, 4, "TransformationCoordinates_12_05","347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875","Azimut")
+        fAzimut = MeeusAlgorithmsFormulas.TransformationCoordinates_12_05(347.3193375, -6.719891666666667, 77.06555555555556, 38.92138888888889, 128.7368875)#(fRightAscension, fDeclination, fObserverLongitude, fObserverLatitude, fGreenwichSideralTime)
+        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fAzimut, 244.352133, 3, "TransformationCoordinates_12_05","347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875","Azimut")
         # Return result
         return sComment
 
     @staticmethod
     def Test_TransformationCoordinates_12_06():        
-        fElevation = MeeusAlgorithmsFormulas.TransformationCoordinates_12_06(347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875)
-        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fElevation, 15.1249, 4, "TransformationCoordinates_12_06","347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875","Elevation")
+        fElevation = MeeusAlgorithmsFormulas.TransformationCoordinates_12_06(347.3193375, -6.719891666666667, 77.06555555555556, 38.92138888888889, 128.7368875) #(fRightAscension, fDeclination, fObserverLongitude, fObserverLatitude, fGreenwichSideralTime)
+        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fElevation, 15.1249, 3, "TransformationCoordinates_12_06","347.3193375, -6.719891666666667, 77.06555555555556, 5.137694444444444, 128.7368875","Elevation")
         # Return result
         return sComment
 
