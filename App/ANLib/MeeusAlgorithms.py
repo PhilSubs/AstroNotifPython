@@ -13,6 +13,7 @@ from MeeusAlgorithmsFormulas import MeeusAlgorithmsFormulas
 
 
 class MeeusAlgorithms(toolObjectSerializable):
+    # Class Methods
     @staticmethod
     def getSunAltitudeFromMoonFeature(fFeatureLongitudeOnTheMoon, fFeatureLatitudeOnTheMoon, fMoonSelenographicLongitude, fMoonSelenographicLatitude):
         # Co: Colongitude of the Sun0
