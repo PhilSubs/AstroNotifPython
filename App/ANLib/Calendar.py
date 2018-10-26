@@ -23,6 +23,7 @@ class Calendar(toolObjectSerializable):
         self._dtLocalDateTime =  datetime.datetime(self._iYear, self._iMonth, self._iDay, self._iHours, self._iMinutes, self._iSeconds)
         self._dtGMTLocalDateTime =  self._dtLocalDateTime - datetime.timedelta(hours=self._fLocalTimeDifferenceWithGMT)
         self._fLocalDateValue = self.__computeDateValueFromDateAndTime(self._LocalStartdate, self._LocalStartTime)
+        self._LocalStartTimeSlotBasedHour0 = None
     def __computeDateValueFromDateAndTime(self, sDate, sTime):
         # Compute the number of days since 01/01/2000 at 00:00 which is the reference date
         # Split date and time 
@@ -31,6 +32,10 @@ class Calendar(toolObjectSerializable):
         #fDateValue = fDateValue # - 0.5
         fDateValue = self.getJulianDate() - MeeusAlgorithmsFormulas.JulianDay_07_01(2000, 1, 1, 0, 0, 0)
         return fDateValue
+    def getLocalStartTimeSlotBasedHour0(self, iNumberOfMinutesPerSlot):
+        if self._LocalStartTimeSlotBasedHour0 is None:
+            self._LocalStartTimeSlotBasedHour0 =  int((self._iHours * 60.0 + float(self._iMinutes) + self._iSeconds / 60.0) / iNumberOfMinutesPerSlot)
+        return self._LocalStartTimeSlotBasedHour0
     def getLocalStartDate(self): return self._LocalStartdate
     def getGMTStartDate(self): return self._LocalStartdate  #TODO: compute local time based on DST and area
     def getJulianDate(self):

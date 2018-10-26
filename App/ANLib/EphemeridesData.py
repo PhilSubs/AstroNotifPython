@@ -41,20 +41,20 @@ class EphemeridesData(toolObjectSerializable):
             self._dicMemBuffer["MaxSunAltitudeForObservableDeepSky"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableDeepSky')
             self._dicMemBuffer["MaxSunAltitudeForObservableBrightObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableBrightObjects')
             self._dicMemBuffer["MaxSunAltitudeForDifficultBrightObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForDifficultBrightObjects')
-            self._dicMemBuffer["MaxSunAltitudeFoImpossibleBrightObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeFoImpossibleBrightObjects')
+            self._dicMemBuffer["MaxSunAltitudeForImpossibleBrightObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForImpossibleBrightObjects')
             self._dicMemBuffer["MaxSunAltitudeForObservableMediumObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForObservableMediumObjects')
             self._dicMemBuffer["MaxSunAltitudeForDifficultMediumObjects"] = oParameters.Rendering().get('RenderingOptions.MaxSunAltitudeForDifficultMediumObjects')
             self._dicMemBuffer["DeepSkyObjectMinAngularSeparationWithMoonInDeg"] = oParameters.Rendering().get("RenderingOptions.DeepSkyObjectMinAngularSeparationWithMoonInDeg")
             self._bBufferInitialized = True
-        
-    def getObjectVisibilityStatusForSlot(self, sObjectID, iSlot, oParameters):
+
+    def _initObjectVisibilityStatus(self, oParameters):
         # Return object visibility status depending on object altitude and Azimut, Place, and Sun Altitude
         #     - Below : object is below horizon
         #     - VeryLow: object is visible but very low   (<15)
         #     - Low: object is visible but low  (<35)
         #     - Difficult: object is visible but sun makes it difficult to see
-        #     - DifficultMoonlight: object is visible but moon makes it difficult to see
-        #     - Impossible:  object is visible but sun makes it impossible to see
+        #     - DifficultMoonlight: object is visible but moon makes it difficult to see  (angular sep with Moon < Rendering.DeepSkyObjectMinAngularSeparationWithMoonInDeg * MoonIllumination)
+        #     - Impossible:  object is visible but sun makes it impossible to see  (altitude sun > Rendering.Display.MaxSunAltitudeForObservable...)
         #     - Hidden: object is visible but hidden by something
         #     - Good: object is visible in good conditions
         self._initBuffers(oParameters)
@@ -63,70 +63,77 @@ class EphemeridesData(toolObjectSerializable):
         fDisplayMaxSunAltitudeForObservableDeepSky = self._dicMemBuffer["MaxSunAltitudeForObservableDeepSky"]
         fDisplayMaxSunAltitudeForObservableBrightObjects = self._dicMemBuffer["MaxSunAltitudeForObservableBrightObjects"]
         fDisplayMaxSunAltitudeForDifficultBrightObjects = self._dicMemBuffer["MaxSunAltitudeForDifficultBrightObjects"]
-        fDisplayMaxSunAltitudeFoImpossibleBrightObjects = self._dicMemBuffer["MaxSunAltitudeFoImpossibleBrightObjects"]
+        fDisplayMaxSunAltitudeForImpossibleBrightObjects = self._dicMemBuffer["MaxSunAltitudeForImpossibleBrightObjects"]
         fDisplayMaxSunAltitudeForObservableMediumObjects = self._dicMemBuffer["MaxSunAltitudeForObservableMediumObjects"]
         fDisplayMaxSunAltitudeForDifficultMediumObjects = self._dicMemBuffer["MaxSunAltitudeForDifficultMediumObjects"]
 
-        fObjectAltitude = self._objects[sObjectID].getAltitudeForSlot(iSlot)
-        fObjectAZimut = self._objects[sObjectID].getAzimutForSlot(iSlot)
-        fSunAltitude = self._sunAltitude[str(iSlot)]
-        sObjectCategory = oParameters.SkyObjects().getObjectByID(sObjectID).get("Category")
+        sPlaceVisibilityMap = oParameters.Runtime().get("Place").get("VisibilityStatus")
         
-        sStatus = "Unknown"
-        
-        # Below horizon and hidden
-        if fObjectAltitude < 0.0:
-            sStatus = "Below"
-        elif oParameters.Runtime().get("Place").get("VisibilityStatus")[Tools.getIndexFromAzimutAltitude(fObjectAZimut, fObjectAltitude)] == "0":
-            sStatus = "Hidden"
-        # Deepsky
-        elif sObjectCategory == "DeepSky":
-            if fSunAltitude <= fDisplayMaxSunAltitudeForObservableDeepSky:
-                fAngularSeparationCheck = self._dicMemBuffer["DeepSkyObjectMinAngularSeparationWithMoonInDeg"]  * self._objects['Moon'].getIlluminationForSlot(iSlot)
-                fAngularSeparation = MeeusAlgorithms.getAngularSeparation(self._objects['Moon'].getRightAscensionForSlot(iSlot), self._objects['Moon'].getDeclinationForSlot(iSlot), self._objects[sObjectID].getRightAscensionForSlot(iSlot), self._objects[sObjectID].getDeclinationForSlot(iSlot))
-                if self._objects['Moon'].getAltitudeForSlot(iSlot) > 0 and fAngularSeparation <= fAngularSeparationCheck:
-                    sStatus = "DifficultMoonlight"
-                elif fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
-                   sStatus = "VeryLow"
-                elif fObjectAltitude < fDisplayMaxAltitudeForObjectLow:
-                    sStatus = "Low"
-                else:
-                    sStatus = "Good"
-            else:
-                sStatus = "Impossible"           
-        # Bright Planet and Moon
-        elif sObjectID == "Moon" or sObjectID == "Venus" or sObjectID == "Jupiter":
-            if fSunAltitude < fDisplayMaxSunAltitudeForObservableBrightObjects:
-                if fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
-                    sStatus = "VeryLow"
-                elif fObjectAltitude < fDisplayMaxAltitudeForObjectLow:
-                    sStatus = "Low"
-                else:
-                    sStatus = "Good"
-            elif fSunAltitude < fDisplayMaxSunAltitudeForDifficultBrightObjects:
-                sStatus = "Difficult" 
-            elif fSunAltitude < fDisplayMaxSunAltitudeFoImpossibleBrightObjects:
-                if sObjectID == "Moon":
-                    sStatus = "Difficult" 
-                else:
-                    sStatus = "Impossible" 
-            else:
-                sStatus = "Impossible"
-        # Medium objects
-        else:
-            if fSunAltitude < fDisplayMaxSunAltitudeForObservableMediumObjects:
-                if fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
-                    sStatus = "VeryLow"
-                elif fObjectAltitude < fDisplayMaxAltitudeForObjectLow:
-                    sStatus = "Low"
-                else:
-                    sStatus = "Good"
-            elif fSunAltitude < fDisplayMaxSunAltitudeForDifficultMediumObjects:
-                sStatus = "Difficult" 
-            else:
-                sStatus = "Impossible"
-            
-        return sStatus
+        for iSlot in range (0, self._iNbSlots): 
+            fSunAltitude = self._sunAltitude[str(iSlot)]
+            fMoonIlluminationForSlot = self._objects['Moon'].getIlluminationForSlot(iSlot)
+            fMoonRightAscensionForSlot = self._objects['Moon'].getRightAscensionForSlot(iSlot)
+            fMoonDeclinationForSlot = self._objects['Moon'].getDeclinationForSlot(iSlot)
+            fMoonAltitudeForSlot = self._objects['Moon'].getAltitudeForSlot(iSlot)
+            for sObjectID, aObject in self._objects.iteritems():
+                fObjectAltitude = aObject.getAltitudeForSlot(iSlot)
+                fObjectAZimut = aObject.getAzimutForSlot(iSlot)
+                sObjectCategory = aObject.getCategory()
+                if (iSlot <= self._iNbSlotsPlanets and sObjectCategory == "Planetary" ) or (iSlot <= self._iNbSlotsMoon and sObjectCategory == "Moon" ) or (iSlot <= self._iNbSlotsDeepSky and sObjectCategory == "DeepSky" ):
+                    sStatus = "Unknown"
+                    # Below horizon and hidden
+                    if fObjectAltitude < 0.0:
+                        sStatus = "Below"
+                    elif sPlaceVisibilityMap[Tools.getIndexFromAzimutAltitude(fObjectAZimut, fObjectAltitude)] == "0":
+                        sStatus = "Hidden"
+                    # Deepsky
+                    elif sObjectCategory == "DeepSky":
+                        if fSunAltitude <= fDisplayMaxSunAltitudeForObservableDeepSky:
+                            fAngularSeparationCheck = self._dicMemBuffer["DeepSkyObjectMinAngularSeparationWithMoonInDeg"]  * fMoonIlluminationForSlot
+                            fAngularSeparation = MeeusAlgorithms.getAngularSeparation(fMoonRightAscensionForSlot, fMoonDeclinationForSlot, aObject.getRightAscensionForSlot(iSlot), aObject.getDeclinationForSlot(iSlot))
+                            if fMoonAltitudeForSlot > 0 and fAngularSeparation <= fAngularSeparationCheck:
+                                sStatus = "DifficultMoonlight"
+                            elif fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
+                                sStatus = "VeryLow"
+                            elif fObjectAltitude < fDisplayMaxAltitudeForObjectLow:
+                                sStatus = "Low"
+                            else:
+                                sStatus = "Good"
+                        else:
+                            sStatus = "Impossible"           
+                    # Bright Planet and Moon
+                    elif sObjectID == "Moon" or sObjectID == "Venus" or sObjectID == "Jupiter":
+                        if fSunAltitude < fDisplayMaxSunAltitudeForObservableBrightObjects:
+                            if fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
+                                sStatus = "VeryLow"
+                            elif fObjectAltitude < fDisplayMaxAltitudeForObjectLow:
+                                sStatus = "Low"
+                            else:
+                                sStatus = "Good"
+                        elif fSunAltitude < fDisplayMaxSunAltitudeForDifficultBrightObjects:
+                            sStatus = "Difficult" 
+                        elif fSunAltitude < fDisplayMaxSunAltitudeForImpossibleBrightObjects:
+                            if sObjectID == "Moon":
+                                sStatus = "Difficult" 
+                            else:
+                                sStatus = "Impossible" 
+                        else:
+                            sStatus = "Impossible"
+                    # Medium objects
+                    else:
+                        if fSunAltitude < fDisplayMaxSunAltitudeForObservableMediumObjects:
+                            if fObjectAltitude < fDisplayMaxAltitudeForObjectVeryLow:
+                                sStatus = "VeryLow"
+                            elif fObjectAltitude < fDisplayMaxAltitudeForObjectLow:
+                                sStatus = "Low"
+                            else:
+                                sStatus = "Good"
+                        elif fSunAltitude < fDisplayMaxSunAltitudeForDifficultMediumObjects:
+                            sStatus = "Difficult" 
+                        else:
+                            sStatus = "Impossible"
+                aObject.setVisibilityStatus(iSlot, sStatus)
+
     
     
     def getSunAltitudeForSlot(self, iSlot): return self._sunAltitude[str(iSlot)]
@@ -233,7 +240,9 @@ class EphemeridesData(toolObjectSerializable):
                         fAzimut = CommonAstroFormulaes.getAzimutFromEquatCoord(fRA, fDec, self._observerLatitude, fLocalSideralTime)
                         fAltitude = CommonAstroFormulaes.getAltitudeFromEquatCoord(fRA, fDec, self._observerLatitude, fLocalSideralTime)
                         self._objects[aSkyobject.get("ID")].setDataForSlot(iSlot, fAzimut, fAltitude, fRA, fDec, 0.0, 0.0, 0.0, 0.0, 0.0)
-                    
+     
+            #
+        self._initObjectVisibilityStatus(oParameters)
         
     
         

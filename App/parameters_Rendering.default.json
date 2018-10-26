@@ -83,7 +83,7 @@
         "Language": {"value":"FR", "type":"string", "allowed":"", "description":""},
         "MaxAltitudeForObjectLow": {"value":20.0, "type":"float", "allowed":"", "description":""},
         "MaxAltitudeForObjectVeryLow": {"value":10.0, "type":"float", "allowed":"", "description":""},
-        "MaxSunAltitudeFoImpossibleBrightObjects": {"value":12.0, "type":"float", "allowed":"", "description":""},
+        "MaxSunAltitudeForImpossibleBrightObjects": {"value":12.0, "type":"float", "allowed":"", "description":""},
         "MaxSunAltitudeForDifficultBrightObjects": {"value":6.0, "type":"float", "allowed":"", "description":""},
         "MaxSunAltitudeForDifficultMediumObjects": {"value":-6.0, "type":"float", "allowed":"", "description":""},
         "MaxSunAltitudeForObservableBrightObjects": {"value":-6.0, "type":"float", "allowed":"", "description":""},

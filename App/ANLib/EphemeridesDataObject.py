@@ -26,6 +26,7 @@ class EphemeridesDataObject(toolObjectSerializable):
         self._SelenographicLatitude = {}   #
         self._Phase = {}
         self._Illumination = {}
+        self._VisibilityStatus = {}
     def setDataForSlot(self, iSlot, fAzimut, fAltitude, fRightAscension, fDeclination, fDistance, fMeanLong, fColongitude = 0.0, fSelenographicLongitude = 0.0, fSelenographicLatitude = 0.0, fPhase = 0.0, fIllumination = 0.0):
         self._Azimut[str(iSlot)] = fAzimut
         self._Altitude[str(iSlot)] = fAltitude
@@ -104,5 +105,7 @@ class EphemeridesDataObject(toolObjectSerializable):
     def getSelenographicLatitudeForSlot(self, iSlot): return self._SelenographicLatitude[str(iSlot)]
     def getPhaseForSlot(self, iSlot): return self._Phase[str(iSlot)]
     def getIlluminationForSlot(self, iSlot): return self._Illumination[str(iSlot)]
+    def setVisibilityStatus(self, iSlot, sStatus): self._VisibilityStatus[str(iSlot)] = sStatus
+    def getVisibilityStatus(self, iSlot): return self._VisibilityStatus[str(iSlot)]
     
         

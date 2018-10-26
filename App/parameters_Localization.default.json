@@ -9,12 +9,13 @@
             "Place": {"value":"Place", "type":"string"},
             "KilometerAbrev": {"value":"Km", "type":"string"},
             "MillionKilometersAbrev": {"value":"M.Km", "type":"string"},
-            "DegreesAbev": {"value":"Deg", "type":"string"},
+            "DegreesAbev": {"value":"°", "type":"string"},
             "LongitudeAbrev": {"value":"Lon", "type":"string"},
             "LatitudeAbrev": {"value":"Lat", "type":"string"},
             "RightAscensionAbrev": {"value":"R.A.", "type":"string"},
             "DeclinationAbrev": {"value":"Decl.", "type":"string"},
             "Azimut": {"value":"Azimut", "type":"string"},
+            "AzimutAbrev": {"value":"Az", "type":"string"},
             "Distance": {"value":"Distance", "type":"string"},
             "DistanceAbrev": {"value":"Dist", "type":"string"},
             "DimensionAbrev": {"value":"Dim", "type":"string"},
@@ -85,7 +86,9 @@
             "MoonFeatureFault": {"value":"Fault", "type":"string"},
             "MoonFeaturePlain": {"value":"Plain", "type":"string"},
             "DifficultMoonlight": {"value":"Difficult due to Moon", "type":"string"},
-            "RunningOn": {"value":"running on", "type":"string"}
+            "RunningOn": {"value":"running on", "type":"string"},
+            "ObservableTime": {"value":"Obs.", "type":"string"},
+            "MinAngularDistanceWithMoon": {"value":"Moon at ", "type":"string"}
         },
     "FR":
         {
@@ -97,12 +100,13 @@
             "Place": {"value":"Lieu", "type":"string"},
             "KilometerAbrev": {"value":"Km", "type":"string"},
             "MillionKilometersAbrev": {"value":"M.Km", "type":"string"},
-            "DegreesAbev": {"value":"Deg", "type":"string"},
+            "DegreesAbev": {"value":"°", "type":"string"},
             "LongitudeAbrev": {"value":"Lon", "type":"string"},
             "LatitudeAbrev": {"value":"Lat", "type":"string"},
             "RightAscensionAbrev": {"value":"Asc.Dr.", "type":"string"},
             "DeclinationAbrev": {"value":"Decl.", "type":"string"},
             "Azimut": {"value":"Azimut", "type":"string"},
+            "AzimutAbrev": {"value":"Az", "type":"string"},
             "Distance": {"value":"Distance", "type":"string"},
             "DistanceAbrev": {"value":"Dist", "type":"string"},
             "DimensionAbrev": {"value":"Dim", "type":"string"},
@@ -173,6 +177,8 @@
             "MoonFeatureFault": {"value":"Accident", "type":"string"},
             "MoonFeaturePlain": {"value":"Plaine", "type":"string"},
             "DifficultMoonlight": {"value":"Difficile à cause de la Lune", "type":"string"},
-            "RunningOn": {"value":"sur", "type":"string"}
+            "RunningOn": {"value":"sur", "type":"string"},
+            "ObservableTime": {"value":"Obs.", "type":"string"},
+            "MinAngularDistanceWithMoon": {"value":"Lune à ", "type":"string"}
         }
 }

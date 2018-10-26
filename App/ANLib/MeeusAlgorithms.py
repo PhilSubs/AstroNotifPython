@@ -13,10 +13,24 @@ from MeeusAlgorithmsFormulas import MeeusAlgorithmsFormulas
 
 
 class MeeusAlgorithms(toolObjectSerializable):
+    # Class Methods
     @staticmethod
     def getSunAltitudeFromMoonFeature(fFeatureLongitudeOnTheMoon, fFeatureLatitudeOnTheMoon, fMoonSelenographicLongitude, fMoonSelenographicLatitude):
+        # Co: Colongitude of the Sun0
+        # Bo: Subsolar point Lat
+        #     Now you are ready to calculate the angle of the Sun above your mountain. Do it in two steps:
+        #       Step 1:
+        #           x  =  sin(Bo)*sin(latitude)  +  cos(Bo)*cos(latitude)*sin(Co + longitude)
+        #       Step 2:
+        #           angle theta  =  arcsin(x)
+#        Co = fMoonColongitude
+#        Bo = fMoonSelenographicLatitude
+#        x= math.sin(math.radians(Bo)) * math.sin(math.radians(fFeatureLatitudeOnTheMoon)) + math.cos(math.radians(Bo)) * math.cos(math.radians(fFeatureLatitudeOnTheMoon)) * math.sin(math.radians(Co + fFeatureLongitudeOnTheMoon))
+#        fSunToFeatureAltitude1 = math.degrees(math.asin(x))
         fSunToFeatureAltitude = math.degrees(math.acos(math.sin(math.radians(fMoonSelenographicLatitude)) * math.sin(math.radians(fFeatureLatitudeOnTheMoon)) + math.cos(math.radians(fMoonSelenographicLatitude)) * math.cos(math.radians(fFeatureLatitudeOnTheMoon)) * math.cos(math.radians(fFeatureLongitudeOnTheMoon - fMoonSelenographicLongitude))))
-        return (90.0 - fSunToFeatureAltitude)    # Class Methods
+#        print "  ===>  fSunToFeatureAltitude1: " + str(fSunToFeatureAltitude1) + "    fSunToFeatureAltitude: " + str(90.0 - fSunToFeatureAltitude) 
+##        return (90.0 - fSunToFeatureAltitude)
+        return (fSunToFeatureAltitude - 90.0)
     @staticmethod
     def getSunAzimutFromMoonFeature(fFeatureLongitudeOnTheMoon, fFeatureLatitudeOnTheMoon, fMoonSelenographicLongitude, fMoonSelenographicLatitude):
         fSunToFeatureAzimut = math.degrees(math.atan2( math.cos(math.radians(fMoonSelenographicLatitude)) * math.sin(math.radians(fMoonSelenographicLongitude - fFeatureLongitudeOnTheMoon)), math.cos(math.radians(fFeatureLatitudeOnTheMoon)) * math.sin(math.radians(fMoonSelenographicLatitude)) - math.sin(math.radians(fFeatureLatitudeOnTheMoon)) * math.cos(math.radians(fMoonSelenographicLatitude)) * math.cos(math.radians(fMoonSelenographicLongitude - fFeatureLongitudeOnTheMoon))))
