@@ -440,7 +440,10 @@ else:
     theColorSubTitle        = (164,164,164)
     theColorDataText        = (96,96,96)
     theColorDataTitle       = (128,128,128)
-    theColorSignature       = (228,228,228)
+    if dicInputValues["Subject_Type"] == "Moon":
+        theColorSignature   = (228,228,228)
+    else:
+        theColorSignature   = (128,128,128)
     theColorSignatureShadow = (32,32,32)
     
     # Set fonts
