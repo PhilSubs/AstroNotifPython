@@ -1,0 +1,80 @@
+{
+    "Hardware": {
+                    "Instrument":{
+                                    "Scope":   { 
+                                        "values": [ "Celestron SCT 11\" 280/2800", "EF70-300mm f/4-5.6L IS USM" ],
+                                        "default": "Celestron SCT 11\" 280/2800"
+                                    },
+                                    "Mount":   {
+                                        "values": [ "", "CGEM" ],
+                                        "default": "CGEM"
+                                    }
+                    },
+                    "Accessories":{
+                                    "ADC":     {
+                                        "values": [ "", "ASI ADC" ],
+                                        "default": ""
+                                    },
+                                    "Barlow":  {
+                                        "values": [ "", "Powermate x2", "Powermate x2.5" ],
+                                        "default": "Powermate x2"
+                                    },
+                                    "Reducer": {
+                                        "values": [ "", "Celestron Reducer x0.67" ],
+                                        "default": ""
+                                    },
+                                    "Filters": {
+                                        "values": [ "", "IR6", "IR7", "IR8", "RG610", "#21 (orange)", "#23A (rouge)", "#25 (rouge)", "IR/UV Cut", "UHC", "OIII" ],
+                                        "default": ""
+                                    }
+                    },
+                    "Camera":{
+                        "values": [ "ASI 224MC", "ASI 178MM", "ASI 120MM", "CANON EOS 450D" ],
+                        "default": ""
+                    }
+    },
+    "Software": {
+                    "Capture": {
+                        "values": [ "Firecapture", "Sharpcap" ],
+                        "default": "Firecapture"
+                    },
+                    "Pre-processing": {
+                        "values": [ "", "PIPP" ],
+                        "default": ""
+                    },
+                    "Stacking": {
+                        "values": [ "", "Autostakkert!2", "Autostakkert!3", "Registax6", "Deep Sky Stacker" ],
+                        "default": "Autostakkert!3"
+                    },
+                    "Processing":  {
+                        "values": [ "","Registax6", "Siril" ],
+                        "default": "Registax6"
+                    },
+                    "Rendering":  {
+                        "values": [ "", "Photoshop", "Lightroom" ],
+                        "default": "Photoshop"
+                    }
+    },
+    "CameraSettings": {
+                    "Bin": {
+                        "values": [ "bin x1", "bin x2" ],
+                        "default": "bin x1"
+                    },
+                    "Bits": {
+                        "values": [ "8 bits", "16 bits" ],
+                        "default": "8 bits"
+                    }
+    },
+    "Other": {
+                    "Location": {
+                        "values": [ "", "Plascassier (06), France" ],
+                        "default": "Plascassier (06), France"
+                    }
+    },
+    "CommonValues": {
+                    "YesNo": {
+                        "values": [ "Yes", "No" ],
+                        "default": "Yes"
+                    }
+    }
+}
