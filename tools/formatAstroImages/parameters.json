@@ -24,7 +24,7 @@
                                         "default": ""
                                     },
                                     "Filters": {
-                                        "values": [ "", "IR6", "IR7", "IR8", "RG610", "#21 (orange)", "#23A (rouge)", "#25 (rouge)", "IR/UV Cut", "UHC", "OIII" ],
+                                        "values": [ "", "IR642", "IR742", "IR807", "RG610", "#2c (rouge)", "#25 (rouge)", "#23A (rouge)", "#21 (orange)", "#12 (jaune)", "#80A (bleu)", "IR/UV Cut", "UHC", "OIII" ],
                                         "default": ""
                                     }
                     },
