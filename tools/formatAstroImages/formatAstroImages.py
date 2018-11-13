@@ -289,9 +289,9 @@ def getInputValue(sType, sPrompt, aParam1, aParam2):
 
 # Constants
 iFinalPictureMarginWidth = 20 # Margin for the final picture         
-iMarginPicture = 10           # Margin around the picture, inside the border   
+iMarginPicture = 5            # Margin around the picture, inside the border   
 iMarginTopPicture = 20        # Margin above the picture, below the title/subtitle 
-iMarginBottomPicture = 10     # Margin below the picture, above the logo and data 
+iMarginBottomPicture = 20     # Margin below the picture, above the logo and data 
 iBorderSize = 1               # Border around the picture
 iDataInfoHeight = 300         # height of data info display at the bottom    
 iPositionMinimapX = 200       # position of the minimap, from the right edge (+margin)    
@@ -430,24 +430,26 @@ else:
     theTempDraw = ImageDraw.Draw(theTempImg)
     
     # Font size
-    iFontSizeTitle     = 30
-    iFontSizeSubtitle  = 16
-    iFontSizeDataText  = 14
-    iFontSizeSignature = 18
+    iFontSizeTitle        = 30
+    iFontSizeSubtitle     = 16
+    iFontSizeDataGeoText  = 14
+    iFontSizeDataInfoText = 12
+    iFontSizeSignature    = 18
             
     # Set colors
     theColorTitle           = (255,255,255)
     theColorSubTitle        = (164,164,164)
     theColorDataText        = (96,96,96)
-    theColorDataTitle       = (128,128,128)
+    theColorDataTitle       = (176,176,176)
     if dicInputValues["Subject_Type"] == "Moon":
-        theColorSignature   = (228,228,228)
+        theColorSignature       = (228,228,228,255)
     else:
-        theColorSignature   = (128,128,128)
+        theColorSignature       = (128,128,128,255)
     theColorSignatureShadow = (32,32,32)
     
     # Set fonts
-    theDataFont      = ImageFont.truetype("PCNavita-Regular.ttf", iFontSizeDataText)
+    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", iFontSizeDataGeoText)
+    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", iFontSizeDataInfoText)
     theTitleFont     = ImageFont.truetype("georgia.ttf", iFontSizeTitle)
     theSubTitleFont  = ImageFont.truetype("georgia.ttf", iFontSizeSubtitle)
     theSignatureFont = ImageFont.truetype("Sugar Candy.ttf", iFontSizeSignature)
@@ -456,10 +458,10 @@ else:
     imgPicture = Image.open(dicInputValues["Bitmap_PictureFileName"])
     iPictureWidth, iPictureHeight = imgPicture.size
     iPictureWidthAdjustBorder = 0
-    if iPictureWidth < 1000 and dicInputValues["Subject_Type"] == "Deep Sky": 
-        iPictureWidthAdjustBorder = (1000 - iPictureWidth) / 2
-        print ">>> Adjusted image width to 1000 instead of " + str(iPictureWidth) + " (border: " + str(iPictureWidthAdjustBorder) + ")"
-        iPictureWidth = 1000
+#    if iPictureWidth < 1000 and dicInputValues["Subject_Type"] == "Deep Sky": 
+#        iPictureWidthAdjustBorder = (1000 - iPictureWidth) / 2
+#        print ">>> Adjusted image width to 1000 instead of " + str(iPictureWidth) + " (border: " + str(iPictureWidthAdjustBorder) + ")"
+#        iPictureWidth = 1000
 
     imgMinimap = None
     if dicInputValues["Bitmap_MinimapFileName"] != "":
@@ -479,42 +481,42 @@ else:
         sField_SubTitle1 = ""
         sField_SubTitle2 = ""
         sField_SubTitle3 = ""
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Name"], "", ": ", "", "")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Diameter"], "Diametre ", "", sField_Object_Data_1, "  ")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Width"], "Largeur ", "", sField_Object_Data_1, "  ")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Length"], "Longueur ", "", sField_Object_Data_1, "  ")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Depth"], "Profondeur ", "", sField_Object_Data_1, "  ")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Height"], "Hauteur ", "", sField_Object_Data_1, "  ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Name"], "", ": ", "", "")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Diameter"], "Diametre ", "", sField_Object_Data_2, "  ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Width"], "Largeur ", "", sField_Object_Data_2, "  ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Length"], "Longueur ", "", sField_Object_Data_2, "  ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Depth"], "Profondeur ", "", sField_Object_Data_2, "  ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Height"], "Hauteur ", "", sField_Object_Data_2, "  ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Name"], "", ": ", "", "")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Diameter"], "Diametre ", "", sField_Object_Data_3, "  ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Width"], "Largeur ", "", sField_Object_Data_3, "  ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Length"], "Longueur ", "", sField_Object_Data_3, "  ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Depth"], "Profondeur ", "", sField_Object_Data_3, "  ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Height"], "Hauteur ", "", sField_Object_Data_3, "  ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Name"], "", ": ", "", "")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Diameter"], "Diametre ", "", sField_Object_Data_4, "  ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Width"], "Largeur ", "", sField_Object_Data_4, "  ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Length"], "Longueur ", "", sField_Object_Data_4, "  ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Depth"], "Profondeur ", "", sField_Object_Data_4, "  ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Height"], "Hauteur ", "", sField_Object_Data_4, "  ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Name"], "", ": ", "", "")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Diameter"], "Diametre ", "", sField_Object_Data_5, "  ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Width"], "Largeur ", "", sField_Object_Data_5, "  ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Length"], "Longueur ", "", sField_Object_Data_5, "  ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Depth"], "Profondeur ", "", sField_Object_Data_5, "  ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Height"], "Hauteur ", "", sField_Object_Data_5, "  ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Name"], "", ": ", "", "")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Diameter"], "Diametre ", "", sField_Object_Data_6, "  ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Width"], "Largeur ", "", sField_Object_Data_6, "  ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Length"], "Longueur ", "", sField_Object_Data_6, "  ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Depth"], "Profondeur ", "", sField_Object_Data_6, "  ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Height"], "Hauteur ", "", sField_Object_Data_6, "  ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Name"], "", "  ", "", "")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Diameter"], "Diametre ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Width"], "Largeur ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Length"], "Longueur ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Depth"], "Profondeur ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Height"], "Hauteur ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Name"], "", "  ", "", "")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Diameter"], "Diametre ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Width"], "Largeur ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Length"], "Longueur ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Depth"], "Profondeur ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Height"], "Hauteur ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Name"], "", "  ", "", "")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Diameter"], "Diametre ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Width"], "Largeur ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Length"], "Longueur ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Depth"], "Profondeur ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Height"], "Hauteur ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Name"], "", "  ", "", "")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Diameter"], "Diametre ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Width"], "Largeur ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Length"], "Longueur ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Depth"], "Profondeur ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Height"], "Hauteur ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Name"], "", "  ", "", "")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Diameter"], "Diametre ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Width"], "Largeur ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Length"], "Longueur ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Depth"], "Profondeur ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Height"], "Hauteur ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Name"], "", "  ", "", "")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Diameter"], "Diametre ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Width"], "Largeur ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Length"], "Longueur ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Depth"], "Profondeur ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Height"], "Hauteur ", "", sField_Object_Data_6, "   ")
     elif dicInputValues["Subject_Type"] == "Planet":
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Diameter"], "Diametre ", '"', "", "")
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Magnitude"], "Magnitude ", "", sField_SubTitle1, " - ")
@@ -605,25 +607,25 @@ else:
         iMoonMinimapHeight = iMinimapHeight
     else:
         iMoonMinimapHeight = 0
-    iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_Date, font=theDataFont)[1] + iDataTextInterligne
-    iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_Location, font=theDataFont)[1] + iDataTextInterligne
-    iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_MoonEphem, font=theDataFont)[1]
+    iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_Date, font=theGeoDataFont)[1] + iDataTextInterligne
+    iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_Location, font=theGeoDataFont)[1] + iDataTextInterligne
+    iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_MoonEphem, font=theGeoDataFont)[1]
     
     iTopInfoHeight = iDateLocationMoonEphemHeight
     if iTitleAndSubtitleHeight > iTopInfoHeight: iTopInfoHeight = iTitleAndSubtitleHeight
     if iMoonMinimapHeight > iTopInfoHeight: iTopInfoHeight = iMoonMinimapHeight
     
-    iObjectDataInfoHeight = theTempDraw.textsize(sField_Object_Data_1, font=theDataFont)[1] + iDataTextInterligne
-    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_2, font=theDataFont)[1] + iDataTextInterligne
-    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_3, font=theDataFont)[1] + iDataTextInterligne
-    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_4, font=theDataFont)[1] + iDataTextInterligne
-    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_5, font=theDataFont)[1] + iDataTextInterligne
-    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_6, font=theDataFont)[1]
-    iTechnicalDataInfoHeight = theTempDraw.textsize(sField_Hardware_1, font=theDataFont)[1] + iDataTextInterligne
-    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_2, font=theDataFont)[1] + iDataTextInterligne
-    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_3, font=theDataFont)[1] + iDataTextInterligne
-    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Data_Capture, font=theDataFont)[1] + iDataTextInterligne
-    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Data_Processing, font=theDataFont)[1]
+    iObjectDataInfoHeight = theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[1] + iDataTextInterligne
+    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[1] + iDataTextInterligne
+    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[1] + iDataTextInterligne
+    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[1] + iDataTextInterligne
+    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[1] + iDataTextInterligne
+    iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_6, font=theInfoDataFont)[1]
+    iTechnicalDataInfoHeight = theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
+    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_2, font=theInfoDataFont)[1] + iDataTextInterligne
+    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
+    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Data_Capture, font=theInfoDataFont)[1] + iDataTextInterligne
+    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Data_Processing, font=theInfoDataFont)[1]
     if iObjectDataInfoHeight > iTechnicalDataInfoHeight:
         iDataInfoHeight = iObjectDataInfoHeight
     else:
@@ -644,56 +646,57 @@ else:
     # Compute fields' position
     iField_Signature_X = iPicturePositionX + iPictureWidth - theTempDraw.textsize(sField_Signature, font=theSignatureFont)[0] - iMarginSignature
     iField_Signature_Y = iPicturePositionY + iPictureHeight - theTempDraw.textsize(sField_Signature, font=theSignatureFont)[1] - iMarginSignature
+    iField_Signature_Y = iPicturePositionY + iPictureHeight + iMarginPicture - theTempDraw.textsize(sField_Signature, font=theSignatureFont)[1] / 3
 
     iField_Date_X      = iFinalPictureMarginWidth
     iField_Date_Y      = iFinalPictureMarginWidth
     iField_Location_X  = iFinalPictureMarginWidth
-    iField_Location_Y  = iField_Date_Y + theTempDraw.textsize(sField_Date, font=theDataFont)[1] + iDataTextInterligne
+    iField_Location_Y  = iField_Date_Y + theTempDraw.textsize(sField_Date, font=theGeoDataFont)[1] + iDataTextInterligne
     iField_MoonEphem_X  = iFinalPictureMarginWidth
-    iField_MoonEphem_Y  = iField_Location_Y + theTempDraw.textsize(sField_Location, font=theDataFont)[1] + iDataTextInterligne
+    iField_MoonEphem_Y  = iField_Location_Y + theTempDraw.textsize(sField_Location, font=theGeoDataFont)[1] + iDataTextInterligne
 
-    iField_Title_X     = (iPictureWithBorderWidth - theTempDraw.textsize(sField_Title, font=theTitleFont)[0]) / 2
+    iField_Title_X     = iFinalPictureMarginWidth + (iPictureWithBorderWidth - theTempDraw.textsize(sField_Title, font=theTitleFont)[0]) / 2
     iField_Title_Y     = iFinalPictureMarginWidth + (iTopInfoHeight - iTitleAndSubtitleHeight) / 2
-    iField_SubTitle1_X = (iPictureWithBorderWidth - theTempDraw.textsize(sField_SubTitle1, font=theSubTitleFont)[0]) / 2
+    iField_SubTitle1_X = iFinalPictureMarginWidth + (iPictureWithBorderWidth - theTempDraw.textsize(sField_SubTitle1, font=theSubTitleFont)[0]) / 2
     iField_SubTitle1_Y = iField_Title_Y + theTempDraw.textsize(sField_Title, font=theTitleFont)[1] + iDataTextInterligne * 5
-    iField_SubTitle2_X = (iPictureWithBorderWidth - theTempDraw.textsize(sField_SubTitle2, font=theSubTitleFont)[0]) / 2
+    iField_SubTitle2_X = iFinalPictureMarginWidth + (iPictureWithBorderWidth - theTempDraw.textsize(sField_SubTitle2, font=theSubTitleFont)[0]) / 2
     iField_SubTitle2_Y = iField_SubTitle1_Y + theTempDraw.textsize(sField_SubTitle1, font=theSubTitleFont)[1] + iDataTextInterligne
-    iField_SubTitle3_X = (iPictureWithBorderWidth - theTempDraw.textsize(sField_SubTitle3, font=theSubTitleFont)[0]) / 2
+    iField_SubTitle3_X = iFinalPictureMarginWidth + (iPictureWithBorderWidth - theTempDraw.textsize(sField_SubTitle3, font=theSubTitleFont)[0]) / 2
     iField_SubTitle3_Y = iField_SubTitle2_Y + theTempDraw.textsize(sField_SubTitle2, font=theSubTitleFont)[1] + iDataTextInterligne
 
-    iField_Object_Data_1_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_1, font=theDataFont)[0]
+    iField_Object_Data_1_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[0]
     iField_Object_Data_1_Y = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
-    iField_Object_Data_2_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_2, font=theDataFont)[0]
-    iField_Object_Data_2_Y = iField_Object_Data_1_Y + theTempDraw.textsize(sField_Object_Data_1, font=theDataFont)[1] + iDataTextInterligne
-    iField_Object_Data_3_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_3, font=theDataFont)[0]
-    iField_Object_Data_3_Y = iField_Object_Data_2_Y + theTempDraw.textsize(sField_Object_Data_2, font=theDataFont)[1] + iDataTextInterligne
-    iField_Object_Data_4_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_4, font=theDataFont)[0]
-    iField_Object_Data_4_Y = iField_Object_Data_3_Y + theTempDraw.textsize(sField_Object_Data_3, font=theDataFont)[1] + iDataTextInterligne
-    iField_Object_Data_5_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_5, font=theDataFont)[0]
-    iField_Object_Data_5_Y = iField_Object_Data_4_Y + theTempDraw.textsize(sField_Object_Data_4, font=theDataFont)[1] + iDataTextInterligne
-    iField_Object_Data_6_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_6, font=theDataFont)[0]
-    iField_Object_Data_6_Y = iField_Object_Data_5_Y + theTempDraw.textsize(sField_Object_Data_5, font=theDataFont)[1] + iDataTextInterligne
+    iField_Object_Data_2_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[0]
+    iField_Object_Data_2_Y = iField_Object_Data_1_Y + theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[1] + iDataTextInterligne
+    iField_Object_Data_3_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[0]
+    iField_Object_Data_3_Y = iField_Object_Data_2_Y + theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[1] + iDataTextInterligne
+    iField_Object_Data_4_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[0]
+    iField_Object_Data_4_Y = iField_Object_Data_3_Y + theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[1] + iDataTextInterligne
+    iField_Object_Data_5_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[0]
+    iField_Object_Data_5_Y = iField_Object_Data_4_Y + theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[1] + iDataTextInterligne
+    iField_Object_Data_6_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_6, font=theInfoDataFont)[0]
+    iField_Object_Data_6_Y = iField_Object_Data_5_Y + theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[1] + iDataTextInterligne
 
-    iSizeMax_Title_Data = theTempDraw.textsize(sField_Hardware_Title, font=theDataFont)[0]
-    if theTempDraw.textsize(sField_Data_Capture_Title, font=theDataFont)[0] > iSizeMax_Title_Data: iSizeMax_Title_Data = theTempDraw.textsize(sField_Data_Capture_Title, font=theDataFont)[0]
-    if theTempDraw.textsize(sField_Data_Processing_Title, font=theDataFont)[0] > iSizeMax_Title_Data: iSizeMax_Title_Data = theTempDraw.textsize(sField_Data_Processing_Title, font=theDataFont)[0]
+    iSizeMax_Title_Data = theTempDraw.textsize(sField_Hardware_Title, font=theInfoDataFont)[0]
+    if theTempDraw.textsize(sField_Data_Capture_Title, font=theInfoDataFont)[0] > iSizeMax_Title_Data: iSizeMax_Title_Data = theTempDraw.textsize(sField_Data_Capture_Title, font=theInfoDataFont)[0]
+    if theTempDraw.textsize(sField_Data_Processing_Title, font=theInfoDataFont)[0] > iSizeMax_Title_Data: iSizeMax_Title_Data = theTempDraw.textsize(sField_Data_Processing_Title, font=theInfoDataFont)[0]
     
     iField_Hardware_Title_X        = iFinalPictureMarginWidth
     iField_Hardware_Title_Y        = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
     iField_Hardware_1_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
     iField_Hardware_1_Y            = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
     iField_Hardware_2_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
-    iField_Hardware_2_Y            = iField_Hardware_1_Y + theTempDraw.textsize(sField_Hardware_1, font=theDataFont)[1] + iDataTextInterligne
+    iField_Hardware_2_Y            = iField_Hardware_1_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Hardware_3_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
-    iField_Hardware_3_Y            = iField_Hardware_2_Y + theTempDraw.textsize(sField_Hardware_2, font=theDataFont)[1] + iDataTextInterligne
+    iField_Hardware_3_Y            = iField_Hardware_2_Y + theTempDraw.textsize(sField_Hardware_2, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Data_Capture_Title_X    = iFinalPictureMarginWidth
-    iField_Data_Capture_Title_Y    = iField_Hardware_3_Y + theTempDraw.textsize(sField_Hardware_3, font=theDataFont)[1] + iDataTextInterligne
+    iField_Data_Capture_Title_Y    = iField_Hardware_3_Y + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Data_Capture_X          = iSizeMax_Title_Data + iFinalPictureMarginWidth
-    iField_Data_Capture_Y          = iField_Hardware_3_Y + theTempDraw.textsize(sField_Hardware_3, font=theDataFont)[1] + iDataTextInterligne
+    iField_Data_Capture_Y          = iField_Hardware_3_Y + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Data_Processing_Title_X = iFinalPictureMarginWidth
-    iField_Data_Processing_Title_Y = iField_Data_Capture_Y + theTempDraw.textsize(sField_Data_Capture, font=theDataFont)[1] + iDataTextInterligne
+    iField_Data_Processing_Title_Y = iField_Data_Capture_Y + theTempDraw.textsize(sField_Data_Capture, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Data_Processing_X       = iSizeMax_Title_Data + iFinalPictureMarginWidth
-    iField_Data_Processing_Y       = iField_Data_Capture_Y + theTempDraw.textsize(sField_Data_Capture, font=theDataFont)[1] + iDataTextInterligne
+    iField_Data_Processing_Y       = iField_Data_Capture_Y + theTempDraw.textsize(sField_Data_Capture, font=theInfoDataFont)[1] + iDataTextInterligne
 
     # Display psitions and sizes
     print ""
@@ -712,39 +715,40 @@ else:
         theFinalImg.paste(imgMinimap, (iMinimapPositionX, iMinimapPositionY))
     
     # Display fields
-    theFinalDraw.text((iField_Date_X,      iField_Date_Y),      sField_Date,      theColorDataText, font=theDataFont)
-    theFinalDraw.text((iField_Location_X,  iField_Location_Y),  sField_Location,  theColorDataText, font=theDataFont)
-    theFinalDraw.text((iField_MoonEphem_X, iField_MoonEphem_Y), sField_MoonEphem, theColorDataText, font=theDataFont)
+    theFinalDraw.text((iField_Date_X,      iField_Date_Y),      sField_Date,      theColorDataText, font=theGeoDataFont)
+    theFinalDraw.text((iField_Location_X,  iField_Location_Y),  sField_Location,  theColorDataText, font=theGeoDataFont)
+    theFinalDraw.text((iField_MoonEphem_X, iField_MoonEphem_Y), sField_MoonEphem, theColorDataText, font=theGeoDataFont)
     
     theFinalDraw.text((iField_Title_X,     iField_Title_Y),     sField_Title,     theColorTitle,    font=theTitleFont)
     theFinalDraw.text((iField_SubTitle1_X, iField_SubTitle1_Y), sField_SubTitle1, theColorSubTitle, font=theSubTitleFont)
     theFinalDraw.text((iField_SubTitle2_X, iField_SubTitle2_Y), sField_SubTitle2, theColorSubTitle, font=theSubTitleFont)
     theFinalDraw.text((iField_SubTitle3_X, iField_SubTitle3_Y), sField_SubTitle3, theColorSubTitle, font=theSubTitleFont)
     
-    theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), sField_Object_Data_1, theColorDataText, font=theDataFont)
-    if sField_Object_Data_1 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), dicInputValues["Info_MoonFeature0_Name"], theColorDataTitle, font=theDataFont)
-    theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), sField_Object_Data_2, theColorDataText, font=theDataFont)
-    if sField_Object_Data_2 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), dicInputValues["Info_MoonFeature1_Name"], theColorDataTitle, font=theDataFont)
-    theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), sField_Object_Data_3, theColorDataText, font=theDataFont)
-    if sField_Object_Data_3 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), dicInputValues["Info_MoonFeature2_Name"], theColorDataTitle, font=theDataFont)
-    theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), sField_Object_Data_4, theColorDataText, font=theDataFont)
-    if sField_Object_Data_4 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), dicInputValues["Info_MoonFeature3_Name"], theColorDataTitle, font=theDataFont)
-    theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), sField_Object_Data_5, theColorDataText, font=theDataFont)
-    if sField_Object_Data_5 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), dicInputValues["Info_MoonFeature4_Name"], theColorDataTitle, font=theDataFont)
-    theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), sField_Object_Data_6, theColorDataText, font=theDataFont)
-    if sField_Object_Data_6 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), dicInputValues["Info_MoonFeature5_Name"], theColorDataTitle, font=theDataFont)
+    theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), sField_Object_Data_1, theColorDataText, font=theInfoDataFont)
+    if sField_Object_Data_1 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), dicInputValues["Info_MoonFeature0_Name"], theColorDataTitle, font=theInfoDataFont)
+    theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), sField_Object_Data_2, theColorDataText, font=theInfoDataFont)
+    if sField_Object_Data_2 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), dicInputValues["Info_MoonFeature1_Name"], theColorDataTitle, font=theInfoDataFont)
+    theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), sField_Object_Data_3, theColorDataText, font=theInfoDataFont)
+    if sField_Object_Data_3 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), dicInputValues["Info_MoonFeature2_Name"], theColorDataTitle, font=theInfoDataFont)
+    theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), sField_Object_Data_4, theColorDataText, font=theInfoDataFont)
+    if sField_Object_Data_4 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), dicInputValues["Info_MoonFeature3_Name"], theColorDataTitle, font=theInfoDataFont)
+    theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), sField_Object_Data_5, theColorDataText, font=theInfoDataFont)
+    if sField_Object_Data_5 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), dicInputValues["Info_MoonFeature4_Name"], theColorDataTitle, font=theInfoDataFont)
+    theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), sField_Object_Data_6, theColorDataText, font=theInfoDataFont)
+    if sField_Object_Data_6 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), dicInputValues["Info_MoonFeature5_Name"], theColorDataTitle, font=theInfoDataFont)
     
-    theFinalDraw.text((iField_Hardware_1_X, iField_Hardware_1_Y), sField_Hardware_1, theColorDataText,  font=theDataFont)
-    theFinalDraw.text((iField_Hardware_Title_X, iField_Hardware_Title_Y), sField_Hardware_Title, theColorDataTitle, font=theDataFont)
-    if sField_Hardware_2 != "": theFinalDraw.text((iField_Hardware_2_X, iField_Hardware_2_Y), sField_Hardware_2, theColorDataText,  font=theDataFont)
-    if sField_Hardware_3 != "": theFinalDraw.text((iField_Hardware_3_X, iField_Hardware_3_Y), sField_Hardware_3, theColorDataText,  font=theDataFont)
-    theFinalDraw.text((iField_Data_Capture_X, iField_Data_Capture_Y), sField_Data_Capture, theColorDataText,  font=theDataFont)
-    theFinalDraw.text((iField_Data_Capture_Title_X, iField_Data_Capture_Title_Y), sField_Data_Capture_Title, theColorDataTitle, font=theDataFont)
-    theFinalDraw.text((iField_Data_Processing_X, iField_Data_Processing_Y), sField_Data_Processing, theColorDataText,  font=theDataFont)
-    theFinalDraw.text((iField_Data_Processing_Title_X, iField_Data_Processing_Title_Y), sField_Data_Processing_Title, theColorDataTitle, font=theDataFont)
+    theFinalDraw.text((iField_Hardware_1_X, iField_Hardware_1_Y), sField_Hardware_1, theColorDataText,  font=theInfoDataFont)
+    theFinalDraw.text((iField_Hardware_Title_X, iField_Hardware_Title_Y), sField_Hardware_Title, theColorDataTitle, font=theInfoDataFont)
+    if sField_Hardware_2 != "": theFinalDraw.text((iField_Hardware_2_X, iField_Hardware_2_Y), sField_Hardware_2, theColorDataText,  font=theInfoDataFont)
+    if sField_Hardware_3 != "": theFinalDraw.text((iField_Hardware_3_X, iField_Hardware_3_Y), sField_Hardware_3, theColorDataText,  font=theInfoDataFont)
+    theFinalDraw.text((iField_Data_Capture_X, iField_Data_Capture_Y), sField_Data_Capture, theColorDataText,  font=theInfoDataFont)
+    theFinalDraw.text((iField_Data_Capture_Title_X, iField_Data_Capture_Title_Y), sField_Data_Capture_Title, theColorDataTitle, font=theInfoDataFont)
+    theFinalDraw.text((iField_Data_Processing_X, iField_Data_Processing_Y), sField_Data_Processing, theColorDataText,  font=theInfoDataFont)
+    theFinalDraw.text((iField_Data_Processing_Title_X, iField_Data_Processing_Title_Y), sField_Data_Processing_Title, theColorDataTitle, font=theInfoDataFont)
     
     # Draw border around the picture
-    theFinalDraw.rectangle((iPictureFramePositionX, iPictureFramePositionY, iPictureFramePositionX + iMarginPicture * 2 + iBorderSize + iPictureWidth , iPictureFramePositionY + iMarginPicture * 2 + iBorderSize + iPictureHeight ), outline=(255, 255, 255, 255), fill=(0, 0, 0, 255))
+    theFinalDraw.rectangle((iPictureFramePositionX, iPictureFramePositionY, iPictureFramePositionX + iMarginPicture * 2 + iBorderSize + iPictureWidth , iPictureFramePositionY + iMarginPicture * 2 + iBorderSize + iPictureHeight ), outline=theColorSignature, fill=(0, 0, 0, 255))
+    theFinalDraw.rectangle((iField_Signature_X - 10, iField_Signature_Y - theTempDraw.textsize(sField_Signature, font=theSignatureFont)[1] , iField_Signature_X + theTempDraw.textsize(sField_Signature, font=theSignatureFont)[0], iField_Signature_Y + theTempDraw.textsize(sField_Signature, font=theSignatureFont)[1] ), outline=(0, 0, 0, 255), fill=(0, 0, 0, 255))
     
     # paste picture             
     theFinalImg.paste(imgPicture, (iPicturePositionX + iPictureWidthAdjustBorder, iPicturePositionY ))
