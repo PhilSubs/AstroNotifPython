@@ -156,7 +156,7 @@ def addInfoToString(sInfoToBeAdded, sLabel, sUnit,  sInitialString, sSeparator):
     return sReturnValue
         
 def getOccurrencesInStringList(sStringList, sSearchString):
-    arrList = sStringList.split(",")
+    arrList = sStringList.split("|")
     iNbOccMatch = 0
     iNbOccExactMatch = 0
     for i in range(0, len(arrList)):
@@ -176,104 +176,116 @@ def getOccurrencesInStringList(sStringList, sSearchString):
         sReturnValue = sReturnValueMatch
         iReturnOcc = iNbOccMatch
     return iReturnOcc, sReturnValue
+
+def getInputValue(sType, sPrompt, aParam1, aParam2):
+    # sType: Parameter         aParam1: key from parameter.json   aParam2: override default value
+    #                                   (ex.: Hardware/Instrument/Scope)
+    #        filename          aParam1: is mandatory (bool)       aParam2: default extension
+    #        DateAAAA-MM-JJ    aParam1: is mandatory (bool)       aParam2:  
+    #        TimeHH:MM         aParam1: is mandatory (bool)       aParam2:  
+    #        String            aParam1: is mandatory (bool)       aParam2:  
+    #        StringFromList    aParam1: is mandatory (bool)       aParam2: possible value list (| delim)
+    bIsMandatory = False
+    theInputValue = None
+    theDefaultValue = None
     
-def requestValue(sType, sPrompt, sDefaultValue, bIsMandatory, sPossibleValuesList):
-    # compute prompt
-    sPromptDisplayed = (sPrompt + "...................................................................")[:60]
-    if not sPossibleValuesList is None:
-        sPromptDisplayed = sPromptDisplayed + " [" + sPossibleValuesList + "] "
-    if not bIsMandatory and not sDefaultValue is None:
-        sPromptDisplayed = sPromptDisplayed + " (/ si aucun)"
-    if not sDefaultValue is None:
-        sPromptDisplayed = sPromptDisplayed + "  --> " + sDefaultValue + " ?"
-    sPromptDisplayed = sPromptDisplayed + "   "
-    # loop until valid answer
+    sPromptDisplayed = (sPrompt + "...................................................................")[:45]
+    if sType == "Parameter":
+        # read parameters
+        with open("parameters.json", 'r') as fp:
+            dicParameters = json.load(fp)
+        # Compute prompt
+        sKey = aParam1
+        theListItem = eval('dicParameters["' + sKey.replace("/", '"]["') + '"]')
+        bIsMandatory = (theListItem["values"][0] != "")
+        theDefaultValue = theListItem["default"]
+        if not aParam2 is None: theDefaultValue = aParam2
+        if bIsMandatory:
+            sPromptDisplayed = sPromptDisplayed + ("  [" + " / ".join(theListItem["values"]) + "]")
+        else:
+            if theDefaultValue != "":
+                sPromptDisplayed = sPromptDisplayed + ("  [" + " / ".join(theListItem["values"]) + "]").replace("[ / ", "[ - / ")
+            else:
+                sPromptDisplayed = sPromptDisplayed + ("  [" + " / ".join(theListItem["values"]) + "]").replace("[ / ", "[")
+        if theDefaultValue != "": sPromptDisplayed = sPromptDisplayed + "  --> " + theDefaultValue
+    elif sType == "DateAAAA-MM-JJ":
+        sPromptDisplayed = sPromptDisplayed + "[AAAA-MM-JJ]"
+        bIsMandatory = aParam1
+    elif sType == "TimeHH:MM":
+        sPromptDisplayed = sPromptDisplayed + "[HH:MM]"
+        bIsMandatory = aParam1
+    elif sType == "StringFromList":
+        sPromptDisplayed = sPromptDisplayed + "[" + aParam2.replace("|", " / ") + "]"
+        bIsMandatory = aParam1
+    else:
+        bIsMandatory = aParam1
+
+
     bAnswerIsValid = False
     while not bAnswerIsValid:
-        sValue = raw_input(sPromptDisplayed)
-        if sValue == "" and not sDefaultValue is None: sValue = sDefaultValue  # empty answer are replaced with default value
-        if sValue == "/": sValue = ""                                          # n/a is replaced with empty answer
-        if sValue == "":
-            if bIsMandatory:
-                bAnswerIsValid = False
-                print "  ERREUR: cette donnée est obigatoire !"
+        theInputValue = raw_input(sPromptDisplayed + "  ")
+
+        # Handle default value and - value
+        if sType == "Parameter":
+            if theDefaultValue != "":
+                if theInputValue == "": theInputValue = theDefaultValue
+                if not bIsMandatory and theInputValue == "-": theInputValue = ""
+        
+        # check validity
+        if not bIsMandatory and theInputValue == "":
+             bAnswerIsValid = True
+        elif sType == "Parameter":
+            sPossibleValuesList = "|".join(theListItem["values"])
+            if sPossibleValuesList[0:1] == "|": sPossibleValuesList = sPossibleValuesList[1:]
+            iNbOcc, sValueSelected = getOccurrencesInStringList(sPossibleValuesList, theInputValue)
+            if iNbOcc == 1:
+                theInputValue = sValueSelected
+                bAnswerIsValid = True
             else:
+                bAnswerIsValid = False
+                print "  ERREUR: la valeur doit etre dans la liste:  " + " / ".join(theListItem["values"]) + " !"
+        elif sType == "Filename":
+            if not aParam2 is None:
+                if not aParam2.lower() in theInputValue.lower(): theInputValue = theInputValue + aParam2
+            if os.path.isfile(theInputValue):
                 bAnswerIsValid = True
-        else:
-            # Checks
-            if sType == "Filename":
-                if not sPossibleValuesList is None:
-                    if not sPossibleValuesList.lower() in sValue.lower(): sValue = sValue + sPossibleValuesList
-                if os.path.isfile(sValue):
-                    bAnswerIsValid = True
+            else:
+                bAnswerIsValid = False
+                print "  ERREUR: le fichier  '" + theInputValue + "'  est introuvable !"
+        elif sType == "DateAAAA-MM-JJ":
+            try:
+                aDate = datetime.datetime(int(theInputValue[0:4]), int(theInputValue[5:7]), int(theInputValue[8:]), 0, 0, 0)
+                if theInputValue[4:5] != "-" or theInputValue[7:8] != "-":
+                    bAnswerIsValid = False
                 else:
-                    bAnswerIsValid = False
-                    print "  ERREUR: le fichier  '" + sValue + "'  est introuvable !"
-            elif sType == "StringFromList":
-                iNbOcc, sValueSelected = getOccurrencesInStringList(sPossibleValuesList, sValue)
-                if iNbOcc == 1:
-                    sValue = sValueSelected
                     bAnswerIsValid = True
+            except:
+                bAnswerIsValid = False
+        elif sType == "TimeHH:MM":
+            try:
+                iHour = int(theInputValue[0:2])
+                iMinute = int(theInputValue[4:6])
+                if theInputValue[2:3] != ":" or iHour < 0 or iHour > 23:
+                    bAnswerIsValid = False
                 else:
-                    bAnswerIsValid = False
-                    print "  ERREUR: la valeur doit être dans la liste:  " + sPossibleValuesList + " !"
-            elif sType == "DateAAAA-MM-JJ":
-                try:
-                    aDate = datetime.datetime(int(sValue[0:4]), int(sValue[5:7]), int(sValue[8:]), 0, 0, 0)
-                    if sValue[4:5] != "-" or sValue[7:8] != "-":
-                        bAnswerIsValid = False
-                    else:
-                        bAnswerIsValid = True
-                except:
-                    bAnswerIsValid = False
-            elif sType == "TimeHH:MM":
-                try:
-                    iHour = int(sValue[0:2])
-                    iMinute = int(sValue[4:6])
-                    if sValue[2:3] != ":" or iHour < 0 or iHour > 23:
-                        bAnswerIsValid = False
-                    else:
-                        bAnswerIsValid = True
-                except:
-                    bAnswerIsValid = False
-            elif sType == "String":
+                    bAnswerIsValid = True
+            except:
+                bAnswerIsValid = False
+        elif sType == "String":
+            bAnswerIsValid = True
+        elif sType == "StringFromList":
+            iNbOcc, sValueSelected = getOccurrencesInStringList(aParam2, theInputValue)
+            if iNbOcc == 1:
+                theInputValue = sValueSelected
                 bAnswerIsValid = True
-                    
-    return sValue
+            else:
+                bAnswerIsValid = False
+                print "  ERREUR: la valeur doit être dans la liste:  " + aParam2.replace("|", " / ") + " !"
 
-    
-# Value lists    
-LIST_OPTIC = 'Celestron SCT 11" 280/2800,EF70-300mm f/4-5.6L IS USM'
-LIST_MOUNT = '/,CGEM'
-LIST_YESNO = "Y,N"
-LIST_ADC = "/,ASI ADC"
-LIST_BARLOW = "/,Powermate x2,Powermate x2.5"
-LIST_REDUCER = "/,Celestron Reducer x0.67"
-LIST_CAMERA = "ASI 224MC,ASI 178MM,ASI 120MM,CANON EOS 450D"
-LIST_FILTER = "IR6,IR7,IR8,RG610,#23A,#25,UV/IR Cut,UHC,OIII"
-LIST_CAPTURE_SOFTWARE = "Firecapture,Sharpcap"
-LIST_CAPTURE_BIN = "Bin x1,Bin x2"
-LIST_CAPTURE_BITS = "8,16"
-LIST_PREPROCESSING_SOFTWARE = "PIPP"
-LIST_PROCESSING_STACKING_SOFTWARE = "Autostakkert!2,Autostakkert!3,Deep Sky Staker,SIRIL"
-LIST_PROCESSING_SOFTWARE = "Registax6,Deep Sky Staker,Siril"
-LIST_PROCESSING_RENDERING_SOFTWARE = "Photoshop,Lightroom"
+    if theInputValue != "": print "   --> " + theInputValue
+    return theInputValue
 
-DEFAULT_YES = "Y"
-DEFAULT_NO = "N"
-DEFAULT_LOCATION = "Plascassier (06), France"
-DEFAULT_MOUNT = 'CGEM'
-DEFAULT_OPTIC = 'Celestron SCT 11" 280/2800'
-DEFAULT_ADC = "ASI ADC"
-DEFAULT_BARLOW = "Powermate x2"
-DEFAULT_REDUCER = "Celestron Reducer x0.67"
-DEFAULT_UVFILTER = "UV/IR Cut"
-DEFAULT_CAPTURE_SOFTWARE = "Firecapture"
-DEFAULT_CAPTURE_BIN = "Bin x1"
-DEFAULT_CAPTURE_BITS = "8"
-DEFAULT_PROCESSING_STACKING_SOFTWARE = "Autostakkert!3"
-DEFAULT_PROCESSING_SOFTWARE = "Registax6"
-DEFAULT_PROCESSING_RENDERING_SOFTWARE = "Photoshop"
+     
 
 # Constants
 iFinalPictureMarginWidth = 20 # Margin for the final picture         
@@ -292,10 +304,9 @@ DATA_TITLE_CAPTURE = "CAPTURE  "
 DATA_TITLE_PROCESSING = "TRAITEMENT  "
 
 
-
 print ""
 print ""
-sJsonFilename = requestValue("Filename", "Name of PJSON parameters file to use ", None, False, ".json")
+sJsonFilename = getInputValue("Filename", "Name of PJSON parameters file to use", False, ".json")
 if sJsonFilename != "":
     with open(sJsonFilename, 'r') as fp:
         dicInputValues = json.load(fp)
@@ -305,94 +316,94 @@ else:
     print ""
     print "Pictures"
     print "--------"
-    dicInputValues["Bitmap_MinimapFileName"] = requestValue("Filename", "Name of PNG file for minimap (128x128) ", "minimap.png", False, ".png")
-    dicInputValues["Bitmap_PictureFileName"] = requestValue("Filename", "Name of PNG file for picture ", None, True, ".png")
+    dicInputValues["Bitmap_MinimapFileName"] = getInputValue("Filename", "Name of PNG file for minimap (128x128) ", False, ".png")
+    dicInputValues["Bitmap_PictureFileName"] = getInputValue("Filename", "Name of PNG file for picture ", True, ".png")
     print ""
     print "Subject"
     print "-------"
-    dicInputValues["Subject_Type"]  = (requestValue("StringFromList", "Object type: Moon, Planet, Deep Sky ", None, True, "M,P,DS")).upper()
-    dicInputValues["Subject_Title"] = requestValue("String", "Title ", None, True, None)
+    dicInputValues["Subject_Type"]  = (getInputValue("StringFromList", "Object type: Moon, Planet, Deep Sky ", True, "M|P|DS")).upper()
+    dicInputValues["Subject_Title"] = getInputValue("String", "Title ", True, None)
     if dicInputValues["Subject_Type"] == "M":  dicInputValues["Subject_Type"] = "Moon"
     if dicInputValues["Subject_Type"] == "P":  dicInputValues["Subject_Type"] = "Planet"
     if dicInputValues["Subject_Type"] == "DS": dicInputValues["Subject_Type"] = "Deep Sky"
     if dicInputValues["Subject_Type"] == "Moon":
-        dicInputValues["Info_MoonAge"]          = requestValue("String", "Moon Age ", None, False, None) 
-        dicInputValues["Info_MoonIllumination"] = requestValue("String", "Moon Illumination (%) ", None, False, None) 
-        dicInputValues["Info_MoonColongitude"]  = requestValue("String", "Moon Colongitude (deg) ", None, False, None) 
+        dicInputValues["Info_MoonAge"]          = getInputValue("String", "Moon Age ", False, None) 
+        dicInputValues["Info_MoonIllumination"] = getInputValue("String", "Moon Illumination (%) ", False, None) 
+        dicInputValues["Info_MoonColongitude"]  = getInputValue("String", "Moon Colongitude (deg) ", False, None) 
         bAllFeaturesFilled = False
         for i in range(0,6):
             sFeatureID = str(i).strip()
             dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"] = ""
             if not bAllFeaturesFilled:
-                dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"] = requestValue("String", "    Feature " + sFeatureID + " Name ", None, False, None)
+                dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"] = getInputValue("String", "    Feature " + sFeatureID + " Name ", False, None)
                 if dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"] != "":
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Diameter"] = requestValue("String", "        Diameter (+ unit) ", None, False, None)
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Height"]   = requestValue("String", "        Height (+ unit) ", None, False, None)
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Length"]   = requestValue("String", "        Length  (+ unit)", None, False, None)
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Width"]    = requestValue("String", "        Width (+ unit) ", None, False, None)
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Depth"]    = requestValue("String", "        Depth (+ unit) ", None, False, None)
+                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Diameter"] = getInputValue("String", "        Diameter (+ unit) ", False, None)
+                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Height"]   = getInputValue("String", "        Height (+ unit) ", False, None)
+                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Length"]   = getInputValue("String", "        Length  (+ unit)", False, None)
+                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Width"]    = getInputValue("String", "        Width (+ unit) ", False, None)
+                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Depth"]    = getInputValue("String", "        Depth (+ unit) ", False, None)
                 else:
                     bAllFeaturesFilled = True
-        dicInputValues["Info_Additional"] = requestValue("String", "Additional comment ", None, False, None)
+        dicInputValues["Info_Additional"] = getInputValue("String", "Additional comment ", False, None)
     elif dicInputValues["Subject_Type"] == "Planet":
-        dicInputValues["Info_Planet_Diameter"]    = requestValue("String", "Planet Diameter (sec) ", None, False, None) 
-        dicInputValues["Info_Planet_Altitude"]    = requestValue("String", "Planet Altitude (deg) ", None, False, None) 
-        dicInputValues["Info_Planet_Magnitude"]   = requestValue("String", "Planet Magnitude ", None, False, None) 
-        dicInputValues["Info_Planet_CMI"]         = requestValue("String", "Planet CMI (deg) ", None, False, None) 
-        dicInputValues["Info_Planet_CMII"]        = requestValue("String", "Planet CMII (deg) ", None, False, None) 
-        dicInputValues["Info_Planet_CMIII"]       = requestValue("String", "Planet CMIII (deg) ", None, False, None) 
-        dicInputValues["Info_Planet_FocalLength"] = requestValue("String", "Planet Focal Length (mm) ", None, False, None) 
-        dicInputValues["Info_Planet_FocalRatio"]  = requestValue("String", "Planet Focal Ratio (F/..) ", None, False, None) 
-        dicInputValues["Info_Planet_Resolution"]  = requestValue("String", "Planet Resolution (sec) ", None, False, None) 
+        dicInputValues["Info_Planet_Diameter"]    = getInputValue("String", "Planet Diameter (sec) ", False, None) 
+        dicInputValues["Info_Planet_Altitude"]    = getInputValue("String", "Planet Altitude (deg) ", False, None) 
+        dicInputValues["Info_Planet_Magnitude"]   = getInputValue("String", "Planet Magnitude ", False, None) 
+        dicInputValues["Info_Planet_CMI"]         = getInputValue("String", "Planet CMI (deg) ", False, None) 
+        dicInputValues["Info_Planet_CMII"]        = getInputValue("String", "Planet CMII (deg) ", False, None) 
+        dicInputValues["Info_Planet_CMIII"]       = getInputValue("String", "Planet CMIII (deg) ", False, None) 
+        dicInputValues["Info_Planet_FocalLength"] = getInputValue("String", "Planet Focal Length (mm) ", False, None) 
+        dicInputValues["Info_Planet_FocalRatio"]  = getInputValue("String", "Planet Focal Ratio (F/..) ", False, None) 
+        dicInputValues["Info_Planet_Resolution"]  = getInputValue("String", "Planet Resolution (sec) ", False, None) 
     elif dicInputValues["Subject_Type"] == "Deep Sky":
-        dicInputValues["Info_DeepSky_Type"]      = requestValue("String", "Object Type ", None, False, None) 
-        dicInputValues["Info_DeepSky_Distance"]  = requestValue("String", "Object Distance (+ unit) ", None, False, None) 
-        dicInputValues["Info_DeepSky_Diameter"]  = requestValue("String", "Object Diameter (+ unit) ", None, False, None) 
-        dicInputValues["Info_DeepSky_Magnitude"] = requestValue("String", "Object Magnitude ", None, False, None) 
+        dicInputValues["Info_DeepSky_Type"]      = getInputValue("String", "Object Type ", False, None) 
+        dicInputValues["Info_DeepSky_Distance"]  = getInputValue("String", "Object Distance (+ unit) ", False, None) 
+        dicInputValues["Info_DeepSky_Diameter"]  = getInputValue("String", "Object Diameter (+ unit) ", False, None) 
+        dicInputValues["Info_DeepSky_Magnitude"] = getInputValue("String", "Object Magnitude ", False, None) 
     print ""
     print "Time & Location"
     print "---------------"
-    dicInputValues["TimeLoc_Date"]     = requestValue("DateAAAA-MM-JJ", "Date       [AAAA-MM-JJ] ", None, True, None)
-    dicInputValues["TimeLoc_Time"]     = requestValue("TimeHH:MM",      "Time GMT   [HH:MM] ", None, True, None)
-    dicInputValues["TimeLoc_Location"] = requestValue("String",         "Location ", DEFAULT_LOCATION, True, None)
+    dicInputValues["TimeLoc_Date"]     = getInputValue("DateAAAA-MM-JJ", "Date       [AAAA-MM-JJ] ", True, None)
+    dicInputValues["TimeLoc_Time"]     = getInputValue("TimeHH:MM", "Time GMT   [HH:MM] ", True, None)
+    dicInputValues["TimeLoc_Location"] = getInputValue("Parameter", "Location ", "Other/Location", None)
     print ""
     print "Hardware"
     print "--------"
-    dicInputValues["Hardware_Optic"]   = requestValue("StringFromList", "Optical instrument ", DEFAULT_OPTIC, True, LIST_OPTIC)
-    dicInputValues["Hardware_Mount"]   = requestValue("String", "Mount ", DEFAULT_MOUNT, True, LIST_MOUNT)
-    dicInputValues["Hardware_ADC"]     = requestValue("StringFromList", "Accessory: ADC ?", DEFAULT_ADC, False, LIST_ADC)
-    dicInputValues["Hardware_Reducer"] = requestValue("StringFromList", "Accessory: Reducer ?", DEFAULT_REDUCER, False, LIST_REDUCER)
-    dicInputValues["Hardware_Barlow"]  = requestValue("StringFromList", "Accessory: Barlow ?", DEFAULT_BARLOW, False, LIST_BARLOW)
-    dicInputValues["Hardware_Camera"]  = (requestValue("StringFromList", "Camera ", None, True, LIST_CAMERA)).upper()
+    dicInputValues["Hardware_Optic"]   = getInputValue("Parameter", "Optical instrument ", "Hardware/Instrument/Scope", None)
+    dicInputValues["Hardware_Mount"]   = getInputValue("Parameter", "Mount ", "Hardware/Instrument/Mount", None)
+    dicInputValues["Hardware_ADC"]     = getInputValue("Parameter", "Accessory: ADC ?", "Hardware/Accessories/ADC", None)
+    dicInputValues["Hardware_Reducer"] = getInputValue("Parameter", "Accessory: Reducer ?", "Hardware/Accessories/Reducer", None)
+    dicInputValues["Hardware_Barlow"]  = getInputValue("Parameter", "Accessory: Barlow ?", "Hardware/Accessories/Barlow", None)
+    dicInputValues["Hardware_Camera"]  = getInputValue("Parameter", "Camera ", "Hardware/Camera", None)
     if dicInputValues["Hardware_Camera"] == "ASI 224MC":
-        dicInputValues["Hardware_Filter"]   = requestValue("StringFromList", "Filter ", DEFAULT_UVFILTER, False, LIST_FILTER)
+        dicInputValues["Hardware_Filter"]   = getInputValue("Parameter", "Filter ", "Hardware/Accessories/Filters", "IR/UV Cut")
     else:
-        dicInputValues["Hardware_Filter"]   = requestValue("StringFromList", "Filter ", None, False, LIST_FILTER)
+        dicInputValues["Hardware_Filter"]   = getInputValue("Parameter", "Filter ", "Hardware/Accessories/Filters", None)
     print ""
     print "Capture"
     print "-------"
-    dicInputValues["Capture_Software"]      = requestValue("StringFromList", "Capture software ", DEFAULT_CAPTURE_SOFTWARE, True, LIST_CAPTURE_SOFTWARE)
-    dicInputValues["Capture_Bin"]           = requestValue("StringFromList", "Bin setting ", DEFAULT_CAPTURE_BIN, True, LIST_CAPTURE_BIN)
-    dicInputValues["Capture_Gain"]          = requestValue("String", "Gain setting ", None, True, None)
-    dicInputValues["Capture_Bits"]          = requestValue("StringFromList", "Bits setting ", DEFAULT_CAPTURE_BITS, True, LIST_CAPTURE_BITS)
-    dicInputValues["Capture_Exposition"]    = requestValue("String", "Exposition (+ unit) ", None, True, None)
-    dicInputValues["Capture_Rate"]          = requestValue("String", "Frame rate (fps) ", None, False, None)
-    dicInputValues["Capture_TotalExposure"] = requestValue("String", "Total Exposure (+ unit) ", None, True, None)
+    dicInputValues["Capture_Software"]      = getInputValue("Parameter", "Capture software ", "Software/Capture", None)
+    dicInputValues["Capture_Bin"]           = getInputValue("Parameter", "Bin setting ", "CameraSettings/Bin", None)
+    dicInputValues["Capture_Gain"]          = getInputValue("String", "Gain setting ", True, None)
+    dicInputValues["Capture_Bits"]          = getInputValue("Parameter", "Bits setting ", "CameraSettings/Bits", None)
+    dicInputValues["Capture_Exposition"]    = getInputValue("String", "Exposition (+ unit) ", True, None)
+    dicInputValues["Capture_Rate"]          = getInputValue("String", "Frame rate (fps) ", False, None)
+    dicInputValues["Capture_TotalExposure"] = getInputValue("String", "Total Exposure (+ unit) ", True, None)
     print ""
     print "Processing"
     print "----------"
-    dicInputValues["Processing_Pre-processingSoftware"] = requestValue("StringFromList", "Pre-processing software ", None, False, LIST_PREPROCESSING_SOFTWARE)
-    dicInputValues["Processing_StackingSoftware"]       = requestValue("StringFromList", "Stacking software ", DEFAULT_PROCESSING_STACKING_SOFTWARE, False, LIST_PROCESSING_STACKING_SOFTWARE)
-    dicInputValues["Processing_ImagesProcessed"]        = requestValue("String", "# images processed (detailed captured, stacked, darks,...) ", None, True, None)
-    dicInputValues["Processing_ProcessingSoftware"]     = requestValue("StringFromList", "Processing software ", DEFAULT_PROCESSING_SOFTWARE, False, LIST_PROCESSING_SOFTWARE)
-    dicInputValues["Processing_RenderingSoftware"]      = requestValue("StringFromList", "Final rendering software ", DEFAULT_PROCESSING_RENDERING_SOFTWARE, False, LIST_PROCESSING_RENDERING_SOFTWARE)
-    dicInputValues["Processing_AdditionalInfo"]         = requestValue("String", "Additional info (resize,...) ", None, False, None)
+    dicInputValues["Processing_Pre-processingSoftware"] = getInputValue("Parameter", "Pre-processing software ", "Software/Pre-processing", None)
+    dicInputValues["Processing_StackingSoftware"]       = getInputValue("Parameter", "Stacking software ", "Software/Stacking", None)
+    dicInputValues["Processing_ImagesProcessed"]        = getInputValue("String", "# images processed (detailed captured, stacked, darks,...) ", True, None)
+    dicInputValues["Processing_ProcessingSoftware"]     = getInputValue("Parameter", "Processing software ", "Software/Processing", None)
+    dicInputValues["Processing_RenderingSoftware"]      = getInputValue("Parameter", "Final rendering software ", "Software/Rendering", None)
+    dicInputValues["Processing_AdditionalInfo"]         = getInputValue("String", "Additional info (resize,...) ", False, None)
 
 printDicInput(dicInputValues)
 
 print ""
-sOk = (requestValue("StringFromList", "Ok to proceed ? ", DEFAULT_NO, True, LIST_YESNO)).upper()
-if sOk == "N":
+sOk = getInputValue("Parameter", "Ok to proceed ? ", "CommonValues/YesNo", None)
+if sOk == "No":
     print ""
     print "Aborted."
     print ""
@@ -447,7 +458,6 @@ else:
         print ">>> Adjusted image width to 1000 instead of " + str(iPictureWidth) + " (border: " + str(iPictureWidthAdjustBorder) + ")"
         iPictureWidth = 1000
 
-    print "Picture size: " + str(iPictureWidth) + "x" + str(iPictureHeight)
     imgMinimap = None
     if dicInputValues["Bitmap_MinimapFileName"] != "":
         imgMinimap = Image.open(dicInputValues["Bitmap_MinimapFileName"])
@@ -557,26 +567,31 @@ else:
     print "FIELDS"
     print "------"
     print ""
-    print "sField_Date: " + sField_Date
-    print "sField_Location: " + sField_Location
-    print "sField_MoonEphem: " + sField_MoonEphem
-    print "sField_Title: " + sField_Title
-    print "sField_SubTitle1: " + sField_SubTitle1
-    print "sField_SubTitle2: " + sField_SubTitle2
-    print "sField_SubTitle3: " + sField_SubTitle3
-    print "sField_Hardware 1: " + sField_Hardware_1
-    print "sField_Hardware 2: " + sField_Hardware_2
-    print "sField_Hardware 3: " + sField_Hardware_3
-    print "sField_Data_Capture: " + sField_Data_Capture
-    print "sField_Data_Processing: " + sField_Data_Processing
-    print "sField_Object_Data_1: " + sField_Object_Data_1
-    print "sField_Object_Data_2: " + sField_Object_Data_2
-    print "sField_Object_Data_3: " + sField_Object_Data_3
-    print "sField_Object_Data_4: " + sField_Object_Data_4
-    print "sField_Object_Data_5: " + sField_Object_Data_5
-    print "sField_Object_Data_6: " + sField_Object_Data_6
+    print "sField_Date:              " + sField_Date
+    print "sField_Location:          " + sField_Location
+    print "sField_MoonEphem:         " + sField_MoonEphem
+    print ""
+    print "sField_Title:             " + sField_Title
+    print "sField_SubTitle1:         " + sField_SubTitle1
+    print "sField_SubTitle2:         " + sField_SubTitle2
+    print "sField_SubTitle3:         " + sField_SubTitle3
+    print ""
+    print "sField_Hardware 1:        " + (DATA_TITLE_TELESCOPE + "              ")[0:15] + sField_Hardware_1
+    print "sField_Hardware 2:        " + "               " + sField_Hardware_2
+    print "sField_Hardware 3:        " + "               " + sField_Hardware_3
+    print "sField_Data_Capture:      " + (DATA_TITLE_CAPTURE + "              ")[0:15] + sField_Data_Capture
+    print "sField_Data_Processing:   " + (DATA_TITLE_PROCESSING + "              ")[0:15] + sField_Data_Processing
+    print ""
+    print "sField_Object_Data_1:     " + sField_Object_Data_1
+    print "sField_Object_Data_2:     " + sField_Object_Data_2
+    print "sField_Object_Data_3:     " + sField_Object_Data_3
+    print "sField_Object_Data_4:     " + sField_Object_Data_4
+    print "sField_Object_Data_5:     " + sField_Object_Data_5
+    print "sField_Object_Data_6:     " + sField_Object_Data_6
     print ""
     print ""
+    
+    
     
     # compute objects size and position
     iTitleAndSubtitleHeight = theTempDraw.textsize(sField_Title, font=theTitleFont)[1] + iDataTextInterligne * 5  
@@ -595,8 +610,6 @@ else:
     if iTitleAndSubtitleHeight > iTopInfoHeight: iTopInfoHeight = iTitleAndSubtitleHeight
     if iMoonMinimapHeight > iTopInfoHeight: iTopInfoHeight = iMoonMinimapHeight
     
-    print "Top Info Height: " + str(iTopInfoHeight) + "   (Date/Location/Moon ephem: " + str(iDateLocationMoonEphemHeight) + ", Title/Subtitle: " + str(iTitleAndSubtitleHeight) + ", Minimap: " + str(iMoonMinimapHeight)
-    
     iObjectDataInfoHeight = theTempDraw.textsize(sField_Object_Data_1, font=theDataFont)[1] + iDataTextInterligne
     iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_2, font=theDataFont)[1] + iDataTextInterligne
     iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_3, font=theDataFont)[1] + iDataTextInterligne
@@ -612,13 +625,10 @@ else:
         iDataInfoHeight = iObjectDataInfoHeight
     else:
         iDataInfoHeight = iTechnicalDataInfoHeight
-    print "Data Info Height: " + str(iDataInfoHeight)
     iPictureWithBorderWidth  = iBorderSize + iMarginPicture + iPictureWidth  + iMarginPicture + iBorderSize
     iPictureWithBorderHeight = iBorderSize + iMarginPicture + iPictureHeight + iMarginPicture + iBorderSize
-    print "Picture With Border Width x Height: " + str(iPictureWithBorderWidth) + " x " + str(iPictureWithBorderHeight)
     iFinalImageWidth  = iFinalPictureMarginWidth + iPictureWithBorderWidth + iFinalPictureMarginWidth
     iFinalImageHeight = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture + iDataInfoHeight + iFinalPictureMarginWidth
-    print "Final Image Width x Height: " + str(iFinalImageWidth) + " x " + str(iFinalImageHeight)
     
     if not imgMinimap is None:
         iMinimapPositionX = iFinalImageWidth - iMinimapWidth - iFinalPictureMarginWidth
@@ -687,7 +697,6 @@ else:
     print ""
     print "Image final width: " + str(iFinalImageWidth) + " = " + str(iFinalPictureMarginWidth) + " (left margin) + " + str(iMarginPicture) + " (image border) + " + str(iPictureWidth) + " (image width) + " + str(iMarginPicture) + " (image border) + " + str(iFinalPictureMarginWidth) + " (right margin)"
     print "Image final height: " + str(iFinalImageHeight) + " = " + str(iFinalPictureMarginWidth) + " (top margin) + " + str(iTopInfoHeight) + " (Title/Subtitle/Minimap height) + " + str(iMarginTopPicture) + " (top image margin) + " + str(iMarginPicture) + " (image border) + " + str(iPictureHeight) + " (image height) + " + str(iMarginPicture) + " (image border) + " + str(iMarginBottomPicture) + " (bottom image margin) + " + str(iDataInfoHeight) + " (Data Info Height)"
-    print "Field Hardware Y: " + str(iField_Hardware_1_Y)
     print ""
     print ""
     
