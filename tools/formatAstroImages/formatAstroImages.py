@@ -750,7 +750,7 @@ else:
     theFinalDraw.rectangle((iPictureFramePositionX, iPictureFramePositionY, iPictureFramePositionX + iMarginPicture * 2 + iBorderSize + iPictureWidth , iPictureFramePositionY + iMarginPicture * 2 + iBorderSize + iPictureHeight ), outline=theColorSignature, fill=(0, 0, 0, 255))
     theFinalDraw.rectangle((iField_Signature_X - 10, iField_Signature_Y - theTempDraw.textsize(sField_Signature, font=theSignatureFont)[1] , iField_Signature_X + theTempDraw.textsize(sField_Signature, font=theSignatureFont)[0], iField_Signature_Y + theTempDraw.textsize(sField_Signature, font=theSignatureFont)[1] ), outline=(0, 0, 0, 255), fill=(0, 0, 0, 255))
     
-    # paste picture             
+    # paste picture
     theFinalImg.paste(imgPicture, (iPicturePositionX + iPictureWidthAdjustBorder, iPicturePositionY ))
         
     # Signature
@@ -758,6 +758,27 @@ else:
     theFinalDraw.text((iField_Signature_X - 1, iField_Signature_Y - 1), sField_Signature, theColorSignatureShadow, font=theSignatureFont)
     theFinalDraw.text((iField_Signature_X - 2, iField_Signature_Y - 2), sField_Signature, theColorSignature, font=theSignatureFont)
 
+    # Add miniature for Moon
+    if dicInputValues["Subject_Type"] == "Moon":
+        imgMiniature = Image.open(dicInputValues["Bitmap_PictureFileName"])
+        iMiniatureWidth, iMiniatureHeight = imgMiniature.size
+        fCoeff = float(iDataInfoHeight) / float(iMiniatureHeight)
+        iMiniatureWidth = int(float(iMiniatureWidth) * fCoeff)
+        iMiniatureHeight = int(float(iMiniatureHeight) * fCoeff)
+        sizeThumbnail = 50, 50
+        imgMiniature.thumbnail((iMiniatureWidth, iMiniatureHeight), Image.ANTIALIAS)
+        iMiniature_X = iField_Object_Data_1_X
+        if iField_Object_Data_2_X < iMiniature_X: iMiniature_X = iField_Object_Data_2_X
+        if iField_Object_Data_3_X < iMiniature_X: iMiniature_X = iField_Object_Data_3_X
+        if iField_Object_Data_4_X < iMiniature_X: iMiniature_X = iField_Object_Data_4_X
+        if iField_Object_Data_5_X < iMiniature_X: iMiniature_X = iField_Object_Data_5_X
+        if iField_Object_Data_6_X < iMiniature_X: iMiniature_X = iField_Object_Data_6_X
+        iMiniature_X = iMiniature_X - iMarginBottomPicture - iMiniatureWidth
+        iMiniature_Y = iField_Object_Data_1_Y
+        theFinalDraw.rectangle((iMiniature_X, iMiniature_Y, iMiniature_X + iMiniatureWidth + 1, iMiniature_Y + iMiniatureHeight), outline=theColorDataTitle, fill=(255, 0, 0, 255))
+        theFinalImg.paste(imgMiniature, (iMiniature_X + 1 , iMiniature_Y + 1 ))
+        
+    
     # Save image
     theFinalImg.save(sOutputFileName + ".png", "PNG")
     print ""
