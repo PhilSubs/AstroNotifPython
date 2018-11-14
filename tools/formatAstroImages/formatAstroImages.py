@@ -437,6 +437,13 @@ else:
         imgMinimap = Image.open(dicInputValues["Bitmap_MinimapFileName"])
         iMinimapWidth, iMinimapHeight = imgMinimap.size
         print "   --> Minimap size: " + str(iMinimapWidth) + " x " + str(iMinimapHeight)
+        if iMinimapHeight != 128:
+            # Resize to 128 pixel height maxi
+            fCoeff =  128.0 / float(iMinimapHeight)
+            iMinimapWidth = int(float(iMinimapWidth) * fCoeff)
+            iMinimapHeight = int(float(iMinimapHeight) * fCoeff)
+            imgMinimap.thumbnail((iMinimapWidth, iMinimapHeight), Image.ANTIALIAS)
+            print "   --> Minimap resized to: " + str(iMinimapWidth) + " x " + str(iMinimapHeight)
 
     # get picture size
     imgPicture = Image.open(dicInputValues["Bitmap_PictureFileName"])
@@ -465,8 +472,10 @@ else:
     theColorSignatureShadow = (32,32,32)
     
     # Set fonts
-    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", 14)
-    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", 12)
+#    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", 14)
+    theGeoDataFont   = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
+#    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", 12)
+    theInfoDataFont  = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
     theTitleFont     = ImageFont.truetype("georgia.ttf",          30)
     theSubTitleFont  = ImageFont.truetype("georgia.ttf",          16)
     theSignatureFont = ImageFont.truetype("Sugar Candy.ttf",      18)
@@ -476,8 +485,8 @@ else:
     sField_Date      = dicInputValues["TimeLoc_Date"][8:] + " " + ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'][int(dicInputValues["TimeLoc_Date"][5:7])-1] + " " + dicInputValues["TimeLoc_Date"][0:4] + "  " + dicInputValues["TimeLoc_Time"] + " GMT"
     sField_Location  = dicInputValues["TimeLoc_Location"]
     sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonAge"], "Lune: age ", "", "", "")
-    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonIllumination"], "ill. ", "%", sField_MoonEphem, " - ")
-    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonColongitude"], "col. ", "", sField_MoonEphem, " - ")
+    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonIllumination"], "illum. ", "%", sField_MoonEphem, " - ")
+    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonColongitude"], "colong. ", "", sField_MoonEphem, " - ")
     
     sField_Title     = dicInputValues["Subject_Title"]
     if dicInputValues["Subject_Type"] == "Moon":
@@ -485,41 +494,41 @@ else:
         sField_SubTitle2 = ""
         sField_SubTitle3 = ""
         sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Name"], "", "  ", "", "")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Diameter"], "Diametre ", "", sField_Object_Data_1, "   ")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Width"], "Largeur ", "", sField_Object_Data_1, "   ")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Length"], "Longueur ", "", sField_Object_Data_1, "   ")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Depth"], "Profondeur ", "", sField_Object_Data_1, "   ")
-        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Height"], "Hauteur ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Diameter"], "Diam. ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Width"], "Larg. ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Length"], "Long. ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Depth"], "Prof. ", "", sField_Object_Data_1, "   ")
+        sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Height"], "Haut. ", "", sField_Object_Data_1, "   ")
         sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Name"], "", "  ", "", "")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Diameter"], "Diametre ", "", sField_Object_Data_2, "   ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Width"], "Largeur ", "", sField_Object_Data_2, "   ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Length"], "Longueur ", "", sField_Object_Data_2, "   ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Depth"], "Profondeur ", "", sField_Object_Data_2, "   ")
-        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Height"], "Hauteur ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Diameter"], "Diam. ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Width"], "Larg. ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Length"], "Long. ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Depth"], "Prof. ", "", sField_Object_Data_2, "   ")
+        sField_Object_Data_2 = addInfoToString(dicInputValues["Info_MoonFeature1_Height"], "Haut. ", "", sField_Object_Data_2, "   ")
         sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Name"], "", "  ", "", "")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Diameter"], "Diametre ", "", sField_Object_Data_3, "   ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Width"], "Largeur ", "", sField_Object_Data_3, "   ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Length"], "Longueur ", "", sField_Object_Data_3, "   ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Depth"], "Profondeur ", "", sField_Object_Data_3, "   ")
-        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Height"], "Hauteur ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Diameter"], "Diam. ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Width"], "Larg. ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Length"], "Long. ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Depth"], "Prof. ", "", sField_Object_Data_3, "   ")
+        sField_Object_Data_3 = addInfoToString(dicInputValues["Info_MoonFeature2_Height"], "Haut. ", "", sField_Object_Data_3, "   ")
         sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Name"], "", "  ", "", "")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Diameter"], "Diametre ", "", sField_Object_Data_4, "   ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Width"], "Largeur ", "", sField_Object_Data_4, "   ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Length"], "Longueur ", "", sField_Object_Data_4, "   ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Depth"], "Profondeur ", "", sField_Object_Data_4, "   ")
-        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Height"], "Hauteur ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Diameter"], "Diam. ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Width"], "Larg. ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Length"], "Long. ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Depth"], "Prof. ", "", sField_Object_Data_4, "   ")
+        sField_Object_Data_4 = addInfoToString(dicInputValues["Info_MoonFeature3_Height"], "Haut. ", "", sField_Object_Data_4, "   ")
         sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Name"], "", "  ", "", "")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Diameter"], "Diametre ", "", sField_Object_Data_5, "   ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Width"], "Largeur ", "", sField_Object_Data_5, "   ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Length"], "Longueur ", "", sField_Object_Data_5, "   ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Depth"], "Profondeur ", "", sField_Object_Data_5, "   ")
-        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Height"], "Hauteur ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Diameter"], "Diam. ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Width"], "Larg. ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Length"], "Long. ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Depth"], "Prof. ", "", sField_Object_Data_5, "   ")
+        sField_Object_Data_5 = addInfoToString(dicInputValues["Info_MoonFeature4_Height"], "Haut. ", "", sField_Object_Data_5, "   ")
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Name"], "", "  ", "", "")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Diameter"], "Diametre ", "", sField_Object_Data_6, "   ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Width"], "Largeur ", "", sField_Object_Data_6, "   ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Length"], "Longueur ", "", sField_Object_Data_6, "   ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Depth"], "Profondeur ", "", sField_Object_Data_6, "   ")
-        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Height"], "Hauteur ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Diameter"], "Diam. ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Width"], "Larg. ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Length"], "Long. ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Depth"], "Prof. ", "", sField_Object_Data_6, "   ")
+        sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Height"], "Haut. ", "", sField_Object_Data_6, "   ")
     elif dicInputValues["Subject_Type"] == "Planet":
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Diameter"], "Diametre ", '"', "", "")
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Magnitude"], "Magnitude ", "", sField_SubTitle1, " - ")
@@ -761,7 +770,6 @@ else:
         fCoeff = float(iDataInfoHeight) / float(iMiniatureHeight)
         iMiniatureWidth = int(float(iMiniatureWidth) * fCoeff)
         iMiniatureHeight = int(float(iMiniatureHeight) * fCoeff)
-        sizeThumbnail = 50, 50
         imgMiniature.thumbnail((iMiniatureWidth, iMiniatureHeight), Image.ANTIALIAS)
         iMiniature_X = iField_Object_Data_1_X
         if iField_Object_Data_2_X < iMiniature_X: iMiniature_X = iField_Object_Data_2_X
