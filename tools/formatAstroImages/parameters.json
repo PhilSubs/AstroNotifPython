@@ -12,7 +12,7 @@
                     },
                     "Accessories":{
                                     "ADC":     {
-                                        "values": [ "", "ASI ADC" ],
+                                        "values": [ "", "ZWO ADC" ],
                                         "default": ""
                                     },
                                     "Barlow":  {
@@ -57,12 +57,12 @@
     },
     "CameraSettings": {
                     "Bin": {
-                        "values": [ "bin x1", "bin x2" ],
-                        "default": "bin x1"
+                        "values": [ "x1", "x2" ],
+                        "default": "x1"
                     },
                     "Bits": {
-                        "values": [ "8 bits", "16 bits" ],
-                        "default": "8 bits"
+                        "values": [ "8", "16" ],
+                        "default": "8"
                     }
     },
     "Other": {
