@@ -189,7 +189,7 @@ def getInputValue(sType, sPrompt, aParam1, aParam2):
     theInputValue = None
     theDefaultValue = None
     
-    sPromptDisplayed = (sPrompt + "...................................................................")[:45]
+    sPromptDisplayed = (sPrompt + "...................................................................")[:60]
     if sType == "Parameter":
         # read parameters
         with open("parameters.json", 'r') as fp:
@@ -285,32 +285,7 @@ def getInputValue(sType, sPrompt, aParam1, aParam2):
     if theInputValue != "": print "   --> " + theInputValue
     return theInputValue
 
-     
-
-# Constants
-iFinalPictureMarginWidth = 20 # Margin for the final picture         
-iMarginPicture = 5            # Margin around the picture, inside the border   
-iMarginTopPicture = 20        # Margin above the picture, below the title/subtitle 
-iMarginBottomPicture = 20     # Margin below the picture, above the logo and data 
-iBorderSize = 1               # Border around the picture
-iDataInfoHeight = 300         # height of data info display at the bottom    
-iPositionMinimapX = 200       # position of the minimap, from the right edge (+margin)    
-iPositionMinimapY = 100       # position of the minimap, from  the border around the picture (+ margin)   
-iDataTextInterligne = 3       # interline in pixel between data text lines
-iMarginSignature = 5          # Margin for signature related to inside border of picture
-
-DATA_TITLE_TELESCOPE = "MATERIEL  "
-DATA_TITLE_CAPTURE = "CAPTURE  "
-DATA_TITLE_PROCESSING = "TRAITEMENT  "
-
-
-print ""
-print ""
-sJsonFilename = getInputValue("Filename", "Name of PJSON parameters file to use", False, ".json")
-if sJsonFilename != "":
-    with open(sJsonFilename, 'r') as fp:
-        dicInputValues = json.load(fp)
-else:
+def readInputsFromKeyboard():
     dicInputValues = getEmptyDicInput() 
     print ""
     print ""
@@ -318,6 +293,7 @@ else:
     print "--------"
     dicInputValues["Bitmap_MinimapFileName"] = getInputValue("Filename", "Name of PNG file for minimap (128x128) ", False, ".png")
     dicInputValues["Bitmap_PictureFileName"] = getInputValue("Filename", "Name of PNG file for picture ", True, ".png")
+
     print ""
     print "Subject"
     print "-------"
@@ -399,8 +375,38 @@ else:
     dicInputValues["Processing_RenderingSoftware"]      = getInputValue("Parameter", "Final rendering software ", "Software/Rendering", None)
     dicInputValues["Processing_AdditionalInfo"]         = getInputValue("String", "Additional info (resize,...) ", False, None)
 
-printDicInput(dicInputValues)
+    return dicInputValues
 
+# Constants
+iFinalPictureMarginWidth = 20 # Margin for the final picture         
+iMarginPicture = 5            # Margin around the picture, inside the border   
+iMarginTopPicture = 20        # Margin above the picture, below the title/subtitle 
+iMarginBottomPicture = 20     # Margin below the picture, above the logo and data 
+iBorderSize = 1               # Border around the picture
+iDataInfoHeight = 300         # height of data info display at the bottom    
+iPositionMinimapX = 200       # position of the minimap, from the right edge (+margin)    
+iPositionMinimapY = 100       # position of the minimap, from  the border around the picture (+ margin)   
+iDataTextInterligne = 3       # interline in pixel between data text lines
+iMarginSignature = 5          # Margin for signature related to inside border of picture
+
+DATA_TITLE_TELESCOPE = "MATERIEL  "
+DATA_TITLE_CAPTURE = "CAPTURE  "
+DATA_TITLE_PROCESSING = "TRAITEMENT  "
+
+imgMinimap = None
+imgPicture = None
+
+# get inputs from Json file or from keyboard
+print ""
+print ""
+sJsonFilename = getInputValue("Filename", "Name of PJSON parameters file to use", False, ".json")
+if sJsonFilename != "":
+    with open(sJsonFilename, 'r') as fp:
+        dicInputValues = json.load(fp)
+else:
+    dicInputValues = readInputsFromKeyboard() 
+
+#Ready to process
 print ""
 sOk = getInputValue("Parameter", "Ok to proceed ? ", "CommonValues/YesNo", None)
 if sOk == "No":
@@ -415,7 +421,7 @@ else:
     # Compute output file name
     sOutputFileName = dicInputValues["Subject_Type"] + " - " + dicInputValues["TimeLoc_Date"].replace("-","") + dicInputValues["TimeLoc_Time"].replace(":","") + " - " + dicInputValues["Subject_Title"]
 
-    # Save parameters in JSON file
+    # Save parameters in JSON file if not a json file in input
     if sJsonFilename == "":
         with open(sOutputFileName + '.json', 'w') as fp:
             try:
@@ -425,36 +431,14 @@ else:
                 print ""
             print " --> created json file: " + sOutputFileName + ".json"
     
-    # create temporary bitmap (for computing text size)
-    theTempImg = Image.new( 'RGBA', (1920, 100), (0, 0, 0, 255))
-    theTempDraw = ImageDraw.Draw(theTempImg)
-    
-    # Font size
-    iFontSizeTitle        = 30
-    iFontSizeSubtitle     = 16
-    iFontSizeDataGeoText  = 14
-    iFontSizeDataInfoText = 12
-    iFontSizeSignature    = 18
-            
-    # Set colors
-    theColorTitle           = (255,255,255)
-    theColorSubTitle        = (164,164,164)
-    theColorDataText        = (96,96,96)
-    theColorDataTitle       = (176,176,176)
-    if dicInputValues["Subject_Type"] == "Moon":
-        theColorSignature       = (228,228,228,255)
-    else:
-        theColorSignature       = (128,128,128,255)
-    theColorSignatureShadow = (32,32,32)
-    
-    # Set fonts
-    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", iFontSizeDataGeoText)
-    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", iFontSizeDataInfoText)
-    theTitleFont     = ImageFont.truetype("georgia.ttf", iFontSizeTitle)
-    theSubTitleFont  = ImageFont.truetype("georgia.ttf", iFontSizeSubtitle)
-    theSignatureFont = ImageFont.truetype("Sugar Candy.ttf", iFontSizeSignature)
+    # get minimap size
+    print ""
+    if dicInputValues["Bitmap_MinimapFileName"] != "":
+        imgMinimap = Image.open(dicInputValues["Bitmap_MinimapFileName"])
+        iMinimapWidth, iMinimapHeight = imgMinimap.size
+        print "   --> Minimap size: " + str(iMinimapWidth) + " x " + str(iMinimapHeight)
 
-    # get pictures size
+    # get picture size
     imgPicture = Image.open(dicInputValues["Bitmap_PictureFileName"])
     iPictureWidth, iPictureHeight = imgPicture.size
     iPictureWidthAdjustBorder = 0
@@ -462,20 +446,39 @@ else:
 #        iPictureWidthAdjustBorder = (1000 - iPictureWidth) / 2
 #        print ">>> Adjusted image width to 1000 instead of " + str(iPictureWidth) + " (border: " + str(iPictureWidthAdjustBorder) + ")"
 #        iPictureWidth = 1000
+    print "   --> Picture size: " + str(iPictureWidth) + " x " + str(iPictureHeight)
+    print ""
 
-    imgMinimap = None
-    if dicInputValues["Bitmap_MinimapFileName"] != "":
-        imgMinimap = Image.open(dicInputValues["Bitmap_MinimapFileName"])
-        iMinimapWidth, iMinimapHeight = imgMinimap.size
-        print "Minimap size: " + str(iMinimapWidth) + "x" + str(iMinimapHeight)
+    # create temporary bitmap (for computing text size)
+    theTempImg = Image.new( 'RGBA', (1920, 100), (0, 0, 0, 255))
+    theTempDraw = ImageDraw.Draw(theTempImg)
+    
+    # Set colors
+    theColorTitle           = (255,255,255)
+    theColorSubTitle        = (164,164,164)
+    theColorDataText        = (96,96,96)
+    theColorDataTitle       = (176,176,176)
+    if dicInputValues["Subject_Type"] == "Moon":
+        theColorSignature       = (228,228,228,255) # if moon. border and signature moe bright
+    else:
+        theColorSignature       = (128,128,128,255)
+    theColorSignatureShadow = (32,32,32)
+    
+    # Set fonts
+    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", 14)
+    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", 12)
+    theTitleFont     = ImageFont.truetype("georgia.ttf",          30)
+    theSubTitleFont  = ImageFont.truetype("georgia.ttf",          16)
+    theSignatureFont = ImageFont.truetype("Sugar Candy.ttf",      18)
 
     # Compute fields to be displayed
     sField_Signature = "PhilippeLarosa"
     sField_Date      = dicInputValues["TimeLoc_Date"][8:] + " " + ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'][int(dicInputValues["TimeLoc_Date"][5:7])-1] + " " + dicInputValues["TimeLoc_Date"][0:4] + "  " + dicInputValues["TimeLoc_Time"] + " GMT"
     sField_Location  = dicInputValues["TimeLoc_Location"]
     sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonAge"], "Lune: age ", "", "", "")
-    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonIllumination"], "illum. ", "%", sField_MoonEphem, " - ")
-    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonColongitude"], "colong. ", " deg", sField_MoonEphem, " - ")
+    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonIllumination"], "ill. ", "%", sField_MoonEphem, " - ")
+    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonColongitude"], "col. ", "", sField_MoonEphem, " - ")
+    
     sField_Title     = dicInputValues["Subject_Title"]
     if dicInputValues["Subject_Type"] == "Moon":
         sField_SubTitle1 = ""
@@ -543,6 +546,7 @@ else:
         sField_Object_Data_4 = ""
         sField_Object_Data_5 = ""
         sField_Object_Data_6 = ""
+        
     sField_Hardware_Title = DATA_TITLE_TELESCOPE
     sField_Hardware_1 = addInfoToString(dicInputValues["Hardware_Optic"], "", "", "", "")
     sField_Hardware_1 = addInfoToString(dicInputValues["Hardware_Mount"], "", "", sField_Hardware_1, " - ")
@@ -553,7 +557,7 @@ else:
     sField_Hardware_3 = addInfoToString(dicInputValues["Hardware_Camera"], "Camera ", "", "", "")
     sField_Data_Capture_Title = DATA_TITLE_CAPTURE
     sField_Data_Capture = addInfoToString(dicInputValues["Capture_Software"], "", "", "", "")
-    sField_Data_Capture = addInfoToString(dicInputValues["Capture_Bin"], "", "", sField_Data_Capture, " - ")
+    sField_Data_Capture = addInfoToString(dicInputValues["Capture_Bin"], "bin ", "", sField_Data_Capture, " - ")
     sField_Data_Capture = addInfoToString(dicInputValues["Capture_Bits"], "", " bits", sField_Data_Capture, " / ")
     sField_Data_Capture = addInfoToString(dicInputValues["Capture_Gain"], "Gain ", "", sField_Data_Capture, " / ")
     sField_Data_Capture = addInfoToString(dicInputValues["Capture_Exposition"], "Exp. ", "", sField_Data_Capture, " / ")
@@ -567,36 +571,36 @@ else:
     sField_Data_Processing = addInfoToString(dicInputValues["Processing_RenderingSoftware"], "", "", sField_Data_Processing, " - ")
     sField_Data_Processing = addInfoToString(dicInputValues["Processing_AdditionalInfo"], "", "", sField_Data_Processing, " - ")
     
+    # Display fields
     print ""
     print ""
-    print "FIELDS"
-    print "------"
+    print "   FIELDS"
+    print "   ------"
     print ""
-    print "sField_Date:              " + sField_Date
-    print "sField_Location:          " + sField_Location
-    print "sField_MoonEphem:         " + sField_MoonEphem
+    print "     Field_Date:              " + sField_Date
+    print "     Field_Location:          " + sField_Location
+    print "     Field_MoonEphem:         " + sField_MoonEphem
     print ""
-    print "sField_Title:             " + sField_Title
-    print "sField_SubTitle1:         " + sField_SubTitle1
-    print "sField_SubTitle2:         " + sField_SubTitle2
-    print "sField_SubTitle3:         " + sField_SubTitle3
+    print "     Field_Title:             " + sField_Title
+    print "     Field_SubTitle1:         " + sField_SubTitle1
+    print "     Field_SubTitle2:         " + sField_SubTitle2
+    print "     Field_SubTitle3:         " + sField_SubTitle3
     print ""
-    print "sField_Hardware 1:        " + (DATA_TITLE_TELESCOPE + "              ")[0:15] + sField_Hardware_1
-    print "sField_Hardware 2:        " + "               " + sField_Hardware_2
-    print "sField_Hardware 3:        " + "               " + sField_Hardware_3
-    print "sField_Data_Capture:      " + (DATA_TITLE_CAPTURE + "              ")[0:15] + sField_Data_Capture
-    print "sField_Data_Processing:   " + (DATA_TITLE_PROCESSING + "              ")[0:15] + sField_Data_Processing
+    print "     Field_Hardware 1:        " + (DATA_TITLE_TELESCOPE + "              ")[0:15] + sField_Hardware_1
+    print "     Field_Hardware 2:        " + "               " + sField_Hardware_2
+    print "     Field_Hardware 3:        " + "               " + sField_Hardware_3
+    print "     Field_Data_Capture:      " + (DATA_TITLE_CAPTURE + "              ")[0:15] + sField_Data_Capture
+    print "     Field_Data_Processing:   " + (DATA_TITLE_PROCESSING + "              ")[0:15] + sField_Data_Processing
     print ""
-    print "sField_Object_Data_1:     " + sField_Object_Data_1
-    print "sField_Object_Data_2:     " + sField_Object_Data_2
-    print "sField_Object_Data_3:     " + sField_Object_Data_3
-    print "sField_Object_Data_4:     " + sField_Object_Data_4
-    print "sField_Object_Data_5:     " + sField_Object_Data_5
-    print "sField_Object_Data_6:     " + sField_Object_Data_6
+    print "     Field_Object_Data_1:     " + sField_Object_Data_1
+    print "     Field_Object_Data_2:     " + sField_Object_Data_2
+    print "     Field_Object_Data_3:     " + sField_Object_Data_3
+    print "     Field_Object_Data_4:     " + sField_Object_Data_4
+    print "     Field_Object_Data_5:     " + sField_Object_Data_5
+    print "     Field_Object_Data_6:     " + sField_Object_Data_6
     print ""
     print ""
-    
-    
+       
     
     # compute objects size and position
     iTitleAndSubtitleHeight = theTempDraw.textsize(sField_Title, font=theTitleFont)[1] + iDataTextInterligne * 5  
@@ -698,14 +702,6 @@ else:
     iField_Data_Processing_X       = iSizeMax_Title_Data + iFinalPictureMarginWidth
     iField_Data_Processing_Y       = iField_Data_Capture_Y + theTempDraw.textsize(sField_Data_Capture, font=theInfoDataFont)[1] + iDataTextInterligne
 
-    # Display psitions and sizes
-    print ""
-    print ""
-    print "Image final width: " + str(iFinalImageWidth) + " = " + str(iFinalPictureMarginWidth) + " (left margin) + " + str(iMarginPicture) + " (image border) + " + str(iPictureWidth) + " (image width) + " + str(iMarginPicture) + " (image border) + " + str(iFinalPictureMarginWidth) + " (right margin)"
-    print "Image final height: " + str(iFinalImageHeight) + " = " + str(iFinalPictureMarginWidth) + " (top margin) + " + str(iTopInfoHeight) + " (Title/Subtitle/Minimap height) + " + str(iMarginTopPicture) + " (top image margin) + " + str(iMarginPicture) + " (image border) + " + str(iPictureHeight) + " (image height) + " + str(iMarginPicture) + " (image border) + " + str(iMarginBottomPicture) + " (bottom image margin) + " + str(iDataInfoHeight) + " (Data Info Height)"
-    print ""
-    print ""
-    
     # create new bitmap
     theFinalImg = Image.new( 'RGBA', (iFinalImageWidth, iFinalImageHeight), (0, 0, 0, 255))
     theFinalDraw = ImageDraw.Draw(theFinalImg)
@@ -783,4 +779,5 @@ else:
     theFinalImg.save(sOutputFileName + ".png", "PNG")
     print ""
     print " --> created picture: " + sOutputFileName + ".png"
-
+    print ""
+    print ""
