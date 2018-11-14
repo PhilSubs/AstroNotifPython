@@ -413,17 +413,17 @@ else:
     print ""
 
     # Compute output file name
-    sOutputFileName = dicInputValues["TimeLoc_Date"].replace("-","") + dicInputValues["TimeLoc_Time"].replace(":","") + " - " + dicInputValues["Subject_Type"] + " - " + dicInputValues["Subject_Title"]
+    sOutputFileName = dicInputValues["Subject_Type"] + " - " + dicInputValues["TimeLoc_Date"].replace("-","") + dicInputValues["TimeLoc_Time"].replace(":","") + " - " + dicInputValues["Subject_Title"]
 
     # Save parameters in JSON file
     if sJsonFilename == "":
-        with open(sOutputFileName[0:12] + '.json', 'w') as fp:
+        with open(sOutputFileName + '.json', 'w') as fp:
             try:
                 json.dump(dicInputValues, fp)
             except:
                 pass
                 print ""
-            print " --> created json file: " + sOutputFileName[0:12] + ".json"
+            print " --> created json file: " + sOutputFileName + ".json"
     
     # create temporary bitmap (for computing text size)
     theTempImg = Image.new( 'RGBA', (1920, 100), (0, 0, 0, 255))
