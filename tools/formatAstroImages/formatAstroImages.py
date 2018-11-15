@@ -2,7 +2,7 @@
 # -*-coding:Latin-1 -*
 
 
-# minimap.png ... correspond to the minimap bitmap  128x128 pixels
+# Minimap.png ... correspond to the Winjupos bitmap  128x128 pixels
     
 import json
 import os.path
@@ -49,7 +49,7 @@ def printDicInput(dicInputValues):
     print ""
     print "Pictures"
     print "--------"
-    print "Minimap file name.............. " + dicInputValues["Bitmap_MinimapFileName"]   
+    print "Winjupos file name.............. " + dicInputValues["Bitmap_WinjuposFileName"]   
     print "Picture file name.............. " + dicInputValues["Bitmap_PictureFileName"]
     print ""
     print "Time & Location"
@@ -91,7 +91,7 @@ def printDicInput(dicInputValues):
 
 def getEmptyDicInput():
     dicInput = {}
-    dicInput["Bitmap_MinimapFileName"] = ""
+    dicInput["Bitmap_WinjuposFileName"] = ""
     dicInput["Bitmap_PictureFileName"] = ""
     dicInput["Subject_Type"] = ""
     dicInput["Subject_Title"] = ""
@@ -291,7 +291,7 @@ def readInputsFromKeyboard():
     print ""
     print "Pictures"
     print "--------"
-    dicInputValues["Bitmap_MinimapFileName"] = getInputValue("Filename", "Name of PNG file for minimap (128x128) ", False, ".png")
+    dicInputValues["Bitmap_WinjuposFileName"] = getInputValue("Filename", "Name of PNG file from Winjupos (256x256) ", False, ".png")
     dicInputValues["Bitmap_PictureFileName"] = getInputValue("Filename", "Name of PNG file for picture ", True, ".png")
 
     print ""
@@ -384,16 +384,17 @@ iMarginTopPicture = 20        # Margin above the picture, below the title/subtit
 iMarginBottomPicture = 20     # Margin below the picture, above the logo and data 
 iBorderSize = 1               # Border around the picture
 iDataInfoHeight = 300         # height of data info display at the bottom    
-iPositionMinimapX = 200       # position of the minimap, from the right edge (+margin)    
-iPositionMinimapY = 100       # position of the minimap, from  the border around the picture (+ margin)   
+iPositionWinjuposX = 200      # position of the Winjupos, from the right edge (+margin)    
+iPositionWinjuposY = 100      # position of the Winjupos, from  the border around the picture (+ margin)   
 iDataTextInterligne = 3       # interline in pixel between data text lines
 iMarginSignature = 5          # Margin for signature related to inside border of picture
+fMiniatureHeight = 96.0       # Height of miniature image for Moon
 
 DATA_TITLE_TELESCOPE = "MATERIEL  "
 DATA_TITLE_CAPTURE = "CAPTURE  "
 DATA_TITLE_PROCESSING = "TRAITEMENT  "
 
-imgMinimap = None
+imgWinjupos = None
 imgPicture = None
 
 # get inputs from Json file or from keyboard
@@ -418,6 +419,10 @@ else:
     print "Processing..."
     print ""
 
+    bIsMoonPicture = (dicInputValues["Subject_Type"] == "Moon")
+    bIsPlanetPicture = (dicInputValues["Subject_Type"] == "Planet")
+    bIsDeepSkyPicture = (dicInputValues["Subject_Type"] == "Deep Sky")
+    
     # Compute output file name
     sOutputFileName = dicInputValues["Subject_Type"] + " - " + dicInputValues["TimeLoc_Date"].replace("-","") + dicInputValues["TimeLoc_Time"].replace(":","") + " - " + dicInputValues["Subject_Title"]
 
@@ -431,25 +436,25 @@ else:
                 print ""
             print " --> created json file: " + sOutputFileName + ".json"
     
-    # get minimap size
+    # get Winjupos size
     print ""
-    if dicInputValues["Bitmap_MinimapFileName"] != "":
-        imgMinimap = Image.open(dicInputValues["Bitmap_MinimapFileName"])
-        iMinimapWidth, iMinimapHeight = imgMinimap.size
-        print "   --> Minimap size: " + str(iMinimapWidth) + " x " + str(iMinimapHeight)
-        if iMinimapHeight != 128:
+    if dicInputValues["Bitmap_WinjuposFileName"] != "":
+        imgWinjupos = Image.open(dicInputValues["Bitmap_WinjuposFileName"])
+        iWinjuposWidth, iWinjuposHeight = imgWinjupos.size
+        print "   --> Winjupos size: " + str(iWinjuposWidth) + " x " + str(iWinjuposHeight)
+        if iWinjuposHeight != 128:
             # Resize to 128 pixel height maxi
-            fCoeff =  128.0 / float(iMinimapHeight)
-            iMinimapWidth = int(float(iMinimapWidth) * fCoeff)
-            iMinimapHeight = int(float(iMinimapHeight) * fCoeff)
-            imgMinimap.thumbnail((iMinimapWidth, iMinimapHeight), Image.ANTIALIAS)
-            print "   --> Minimap resized to: " + str(iMinimapWidth) + " x " + str(iMinimapHeight)
+            fCoeff =  128.0 / float(iWinjuposHeight)
+            iWinjuposWidth = int(float(iWinjuposWidth) * fCoeff)
+            iWinjuposHeight = int(float(iWinjuposHeight) * fCoeff)
+            imgWinjupos.thumbnail((iWinjuposWidth, iWinjuposHeight), Image.ANTIALIAS)
+            print "   --> Winjupos resized to: " + str(iWinjuposWidth) + " x " + str(iWinjuposHeight)
 
     # get picture size
     imgPicture = Image.open(dicInputValues["Bitmap_PictureFileName"])
     iPictureWidth, iPictureHeight = imgPicture.size
     iPictureWidthAdjustBorder = 0
-#    if iPictureWidth < 1000 and dicInputValues["Subject_Type"] == "Deep Sky": 
+#    if iPictureWidth < 1000 and bIsDeepSkyPicture: 
 #        iPictureWidthAdjustBorder = (1000 - iPictureWidth) / 2
 #        print ">>> Adjusted image width to 1000 instead of " + str(iPictureWidth) + " (border: " + str(iPictureWidthAdjustBorder) + ")"
 #        iPictureWidth = 1000
@@ -465,17 +470,17 @@ else:
     theColorSubTitle        = (164,164,164)
     theColorDataText        = (96,96,96)
     theColorDataTitle       = (176,176,176)
-    if dicInputValues["Subject_Type"] == "Moon":
+    if bIsMoonPicture:
         theColorSignature       = (228,228,228,255) # if moon. border and signature moe bright
     else:
         theColorSignature       = (128,128,128,255)
     theColorSignatureShadow = (32,32,32)
     
     # Set fonts
-#    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", 14)
-    theGeoDataFont   = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
-#    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", 12)
-    theInfoDataFont  = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
+#    theGeoDataFont   = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
+    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", 14)
+#    theInfoDataFont  = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
+    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", 12)
     theTitleFont     = ImageFont.truetype("georgia.ttf",          30)
     theSubTitleFont  = ImageFont.truetype("georgia.ttf",          16)
     theSignatureFont = ImageFont.truetype("Sugar Candy.ttf",      18)
@@ -489,7 +494,7 @@ else:
     sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonColongitude"], "colong. ", "", sField_MoonEphem, " - ")
     
     sField_Title     = dicInputValues["Subject_Title"]
-    if dicInputValues["Subject_Type"] == "Moon":
+    if bIsMoonPicture:
         sField_SubTitle1 = ""
         sField_SubTitle2 = ""
         sField_SubTitle3 = ""
@@ -529,7 +534,7 @@ else:
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Length"], "Long. ", "", sField_Object_Data_6, "   ")
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Depth"], "Prof. ", "", sField_Object_Data_6, "   ")
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Height"], "Haut. ", "", sField_Object_Data_6, "   ")
-    elif dicInputValues["Subject_Type"] == "Planet":
+    elif bIsPlanetPicture:
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Diameter"], "Diametre ", '"', "", "")
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Magnitude"], "Magnitude ", "", sField_SubTitle1, " - ")
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Altitude"], "Altitude ", "deg", sField_SubTitle1, " - ")
@@ -545,7 +550,7 @@ else:
         sField_Object_Data_4 = ""
         sField_Object_Data_5 = ""
         sField_Object_Data_6 = ""
-    elif dicInputValues["Subject_Type"] == "Deep Sky":
+    elif bIsDeepSkyPicture:
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_DeepSky_Distance"], "Distance ", "", "", "")
         sField_SubTitle2 = addInfoToString(dicInputValues["Info_DeepSky_Diameter"], "Diametre ", "", "", "")
         sField_SubTitle3 = addInfoToString(dicInputValues["Info_DeepSky_Magnitude"], "Magnitude ", "", "", "")
@@ -616,17 +621,17 @@ else:
     iTitleAndSubtitleHeight = iTitleAndSubtitleHeight + theTempDraw.textsize(sField_SubTitle1, font=theSubTitleFont)[1] + iDataTextInterligne
     iTitleAndSubtitleHeight = iTitleAndSubtitleHeight + theTempDraw.textsize(sField_SubTitle2, font=theSubTitleFont)[1] + iDataTextInterligne
     iTitleAndSubtitleHeight = iTitleAndSubtitleHeight + theTempDraw.textsize(sField_SubTitle3, font=theSubTitleFont)[1]
-    if not imgMinimap is None:                      
-        iMoonMinimapHeight = iMinimapHeight
+    if not imgWinjupos is None:                      
+        iMoonWinjuposHeight = iWinjuposHeight
     else:
-        iMoonMinimapHeight = 0
+        iMoonWinjuposHeight = 0
     iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_Date, font=theGeoDataFont)[1] + iDataTextInterligne
     iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_Location, font=theGeoDataFont)[1] + iDataTextInterligne
     iDateLocationMoonEphemHeight = theTempDraw.textsize(sField_MoonEphem, font=theGeoDataFont)[1]
     
     iTopInfoHeight = iDateLocationMoonEphemHeight
     if iTitleAndSubtitleHeight > iTopInfoHeight: iTopInfoHeight = iTitleAndSubtitleHeight
-    if iMoonMinimapHeight > iTopInfoHeight: iTopInfoHeight = iMoonMinimapHeight
+    if iMoonWinjuposHeight > iTopInfoHeight: iTopInfoHeight = iMoonWinjuposHeight
     
     iObjectDataInfoHeight = theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[1] + iDataTextInterligne
     iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[1] + iDataTextInterligne
@@ -643,14 +648,15 @@ else:
         iDataInfoHeight = iObjectDataInfoHeight
     else:
         iDataInfoHeight = iTechnicalDataInfoHeight
+    if bIsMoonPicture and iDataInfoHeight < int(fMiniatureHeight): iDataInfoHeight = int(fMiniatureHeight)
     iPictureWithBorderWidth  = iBorderSize + iMarginPicture + iPictureWidth  + iMarginPicture + iBorderSize
     iPictureWithBorderHeight = iBorderSize + iMarginPicture + iPictureHeight + iMarginPicture + iBorderSize
     iFinalImageWidth  = iFinalPictureMarginWidth + iPictureWithBorderWidth + iFinalPictureMarginWidth
     iFinalImageHeight = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture + iDataInfoHeight + iFinalPictureMarginWidth
     
-    if not imgMinimap is None:
-        iMinimapPositionX = iFinalImageWidth - iMinimapWidth - iFinalPictureMarginWidth
-        iMinimapPositionY = iFinalPictureMarginWidth
+    if not imgWinjupos is None:
+        iWinjuposPositionX = iFinalImageWidth - iWinjuposWidth - iFinalPictureMarginWidth
+        iWinjuposPositionY = iFinalPictureMarginWidth
     iPictureFramePositionX = iFinalPictureMarginWidth
     iPictureFramePositionY = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture
     iPicturePositionX = iPictureFramePositionX + iMarginPicture 
@@ -715,9 +721,9 @@ else:
     theFinalImg = Image.new( 'RGBA', (iFinalImageWidth, iFinalImageHeight), (0, 0, 0, 255))
     theFinalDraw = ImageDraw.Draw(theFinalImg)
     
-    # paste minimap             
-    if dicInputValues["Bitmap_MinimapFileName"] != "":
-        theFinalImg.paste(imgMinimap, (iMinimapPositionX, iMinimapPositionY))
+    # paste Winjupos             
+    if dicInputValues["Bitmap_WinjuposFileName"] != "":
+        theFinalImg.paste(imgWinjupos, (iWinjuposPositionX, iWinjuposPositionY))
     
     # Display fields
     theFinalDraw.text((iField_Date_X,      iField_Date_Y),      sField_Date,      theColorDataText, font=theGeoDataFont)
@@ -730,17 +736,17 @@ else:
     theFinalDraw.text((iField_SubTitle3_X, iField_SubTitle3_Y), sField_SubTitle3, theColorSubTitle, font=theSubTitleFont)
     
     theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), sField_Object_Data_1, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_1 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), dicInputValues["Info_MoonFeature0_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_1 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), dicInputValues["Info_MoonFeature0_Name"], theColorDataTitle, font=theInfoDataFont)
     theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), sField_Object_Data_2, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_2 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), dicInputValues["Info_MoonFeature1_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_2 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), dicInputValues["Info_MoonFeature1_Name"], theColorDataTitle, font=theInfoDataFont)
     theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), sField_Object_Data_3, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_3 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), dicInputValues["Info_MoonFeature2_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_3 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), dicInputValues["Info_MoonFeature2_Name"], theColorDataTitle, font=theInfoDataFont)
     theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), sField_Object_Data_4, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_4 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), dicInputValues["Info_MoonFeature3_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_4 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), dicInputValues["Info_MoonFeature3_Name"], theColorDataTitle, font=theInfoDataFont)
     theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), sField_Object_Data_5, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_5 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), dicInputValues["Info_MoonFeature4_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_5 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), dicInputValues["Info_MoonFeature4_Name"], theColorDataTitle, font=theInfoDataFont)
     theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), sField_Object_Data_6, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_6 != "" and dicInputValues["Subject_Type"] == "Moon": theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), dicInputValues["Info_MoonFeature5_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_6 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), dicInputValues["Info_MoonFeature5_Name"], theColorDataTitle, font=theInfoDataFont)
     
     theFinalDraw.text((iField_Hardware_1_X, iField_Hardware_1_Y), sField_Hardware_1, theColorDataText,  font=theInfoDataFont)
     theFinalDraw.text((iField_Hardware_Title_X, iField_Hardware_Title_Y), sField_Hardware_Title, theColorDataTitle, font=theInfoDataFont)
@@ -764,10 +770,10 @@ else:
     theFinalDraw.text((iField_Signature_X - 2, iField_Signature_Y - 2), sField_Signature, theColorSignature, font=theSignatureFont)
 
     # Add miniature for Moon
-    if dicInputValues["Subject_Type"] == "Moon":
+    if bIsMoonPicture:
         imgMiniature = Image.open(dicInputValues["Bitmap_PictureFileName"])
         iMiniatureWidth, iMiniatureHeight = imgMiniature.size
-        fCoeff = float(iDataInfoHeight) / float(iMiniatureHeight)
+        fCoeff = fMiniatureHeight / float(iMiniatureHeight)
         iMiniatureWidth = int(float(iMiniatureWidth) * fCoeff)
         iMiniatureHeight = int(float(iMiniatureHeight) * fCoeff)
         imgMiniature.thumbnail((iMiniatureWidth, iMiniatureHeight), Image.ANTIALIAS)
