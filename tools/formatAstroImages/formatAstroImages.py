@@ -32,6 +32,7 @@ def printDicInput(dicInputValues):
                 if dicInputValues["Info_MoonFeature" + sFeatureID + "_Depth"]    != "": print "Depth.......................... " + dicInputValues["Info_MoonFeature" + sFeatureID + "_Depth"]
         print "Additional information......... " + dicInputValues["Info_Additional"]
     elif dicInputValues["Subject_Type"] == "Planet":
+        print "Planet Distance................ " + dicInputValues["Info_Planet_Distance"]
         print "Planet Diameter................ " + dicInputValues["Info_Planet_Diameter"]
         print "Planet Altitude................ " + dicInputValues["Info_Planet_Altitude"]
         print "Planet Magnitude............... " + dicInputValues["Info_Planet_Magnitude"]
@@ -107,6 +108,7 @@ def getEmptyDicInput():
         dicInput["Info_MoonFeature" + sFeatureID + "_Width"] = ""
         dicInput["Info_MoonFeature" + sFeatureID + "_Depth"] = ""
     dicInput["Info_Additional"] = ""
+    dicInput["Info_Planet_Distance"] = ""
     dicInput["Info_Planet_Diameter"] = ""
     dicInput["Info_Planet_Altitude"] = ""
     dicInput["Info_Planet_Magnitude"] = ""
@@ -322,6 +324,7 @@ def readInputsFromKeyboard():
                     bAllFeaturesFilled = True
         dicInputValues["Info_Additional"] = getInputValue("String", "Additional comment ", False, None)
     elif dicInputValues["Subject_Type"] == "Planet":
+        dicInputValues["Info_Planet_Distance"]    = getInputValue("String", "Planet Distance (+ unit) ", False, None) 
         dicInputValues["Info_Planet_Diameter"]    = getInputValue("String", "Planet Diameter (sec) ", False, None) 
         dicInputValues["Info_Planet_Altitude"]    = getInputValue("String", "Planet Altitude (deg) ", False, None) 
         dicInputValues["Info_Planet_Magnitude"]   = getInputValue("String", "Planet Magnitude ", False, None) 
@@ -423,6 +426,26 @@ else:
     bIsPlanetPicture = (dicInputValues["Subject_Type"] == "Planet")
     bIsDeepSkyPicture = (dicInputValues["Subject_Type"] == "Deep Sky")
     
+    # Set colors
+    theColorTitle           = (255,255,255)
+    theColorSubTitle        = (164,164,164)
+    theColorDataText        = (96,96,96)
+    theColorDataTitle       = (176,176,176)
+    if bIsMoonPicture:
+        theColorSignature       = (228,228,228,255) # if moon. border and signature moe bright
+    else:
+        theColorSignature       = (128,128,128,255)
+    theColorSignatureShadow = (32,32,32)
+    
+    # Set fonts
+#    theGeoDataFont   = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
+    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", 14)
+#    theInfoDataFont  = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
+    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", 12)
+    theTitleFont     = ImageFont.truetype("georgia.ttf",          30)
+    theSubTitleFont  = ImageFont.truetype("georgia.ttf",          16)
+    theSignatureFont = ImageFont.truetype("Sugar Candy.ttf",      18)
+    
     # Compute output file name
     sOutputFileName = dicInputValues["Subject_Type"] + " - " + dicInputValues["TimeLoc_Date"].replace("-","") + dicInputValues["TimeLoc_Time"].replace(":","") + " - " + dicInputValues["Subject_Title"]
 
@@ -464,26 +487,6 @@ else:
     # create temporary bitmap (for computing text size)
     theTempImg = Image.new( 'RGBA', (1920, 100), (0, 0, 0, 255))
     theTempDraw = ImageDraw.Draw(theTempImg)
-    
-    # Set colors
-    theColorTitle           = (255,255,255)
-    theColorSubTitle        = (164,164,164)
-    theColorDataText        = (96,96,96)
-    theColorDataTitle       = (176,176,176)
-    if bIsMoonPicture:
-        theColorSignature       = (228,228,228,255) # if moon. border and signature moe bright
-    else:
-        theColorSignature       = (128,128,128,255)
-    theColorSignatureShadow = (32,32,32)
-    
-    # Set fonts
-#    theGeoDataFont   = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
-    theGeoDataFont   = ImageFont.truetype("PCNavita-Regular.ttf", 14)
-#    theInfoDataFont  = ImageFont.truetype("PathwayGothicOne-Regular.ttf",    16)
-    theInfoDataFont  = ImageFont.truetype("PCNavita-Regular.ttf", 12)
-    theTitleFont     = ImageFont.truetype("georgia.ttf",          30)
-    theSubTitleFont  = ImageFont.truetype("georgia.ttf",          16)
-    theSignatureFont = ImageFont.truetype("Sugar Candy.ttf",      18)
 
     # Compute fields to be displayed
     sField_Signature = "PhilippeLarosa"
@@ -535,13 +538,14 @@ else:
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Depth"], "Prof. ", "", sField_Object_Data_6, "   ")
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Height"], "Haut. ", "", sField_Object_Data_6, "   ")
     elif bIsPlanetPicture:
-        sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Diameter"], "Diametre ", '"', "", "")
+        sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Distance"], "Distance ", "", "", "")
+        sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Diameter"], "Diameter ", '"', sField_SubTitle1, " - ")
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Magnitude"], "Magnitude ", "", sField_SubTitle1, " - ")
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Altitude"], "Altitude ", "deg", sField_SubTitle1, " - ")
         sField_SubTitle2 = addInfoToString(dicInputValues["Info_Planet_CMI"], "CMI ", "deg", "", "")
         sField_SubTitle2 = addInfoToString(dicInputValues["Info_Planet_CMII"], "CMII ", "deg", sField_SubTitle2, " - ")
         sField_SubTitle2 = addInfoToString(dicInputValues["Info_Planet_CMIII"], "CMIII ", "deg", sField_SubTitle2, " - ")
-        sField_SubTitle3 = addInfoToString(dicInputValues["Info_Planet_FocalLength"], "Focal ", "", "", "")
+        sField_SubTitle3 = addInfoToString(dicInputValues["Info_Planet_FocalLength"], "Focal ", "mm", "", "")
         sField_SubTitle3 = addInfoToString(dicInputValues["Info_Planet_FocalRatio"], "F/", "", sField_SubTitle3, " - ")
         sField_SubTitle3 = addInfoToString(dicInputValues["Info_Planet_Resolution"], "Resolution  ", '"', sField_SubTitle3, " - ")
         sField_Object_Data_1 = ""
