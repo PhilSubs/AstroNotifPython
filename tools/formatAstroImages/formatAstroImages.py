@@ -282,7 +282,7 @@ def getInputValue(sType, sPrompt, aParam1, aParam2):
                 bAnswerIsValid = True
             else:
                 bAnswerIsValid = False
-                print "  ERREUR: la valeur doit être dans la liste:  " + aParam2.replace("|", " / ") + " !"
+                print "  ERREUR: la valeur doit Ãªtre dans la liste:  " + aParam2.replace("|", " / ") + " !"
 
     if theInputValue != "": print "   --> " + theInputValue
     return theInputValue
@@ -490,7 +490,11 @@ else:
 
     # Compute fields to be displayed
     sField_Signature = "PhilippeLarosa"
-    sField_Date      = dicInputValues["TimeLoc_Date"][8:] + " " + ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'][int(dicInputValues["TimeLoc_Date"][5:7])-1] + " " + dicInputValues["TimeLoc_Date"][0:4] + "  " + dicInputValues["TimeLoc_Time"] + " GMT"
+    sField_Date      = "Février"
+    sField_Date      = str(dicInputValues["TimeLoc_Date"][8:]) + " "  + sField_Date + " " 
+    sField_Date      = sField_Date + str(dicInputValues["TimeLoc_Date"][0:4]) + "  "
+    sField_Date      = sField_Date + str(dicInputValues["TimeLoc_Time"][0:2]) + ":" + str(dicInputValues["TimeLoc_Time"][3:])
+    sField_Date      = sField_Date + " GMT"
     sField_Location  = dicInputValues["TimeLoc_Location"]
     sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonAge"], "Lune: age ", "", "", "")
     sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonIllumination"], "illum. ", "%", sField_MoonEphem, " - ")
