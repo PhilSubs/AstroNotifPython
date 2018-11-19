@@ -386,13 +386,14 @@ iMarginPicture = 5            # Margin around the picture, inside the border
 iMarginTopPicture = 20        # Margin above the picture, below the title/subtitle 
 iMarginBottomPicture = 20     # Margin below the picture, above the logo and data 
 iBorderSize = 1               # Border around the picture
-iDataInfoHeight = 300         # height of data info display at the bottom    
 iPositionWinjuposX = 200      # position of the Winjupos, from the right edge (+margin)    
 iPositionWinjuposY = 100      # position of the Winjupos, from  the border around the picture (+ margin)   
 iDataTextInterligne = 3       # interline in pixel between data text lines
+iDataTextInterligneEphem = 12 # interline in pixel between data info text and data info ephemerides
 iMarginSignature = 5          # Margin for signature related to inside border of picture
 fMiniatureHeight = 96.0       # Height of miniature image for Moon
 
+DATA_TITLE_EPHEMERIDE = "EPHEMERIDE  "
 DATA_TITLE_TELESCOPE = "MATERIEL  "
 DATA_TITLE_CAPTURE = "CAPTURE  "
 DATA_TITLE_PROCESSING = "TRAITEMENT  "
@@ -496,9 +497,6 @@ else:
     sField_Date      = sField_Date + str(dicInputValues["TimeLoc_Time"][0:2]) + ":" + str(dicInputValues["TimeLoc_Time"][3:])
     sField_Date      = sField_Date + " GMT"
     sField_Location  = dicInputValues["TimeLoc_Location"]
-    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonAge"], "Lune: age ", "", "", "")
-    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonIllumination"], "illum. ", "%", sField_MoonEphem, " - ")
-    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonColongitude"], "colong. ", "", sField_MoonEphem, " - ")
     
     sField_Title     = dicInputValues["Subject_Title"]
     if bIsMoonPicture:
@@ -541,6 +539,7 @@ else:
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Length"], "Long. ", "", sField_Object_Data_6, "   ")
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Depth"], "Prof. ", "", sField_Object_Data_6, "   ")
         sField_Object_Data_6 = addInfoToString(dicInputValues["Info_MoonFeature5_Height"], "Haut. ", "", sField_Object_Data_6, "   ")
+
     elif bIsPlanetPicture:
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Distance"], "Distance ", "", "", "")
         sField_SubTitle1 = addInfoToString(dicInputValues["Info_Planet_Diameter"], "Diameter ", '"', sField_SubTitle1, " - ")
@@ -569,6 +568,10 @@ else:
         sField_Object_Data_5 = ""
         sField_Object_Data_6 = ""
         
+    sField_MoonEphem_Title = DATA_TITLE_EPHEMERIDE
+    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonAge"], "Lune: age ", "", "", "")
+    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonIllumination"], "illum. ", "%", sField_MoonEphem, " - ")
+    sField_MoonEphem = addInfoToString(dicInputValues["Info_MoonColongitude"], "colong. ", "", sField_MoonEphem, " - ")
     sField_Hardware_Title = DATA_TITLE_TELESCOPE
     sField_Hardware_1 = addInfoToString(dicInputValues["Hardware_Optic"], "", "", "", "")
     sField_Hardware_1 = addInfoToString(dicInputValues["Hardware_Mount"], "", "", sField_Hardware_1, " - ")
@@ -601,12 +604,13 @@ else:
     print ""
     print "     Field_Date:              " + sField_Date
     print "     Field_Location:          " + sField_Location
-    print "     Field_MoonEphem:         " + sField_MoonEphem
     print ""
     print "     Field_Title:             " + sField_Title
     print "     Field_SubTitle1:         " + sField_SubTitle1
     print "     Field_SubTitle2:         " + sField_SubTitle2
     print "     Field_SubTitle3:         " + sField_SubTitle3
+    print ""
+    print "     Field_MoonEphem:         " + sField_MoonEphem
     print ""
     print "     Field_Hardware 1:        " + (DATA_TITLE_TELESCOPE + "              ")[0:15] + sField_Hardware_1
     print "     Field_Hardware 2:        " + "               " + sField_Hardware_2
@@ -647,7 +651,11 @@ else:
     iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[1] + iDataTextInterligne
     iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[1] + iDataTextInterligne
     iObjectDataInfoHeight = iObjectDataInfoHeight + theTempDraw.textsize(sField_Object_Data_6, font=theInfoDataFont)[1]
-    iTechnicalDataInfoHeight = theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
+    if sField_MoonEphem != "":
+        iTechnicalDataInfoHeight = theTempDraw.textsize(sField_MoonEphem, font=theInfoDataFont)[1] + iDataTextInterligneEphem
+        iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
+    else:
+        iTechnicalDataInfoHeight = theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
     iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_2, font=theInfoDataFont)[1] + iDataTextInterligne
     iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
     iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Data_Capture, font=theInfoDataFont)[1] + iDataTextInterligne
@@ -679,8 +687,6 @@ else:
     iField_Date_Y      = iFinalPictureMarginWidth
     iField_Location_X  = iFinalPictureMarginWidth
     iField_Location_Y  = iField_Date_Y + theTempDraw.textsize(sField_Date, font=theGeoDataFont)[1] + iDataTextInterligne
-    iField_MoonEphem_X  = iFinalPictureMarginWidth
-    iField_MoonEphem_Y  = iField_Location_Y + theTempDraw.textsize(sField_Location, font=theGeoDataFont)[1] + iDataTextInterligne
 
     iField_Title_X     = iFinalPictureMarginWidth + (iPictureWithBorderWidth - theTempDraw.textsize(sField_Title, font=theTitleFont)[0]) / 2
     iField_Title_Y     = iFinalPictureMarginWidth + (iTopInfoHeight - iTitleAndSubtitleHeight) / 2
@@ -708,10 +714,14 @@ else:
     if theTempDraw.textsize(sField_Data_Capture_Title, font=theInfoDataFont)[0] > iSizeMax_Title_Data: iSizeMax_Title_Data = theTempDraw.textsize(sField_Data_Capture_Title, font=theInfoDataFont)[0]
     if theTempDraw.textsize(sField_Data_Processing_Title, font=theInfoDataFont)[0] > iSizeMax_Title_Data: iSizeMax_Title_Data = theTempDraw.textsize(sField_Data_Processing_Title, font=theInfoDataFont)[0]
     
+    iField_MoonEphem_Title_X       = iFinalPictureMarginWidth
+    iField_MoonEphem_Title_Y       = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
+    iField_MoonEphem_X             = iSizeMax_Title_Data + iFinalPictureMarginWidth
+    iField_MoonEphem_Y             = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
     iField_Hardware_Title_X        = iFinalPictureMarginWidth
-    iField_Hardware_Title_Y        = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
+    iField_Hardware_Title_Y        = iField_MoonEphem_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligneEphem
     iField_Hardware_1_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
-    iField_Hardware_1_Y            = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
+    iField_Hardware_1_Y            = iField_MoonEphem_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligneEphem
     iField_Hardware_2_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
     iField_Hardware_2_Y            = iField_Hardware_1_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Hardware_3_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
@@ -736,7 +746,6 @@ else:
     # Display fields
     theFinalDraw.text((iField_Date_X,      iField_Date_Y),      sField_Date,      theColorDataText, font=theGeoDataFont)
     theFinalDraw.text((iField_Location_X,  iField_Location_Y),  sField_Location,  theColorDataText, font=theGeoDataFont)
-    theFinalDraw.text((iField_MoonEphem_X, iField_MoonEphem_Y), sField_MoonEphem, theColorDataText, font=theGeoDataFont)
     
     theFinalDraw.text((iField_Title_X,     iField_Title_Y),     sField_Title,     theColorTitle,    font=theTitleFont)
     theFinalDraw.text((iField_SubTitle1_X, iField_SubTitle1_Y), sField_SubTitle1, theColorSubTitle, font=theSubTitleFont)
@@ -755,6 +764,9 @@ else:
     if sField_Object_Data_5 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), dicInputValues["Info_MoonFeature4_Name"], theColorDataTitle, font=theInfoDataFont)
     theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), sField_Object_Data_6, theColorDataText, font=theInfoDataFont)
     if sField_Object_Data_6 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), dicInputValues["Info_MoonFeature5_Name"], theColorDataTitle, font=theInfoDataFont)
+
+    if sField_MoonEphem != "": theFinalDraw.text((iField_MoonEphem_X, iField_MoonEphem_Y), sField_MoonEphem, theColorDataText,  font=theInfoDataFont)
+    if sField_MoonEphem != "": theFinalDraw.text((iField_MoonEphem_Title_X, iField_MoonEphem_Title_Y), sField_MoonEphem_Title, theColorDataTitle, font=theInfoDataFont)
     
     theFinalDraw.text((iField_Hardware_1_X, iField_Hardware_1_Y), sField_Hardware_1, theColorDataText,  font=theInfoDataFont)
     theFinalDraw.text((iField_Hardware_Title_X, iField_Hardware_Title_Y), sField_Hardware_Title, theColorDataTitle, font=theInfoDataFont)
