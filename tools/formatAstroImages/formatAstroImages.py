@@ -719,9 +719,13 @@ else:
     iField_MoonEphem_X             = iSizeMax_Title_Data + iFinalPictureMarginWidth
     iField_MoonEphem_Y             = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
     iField_Hardware_Title_X        = iFinalPictureMarginWidth
-    iField_Hardware_Title_Y        = iField_MoonEphem_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligneEphem
     iField_Hardware_1_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
-    iField_Hardware_1_Y            = iField_MoonEphem_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligneEphem
+    if sField_MoonEphem != "": 
+        iField_Hardware_Title_Y        = iField_MoonEphem_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligneEphem
+        iField_Hardware_1_Y            = iField_MoonEphem_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligneEphem
+    else:
+        iField_Hardware_Title_Y        = iField_MoonEphem_Title_Y
+        iField_Hardware_1_Y            = iField_MoonEphem_Title_Y
     iField_Hardware_2_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
     iField_Hardware_2_Y            = iField_Hardware_1_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Hardware_3_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
