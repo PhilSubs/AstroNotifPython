@@ -68,7 +68,7 @@ def printDicInput(dicInputValues):
     print "Barlow......................... " + dicInputValues["Hardware_Barlow"]
     print "Filter......................... " + dicInputValues["Hardware_Filter"]
     print "Camera......................... " + dicInputValues["Hardware_Camera"]
-    print "Additional Info ............... " + dicInputValues["Hardware_AdditionalInfo"]
+    print "Additional Info ............... " + dicInputValues["Hardware_Additional_Info"]
     print ""
     print "Capture"
     print "-------"
@@ -133,7 +133,7 @@ def getEmptyDicInput():
     dicInput["Hardware_Barlow"] = ""
     dicInput["Hardware_Camera"] = ""
     dicInput["Hardware_Filter"] = ""
-    dicInputValues["Hardware_AdditionalInfo"]
+    dicInput["Hardware_Additional_Info"] = ""
     dicInput["Capture_Software"] = ""
     dicInput["Capture_Bin"] = ""
     dicInput["Capture_Gain"] = ""
@@ -360,7 +360,7 @@ def readInputsFromKeyboard():
         dicInputValues["Hardware_Filter"]   = getInputValue("Parameter", "Filter ", "Hardware/Accessories/Filters", "IR/UV Cut")
     else:
         dicInputValues["Hardware_Filter"]   = getInputValue("Parameter", "Filter ", "Hardware/Accessories/Filters", None)
-    dicInputValues["Hardware_AdditionalInfo"] = getInputValue("String", "Additional info (projection, eyepiece, ...) ", False, None)
+    dicInputValues["Hardware_Additional_Info"] = getInputValue("String", "Additional info (projection, eyepiece, ...) ", False, None)
     print ""
     print "Capture"
     print "-------"
