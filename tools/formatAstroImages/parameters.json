@@ -29,13 +29,13 @@
                                     }
                     },
                     "Camera":{
-                        "values": [ "ASI 224MC", "ASI 178MM", "ASI 120MM", "CANON EOS 450D" ],
+                        "values": [ "ASI 224MC", "ASI 178MM", "ASI 120MM", "CANON EOS 450D", "Samsung Galaxy Note 3" ],
                         "default": ""
                     }
     },
     "Software": {
                     "Capture": {
-                        "values": [ "Firecapture", "Sharpcap" ],
+                        "values": [ "", "Firecapture", "Sharpcap" ],
                         "default": "Firecapture"
                     },
                     "Pre-processing": {
