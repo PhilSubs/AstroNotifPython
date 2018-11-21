@@ -68,6 +68,7 @@ def printDicInput(dicInputValues):
     print "Barlow......................... " + dicInputValues["Hardware_Barlow"]
     print "Filter......................... " + dicInputValues["Hardware_Filter"]
     print "Camera......................... " + dicInputValues["Hardware_Camera"]
+    print "Additional Info ............... " + dicInputValues["Hardware_AdditionalInfo"]
     print ""
     print "Capture"
     print "-------"
@@ -132,6 +133,7 @@ def getEmptyDicInput():
     dicInput["Hardware_Barlow"] = ""
     dicInput["Hardware_Camera"] = ""
     dicInput["Hardware_Filter"] = ""
+    dicInputValues["Hardware_AdditionalInfo"]
     dicInput["Capture_Software"] = ""
     dicInput["Capture_Bin"] = ""
     dicInput["Capture_Gain"] = ""
@@ -358,6 +360,7 @@ def readInputsFromKeyboard():
         dicInputValues["Hardware_Filter"]   = getInputValue("Parameter", "Filter ", "Hardware/Accessories/Filters", "IR/UV Cut")
     else:
         dicInputValues["Hardware_Filter"]   = getInputValue("Parameter", "Filter ", "Hardware/Accessories/Filters", None)
+    dicInputValues["Hardware_AdditionalInfo"] = getInputValue("String", "Additional info (projection, eyepiece, ...) ", False, None)
     print ""
     print "Capture"
     print "-------"
@@ -580,6 +583,7 @@ else:
     sField_Hardware_2 = addInfoToString(dicInputValues["Hardware_Barlow"], "Barlow ", "", sField_Hardware_2, " - ")
     sField_Hardware_2 = addInfoToString(dicInputValues["Hardware_Filter"], "Filtre ", "", sField_Hardware_2, " - ")
     sField_Hardware_3 = addInfoToString(dicInputValues["Hardware_Camera"], "Camera ", "", "", "")
+    sField_Hardware_4 = addInfoToString(dicInputValues["Hardware_Additional_Info"], "", "", "", "")
     sField_Data_Capture_Title = DATA_TITLE_CAPTURE
     sField_Data_Capture = addInfoToString(dicInputValues["Capture_Software"], "", "", "", "")
     sField_Data_Capture = addInfoToString(dicInputValues["Capture_Bin"], "bin ", "", sField_Data_Capture, " - ")
@@ -615,6 +619,7 @@ else:
     print "     Field_Hardware 1:        " + (DATA_TITLE_TELESCOPE + "              ")[0:15] + sField_Hardware_1
     print "     Field_Hardware 2:        " + "               " + sField_Hardware_2
     print "     Field_Hardware 3:        " + "               " + sField_Hardware_3
+    print "     Field_Hardware 4:        " + "               " + sField_Hardware_4
     print "     Field_Data_Capture:      " + (DATA_TITLE_CAPTURE + "              ")[0:15] + sField_Data_Capture
     print "     Field_Data_Processing:   " + (DATA_TITLE_PROCESSING + "              ")[0:15] + sField_Data_Processing
     print ""
@@ -658,6 +663,7 @@ else:
         iTechnicalDataInfoHeight = theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
     iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_2, font=theInfoDataFont)[1] + iDataTextInterligne
     iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
+    iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Hardware_4, font=theInfoDataFont)[1] + iDataTextInterligne
     iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Data_Capture, font=theInfoDataFont)[1] + iDataTextInterligne
     iTechnicalDataInfoHeight = iTechnicalDataInfoHeight + theTempDraw.textsize(sField_Data_Processing, font=theInfoDataFont)[1]
     if iObjectDataInfoHeight > iTechnicalDataInfoHeight:
@@ -730,10 +736,15 @@ else:
     iField_Hardware_2_Y            = iField_Hardware_1_Y + theTempDraw.textsize(sField_Hardware_1, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Hardware_3_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
     iField_Hardware_3_Y            = iField_Hardware_2_Y + theTempDraw.textsize(sField_Hardware_2, font=theInfoDataFont)[1] + iDataTextInterligne
+    iField_Hardware_4_X            = iSizeMax_Title_Data + iFinalPictureMarginWidth
+    iField_Hardware_4_Y            = iField_Hardware_3_Y + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Data_Capture_Title_X    = iFinalPictureMarginWidth
-    iField_Data_Capture_Title_Y    = iField_Hardware_3_Y + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
+    if sField_Hardware_4 != "": 
+        iField_Data_Capture_Title_Y    = iField_Hardware_4_Y + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
+    else:
+        iField_Data_Capture_Title_Y    = iField_Hardware_3_Y + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Data_Capture_X          = iSizeMax_Title_Data + iFinalPictureMarginWidth
-    iField_Data_Capture_Y          = iField_Hardware_3_Y + theTempDraw.textsize(sField_Hardware_3, font=theInfoDataFont)[1] + iDataTextInterligne
+    iField_Data_Capture_Y          = iField_Data_Capture_Title_Y
     iField_Data_Processing_Title_X = iFinalPictureMarginWidth
     iField_Data_Processing_Title_Y = iField_Data_Capture_Y + theTempDraw.textsize(sField_Data_Capture, font=theInfoDataFont)[1] + iDataTextInterligne
     iField_Data_Processing_X       = iSizeMax_Title_Data + iFinalPictureMarginWidth
@@ -776,6 +787,7 @@ else:
     theFinalDraw.text((iField_Hardware_Title_X, iField_Hardware_Title_Y), sField_Hardware_Title, theColorDataTitle, font=theInfoDataFont)
     if sField_Hardware_2 != "": theFinalDraw.text((iField_Hardware_2_X, iField_Hardware_2_Y), sField_Hardware_2, theColorDataText,  font=theInfoDataFont)
     if sField_Hardware_3 != "": theFinalDraw.text((iField_Hardware_3_X, iField_Hardware_3_Y), sField_Hardware_3, theColorDataText,  font=theInfoDataFont)
+    if sField_Hardware_4 != "": theFinalDraw.text((iField_Hardware_4_X, iField_Hardware_4_Y), sField_Hardware_4, theColorDataText,  font=theInfoDataFont)
     theFinalDraw.text((iField_Data_Capture_X, iField_Data_Capture_Y), sField_Data_Capture, theColorDataText,  font=theInfoDataFont)
     theFinalDraw.text((iField_Data_Capture_Title_X, iField_Data_Capture_Title_Y), sField_Data_Capture_Title, theColorDataTitle, font=theInfoDataFont)
     theFinalDraw.text((iField_Data_Processing_X, iField_Data_Processing_Y), sField_Data_Processing, theColorDataText,  font=theInfoDataFont)
@@ -793,25 +805,26 @@ else:
     theFinalDraw.text((iField_Signature_X - 1, iField_Signature_Y - 1), sField_Signature, theColorSignatureShadow, font=theSignatureFont)
     theFinalDraw.text((iField_Signature_X - 2, iField_Signature_Y - 2), sField_Signature, theColorSignature, font=theSignatureFont)
 
-    # Add miniature for Moon
+    # Add miniature for Moon, if at least one feature is mentioned
     if bIsMoonPicture:
-        imgMiniature = Image.open(dicInputValues["Bitmap_PictureFileName"])
-        iMiniatureWidth, iMiniatureHeight = imgMiniature.size
-        fCoeff = fMiniatureHeight / float(iMiniatureHeight)
-        iMiniatureWidth = int(float(iMiniatureWidth) * fCoeff)
-        iMiniatureHeight = int(float(iMiniatureHeight) * fCoeff)
-        imgMiniature.thumbnail((iMiniatureWidth, iMiniatureHeight), Image.ANTIALIAS)
-        iMiniature_X = iField_Object_Data_1_X
-        if iField_Object_Data_2_X < iMiniature_X: iMiniature_X = iField_Object_Data_2_X
-        if iField_Object_Data_3_X < iMiniature_X: iMiniature_X = iField_Object_Data_3_X
-        if iField_Object_Data_4_X < iMiniature_X: iMiniature_X = iField_Object_Data_4_X
-        if iField_Object_Data_5_X < iMiniature_X: iMiniature_X = iField_Object_Data_5_X
-        if iField_Object_Data_6_X < iMiniature_X: iMiniature_X = iField_Object_Data_6_X
-        iMiniature_X = iMiniature_X - iMarginBottomPicture - iMiniatureWidth
-        iMiniature_Y = iField_Object_Data_1_Y
-        theFinalDraw.rectangle((iMiniature_X, iMiniature_Y, iMiniature_X + iMiniatureWidth + 1, iMiniature_Y + iMiniatureHeight), outline=theColorDataTitle, fill=(255, 0, 0, 255))
-        theFinalImg.paste(imgMiniature, (iMiniature_X + 1 , iMiniature_Y + 1 ))
-        
+        if dicInputValues["Info_MoonFeature0_Name"] != "":
+            imgMiniature = Image.open(dicInputValues["Bitmap_PictureFileName"])
+            iMiniatureWidth, iMiniatureHeight = imgMiniature.size
+            fCoeff = fMiniatureHeight / float(iMiniatureHeight)
+            iMiniatureWidth = int(float(iMiniatureWidth) * fCoeff)
+            iMiniatureHeight = int(float(iMiniatureHeight) * fCoeff)
+            imgMiniature.thumbnail((iMiniatureWidth, iMiniatureHeight), Image.ANTIALIAS)
+            iMiniature_X = iField_Object_Data_1_X
+            if iField_Object_Data_2_X < iMiniature_X: iMiniature_X = iField_Object_Data_2_X
+            if iField_Object_Data_3_X < iMiniature_X: iMiniature_X = iField_Object_Data_3_X
+            if iField_Object_Data_4_X < iMiniature_X: iMiniature_X = iField_Object_Data_4_X
+            if iField_Object_Data_5_X < iMiniature_X: iMiniature_X = iField_Object_Data_5_X
+            if iField_Object_Data_6_X < iMiniature_X: iMiniature_X = iField_Object_Data_6_X
+            iMiniature_X = iMiniature_X - iMarginBottomPicture - iMiniatureWidth
+            iMiniature_Y = iField_Object_Data_1_Y
+            theFinalDraw.rectangle((iMiniature_X, iMiniature_Y, iMiniature_X + iMiniatureWidth + 1, iMiniature_Y + iMiniatureHeight), outline=theColorDataTitle, fill=(255, 0, 0, 255))
+            theFinalImg.paste(imgMiniature, (iMiniature_X + 1 , iMiniature_Y + 1 ))
+            
     
     # Save image
     theFinalImg.save(sOutputFileName + ".png", "PNG")
