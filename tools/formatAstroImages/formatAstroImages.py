@@ -383,6 +383,20 @@ def readInputsFromKeyboard():
 
     return dicInputValues
 
+def loadJsonInputData(sJsonFilename):
+    # get empty dictionary
+    dicInputValues = getEmptyDicInput() 
+
+    # Read json file
+    if sJsonFilename != "":
+        with open(sJsonFilename, 'r') as fp:
+            dicJsonValues = json.load(fp)
+        # override empty dictionary with json values (so missing fields in old JSon will still be in the dictionary with default values)
+        for sKey, aValue in dicJsonValues.iteritems(): 
+            dicInputValues[sKey] = aValue
+    return dicInputValues
+    
+    
 # Constants
 iFinalPictureMarginWidth = 20 # Margin for the final picture         
 iMarginPicture = 5            # Margin around the picture, inside the border   
@@ -409,8 +423,7 @@ print ""
 print ""
 sJsonFilename = getInputValue("Filename", "Name of PJSON parameters file to use", False, ".json")
 if sJsonFilename != "":
-    with open(sJsonFilename, 'r') as fp:
-        dicInputValues = json.load(fp)
+    dicInputValues = loadJsonInputData(sJsonFilename)
 else:
     dicInputValues = readInputsFromKeyboard() 
 
