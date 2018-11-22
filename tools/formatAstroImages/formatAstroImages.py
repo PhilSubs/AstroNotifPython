@@ -295,7 +295,7 @@ def readInputsFromKeyboard():
     print ""
     print "Pictures"
     print "--------"
-    dicInputValues["Bitmap_WinjuposFileName"] = getInputValue("Filename", "Name of PNG file from Winjupos (256x256) ", False, ".png")
+    dicInputValues["Bitmap_WinjuposFileName"] = getInputValue("Filename", "Name of PNG file from Winjupos (?x256) ", False, ".png")
     dicInputValues["Bitmap_PictureFileName"] = getInputValue("Filename", "Name of PNG file for picture ", True, ".png")
 
     print ""
@@ -397,8 +397,8 @@ iMarginSignature = 5          # Margin for signature related to inside border of
 fMiniatureHeight = 96.0       # Height of miniature image for Moon
 
 DATA_TITLE_EPHEMERIDE = "EPHEMERIDE  "
-DATA_TITLE_TELESCOPE = "MATERIEL  "
-DATA_TITLE_CAPTURE = "CAPTURE  "
+DATA_TITLE_TELESCOPE  = "MATERIEL  "
+DATA_TITLE_CAPTURE    = "CAPTURE  "
 DATA_TITLE_PROCESSING = "TRAITEMENT  "
 
 imgWinjupos = None
@@ -436,7 +436,7 @@ else:
     theColorDataText        = (96,96,96)
     theColorDataTitle       = (176,176,176)
     if bIsMoonPicture:
-        theColorSignature       = (228,228,228,255) # if moon. border and signature moe bright
+        theColorSignature       = (228,228,228,255) # if moon. border and signature more bright
     else:
         theColorSignature       = (128,128,128,255)
     theColorSignatureShadow = (32,32,32)
@@ -494,11 +494,14 @@ else:
 
     # Compute fields to be displayed
     sField_Signature = "PhilippeLarosa"
-    sField_Date      = "Février"
-    sField_Date      = str(dicInputValues["TimeLoc_Date"][8:]) + " "  + sField_Date + " " 
+
+    arrMonths = [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juiller", "Août", "Septembre", "Octobre", "Movembre", "Décembre"]
+    sField_Date      = str(dicInputValues["TimeLoc_Date"][8:]) + " "
+    sField_Date      = sField_Date + arrMonths[int(dicInputValues["TimeLoc_Date"][5:7]) - 1] + " "
     sField_Date      = sField_Date + str(dicInputValues["TimeLoc_Date"][0:4]) + "  "
     sField_Date      = sField_Date + str(dicInputValues["TimeLoc_Time"][0:2]) + ":" + str(dicInputValues["TimeLoc_Time"][3:])
     sField_Date      = sField_Date + " GMT"
+    
     sField_Location  = dicInputValues["TimeLoc_Location"]
     
     sField_Title     = dicInputValues["Subject_Title"]
