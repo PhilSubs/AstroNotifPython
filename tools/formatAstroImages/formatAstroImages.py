@@ -409,6 +409,7 @@ iDataTextInterligne = 3       # interline in pixel between data text lines
 iDataTextInterligneEphem = 12 # interline in pixel between data info text and data info ephemerides
 iMarginSignature = 5          # Margin for signature related to inside border of picture
 fMiniatureHeight = 96.0       # Height of miniature image for Moon
+iDataTextDotSize = 3          # Size of the dot on each data text line for Lunar features
 
 DATA_TITLE_EPHEMERIDE = "EPHEMERIDE  "
 DATA_TITLE_TELESCOPE  = "MATERIEL  "
@@ -719,17 +720,24 @@ else:
     iField_SubTitle3_X = iFinalPictureMarginWidth + (iPictureWithBorderWidth - theTempDraw.textsize(sField_SubTitle3, font=theSubTitleFont)[0]) / 2
     iField_SubTitle3_Y = iField_SubTitle2_Y + theTempDraw.textsize(sField_SubTitle2, font=theSubTitleFont)[1] + iDataTextInterligne
 
-    iField_Object_Data_1_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[0]
+    iField_Object_Data_min_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[0]
+    if iField_Object_Data_min_X > (iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[0]): iField_Object_Data_min_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[0]
+    if iField_Object_Data_min_X > (iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[0]): iField_Object_Data_min_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[0]
+    if iField_Object_Data_min_X > (iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[0]): iField_Object_Data_min_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[0]
+    if iField_Object_Data_min_X > (iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[0]): iField_Object_Data_min_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[0]
+    if iField_Object_Data_min_X > (iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_6, font=theInfoDataFont)[0]): iField_Object_Data_min_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_6, font=theInfoDataFont)[0]
+
+    iField_Object_Data_1_X = iField_Object_Data_min_X
     iField_Object_Data_1_Y = iFinalPictureMarginWidth + iTopInfoHeight + iMarginTopPicture + iPictureWithBorderHeight + iMarginBottomPicture
-    iField_Object_Data_2_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[0]
+    iField_Object_Data_2_X = iField_Object_Data_min_X
     iField_Object_Data_2_Y = iField_Object_Data_1_Y + theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[1] + iDataTextInterligne
-    iField_Object_Data_3_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[0]
+    iField_Object_Data_3_X = iField_Object_Data_min_X
     iField_Object_Data_3_Y = iField_Object_Data_2_Y + theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[1] + iDataTextInterligne
-    iField_Object_Data_4_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[0]
+    iField_Object_Data_4_X = iField_Object_Data_min_X
     iField_Object_Data_4_Y = iField_Object_Data_3_Y + theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[1] + iDataTextInterligne
-    iField_Object_Data_5_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[0]
+    iField_Object_Data_5_X = iField_Object_Data_min_X
     iField_Object_Data_5_Y = iField_Object_Data_4_Y + theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[1] + iDataTextInterligne
-    iField_Object_Data_6_X = iFinalImageWidth - iFinalPictureMarginWidth - theTempDraw.textsize(sField_Object_Data_6, font=theInfoDataFont)[0]
+    iField_Object_Data_6_X = iField_Object_Data_min_X
     iField_Object_Data_6_Y = iField_Object_Data_5_Y + theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[1] + iDataTextInterligne
 
     iSizeMax_Title_Data = theTempDraw.textsize(sField_Hardware_Title, font=theInfoDataFont)[0]
@@ -784,17 +792,29 @@ else:
     theFinalDraw.text((iField_SubTitle3_X, iField_SubTitle3_Y), sField_SubTitle3, theColorSubTitle, font=theSubTitleFont)
     
     theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), sField_Object_Data_1, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_1 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), dicInputValues["Info_MoonFeature0_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_1 != "" and bIsMoonPicture: 
+        theFinalDraw.text((iField_Object_Data_1_X, iField_Object_Data_1_Y), dicInputValues["Info_MoonFeature0_Name"], theColorDataTitle, font=theInfoDataFont)
+        theFinalDraw.rectangle((iField_Object_Data_1_X - iDataTextDotSize - iMarginPicture, iField_Object_Data_1_Y - iDataTextDotSize/2 + theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[1] / 2, iField_Object_Data_1_X - iMarginPicture, iField_Object_Data_1_Y + theTempDraw.textsize(sField_Object_Data_1, font=theInfoDataFont)[1] / 2 + iDataTextDotSize/2 ), outline=(255, 255, 255, 255), fill=(255, 255, 255, 255))
     theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), sField_Object_Data_2, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_2 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), dicInputValues["Info_MoonFeature1_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_2 != "" and bIsMoonPicture: 
+        theFinalDraw.text((iField_Object_Data_2_X, iField_Object_Data_2_Y), dicInputValues["Info_MoonFeature1_Name"], theColorDataTitle, font=theInfoDataFont)
+        theFinalDraw.rectangle((iField_Object_Data_2_X - iDataTextDotSize - iMarginPicture, iField_Object_Data_2_Y - iDataTextDotSize/2 + theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[1] / 2, iField_Object_Data_2_X - iMarginPicture, iField_Object_Data_2_Y + theTempDraw.textsize(sField_Object_Data_2, font=theInfoDataFont)[1] / 2 + iDataTextDotSize/2 ), outline=(255, 255, 255, 255), fill=(255, 255, 255, 255))
     theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), sField_Object_Data_3, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_3 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), dicInputValues["Info_MoonFeature2_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_3 != "" and bIsMoonPicture: 
+        theFinalDraw.text((iField_Object_Data_3_X, iField_Object_Data_3_Y), dicInputValues["Info_MoonFeature2_Name"], theColorDataTitle, font=theInfoDataFont)
+        theFinalDraw.rectangle((iField_Object_Data_3_X - iDataTextDotSize - iMarginPicture, iField_Object_Data_3_Y - iDataTextDotSize/2 + theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[1] / 2, iField_Object_Data_3_X - iMarginPicture, iField_Object_Data_3_Y + theTempDraw.textsize(sField_Object_Data_3, font=theInfoDataFont)[1] / 2 + iDataTextDotSize/2 ), outline=(255, 255, 255, 255), fill=(255, 255, 255, 255))
     theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), sField_Object_Data_4, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_4 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), dicInputValues["Info_MoonFeature3_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_4 != "" and bIsMoonPicture: 
+        theFinalDraw.text((iField_Object_Data_4_X, iField_Object_Data_4_Y), dicInputValues["Info_MoonFeature3_Name"], theColorDataTitle, font=theInfoDataFont)
+        theFinalDraw.rectangle((iField_Object_Data_4_X - iDataTextDotSize - iMarginPicture, iField_Object_Data_4_Y - iDataTextDotSize/2 + theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[1] / 2, iField_Object_Data_4_X + - iMarginPicture, iField_Object_Data_4_Y + theTempDraw.textsize(sField_Object_Data_4, font=theInfoDataFont)[1] / 2 + iDataTextDotSize/2 ), outline=(255, 255, 255, 255), fill=(255, 255, 255, 255))
     theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), sField_Object_Data_5, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_5 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), dicInputValues["Info_MoonFeature4_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_5 != "" and bIsMoonPicture: 
+        theFinalDraw.text((iField_Object_Data_5_X, iField_Object_Data_5_Y), dicInputValues["Info_MoonFeature4_Name"], theColorDataTitle, font=theInfoDataFont)
+        theFinalDraw.rectangle((iField_Object_Data_5_X - iDataTextDotSize - iMarginPicture, iField_Object_Data_5_Y - iDataTextDotSize/2 + theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[1] / 2, iField_Object_Data_5_X + - iMarginPicture, iField_Object_Data_5_Y + theTempDraw.textsize(sField_Object_Data_5, font=theInfoDataFont)[1] / 2 + iDataTextDotSize/2 ), outline=(255, 255, 255, 255), fill=(255, 255, 255, 255))
     theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), sField_Object_Data_6, theColorDataText, font=theInfoDataFont)
-    if sField_Object_Data_6 != "" and bIsMoonPicture: theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), dicInputValues["Info_MoonFeature5_Name"], theColorDataTitle, font=theInfoDataFont)
+    if sField_Object_Data_6 != "" and bIsMoonPicture: 
+        theFinalDraw.text((iField_Object_Data_6_X, iField_Object_Data_6_Y), dicInputValues["Info_MoonFeature5_Name"], theColorDataTitle, font=theInfoDataFont)
+        theFinalDraw.rectangle((iField_Object_Data_6_X - iDataTextDotSize - iMarginPicture, iField_Object_Data_6_Y - iDataTextDotSize/2 + theTempDraw.textsize(sField_Object_Data_6, font=theInfoDataFont)[1] / 2, iField_Object_Data_6_X + - iMarginPicture, iField_Object_Data_6_Y + theTempDraw.textsize(sField_Object_Data_6, font=theInfoDataFont)[1] / 2 + iDataTextDotSize/2 ), outline=(255, 255, 255, 255), fill=(255, 255, 255, 255))
 
     if sField_MoonEphem != "": theFinalDraw.text((iField_MoonEphem_X, iField_MoonEphem_Y), sField_MoonEphem, theColorDataText,  font=theInfoDataFont)
     if sField_MoonEphem != "": theFinalDraw.text((iField_MoonEphem_Title_X, iField_MoonEphem_Title_Y), sField_MoonEphem_Title, theColorDataTitle, font=theInfoDataFont)
@@ -836,7 +856,7 @@ else:
             if iField_Object_Data_4_X < iMiniature_X: iMiniature_X = iField_Object_Data_4_X
             if iField_Object_Data_5_X < iMiniature_X: iMiniature_X = iField_Object_Data_5_X
             if iField_Object_Data_6_X < iMiniature_X: iMiniature_X = iField_Object_Data_6_X
-            iMiniature_X = iMiniature_X - iMarginBottomPicture - iMiniatureWidth
+            iMiniature_X = iMiniature_X - iMarginBottomPicture - iDataTextDotSize - iMarginPicture - iMiniatureWidth
             iMiniature_Y = iField_Object_Data_1_Y
             theFinalDraw.rectangle((iMiniature_X, iMiniature_Y, iMiniature_X + iMiniatureWidth + 1, iMiniature_Y + iMiniatureHeight), outline=theColorDataTitle, fill=(255, 0, 0, 255))
             theFinalImg.paste(imgMiniature, (iMiniature_X + 1 , iMiniature_Y + 1 ))
