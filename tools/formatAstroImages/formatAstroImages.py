@@ -520,7 +520,7 @@ else:
     
     sField_Title     = dicInputValues["Subject_Title"]
     if bIsMoonPicture:
-        sField_SubTitle1 = ""
+        sField_SubTitle1 = dicInputValues["Info_Additional"]
         sField_SubTitle2 = ""
         sField_SubTitle3 = ""
         sField_Object_Data_1 = addInfoToString(dicInputValues["Info_MoonFeature0_Name"], "", "  ", "", "")
