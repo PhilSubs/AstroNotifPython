@@ -9,145 +9,20 @@ import os.path
 import datetime
 from PIL import Image, ImageDraw, ImageFont
 
-def printDicInput(dicInputValues):
-    print ""
-    print ""
-    print ""
-    print "Subject"
-    print "-------"
-    print "Subject........................ " + dicInputValues["Subject_Type"]
-    print "Title.......................... " + dicInputValues["Subject_Title"]
-    print "Moon Age....................... " + dicInputValues["Info_MoonAge"]
-    print "Moon Illumination.............. " + dicInputValues["Info_MoonIllumination"]
-    print "Moon Colongitude............... " + dicInputValues["Info_MoonColongitude"]
-    if dicInputValues["Subject_Type"] == "Moon":
-        for i in range(0,6):
-            sFeatureID = str(i).strip()
-            if dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"] != "":
-                print "Feature " + sFeatureID + " Name................. " + dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"]
-                if dicInputValues["Info_MoonFeature" + sFeatureID + "_Diameter"] != "": print "Diameter....................... " + dicInputValues["Info_MoonFeature" + sFeatureID + "_Diameter"]
-                if dicInputValues["Info_MoonFeature" + sFeatureID + "_Height"]   != "": print "Height......................... " + dicInputValues["Info_MoonFeature" + sFeatureID + "_Height"]
-                if dicInputValues["Info_MoonFeature" + sFeatureID + "_Length"]   != "": print "Length......................... " + dicInputValues["Info_MoonFeature" + sFeatureID + "_Length"]
-                if dicInputValues["Info_MoonFeature" + sFeatureID + "_Width"]    != "": print "Width.......................... " + dicInputValues["Info_MoonFeature" + sFeatureID + "_Width"]
-                if dicInputValues["Info_MoonFeature" + sFeatureID + "_Depth"]    != "": print "Depth.......................... " + dicInputValues["Info_MoonFeature" + sFeatureID + "_Depth"]
-        print "Additional information......... " + dicInputValues["Info_Additional"]
-    elif dicInputValues["Subject_Type"] == "Planet":
-        print "Planet Distance................ " + dicInputValues["Info_Planet_Distance"]
-        print "Planet Diameter................ " + dicInputValues["Info_Planet_Diameter"]
-        print "Planet Altitude................ " + dicInputValues["Info_Planet_Altitude"]
-        print "Planet Magnitude............... " + dicInputValues["Info_Planet_Magnitude"]
-        print "Planet CMI..................... " + dicInputValues["Info_Planet_CMI"]
-        print "Planet CMII.................... " + dicInputValues["Info_Planet_CMII"]
-        print "Planet CMIII................... " + dicInputValues["Info_Planet_CMIII"]
-        print "Planet Focal Length............ " + dicInputValues["Info_Planet_FocalLength"]
-        print "Planet Focal Ratio............. " + dicInputValues["Info_Planet_FocalRatio"]
-        print "Planet Resolution.............. " + dicInputValues["Info_Planet_Resolution"]
-    elif dicInputValues["Subject_Type"] == "Deep Sky":
-        print "Deep Sky Object Type........... " + dicInputValues["Info_DeepSky_Type"]
-        print "Deep Sky Object Distance....... " + dicInputValues["Info_DeepSky_Distance"]
-        print "Deep Sky Object Apparent Diam.. " + dicInputValues["Info_DeepSky_Diameter"]
-        print "Deep Sky object Magnitude...... " + dicInputValues["Info_DeepSky_Magnitude"]
-    print ""
-    print "Pictures"
-    print "--------"
-    print "Winjupos file name.............. " + dicInputValues["Bitmap_WinjuposFileName"]   
-    print "Picture file name.............. " + dicInputValues["Bitmap_PictureFileName"]
-    print ""
-    print "Time & Location"
-    print "---------------"
-    print "Date........................... " + dicInputValues["TimeLoc_Date"]
-    print "Time (UT)...................... " + dicInputValues["TimeLoc_Time"]
-    print "Location....................... " + dicInputValues["TimeLoc_Location"]
-    print ""
-    print "Hardware"
-    print "--------"
-    print "Scope.......................... " + dicInputValues["Hardware_Optic"]
-    print "Mount.......................... " + dicInputValues["Hardware_Mount"]
-    print "ADC............................ " + dicInputValues["Hardware_ADC"]
-    print "Focal Reducer.................. " + dicInputValues["Hardware_Reducer"]
-    print "Barlow......................... " + dicInputValues["Hardware_Barlow"]
-    print "Filter......................... " + dicInputValues["Hardware_Filter"]
-    print "Camera......................... " + dicInputValues["Hardware_Camera"]
-    print "Additional Info ............... " + dicInputValues["Hardware_Additional_Info"]
-    print ""
-    print "Capture"
-    print "-------"
-    print "Software....................... " + dicInputValues["Capture_Software"]
-    print "Bin............................ " + dicInputValues["Capture_Bin"]
-    print "Gain........................... " + dicInputValues["Capture_Gain"]
-    print "Bits (8/16).................... " + dicInputValues["Capture_Bits"]
-    print "Exposition (ms)................ " + dicInputValues["Capture_Exposition"]
-    print "Rate (fps)..................... " + dicInputValues["Capture_Rate"]
-    print "Total Exposure (s)............... " + dicInputValues["Capture_TotalExposure"]
-    print ""
-    print "Processing"
-    print "----------"
-    print "Stacking Software.............. " + dicInputValues["Processing_StackingSoftware"]
-    print "Images Processed.(detailed).... " + dicInputValues["Processing_ImagesProcessed"]
-    print "Processing Software............ " + dicInputValues["Processing_ProcessingSoftware"]
-    print "Rendering Software............. " + dicInputValues["Processing_RenderingSoftware"]
-    print "Additional Info................ " + dicInputValues["Processing_AdditionalInfo"]
-    print ""
-    print ""
-    print ""
-
 def getEmptyDicInput():
+    with open("FormatAstroImages_DataRequest.json", 'r') as fp:
+        dicJsonValues = json.load(fp)
     dicInput = {}
-    dicInput["Bitmap_WinjuposFileName"] = ""
-    dicInput["Bitmap_PictureFileName"] = ""
-    dicInput["Subject_Type"] = ""
-    dicInput["Subject_Title"] = ""
-    dicInput["Info_MoonAge"] = ""
-    dicInput["Info_MoonIllumination"] = ""
-    dicInput["Info_MoonColongitude"] = ""
-    for i in range(0,6):
-        sFeatureID = str(i).strip()
-        dicInput["Info_MoonFeature" + sFeatureID + "_Name"] = ""
-        dicInput["Info_MoonFeature" + sFeatureID + "_Diameter"] = ""
-        dicInput["Info_MoonFeature" + sFeatureID + "_Height"] = ""
-        dicInput["Info_MoonFeature" + sFeatureID + "_Length"] = ""
-        dicInput["Info_MoonFeature" + sFeatureID + "_Width"] = ""
-        dicInput["Info_MoonFeature" + sFeatureID + "_Depth"] = ""
-    dicInput["Info_Additional"] = ""
-    dicInput["Info_Planet_Distance"] = ""
-    dicInput["Info_Planet_Diameter"] = ""
-    dicInput["Info_Planet_Altitude"] = ""
-    dicInput["Info_Planet_Magnitude"] = ""
-    dicInput["Info_Planet_CMI"] = ""
-    dicInput["Info_Planet_CMII"] = ""
-    dicInput["Info_Planet_CMIII"] = ""
-    dicInput["Info_Planet_FocalLength"] = ""
-    dicInput["Info_Planet_FocalRatio"] = ""
-    dicInput["Info_Planet_Resolution"] = ""
-    dicInput["Info_DeepSky_Type"] = ""
-    dicInput["Info_DeepSky_Distance"] = ""
-    dicInput["Info_DeepSky_Diameter"] = ""
-    dicInput["Info_DeepSky_Magnitude"] = ""
-    dicInput["TimeLoc_Date"] = ""
-    dicInput["TimeLoc_Time"] = ""
-    dicInput["TimeLoc_Location"] = ""
-    dicInput["Hardware_Optic"] = ""
-    dicInput["Hardware_Mount"] = ""
-    dicInput["Hardware_ADC"] = ""
-    dicInput["Hardware_Reducer"] = ""
-    dicInput["Hardware_Barlow"] = ""
-    dicInput["Hardware_Camera"] = ""
-    dicInput["Hardware_Filter"] = ""
-    dicInput["Hardware_Additional_Info"] = ""
-    dicInput["Capture_Software"] = ""
-    dicInput["Capture_Bin"] = ""
-    dicInput["Capture_Gain"] = ""
-    dicInput["Capture_Bits"] = ""
-    dicInput["Capture_Exposition"] = ""
-    dicInput["Capture_Rate"] = ""
-    dicInput["Capture_TotalExposure"] = ""
-    dicInput["Processing_StackingSoftware"] = ""
-    dicInput["Processing_ImagesProcessed"] = ""
-    dicInput["Processing_Pre-processingSoftware"] = ""
-    dicInput["Processing_ProcessingSoftware"] = ""
-    dicInput["Processing_RenderingSoftware"] = ""
-    dicInput["Processing_AdditionalInfo"] = ""
-    return dicInput
+    # Loop through DataRequest sections 
+    for sKey, aValue in sorted(dicJsonValues.iteritems()): 
+        # Loop for each occurence
+        for j in range(0, dicJsonValues[sKey]["OccurrenceMax"]):
+            # Loop through section's fields
+            for i in range(0, len(dicJsonValues[sKey]["Fields"])):
+                sSubID = dicJsonValues[sKey]["Fields"][i]["ID"].replace("<OccID>", str(j))
+                sSubID = sSubID[sSubID.find("-")+1:]
+                dicInput[sSubID] = ""
+    return dicInput    
     
 def addInfoToString(sInfoToBeAdded, sLabel, sUnit,  sInitialString, sSeparator):
     sReturnValue = sInitialString
@@ -196,7 +71,7 @@ def getInputValue(sType, sPrompt, aParam1, aParam2):
     sPromptDisplayed = (sPrompt + "...................................................................")[:60]
     if sType == "Parameter":
         # read parameters
-        with open("parameters.json", 'r') as fp:
+        with open("FormatAstroImages_Settings.json", 'r') as fp:
             dicParameters = json.load(fp)
         # Compute prompt
         sKey = aParam1
@@ -291,97 +166,44 @@ def getInputValue(sType, sPrompt, aParam1, aParam2):
 
 def readInputsFromKeyboard():
     dicInputValues = getEmptyDicInput() 
-    print ""
-    print ""
-    print "Pictures"
-    print "--------"
-    dicInputValues["Bitmap_WinjuposFileName"] = getInputValue("Filename", "Name of PNG file from Winjupos (?x256) ", False, ".png")
-    dicInputValues["Bitmap_PictureFileName"] = getInputValue("Filename", "Name of PNG file for picture ", True, ".png")
+    
+    # Use DataRequest json for requesting values
+    with open("FormatAstroImages_DataRequest.json", 'r') as fp:
+        dicJsonValues = json.load(fp)
+    # Loop through DataRequest sections 
+    for sKey, aValue in sorted(dicJsonValues.iteritems()): 
+        # check if dependency
+        bDependencyVerified = True
+        if dicJsonValues[sKey]["Dependency"]["Field"] != "":
+            bCondition = eval('dicInputValues["' + dicJsonValues[sKey]["Dependency"]["Field"] + '"] ' + dicJsonValues[sKey]["Dependency"]["Operator"] + " " + '"' + dicJsonValues[sKey]["Dependency"]["Value"] + '"')
+            if not bCondition: bDependencyVerified = False
 
-    print ""
-    print "Subject"
-    print "-------"
-    dicInputValues["Subject_Type"]  = (getInputValue("StringFromList", "Object type: Moon, Planet, Deep Sky ", True, "M|P|DS")).upper()
-    dicInputValues["Subject_Title"] = getInputValue("String", "Title ", True, None)
-    if dicInputValues["Subject_Type"] == "M":  dicInputValues["Subject_Type"] = "Moon"
-    if dicInputValues["Subject_Type"] == "P":  dicInputValues["Subject_Type"] = "Planet"
-    if dicInputValues["Subject_Type"] == "DS": dicInputValues["Subject_Type"] = "Deep Sky"
-    if dicInputValues["Subject_Type"] == "Moon":
-        dicInputValues["Info_MoonAge"]          = getInputValue("String", "Moon Age ", False, None) 
-        dicInputValues["Info_MoonIllumination"] = getInputValue("String", "Moon Illumination (%) ", False, None) 
-        dicInputValues["Info_MoonColongitude"]  = getInputValue("String", "Moon Colongitude (deg) ", False, None) 
-        bAllFeaturesFilled = False
-        for i in range(0,6):
-            sFeatureID = str(i).strip()
-            dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"] = ""
-            if not bAllFeaturesFilled:
-                dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"] = getInputValue("String", "    Feature " + sFeatureID + " Name ", False, None)
-                if dicInputValues["Info_MoonFeature" + sFeatureID + "_Name"] != "":
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Diameter"] = getInputValue("String", "        Diameter (+ unit) ", False, None)
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Height"]   = getInputValue("String", "        Height (+ unit) ", False, None)
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Length"]   = getInputValue("String", "        Length  (+ unit)", False, None)
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Width"]    = getInputValue("String", "        Width (+ unit) ", False, None)
-                    dicInputValues["Info_MoonFeature" + sFeatureID + "_Depth"]    = getInputValue("String", "        Depth (+ unit) ", False, None)
-                else:
-                    bAllFeaturesFilled = True
-        dicInputValues["Info_Additional"] = getInputValue("String", "Additional comment ", False, None)
-    elif dicInputValues["Subject_Type"] == "Planet":
-        dicInputValues["Info_Planet_Distance"]    = getInputValue("String", "Planet Distance (+ unit) ", False, None) 
-        dicInputValues["Info_Planet_Diameter"]    = getInputValue("String", "Planet Diameter (sec) ", False, None) 
-        dicInputValues["Info_Planet_Altitude"]    = getInputValue("String", "Planet Altitude (deg) ", False, None) 
-        dicInputValues["Info_Planet_Magnitude"]   = getInputValue("String", "Planet Magnitude ", False, None) 
-        dicInputValues["Info_Planet_CMI"]         = getInputValue("String", "Planet CMI (deg) ", False, None) 
-        dicInputValues["Info_Planet_CMII"]        = getInputValue("String", "Planet CMII (deg) ", False, None) 
-        dicInputValues["Info_Planet_CMIII"]       = getInputValue("String", "Planet CMIII (deg) ", False, None) 
-        dicInputValues["Info_Planet_FocalLength"] = getInputValue("String", "Planet Focal Length (mm) ", False, None) 
-        dicInputValues["Info_Planet_FocalRatio"]  = getInputValue("String", "Planet Focal Ratio (F/..) ", False, None) 
-        dicInputValues["Info_Planet_Resolution"]  = getInputValue("String", "Planet Resolution (sec) ", False, None) 
-    elif dicInputValues["Subject_Type"] == "Deep Sky":
-        dicInputValues["Info_DeepSky_Type"]      = getInputValue("String", "Object Type ", False, None) 
-        dicInputValues["Info_DeepSky_Distance"]  = getInputValue("String", "Object Distance (+ unit) ", False, None) 
-        dicInputValues["Info_DeepSky_Diameter"]  = getInputValue("String", "Object Diameter (+ unit) ", False, None) 
-        dicInputValues["Info_DeepSky_Magnitude"] = getInputValue("String", "Object Magnitude ", False, None) 
-    print ""
-    print "Time & Location"
-    print "---------------"
-    dicInputValues["TimeLoc_Date"]     = getInputValue("DateAAAA-MM-JJ", "Date       [AAAA-MM-JJ] ", True, None)
-    dicInputValues["TimeLoc_Time"]     = getInputValue("TimeHH:MM", "Time GMT   [HH:MM] ", True, None)
-    dicInputValues["TimeLoc_Location"] = getInputValue("Parameter", "Location ", "Other/Location", None)
-    print ""
-    print "Hardware"
-    print "--------"
-    dicInputValues["Hardware_Optic"]   = getInputValue("Parameter", "Optical instrument ", "Hardware/Instrument/Scope", None)
-    dicInputValues["Hardware_Mount"]   = getInputValue("Parameter", "Mount ", "Hardware/Instrument/Mount", None)
-    dicInputValues["Hardware_ADC"]     = getInputValue("Parameter", "Accessory: ADC ?", "Hardware/Accessories/ADC", None)
-    dicInputValues["Hardware_Reducer"] = getInputValue("Parameter", "Accessory: Reducer ?", "Hardware/Accessories/Reducer", None)
-    dicInputValues["Hardware_Barlow"]  = getInputValue("Parameter", "Accessory: Barlow ?", "Hardware/Accessories/Barlow", None)
-    dicInputValues["Hardware_Camera"]  = getInputValue("Parameter", "Camera ", "Hardware/Camera", None)
-    if dicInputValues["Hardware_Camera"] == "ASI 224MC":
-        dicInputValues["Hardware_Filter"]   = getInputValue("Parameter", "Filter ", "Hardware/Accessories/Filters", "IR/UV Cut")
-    else:
-        dicInputValues["Hardware_Filter"]   = getInputValue("Parameter", "Filter ", "Hardware/Accessories/Filters", None)
-    dicInputValues["Hardware_Additional_Info"] = getInputValue("String", "Additional info (projection, eyepiece, ...) ", False, None)
-    print ""
-    print "Capture"
-    print "-------"
-    dicInputValues["Capture_Software"]      = getInputValue("Parameter", "Capture software ", "Software/Capture", None)
-    dicInputValues["Capture_Bin"]           = getInputValue("Parameter", "Bin setting ", "CameraSettings/Bin", None)
-    dicInputValues["Capture_Gain"]          = getInputValue("String", "Gain setting ", True, None)
-    dicInputValues["Capture_Bits"]          = getInputValue("Parameter", "Bits setting ", "CameraSettings/Bits", None)
-    dicInputValues["Capture_Exposition"]    = getInputValue("String", "Exposition (+ unit) ", True, None)
-    dicInputValues["Capture_Rate"]          = getInputValue("String", "Frame rate (fps) ", False, None)
-    dicInputValues["Capture_TotalExposure"] = getInputValue("String", "Total Exposure (+ unit) ", True, None)
-    print ""
-    print "Processing"
-    print "----------"
-    dicInputValues["Processing_Pre-processingSoftware"] = getInputValue("Parameter", "Pre-processing software ", "Software/Pre-processing", None)
-    dicInputValues["Processing_StackingSoftware"]       = getInputValue("Parameter", "Stacking software ", "Software/Stacking", None)
-    dicInputValues["Processing_ImagesProcessed"]        = getInputValue("String", "# images processed (detailed captured, stacked, darks,...) ", True, None)
-    dicInputValues["Processing_ProcessingSoftware"]     = getInputValue("Parameter", "Processing software ", "Software/Processing", None)
-    dicInputValues["Processing_RenderingSoftware"]      = getInputValue("Parameter", "Final rendering software ", "Software/Rendering", None)
-    dicInputValues["Processing_AdditionalInfo"]         = getInputValue("String", "Additional info (resize,...) ", False, None)
-
-    return dicInputValues
+        if bDependencyVerified:
+            print ""
+            print ""
+            print sKey
+            print ("-"*100)[0:len(sKey)]
+            # Loop for each occurence
+            bAllOccurenceCompleted = False
+            bIsMultipleOccurrence = (dicJsonValues[sKey]["OccurrenceMax"] > 1)
+            for j in range(0, dicJsonValues[sKey]["OccurrenceMax"]):
+                # Loop through section's fields
+                if bAllOccurenceCompleted ==  False:
+                    for i in range(0, len(dicJsonValues[sKey]["Fields"])):
+                        if bAllOccurenceCompleted ==  False:
+                            sSubID = dicJsonValues[sKey]["Fields"][i]["ID"].replace("<OccID>", str(j))
+                            sSubID = sSubID[sSubID.find("-")+1:]
+                            aParam1 = None
+                            if dicJsonValues[sKey]["Fields"][i]["Param1"] != "": aParam1 = dicJsonValues[sKey]["Fields"][i]["Param1"]
+                            aParam2 = None
+                            if dicJsonValues[sKey]["Fields"][i]["Param2"] != "": aParam2 = dicJsonValues[sKey]["Fields"][i]["Param2"]
+                            sType = dicJsonValues[sKey]["Fields"][i]["Type"]
+                            sPrompt = dicJsonValues[sKey]["Fields"][i]["Prompt"].replace("<OccID>", str(j))
+                            dicInputValues[sSubID] = getInputValue(sType, sPrompt, aParam1, aParam2)
+                            if i==0 and bIsMultipleOccurrence and dicInputValues[sSubID] == "":
+                                bAllOccurenceCompleted = True
+                        i = i + 1
+    return dicInputValues    
 
 def loadJsonInputData(sJsonFilename):
     # get empty dictionary
