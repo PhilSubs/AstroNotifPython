@@ -7,8 +7,10 @@
                         },
     "02-Subject": { "OccurrenceMax":1, "Dependency": { "Field":"", "Operator":"", "Value":"" },
                     "Fields":[ 
-                        {"ID":"01-Subject_Type",  "Type":"StringFromList", "Prompt":"Object type: Moon, Planet, Deep Sky", "Param1":true, "Param2":"Moon|Planet|Deep Sky" },
-                        {"ID":"02-Subject_Title", "Type":"String",         "Prompt":"Title",                               "Param1":true, "Param2":""}
+                        {"ID":"01-Subject_Type",      "Type":"StringFromList", "Prompt":"Object type: Moon, Planet, Deep Sky", "Param1":true, "Param2":"Moon|Planet|Deep Sky" },
+                        {"ID":"02-Subject_Title",     "Type":"String",         "Prompt":"Title",                               "Param1":true, "Param2":""},
+                        {"ID":"02-Subject_TitleRow2", "Type":"String",         "Prompt":"Title (row 2)",                       "Param1":true, "Param2":""},
+                        {"ID":"02-Subject_TitleRow3", "Type":"String",         "Prompt":"Title (row 3)",                       "Param1":true, "Param2":""}
             ]
         },
     "03-Time & Location": { "OccurrenceMax":1, "Dependency": { "Field":"", "Operator":"", "Value":"" },
@@ -20,19 +22,22 @@
         },
     "04-Moon Ephemeride": { "OccurrenceMax":1, "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Moon" },
                             "Fields":[ 
-                                {"ID":"01-Info_MoonAge",          "Type":"String", "Prompt":"Moon Age (days)",        "Param1":false, "Param2":"" },
-                                {"ID":"02-Info_MoonIllumination", "Type":"String", "Prompt":"Moon Illumination (%)",  "Param1":false, "Param2":"" },
-                                {"ID":"03-Info_MoonColongitude",  "Type":"String", "Prompt":"Moon Colongitude (deg)", "Param1":false, "Param2":"" }
+                                {"ID":"01-Info_MoonAge",           "Type":"String", "Prompt":"Moon Age (days)          ", "Param1":false, "Param2":"" },
+                                {"ID":"02-Info_MoonIllumination",  "Type":"String", "Prompt":"Moon Illumination     (%)", "Param1":false, "Param2":"" },
+                                {"ID":"03-Info_MoonColongitude",   "Type":"String", "Prompt":"Moon Colongitude    (deg)", "Param1":false, "Param2":"" },
+                                {"ID":"03-Info_MoonPositionAngle", "Type":"String", "Prompt":"Moon Position Angle (deg)", "Param1":false, "Param2":"" }
                             ]
         },
     "05a-Moon Features": { "OccurrenceMax":6, "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Moon" },
                            "Fields":[ 
-                               {"ID":"<OccID>a-Info_MoonFeature<OccID>_Name",     "Type":"String", "Prompt":"Feature <OccID> Name             ", "Param1":false, "Param2":"" },
-                               {"ID":"<OccID>b-Info_MoonFeature<OccID>_Diameter", "Type":"String", "Prompt":"          Diameter (+ unit)",       "Param1":false, "Param2":"" },
-                               {"ID":"<OccID>c-Info_MoonFeature<OccID>_Depth",    "Type":"String", "Prompt":"          Depth (+ unit)   ",       "Param1":false, "Param2":"" },
-                               {"ID":"<OccID>d-Info_MoonFeature<OccID>_Height",   "Type":"String", "Prompt":"          Height (+ unit)  ",       "Param1":false, "Param2":"" },
-                               {"ID":"<OccID>e-Info_MoonFeature<OccID>_Length",   "Type":"String", "Prompt":"          Length  (+ unit) ",       "Param1":false, "Param2":"" },
-                               {"ID":"<OccID>g-Info_MoonFeature<OccID>_Width",    "Type":"String", "Prompt":"          Width (+ unit)   ",       "Param1":false, "Param2":"" }
+                               {"ID":"<OccID>a-Info_MoonFeature<OccID>_Name",      "Type":"String", "Prompt":"Feature <OccID> Name             ", "Param1":false, "Param2":"" },
+                               {"ID":"<OccID>b-Info_MoonFeature<OccID>_Longitude", "Type":"String", "Prompt":"          Longitude (deg)  ",       "Param1":false, "Param2":"" },
+                               {"ID":"<OccID>b-Info_MoonFeature<OccID>_Latitude",  "Type":"String", "Prompt":"          Latitude (deg)   ",       "Param1":false, "Param2":"" },
+                               {"ID":"<OccID>b-Info_MoonFeature<OccID>_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)",       "Param1":false, "Param2":"" },
+                               {"ID":"<OccID>c-Info_MoonFeature<OccID>_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ",       "Param1":false, "Param2":"" },
+                               {"ID":"<OccID>d-Info_MoonFeature<OccID>_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ",       "Param1":false, "Param2":"" },
+                               {"ID":"<OccID>e-Info_MoonFeature<OccID>_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ",       "Param1":false, "Param2":"" },
+                               {"ID":"<OccID>g-Info_MoonFeature<OccID>_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ",       "Param1":false, "Param2":"" }
                            ]
         },
     "05b-Moon Additional Info": { "OccurrenceMax":1, "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Moon" },
@@ -99,8 +104,8 @@
                     "Fields":[ 
                         {"ID":"01-Capture_Software",      "Type":"Parameter", "Prompt":"Capture software",        "Param1":"Software/Capture",    "Param2":"" },
                         {"ID":"02-Capture_Bin",           "Type":"Parameter", "Prompt":"Bin setting",             "Param1":"CameraSettings/Bin",  "Param2":"" },
-                        {"ID":"03-Capture_Gain",          "Type":"String",    "Prompt":"Gain setting",            "Param1":false,                 "Param2":"" },
                         {"ID":"04-Capture_Bits",          "Type":"Parameter", "Prompt":"Bits setting",            "Param1":"CameraSettings/Bits", "Param2":"" },
+                        {"ID":"03-Capture_Gain",          "Type":"String",    "Prompt":"Gain setting",            "Param1":false,                 "Param2":"" },
                         {"ID":"05-Capture_Exposition",    "Type":"String",    "Prompt":"Exposition (+ unit)",     "Param1":false,                 "Param2":"" },
                         {"ID":"06-Capture_Rate",          "Type":"String",    "Prompt":"Frame rate (fps)",        "Param1":false,                 "Param2":"" },
                         {"ID":"07-Capture_TotalExposure", "Type":"String",    "Prompt":"Total Exposure (+ unit)", "Param1":false,                 "Param2":"" }
