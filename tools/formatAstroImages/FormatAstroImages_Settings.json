@@ -57,11 +57,11 @@
     },
     "CameraSettings": {
                     "Bin": {
-                        "values": [ "x1", "x2" ],
+                        "values": [ "", "x1", "x2" ],
                         "default": "x1"
                     },
                     "Bits": {
-                        "values": [ "8", "16" ],
+                        "values": [ "", "8", "16" ],
                         "default": "8"
                     }
     },
@@ -75,6 +75,15 @@
                     "YesNo": {
                         "values": [ "Yes", "No" ],
                         "default": "Yes"
-                    }
+                    }, 
+                    "Feature0_Color":"(255, 127, 0)" ,
+                    "Feature1_Color":"(0, 162, 222)" ,
+                    "Feature2_Color":"(255, 255, 0)" ,
+                    "Feature3_Color":"(0, 255, 0)" ,
+                    "Feature4_Color":"(255, 0, 255)" ,
+                    "Feature5_Color":"(255, 0, 0)" ,
+                    "Minimap_Adjust_Longitude":"5.0" ,
+                    "Minimap_Adjust_Latitude":"0.0" ,
+                    "Minimap_MarkerSizeInPx":"6" 
     }
 }
