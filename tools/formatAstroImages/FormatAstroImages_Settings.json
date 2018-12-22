@@ -2,8 +2,8 @@
     "Hardware": {
                     "Instrument":{
                                     "Scope":   { 
-                                        "values": [ "Celestron SCT 11\" 280/2800", "EF70-300mm f/4-5.6L IS USM" ],
-                                        "default": "Celestron SCT 11\" 280/2800"
+                                        "values": [ "Celestron SCT 11  D.280mm F.2800mm", "EF70-300mm f/4-5.6L IS USM" ],
+                                        "default": "Celestron SCT 11  D.280mm F.2800mm"
                                     },
                                     "Mount":   {
                                         "values": [ "", "CGEM" ],
@@ -12,7 +12,7 @@
                     },
                     "Accessories":{
                                     "ADC":     {
-                                        "values": [ "", "ZWO ADC" ],
+                                        "values": [ "", "ZWO" ],
                                         "default": ""
                                     },
                                     "Barlow":  {
@@ -28,27 +28,35 @@
                                         "default": ""
                                     }
                     },
-                    "Camera":{
-                        "values": [ "ASI 224MC", "ASI 178MM", "ASI 120MM", "CANON EOS 450D", "Samsung Galaxy Note 3" ],
+                    "Capteur":{
+                        "values": [ "ZWO ASI224MC", "ZWO ASI178MM", "ZWO ASI120MM", "Canon EOS 450D", "Samsung Galaxy Note 3" ],
                         "default": ""
                     }
     },
     "Software": {
                     "Capture": {
-                        "values": [ "", "Firecapture", "Sharpcap" ],
+                        "values": [ "", "Firecapture", "Sharpcap", "Samsung Photo" ],
                         "default": "Firecapture"
                     },
                     "Pre-processing": {
                         "values": [ "", "PIPP" ],
                         "default": ""
                     },
-                    "Stacking": {
-                        "values": [ "", "Autostakkert!2", "Autostakkert!3", "Registax6", "Deep Sky Stacker" ],
+                    "StackingPlanetary": {
+                        "values": [ "", "Autostakkert!2", "Autostakkert!3", "Registax6" ],
                         "default": "Autostakkert!3"
                     },
-                    "Processing":  {
+                    "StackingDeepSky": {
+                        "values": [ "", "Autostakkert!3", "Siril", "Deep Sky Stacker" ],
+                        "default": "Siril"
+                    },
+                    "ProcessingPlanetary":  {
                         "values": [ "","Registax6", "Siril" ],
                         "default": "Registax6"
+                    },
+                    "ProcessingDeepSky":  {
+                        "values": [ "","Registax6", "Siril" ],
+                        "default": "Siril"
                     },
                     "Rendering":  {
                         "values": [ "", "Photoshop", "Lightroom" ],
@@ -76,14 +84,33 @@
                         "values": [ "Yes", "No" ],
                         "default": "Yes"
                     }, 
+                    "Planet": {
+                        "values": [ "Mercure", "Venus", "Mars", "Jupiter", "Saturne", "Uranus", "Neptune" ],
+                        "default": ""
+                    },
                     "Feature0_Color":"(255, 127, 0)" ,
                     "Feature1_Color":"(0, 162, 222)" ,
                     "Feature2_Color":"(255, 255, 0)" ,
                     "Feature3_Color":"(0, 255, 0)" ,
                     "Feature4_Color":"(255, 0, 255)" ,
                     "Feature5_Color":"(255, 0, 0)" ,
+                    "Feature6_Color":"(255, 255, 255)" ,
+                    "Feature7_Color":"(255, 255, 255)" ,
                     "Minimap_Adjust_Longitude":"5.0" ,
                     "Minimap_Adjust_Latitude":"0.0" ,
                     "Minimap_MarkerSizeInPx":"6" 
+    },
+    "DetailedInfo": {
+                    "ZWO ASI224MC":                       { "LongName": "ZWO ASI224MC", "ShortName": "ASI224MC" },
+                    "ZWO ASI178MM":                       { "LongName": "ZWO ASI178MM", "ShortName": "ASI178MM" },
+                    "ZWO ASI120MM":                       { "LongName": "ZWO ASI120MM", "ShortName": "ASI120MM" },
+                    "Canon EOS 450D":                     { "LongName": "Canon EOS 450D", "ShortName": "EOS450D" },
+                    "Samsung Galaxy Note 3":              { "LongName": "Samsung Galaxy Note 3", "ShortName": "Note3" },
+                    "Celestron SCT 11  D.280mm F.2800mm": { "LongName": "Celestron SCT 11  D.280mm F.2800mm", "ShortName": "C11" },
+                    "EF70-300mm f/4-5.6L IS USM":         { "LongName": "EF70-300mm f/4-5.6L IS USM", "ShortName": "EF70-300mm" },
+                    "Barlow Powermate x2":                { "LongName": "Barlow Powermate x2Powermate x2", "ShortName": "BarlowX2" },
+                    "Barlow Powermate x2.5":              { "LongName": "Barlow Powermate x2Powermate x2.5", "ShortName": "BarlowX2.5" },
+                    "ADC ZWO":                            { "LongName": "ADC ZWO", "ShortName": "ADC" },
+                    "Celestron Reducer x0.67":            { "LongName": "Celestron Reducer x0.67", "ShortName": "RedX0.67" }
     }
 }
