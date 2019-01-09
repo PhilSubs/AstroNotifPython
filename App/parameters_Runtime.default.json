@@ -25,7 +25,7 @@
         "StartTimeAsHHMM": {"value":"", "type":"string", "allowed":"", "description":"Time when observation starts taken into account (with Max Duration of observation starts) to define if object is observable"},
         "MaxDurationInHours": {"value":0, "type":"int", "allowed":"", "description":"Duration of observation, taken into account (with Time when observation starts) to define if object is observable"},
         "MinAltitudeInDeg": {"value":0.0, "type":"float", "allowed":"", "description":"Min altitude of object for defining if observable"}, 
-        "MinDurationForMoonObservableInMinutes": {"value": 30.0, "type": "float", "allowed": "", "description": "Min duration of good visibility conditions for Moon to be considered as observation"}, 
+        "MinDurationForMoonObservableInMinutes": {"value": 30.0, "type": "float", "allowed": "", "description": "Min duration of good visibility conditions for Moon to be considered as observation"), 
         "MinDurationForPlanetObservableInMinutes": {"value": 45.0, "type": "float", "allowed": "", "description": "Min duration of good visibility conditions for Planet to be considered as observation"}, 
         "MinDurationForDeepSkyObservableInMinutes": {"value": 60.0, "type": "float", "allowed": "", "description": "Min duration of good visibility conditions for DeepSky to be considered as observation"}
         }
