@@ -271,7 +271,7 @@ class RendererBitmap(toolObjectSerializable):
             iBitmapSize = 50
             iPosXMoonMap = iStartX + 1
             iPosYMoonMap = iRowPositionY 
-            theNewImg = self._addMoonMinimapBitmap( oBuffEphemerideDataObjectMoon.getPhaseForSlot(iDataSlot), fBuffLongitude, fBuffLatitude, theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
+            theNewImg = self._addMoonMinimapBitmap( oBuffEphemerideDataObjectMoon.getPhaseForSlot(iDataSlot), oBuffEphemerideDataObjectMoon.getPositionAngleForSlot(iDataSlot), fBuffLongitude, fBuffLatitude, theNewImg, iPosXMoonMap, iPosYMoonMap, iBitmapSize)
 
         if bAtLeastOneDayIsObservable:
             if not bAtLeastOneDayIsNotObservable:
@@ -403,8 +403,12 @@ class RendererBitmap(toolObjectSerializable):
         else:
             return False, bIsObservable, oNewImg
                 
-    def _addMoonMinimapBitmap(self, iPhase, fLongitude, fLatitude, oImg, iPosX, iPosY, iBitmapSize):
-        iIndicatorSizeInPx = 3
+    def _addMoonMinimapBitmap(self, iPhase, iPositionAngle, fLongitude, fLatitude, oImg, iPosX, iPosY, iFinalBitmapSize):
+        iAdjustX = 2
+        iAdjustY = 1
+        iBitmapSize = 1000
+        iIndicatorSizeInPx = int(5.0 * float(iBitmapSize) / 50.0)
+        iHalfBitmapSize = int(round(float(iBitmapSize) / 2.0))
         
         tColorMoonMapBorder = self._oParametersRendering.get('MoonMiniMap.Color.Border')
         tColorMoonMapBackground = self._oParametersRendering.get('MoonMiniMap.Color.Background')
@@ -412,17 +416,19 @@ class RendererBitmap(toolObjectSerializable):
         tColorMoonMapDark = self._oParametersRendering.get('MoonMiniMap.Color.Dark')
         
         # Draw intermediary bitmaps
-        imgFullLight = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
+        imgFullLight = Image.new( 'RGBA', (iBitmapSize + iAdjustX, iBitmapSize + iAdjustY), tColorMoonMapBackground) # create a new black image
         drawFullLight = ImageDraw.Draw(imgFullLight)
-        drawFullLight.ellipse((0, 0, iBitmapSize, iBitmapSize), fill=tColorMoonMapLight, outline=tColorMoonMapBorder)
-        imgQuarterRightLight = imgFullLight.crop((iBitmapSize/2, 0, iBitmapSize, iBitmapSize))
-        imgQuarterLeftLight = imgFullLight.crop((0, 0, iBitmapSize/2, iBitmapSize))
+#        drawFullLight.ellipse((0, 0, iBitmapSize, iBitmapSize), fill=tColorMoonMapLight, outline=tColorMoonMapBorder)
+        drawFullLight.ellipse((0, 0, iBitmapSize, iBitmapSize), fill=tColorMoonMapLight)
+        imgQuarterRightLight = imgFullLight.crop((iHalfBitmapSize, 0, iBitmapSize, iBitmapSize))
+        imgQuarterLeftLight = imgFullLight.crop((0, 0, iHalfBitmapSize, iBitmapSize))
         
-        imgFullDark = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
+        imgFullDark = Image.new( 'RGBA', (iBitmapSize + iAdjustX, iBitmapSize + iAdjustY), tColorMoonMapBackground) # create a new black image
         drawFullDark = ImageDraw.Draw(imgFullDark)
-        drawFullDark.ellipse((0, 0, iBitmapSize, iBitmapSize), fill=tColorMoonMapDark, outline=tColorMoonMapBorder)
-        imgQuarterRightDark = imgFullDark.crop((iBitmapSize/2, 0, iBitmapSize, iBitmapSize))
-        imgQuarterLeftDark = imgFullDark.crop((0, 0, iBitmapSize/2, iBitmapSize))
+#        drawFullDark.ellipse((0, 0, iBitmapSize, iBitmapSize), fill=tColorMoonMapDark, outline=tColorMoonMapBorder)
+        drawFullDark.ellipse((0, 0, iBitmapSize, iBitmapSize), fill=tColorMoonMapDark)
+        imgQuarterRightDark = imgFullDark.crop((iHalfBitmapSize - 1, 0, iBitmapSize, iBitmapSize))
+        imgQuarterLeftDark = imgFullDark.crop((0, 0, iHalfBitmapSize + 1, iBitmapSize))
         
         if iPhase < 0.0: iPhase = iPhase + 360.0
         
@@ -435,41 +441,45 @@ class RendererBitmap(toolObjectSerializable):
         else:
             iTransformedPhase = 360 - iPhase
 
-        iSizeWidth = (iBitmapSize/2) * math.cos(math.radians(iTransformedPhase))
+        iSizeWidth = (iHalfBitmapSize) * math.cos(math.radians(iTransformedPhase))
         
-        imgToQ = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
+        imgToQ = Image.new( 'RGBA', (iBitmapSize + iAdjustX, iBitmapSize + iAdjustY), tColorMoonMapBackground) # create a new black image
         drawToQ = ImageDraw.Draw(imgToQ)
-        drawToQ.ellipse((0, 0, iBitmapSize, iBitmapSize ), fill=tColorMoonMapLight, outline=tColorMoonMapBorder)
-        drawToQ.ellipse((iBitmapSize/2 - iSizeWidth, 0, iBitmapSize/2 + iSizeWidth, iBitmapSize ), fill=tColorMoonMapDark, outline=tColorMoonMapDark)
-        imgToFirstQRight = imgToQ.crop((iBitmapSize/2, 0, iBitmapSize, iBitmapSize))
-        imgToLastQLeft = imgToQ.crop((0, 0, iBitmapSize/2, iBitmapSize))
+#        drawToQ.ellipse((0, 0, iBitmapSize, iBitmapSize ), fill=tColorMoonMapLight, outline=tColorMoonMapBorder)
+        drawToQ.ellipse((0, 0, iBitmapSize, iBitmapSize ), fill=tColorMoonMapLight)
+#        drawToQ.ellipse((iHalfBitmapSize - iSizeWidth, 0, iHalfBitmapSize + iSizeWidth, iBitmapSize ), fill=tColorMoonMapDark, outline=tColorMoonMapDark)
+        drawToQ.ellipse((iHalfBitmapSize - iSizeWidth, 0, iHalfBitmapSize + iSizeWidth, iBitmapSize ), fill=tColorMoonMapDark)
+        imgToFirstQRight = imgToQ.crop((iHalfBitmapSize, 0, iBitmapSize, iBitmapSize))
+        imgToLastQLeft = imgToQ.crop((0, 0, iHalfBitmapSize, iBitmapSize))
         
-        imgAfterQ = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
+        imgAfterQ = Image.new( 'RGBA', (iBitmapSize + iAdjustX, iBitmapSize + iAdjustY), tColorMoonMapBackground) # create a new black image
         drawAfterQ = ImageDraw.Draw(imgAfterQ)
-        drawAfterQ.ellipse((0, 0, iBitmapSize , iBitmapSize ), fill=tColorMoonMapDark, outline=tColorMoonMapBorder)
-        drawAfterQ.ellipse((iBitmapSize/2 - iSizeWidth, 0, iBitmapSize/2 + iSizeWidth, iBitmapSize ), fill=tColorMoonMapLight, outline=tColorMoonMapLight)
-        imgAfterFirstQRight = imgAfterQ.crop((iBitmapSize/2, 0, iBitmapSize, iBitmapSize))
-        imgAfterLastQLeft = imgAfterQ.crop((0, 0, iBitmapSize/2, iBitmapSize))
+#        drawAfterQ.ellipse((0, 0, iBitmapSize , iBitmapSize ), fill=tColorMoonMapDark, outline=tColorMoonMapBorder)
+        drawAfterQ.ellipse((0, 0, iBitmapSize , iBitmapSize ), fill=tColorMoonMapDark)
+#        drawAfterQ.ellipse((iHalfBitmapSize - iSizeWidth, 0, iHalfBitmapSize + iSizeWidth, iBitmapSize ), fill=tColorMoonMapLight, outline=tColorMoonMapLight)
+        drawAfterQ.ellipse((iHalfBitmapSize - iSizeWidth, 0, iHalfBitmapSize + iSizeWidth, iBitmapSize ), fill=tColorMoonMapLight)
+        imgAfterFirstQRight = imgAfterQ.crop((iHalfBitmapSize, 0, iBitmapSize, iBitmapSize))
+        imgAfterLastQLeft = imgAfterQ.crop((0, 0, iHalfBitmapSize, iBitmapSize))
             
         # Create moon minimap by fusioning intermediary bitmaps
-        imgMoonMinimap = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
+        imgMoonMinimap = Image.new( 'RGBA', (iBitmapSize + iAdjustX, iBitmapSize + iAdjustY), tColorMoonMapBackground) # create a new black image
         drawMoonMinimap = ImageDraw.Draw(imgMoonMinimap)
         
         if iPhase >= 0 and iPhase < 90:
             imgMoonMinimap.paste(imgAfterLastQLeft, (0,0))
-            imgMoonMinimap.paste(imgQuarterRightLight, (iBitmapSize/2 ,0))
+            imgMoonMinimap.paste(imgQuarterRightLight, (iHalfBitmapSize ,0))
         elif iPhase >= 90 and iPhase < 180:
             imgMoonMinimap.paste(imgQuarterLeftDark, (0,0))
-            imgMoonMinimap.paste(imgToFirstQRight, (iBitmapSize/2 ,0))
+            imgMoonMinimap.paste(imgToFirstQRight, (iHalfBitmapSize ,0))
         elif iPhase >= 180 and iPhase < 270:
             imgMoonMinimap.paste(imgToLastQLeft, (0,0))
-            imgMoonMinimap.paste(imgQuarterRightDark, (iBitmapSize/2 ,0))
+            imgMoonMinimap.paste(imgQuarterRightDark, (iHalfBitmapSize ,0))
         else:
             imgMoonMinimap.paste(imgQuarterLeftLight, (0,0))
-            imgMoonMinimap.paste(imgAfterFirstQRight, (iBitmapSize/2 ,0))
-            
+            imgMoonMinimap.paste(imgAfterFirstQRight, (iHalfBitmapSize ,0))
+        
         # Redraw moon border
-        imgMoonBorder = Image.new( 'RGBA', (iBitmapSize + 2, iBitmapSize + 1), tColorMoonMapBackground) # create a new black image
+        imgMoonBorder = Image.new( 'RGBA', (iBitmapSize + iAdjustX, iBitmapSize + iAdjustY), tColorMoonMapBackground) # create a new black image
         drawMoonBorder = ImageDraw.Draw(imgMoonBorder)
         drawMoonBorder.ellipse((0, 0, iBitmapSize, iBitmapSize), fill=(0, 0, 0, 0), outline=tColorMoonMapBorder)
         imgMoonMinimap.paste(imgMoonBorder, (0,0), imgMoonBorder)
@@ -479,8 +489,15 @@ class RendererBitmap(toolObjectSerializable):
         x, y = self._getRectangularCoordXYFromLunarLongLat(fLongitude, fLatitude, iBitmapSize)
         drawMoonMinimap.ellipse((x - int(iIndicatorSizeInPx / 2) , y - int(iIndicatorSizeInPx / 2), x + int(iIndicatorSizeInPx / 2), y + int(iIndicatorSizeInPx / 2)), fill=(255,0,0), outline=(255,0,0))
 
-        # merge moon minimap with original bitmap
-        oImg.paste(imgMoonMinimap, (iPosX,iPosY), imgMoonMinimap)
+        # Rotate minimap by PositionAngle of the Moon
+        imgMoonMinimap = imgMoonMinimap.rotate(iPositionAngle, Image.BILINEAR) #Image.NEAREST, Image.BICUBIC, Image.BILINEAR, Image.ANTIALIAS
+        
+		# Resize Minimap
+        #imgMoonMinimap.thumbnail((iFinalBitmapSize, iFinalBitmapSize), Image.ANTIALIAS)
+        imgResizedMoonMinimap = imgMoonMinimap.resize((iFinalBitmapSize, iFinalBitmapSize), Image.BILINEAR)
+        
+		# merge moon minimap with original bitmap
+        oImg.paste(imgResizedMoonMinimap, (iPosX,iPosY), imgResizedMoonMinimap)
         return oImg          
 
     def _addHeliocentricBitmap(self, sPlanetName, fEarthMeanLongInDeg, fPlanetMeanLongInDeg, iRowPositionY, oImg):
