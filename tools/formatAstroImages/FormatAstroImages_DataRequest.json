@@ -1,0 +1,204 @@
+{
+    "01-Picture Files": { "Dependency": { "Field":"", "Operator":"", "Value":"" }, 
+                          "Fields":[ 
+                                    {"ID":"01-Bitmap_WinjuposFileName", "Type":"Filename", "Prompt":"Name of PNG file from Winjupos (Width:? x Height:256)", "Param1":false, "Param2":".png", "Dependency": { "Field":"", "Operator":"", "Value":"" } }, 
+                                    {"ID":"02-Bitmap_PictureFileName",  "Type":"Filename", "Prompt":"Name of PNG file for picture",                          "Param1":true,  "Param2":".png", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                                   ]
+                        },
+    "02-Subject": { "Dependency": { "Field":"", "Operator":"", "Value":"" },
+                    "Fields":[ 
+                        {"ID":"01-Subject_Type",      "Type":"StringFromList", "Prompt":"Object type: Moon, Planet, Deep Sky", "Param1":true,                  "Param2":"Moon|Planet|Deep Sky", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                        {"ID":"02-Subject_MainTitle", "Type":"String",         "Prompt":"Title",                               "Param1":true,                  "Param2":"La Lune",              "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Moon" }},
+                        {"ID":"02-Subject_MainTitle", "Type":"Parameter",      "Prompt":"Planet",                              "Param1":"CommonValues/Planet", "Param2":"",                     "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Planet" }},
+                        {"ID":"02-Subject_MainTitle", "Type":"String",         "Prompt":"Object name",                         "Param1":true,                  "Param2":"",                     "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Deep Sky" }},
+                        {"ID":"02-Subject_Subtitle1", "Type":"String",         "Prompt":"Subtitle (row 1)",                    "Param1":false,                 "Param2":"",                     "Dependency": { "Field":"", "Operator":"", "Value":"" }},
+                        {"ID":"02-Subject_Subtitle2", "Type":"String",         "Prompt":"Subtitle (row 2)",                    "Param1":false,                 "Param2":"",                     "Dependency": { "Field":"Subject_Subtitle1", "Operator":"!=", "Value":"" }},
+                        {"ID":"02-Subject_Subtitle3", "Type":"String",         "Prompt":"Subtitle (row 3)",                    "Param1":false,                 "Param2":"",                     "Dependency": { "Field":"Subject_Subtitle2", "Operator":"!=", "Value":"" }}
+            ]
+        },
+    "03-Additional Info": { "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Moon" },
+                              "Fields":[ 
+                                  {"ID":"01-Info_Additional", "Type":"String", "Prompt":"Additional comment (mosaic, ...)", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                              ]
+        },
+    "04a-Ephemeride - Time & Location": { "Dependency": { "Field":"", "Operator":"", "Value":"" },
+                            "Fields":[ 
+                                {"ID":"01-TimeLoc_Date",      "Type":"DateAAAA-MM-JJ", "Prompt":"Date       [AAAA-MM-JJ]", "Param1":true, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                                {"ID":"02-TimeLoc_Time",      "Type":"TimeHH:MM",      "Prompt":"Time GMT        [HH:MM]", "Param1":true, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                                {"ID":"03-TimeLoc_Location", "Type":"Parameter",       "Prompt":"Location               ", "Param1":"Other/Location", "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                            ]
+        },
+    "04b-Ephemeride - Moon": { "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Moon" },
+                            "Fields":[ 
+                                {"ID":"01-Info_MoonAge",           "Type":"String", "Prompt":"Moon Age (days)          ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                                {"ID":"02-Info_MoonIllumination",  "Type":"String", "Prompt":"Moon Illumination     (%)", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                                {"ID":"03-Info_MoonColongitude",   "Type":"String", "Prompt":"Moon Colongitude    (deg)", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                                {"ID":"03-Info_MoonPositionAngle", "Type":"String", "Prompt":"Moon Position Angle (deg)", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                            ]
+        },
+    "05a-Moon Features": { "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Moon" },
+                           "Fields":[ 
+                               {"ID":"01-Info_MoonFeature0_Name",      "Type":"String", "Prompt":"Feature 0 Name             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                               {"ID":"02-Info_MoonFeature0_Longitude", "Type":"Float",  "Prompt":"          Longitude (deg)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature0_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"03-Info_MoonFeature0_Latitude",  "Type":"Float",  "Prompt":"          Latitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature0_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"04-Info_MoonFeature0_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature0_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"05-Info_MoonFeature0_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature0_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"06-Info_MoonFeature0_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature0_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"07-Info_MoonFeature0_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature0_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"08-Info_MoonFeature0_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature0_Name", "Operator":"!=", "Value":"" } }
+                           ]
+        },
+    "05b-Moon Features": { "Dependency": { "Field":"Info_MoonFeature0_Name", "Operator":"!=", "Value":"" },
+                           "Fields":[ 
+                               {"ID":"01-Info_MoonFeature1_Name",      "Type":"String", "Prompt":"Feature 1 Name             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                               {"ID":"02-Info_MoonFeature1_Longitude", "Type":"Float",  "Prompt":"          Longitude (deg)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature1_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"03-Info_MoonFeature1_Latitude",  "Type":"Float",  "Prompt":"          Latitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature1_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"04-Info_MoonFeature1_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature1_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"05-Info_MoonFeature1_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature1_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"06-Info_MoonFeature1_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature1_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"07-Info_MoonFeature1_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature1_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"08-Info_MoonFeature1_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature1_Name", "Operator":"!=", "Value":"" } }
+                           ]
+        },
+    "05c-Moon Features": { "Dependency": { "Field":"Info_MoonFeature1_Name", "Operator":"!=", "Value":"" },
+                           "Fields":[ 
+                               {"ID":"01-Info_MoonFeature2_Name",      "Type":"String", "Prompt":"Feature 2 Name             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                               {"ID":"02-Info_MoonFeature2_Longitude", "Type":"Float",  "Prompt":"          Longitude (deg)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature2_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"03-Info_MoonFeature2_Latitude",  "Type":"Float",  "Prompt":"          Latitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature2_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"04-Info_MoonFeature2_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature2_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"05-Info_MoonFeature2_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature2_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"06-Info_MoonFeature2_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature2_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"07-Info_MoonFeature2_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature2_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"08-Info_MoonFeature2_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature2_Name", "Operator":"!=", "Value":"" } }
+                           ]
+        },
+    "05d-Moon Features": { "Dependency": { "Field":"Info_MoonFeature2_Name", "Operator":"!=", "Value":"" },
+                           "Fields":[ 
+                               {"ID":"01-Info_MoonFeature3_Name",      "Type":"String", "Prompt":"Feature 3 Name             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                               {"ID":"02-Info_MoonFeature3_Longitude", "Type":"Float",  "Prompt":"          Longitude (deg)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature3_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"03-Info_MoonFeature3_Latitude",  "Type":"Float",  "Prompt":"          Latitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature3_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"04-Info_MoonFeature3_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature3_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"05-Info_MoonFeature3_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature3_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"06-Info_MoonFeature3_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature3_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"07-Info_MoonFeature3_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature3_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"08-Info_MoonFeature3_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature3_Name", "Operator":"!=", "Value":"" } }
+                           ]
+        },
+    "05e-Moon Features": { "Dependency": { "Field":"Info_MoonFeature3_Name", "Operator":"!=", "Value":"" },
+                           "Fields":[ 
+                               {"ID":"01-Info_MoonFeature4_Name",      "Type":"String", "Prompt":"Feature 4 Name             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                               {"ID":"02-Info_MoonFeature4_Longitude", "Type":"Float",  "Prompt":"          Longitude (deg)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature4_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"03-Info_MoonFeature4_Latitude",  "Type":"Float",  "Prompt":"          Latitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature4_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"04-Info_MoonFeature4_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature4_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"05-Info_MoonFeature4_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature4_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"06-Info_MoonFeature4_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature4_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"07-Info_MoonFeature4_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature4_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"08-Info_MoonFeature4_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature4_Name", "Operator":"!=", "Value":"" } }
+                           ]
+        },
+    "05f-Moon Features": { "Dependency": { "Field":"Info_MoonFeature4_Name", "Operator":"!=", "Value":"" },
+                           "Fields":[ 
+                               {"ID":"01-Info_MoonFeature5_Name",      "Type":"String", "Prompt":"Feature 5 Name             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                               {"ID":"02-Info_MoonFeature5_Longitude", "Type":"Float",  "Prompt":"          Longitude (deg)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature5_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"03-Info_MoonFeature5_Latitude",  "Type":"Float",  "Prompt":"          Latitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature5_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"04-Info_MoonFeature5_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature5_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"05-Info_MoonFeature5_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature5_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"06-Info_MoonFeature5_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature5_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"07-Info_MoonFeature5_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature5_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"08-Info_MoonFeature5_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature5_Name", "Operator":"!=", "Value":"" } }
+                           ]
+        },
+    "05g-Moon Features": { "Dependency": { "Field":"Info_MoonFeature5_Name", "Operator":"!=", "Value":"" },
+                           "Fields":[ 
+                               {"ID":"01-Info_MoonFeature6_Name",      "Type":"String", "Prompt":"Feature 6 Name             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                               {"ID":"02-Info_MoonFeature6_Longitude", "Type":"Float",  "Prompt":"          Longitude (deg)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature6_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"03-Info_MoonFeature6_Latitude",  "Type":"Float",  "Prompt":"          Latitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature6_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"04-Info_MoonFeature6_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature6_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"05-Info_MoonFeature6_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature6_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"06-Info_MoonFeature6_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature6_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"07-Info_MoonFeature6_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature6_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"08-Info_MoonFeature6_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature6_Name", "Operator":"!=", "Value":"" } }
+                           ]
+        },
+    "05h-Moon Features": { "Dependency": { "Field":"Info_MoonFeature6_Name", "Operator":"!=", "Value":"" },
+                           "Fields":[ 
+                               {"ID":"01-Info_MoonFeature7_Name",      "Type":"String", "Prompt":"Feature 7 Name             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                               {"ID":"02-Info_MoonFeature7_Longitude", "Type":"Float",  "Prompt":"          Longitude (deg)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature7_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"03-Info_MoonFeature7_Latitude",  "Type":"Float",  "Prompt":"          Latitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature7_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"04-Info_MoonFeature7_Diameter",  "Type":"String", "Prompt":"          Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature7_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"05-Info_MoonFeature7_Depth",     "Type":"String", "Prompt":"          Depth (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature7_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"06-Info_MoonFeature7_Height",    "Type":"String", "Prompt":"          Height (+ unit)  ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature7_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"07-Info_MoonFeature7_Length",    "Type":"String", "Prompt":"          Length  (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature7_Name", "Operator":"!=", "Value":"" } },
+                               {"ID":"08-Info_MoonFeature7_Width",     "Type":"String", "Prompt":"          Width (+ unit)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"Info_MoonFeature7_Name", "Operator":"!=", "Value":"" } }
+                           ]
+        },
+    "06-Planet Info": { "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Planet" },
+                        "Fields":[ 
+                            {"ID":"01-Info_Planet_Distance",    "Type":"String", "Prompt":"Planet Distance (+ unit) ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                            {"ID":"02-Info_Planet_Diameter",    "Type":"String", "Prompt":"Planet Diameter (sec)    ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                            {"ID":"04-Info_Planet_Magnitude",   "Type":"String", "Prompt":"Planet Magnitude         ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                            {"ID":"03-Info_Planet_Altitude",    "Type":"String", "Prompt":"Planet Altitude (deg)    ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                        ]
+        },
+    "07-Deep Sky Info": { "Dependency": { "Field":"Subject_Type", "Operator":"==", "Value":"Deep Sky" },
+                          "Fields":[ 
+                              {"ID":"01-Info_DeepSky_Type",      "Type":"String", "Prompt":"Object Type             ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                              {"ID":"02-Info_DeepSky_Distance",  "Type":"String", "Prompt":"Object Distance (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                              {"ID":"03-Info_DeepSky_Diameter",  "Type":"String", "Prompt":"Object Diameter (+ unit)", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                              {"ID":"04-Info_DeepSky_Magnitude", "Type":"String", "Prompt":"Object Magnitude        ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                              {"ID":"05-Info_DeepSky_Altitude",  "Type":"String", "Prompt":"Object Altitude (deg)   ", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                          ]
+        },
+    "08a-Hardware - Instrument": { "Dependency": { "Field":"", "Operator":"", "Value":"" },
+                                   "Fields":[ 
+                                       {"ID":"01-Hardware_Optic",   "Type":"Parameter", "Prompt":"Optical instrument", "Param1":"Hardware/Instrument/Scope", "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                                       {"ID":"02-Hardware_Mount",   "Type":"Parameter", "Prompt":"Mount",             "Param1":"Hardware/Instrument/Mount", "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                                   ]
+        },
+    "08b-Hardware - Accessories": { "Dependency": { "Field":"Hardware_Optic", "Operator":"==", "Value":"Celestron SCT 11  D.280mm F.2800mm" },
+                                    "Fields":[ 
+                                        {"ID":"01-Hardware_ADC",     "Type":"Parameter", "Prompt":"ADC ?",     "Param1":"Hardware/Accessories/ADC",     "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                                        {"ID":"02-Hardware_Reducer", "Type":"Parameter", "Prompt":"Reducer ?", "Param1":"Hardware/Accessories/Reducer", "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                                        {"ID":"03-Hardware_Barlow",  "Type":"Parameter", "Prompt":"Barlow ?",  "Param1":"Hardware/Accessories/Barlow",  "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                                    ]
+        },
+    "08c-Hardware - Camera": { "Dependency": { "Field":"", "Operator":"", "Value":"" },
+                               "Fields":[ 
+                                   {"ID":"01-Hardware_Camera",  "Type":"Parameter", "Prompt":"Capteur", "Param1":"Hardware/Capteur", "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                               ]
+        },
+    "08d-Hardware - Filter": { "Dependency": { "Field":"Hardware_Optic", "Operator":"==", "Value":"Celestron SCT 11  D.280mm F.2800mm" },
+                               "Fields":[ 
+                                   {"ID":"01-Hardware_Filter",  "Type":"Parameter", "Prompt":"Filter", "Param1":"Hardware/Accessories/Filters", "Param2":"IR/UV Cut", "Dependency": { "Field":"Hardware_Camera", "Operator":"==", "Value":"ZWO ASI224MC" } },
+                                   {"ID":"01-Hardware_Filter",  "Type":"Parameter", "Prompt":"Filter", "Param1":"Hardware/Accessories/Filters", "Param2":"", "Dependency": { "Field":"Hardware_Camera", "Operator":"!=", "Value":"ZWO ASI224MC" } }
+                               ]
+        },
+    "08e-Hardware - Additional Info": { "Dependency": { "Field":"", "Operator":"", "Value":"" },
+                                     "Fields":[ 
+                                         {"ID":"01-Hardware_Additional_Info", "Type":"String", "Prompt":"Additional info (projection, eyepiece, ...)", "Param1":false, "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                                     ]
+        },
+    "09-Capture": { "Dependency": { "Field":"", "Operator":"", "Value":"" },
+                    "Fields":[ 
+                        {"ID":"01-Capture_Software",      "Type":"Parameter", "Prompt":"Capture software",        "Param1":"Software/Capture",    "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                        {"ID":"02-Capture_Bin",           "Type":"Parameter", "Prompt":"Bin setting",             "Param1":"CameraSettings/Bin",  "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                        {"ID":"04-Capture_Bits",          "Type":"Parameter", "Prompt":"Bits setting",            "Param1":"CameraSettings/Bits", "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                        {"ID":"03-Capture_Gain",          "Type":"String",    "Prompt":"Gain setting",            "Param1":false,                 "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                        {"ID":"05-Capture_Exposition",    "Type":"String",    "Prompt":"Exposition (+ unit)",     "Param1":false,                 "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                        {"ID":"06-Capture_Rate",          "Type":"String",    "Prompt":"Frame rate (fps)",        "Param1":false,                 "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                        {"ID":"07-Capture_TotalExposure", "Type":"String",    "Prompt":"Total Exposure (+ unit)", "Param1":false,                 "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                    ]
+        },
+    "10-Processing": { "Dependency": { "Field":"", "Operator":"", "Value":"" },
+                       "Fields":[ 
+                           {"ID":"01-Processing_Pre-processingSoftware", "Type":"Parameter", "Prompt":"Pre-processing software                                   ", "Param1":"Software/Pre-processing",      "Param2":"", "Dependency": { "Field":"",                            "Operator":"",   "Value":"" } },
+                           {"ID":"02-Processing_StackingSoftware",       "Type":"Parameter", "Prompt":"Stacking software                                         ", "Param1":"Software/StackingPlanetary",   "Param2":"", "Dependency": { "Field":"Subject_Type",                "Operator":"!=", "Value":"Deep Sky" } },
+                           {"ID":"02-Processing_StackingSoftware",       "Type":"Parameter", "Prompt":"Stacking software                                         ", "Param1":"Software/StackingDeepSky",     "Param2":"", "Dependency": { "Field":"Subject_Type",                "Operator":"==", "Value":"Deep Sky" } },
+                           {"ID":"03-Processing_ImagesProcessed",        "Type":"String",    "Prompt":"# images processed (detailed captured, stacked, darks,...)", "Param1":false,                          "Param2":"", "Dependency": { "Field":"Processing_StackingSoftware", "Operator":"!=", "Value":"" } },
+                           {"ID":"04-Processing_ProcessingSoftware",     "Type":"Parameter", "Prompt":"Processing software                                       ", "Param1":"Software/ProcessingPlanetary", "Param2":"", "Dependency": { "Field":"Subject_Type",                "Operator":"!=", "Value":"Deep Sky" } },
+                           {"ID":"04-Processing_ProcessingSoftware",     "Type":"Parameter", "Prompt":"Processing software                                       ", "Param1":"Software/ProcessingDeepSky",   "Param2":"", "Dependency": { "Field":"Subject_Type",                "Operator":"==", "Value":"Deep Sky" } },
+                           {"ID":"05-Processing_RenderingSoftware",      "Type":"Parameter", "Prompt":"Final rendering software                                  ", "Param1":"Software/Rendering",           "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } },
+                           {"ID":"06-Processing_AdditionalInfo",         "Type":"String",    "Prompt":"Additional info (resize,...)                              ", "Param1":false,                          "Param2":"", "Dependency": { "Field":"", "Operator":"", "Value":"" } }
+                       ]
+        }
+}

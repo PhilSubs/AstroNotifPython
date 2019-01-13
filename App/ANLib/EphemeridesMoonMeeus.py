@@ -19,6 +19,7 @@ class EphemeridesMoonMeeus(toolObjectSerializable):
         
     def getDistInKM(self):                                          return self._oMeeusAlgorithm.getDistanceInKm("Moon")
     def getIllumination(self):                                      return self._oMeeusAlgorithm.getIllumination("Moon")
+    def getPositionAngle(self):                                     return self._oMeeusAlgorithm.getPositionAngle("Moon")
     def getMoonSelenographicColongitude(self):                      return self._oMeeusAlgorithm.getSelenographicColongitude("Moon")
     def getMoonSelenographicLatitude(self):                         return self._oMeeusAlgorithm.getSubSolarSelenographicLatitude("Moon")
     def getMoonSelenographicLongitude(self):                        return self._oMeeusAlgorithm.getSubSolarSelenographicLongitude("Moon")

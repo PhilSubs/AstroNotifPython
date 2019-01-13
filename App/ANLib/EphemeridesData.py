@@ -193,7 +193,7 @@ class EphemeridesData(toolObjectSerializable):
                 #fMoonAltitude = CommonAstroFormulaes.getAltitudeFromEquatCoord(theMoon.getRightAscension(), theMoon.getDeclination(), self._observerLatitude, fLocalSideralTime)
                 fMoonAltitude = theMoon.getElevation(self._observerLongitude, self._observerLatitude)
                 fMoonAzimut = theMoon.getAzimut(self._observerLongitude, self._observerLatitude)
-                self._objects['Moon'].setDataForSlot(iSlot, fMoonAzimut, fMoonAltitude, theMoon.getRightAscension(), theMoon.getDeclination(), theMoon.getDistInKM(), 0.0, theMoon.getMoonSelenographicColongitude(), theMoon.getMoonSelenographicLongitude(), theMoon.getMoonSelenographicLatitude(), theMoon.getPhase(), theMoon.getIllumination())
+                self._objects['Moon'].setDataForSlot(iSlot, fMoonAzimut, fMoonAltitude, theMoon.getRightAscension(), theMoon.getDeclination(), theMoon.getDistInKM(), 0.0, theMoon.getMoonSelenographicColongitude(), theMoon.getMoonSelenographicLongitude(), theMoon.getMoonSelenographicLatitude(), theMoon.getPhase(), theMoon.getIllumination(), theMoon.getPositionAngle())
             #
             if iSlot <= self._iNbSlotsPlanets:
                 thePlanetMercury.computeEphemerides(fDateValue, theSun.getMeanAnoInDeg(), theSun.getArgPerihelInDeg(), theSun.getSunDistInUA(), 0.0, 0.0)

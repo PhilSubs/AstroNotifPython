@@ -83,7 +83,8 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         fJulianDay = MeeusAlgorithmsFormulas.JulianDay_07_01(fNowYear, fNowMonth, fNowDay, fNowHours, fNowMinutes, fNowSeconds)
         fDeltaT = MeeusAlgorithmsFormulas.DynamicalTime_09_01(fJulianDay)
         fJuliandEphemerisDay, fJulianCenturies, fJulianEphemerisCenturies = MeeusAlgorithmsFormulas.NutationObliquity_21_00(fJulianDay)
-        fMeanObliquityEcliptic_Earth = MeeusAlgorithmsFormulas.NutationObliquity_21_02(fJulianCenturies)
+        fMeanAscendingNodeLongitude_Moon = MeeusAlgorithmsFormulas.PositionMoon_45_07(fJulianCenturies)
+        fMeanObliquityEcliptic_Earth, fTrueObliquityEcliptic = MeeusAlgorithmsFormulas.NutationObliquity_21_02(fJulianCenturies, fMeanAscendingNodeLongitude_Moon)
         fEccentricity_Earth = MeeusAlgorithmsFormulas.SunCoordinates_24_04(fJulianCenturies)
         fGeometricMeanLongitude_Sun = MeeusAlgorithmsFormulas.SunCoordinates_24_02(fJulianCenturies)
         fMeanLongitude_Moon = MeeusAlgorithmsFormulas.PositionMoon_45_01(fJulianCenturies)
@@ -96,7 +97,6 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         fApparentGeocentricLongitude_Sun, fApparentGeocentricLatitude_Sun = MeeusAlgorithmsFormulas.SunCoordinates_24_09(fGeometricMeanLongitude_Sun, 0.0)
         fMeanElongation_Moon =  MeeusAlgorithmsFormulas.PositionMoon_45_02(fJulianCenturies)
         fMeanAnomaly_Moon = MeeusAlgorithmsFormulas.PositionMoon_45_04(fJulianCenturies)
-        fMeanAscendingNodeLongitude_Moon = MeeusAlgorithmsFormulas.PositionMoon_45_07(fJulianCenturies)
         fArgumentOfLatitude_Moon = MeeusAlgorithmsFormulas.PositionMoon_45_05(fJulianCenturies)
         fGeocentricLongitude_Moon, fGeocentricLatitude_Moon, fDistanceInKm_Moon = MeeusAlgorithmsFormulas.PositionMoon_45_06(fJulianCenturies, fMeanElongation_Moon, fMeanAnomaly_Sun, fMeanAnomaly_Moon, fArgumentOfLatitude_Moon, fMeanLongitude_Moon)
         fPhaseAngle_Moon = MeeusAlgorithmsFormulas.IlluminatedFractionMoon_46_04(fMeanElongation_Moon, fMeanAnomaly_Moon, fMeanAnomaly_Sun)
@@ -105,8 +105,7 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         fDeclination_Moon = MeeusAlgorithmsFormulas.TransformationCoordinates_12_04(fMeanObliquityEcliptic_Earth, fGeocentricLongitude_Moon, fGeocentricLatitude_Moon)
         fAzimut_Moon = MeeusAlgorithmsFormulas.TransformationCoordinates_12_05(fRightAscension_Moon, fDeclination_Moon, -6.977777778, 43.636666667, fMeanSideralTimeGreenwich)
         fAltitude_Moon = MeeusAlgorithmsFormulas.TransformationCoordinates_12_06(fRightAscension_Moon, fDeclination_Moon, -6.977777778, 43.636666667, fMeanSideralTimeGreenwich)
-
-        fOpticalLibrationInLongitude_Moon, fOpticalLibrationInLatitude_Moon, fSubSolarSelenographicLongitude_Moon, fSubSolarSelenographicLatitude_Moon, fSelenographicColongitude_Moon = MeeusAlgorithmsFormulas.PhysicalEphemerisMoon_51(fJulianCenturies, fApparentGeocentricLongitude_Sun, fDistanceInKm_Moon, fDistanceInKm_Sun, fMeanAnomaly_Moon, fMeanAnomaly_Sun, fMeanElongation_Moon, fGeocentricLongitude_Moon, fGeocentricLatitude_Moon, fNutationInLongitude_Earth, fMeanAscendingNodeLongitude_Moon, fArgumentOfLatitude_Moon)
+        fOpticalLibrationInLongitude_Moon, fOpticalLibrationInLatitude_Moon, fSubSolarSelenographicLongitude_Moon, fSubSolarSelenographicLatitude_Moon, fSelenographicColongitude_Moon, fMoonPositionAngle = MeeusAlgorithmsFormulas.PhysicalEphemerisMoon_51(fJulianCenturies, fApparentGeocentricLongitude_Sun, fDistanceInKm_Moon, fDistanceInKm_Sun, fMeanAnomaly_Moon, fMeanAnomaly_Sun, fMeanElongation_Moon, fGeocentricLongitude_Moon, fGeocentricLatitude_Moon, fNutationInLongitude_Earth, fMeanAscendingNodeLongitude_Moon, fArgumentOfLatitude_Moon, fRightAscension_Moon, fTrueObliquityEcliptic)
 
         # Date
         print ""
@@ -170,6 +169,7 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
         MeeusAlgorithmsFormulasTests.displayValue(fSubSolarSelenographicLongitude_Moon, 2, "SubSolar Selenographic Longitude (Moon)", "PhysicalEphemerisMoon_51")
         MeeusAlgorithmsFormulasTests.displayValue(fSubSolarSelenographicLatitude_Moon, 2, "SubSolar Selenographic Latitude (Moon)", "PhysicalEphemerisMoon_51")
         MeeusAlgorithmsFormulasTests.displayValue(fSelenographicColongitude_Moon, 2, "Selenographic Colongitude (Moon)", "PhysicalEphemerisMoon_51")
+        MeeusAlgorithmsFormulasTests.displayValue(fMoonPositionAngle, 2, "Position Angle (Moon)", "PhysicalEphemerisMoon_51")
         
         print ""
 
@@ -257,8 +257,9 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
 
     @staticmethod
     def Test_NutationObliquity_21_02():        
-        fMeanObliquityEcliptic = MeeusAlgorithmsFormulas.NutationObliquity_21_02(-0.127296372348)
-        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fMeanObliquityEcliptic, 23.44094639, 5, "NutationObliquity_21_02","-0.127296372348","Mean Obliquity Ecliptic")
+        fMeanObliquityEcliptic, fTrueObliquityEcliptic = MeeusAlgorithmsFormulas.NutationObliquity_21_02(-0.127296372348, 11.2531)
+        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fMeanObliquityEcliptic, 23.44094639, 5, "NutationObliquity_21_02","-0.127296372348, 11.2531","Mean Obliquity Ecliptic")
+        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fTrueObliquityEcliptic, 23.4435763898, 4, "NutationObliquity_21_02","-0.127296372348, 11.2531","True Obliquity Ecliptic")
         # Return result
         return sComment
 
@@ -387,12 +388,13 @@ class MeeusAlgorithmsFormulasTests(toolObjectSerializable):
     def Test_PhysicalEphemerisMoon_51():  
         fJulianDay = MeeusAlgorithmsFormulas.JulianDay_07_01(1992, 4, 12, 0, 0, 0)
         fJuliandEphemerisDay, fJulianCenturies, fJulianEphemerisCenturies = MeeusAlgorithmsFormulas.NutationObliquity_21_00(fJulianDay)
-        fMoonOpticalLibrationInLongitude, fMoonOpticalLibrationInLatitude, fMoonSubSolarSelenographicLongitude, fMoonSubSolarSelenographicLatitude, fMoonSelenographicColongitude = MeeusAlgorithmsFormulas.PhysicalEphemerisMoon_51(fJulianCenturies, 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726)
-        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonOpticalLibrationInLongitude, -1.206, 3, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726","Moon Optical Libration In Longitude")
-        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonOpticalLibrationInLatitude, 4.194, 3, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726","Moon Optical Libration In Latitude")
-        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonSubSolarSelenographicLongitude, 67.89, 2, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726","Moon Sub Solar Selenographic Longitude")
-        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonSubSolarSelenographicLatitude, 1.46, 2, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726","Moon Sub Solar Selenographic Latitude")
-        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonSelenographicColongitude, 22.11, 2, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726","Moon Selenographic Colongitude")
+        fMoonOpticalLibrationInLongitude, fMoonOpticalLibrationInLatitude, fMoonSubSolarSelenographicLongitude, fMoonSubSolarSelenographicLatitude, fMoonSelenographicColongitude, fMoonPositionAngle = MeeusAlgorithmsFormulas.PhysicalEphemerisMoon_51(fJulianCenturies, 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726, 134.688473, 23.440636)
+        sComment = MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonOpticalLibrationInLongitude, -1.206, 3, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726, 134.688473, 23.440636","Moon Optical Libration In Longitude")
+        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonOpticalLibrationInLatitude, 4.194, 3, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726, 134.688473, 23.440636","Moon Optical Libration In Latitude")
+        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonSubSolarSelenographicLongitude, 67.89, 2, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726, 134.688473, 23.440636","Moon Sub Solar Selenographic Longitude")
+        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonSubSolarSelenographicLatitude, 1.46, 2, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726, 134.688473, 23.440636","Moon Sub Solar Selenographic Latitude")
+        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonSelenographicColongitude, 22.11, 2, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726, 134.688473, 23.440636","Moon Selenographic Colongitude")
+        sComment += "\n" + MeeusAlgorithmsFormulasTests._FormatResultAsText(fMoonPositionAngle, 15.08, 2, "PhysicalEphemerisMoon_51",str(fJulianCenturies) + ", 22.33978, 368406, 149971500, 5.150839, 97.643514, 113.842309, 133.167269, -3.229127, 0.004610, 274.400655, 219.889726, 134.688473, 23.440636","Moon Posiition Angle")
         # Return result
         return sComment
      

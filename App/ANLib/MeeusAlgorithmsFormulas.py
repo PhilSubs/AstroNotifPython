@@ -10,6 +10,8 @@ from CommonAstroFormulaes import CommonAstroFormulaes
 
 
 class MeeusAlgorithmsFormulas(toolObjectSerializable):
+    # Constants
+    InclinationOfTheMeanLunarEquatorToTheEclipticInDeg = 1.54242
     # Terms
     Table45A_iArgD = [0, 2, 2, 0, 0, 0, 2, 2, 2, 2, 0, 1, 0, 2, 0, 0, 4, 0, 4, 2, 2, 1, 1, 2, 2, 4, 2, 0, 2, 2, 1, 2, 0, 0, 2, 2, 2, 4, 0, 3, 2, 4, 0, 2, 2, 2, 4, 0, 4, 1, 2, 0, 1, 3, 4, 2, 0, 1, 2, 2]
     Table45A_iArgM = [0, 0, 0, 0, 1, 0, 0, -1, 0, -1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, -1, 0, 0, 0, 1, 0, -1, 0, -2, 1, 2, -2, 0, 0, -1, 0, 0, 1, -1, 2, 2, 1, -1, 0, 0, -1, 0, 1, 0, 1, 0, 0, -1, 2, 1, 0, 0]
@@ -229,13 +231,13 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         return fMoonLongitudeAscendNode, fEarthNutationInLongitude
         
     @staticmethod
-    def NutationObliquity_21_02(fJulianCenturies):     # return fEarthMeanObliquityEcliptic
+    def NutationObliquity_21_02(fJulianCenturies, fMoonMeanAscendingNodeLongitude):     # return fEarthMeanObliquityEcliptic
         # Chapter 21 - Nutation And Obliquity - Formula 21.2
         #
         #     Input: Julian Centuries from Epoch 2000.0
         #
         #     Output: Mean Obliquity of the Ecliptic
-        #
+        #             True Obliquity of the Ecliptic
         fEarthMeanObliquityEcliptic = (23.0 * 3600.0) + (26.0 * 60.0) + 21.448
         fEarthMeanObliquityEcliptic += - 4680.93  * (fJulianCenturies / 100.0)
         fEarthMeanObliquityEcliptic += - 1.55  * (fJulianCenturies / 100.0)**2
@@ -248,7 +250,11 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         fEarthMeanObliquityEcliptic +=   5.79  * (fJulianCenturies / 100.0)**9
         fEarthMeanObliquityEcliptic +=   2.45  * (fJulianCenturies / 100.0)**10
         fEarthMeanObliquityEcliptic2 = (23.0 * 3600.0)  + (26.0 * 60.0) + 21.448  - (46.8150 * fJulianCenturies - 0.00059 * fJulianCenturies**2 + 0.001813 * fJulianCenturies**3)
-        return CommonAstroFormulaes.FormatDegreesTo360(float((fEarthMeanObliquityEcliptic + fEarthMeanObliquityEcliptic2) / 2.0 / 3600.0))
+        fEarthMeanObliquityEcliptic2 = CommonAstroFormulaes.FormatDegreesTo360(float((fEarthMeanObliquityEcliptic + fEarthMeanObliquityEcliptic2) / 2.0 / 3600.0))
+        fSunMeanLongitude = 280.4665 + 36000.7698 * fJulianCenturies
+        fMoonMeanLongitude = 218.3165 + 481267.8813 * fJulianCenturies
+        fEarthTrueObliquityEcliptic = fEarthMeanObliquityEcliptic2 + (9.2 * math.cos(math.radians(fMoonMeanAscendingNodeLongitude)) + 0.57 * math.cos(math.radians( 2 * fSunMeanLongitude)) + 0.1 * math.cos(math.radians( 2 * fMoonMeanLongitude)) - 0.09 * math.cos(math.radians(2 * fMoonMeanAscendingNodeLongitude))) / 3600.0
+        return fEarthMeanObliquityEcliptic2, CommonAstroFormulaes.FormatDegreesTo360(fEarthTrueObliquityEcliptic)
 
     @staticmethod
     def SunCoordinates_24_02(fJulianCenturies):     # return fSunGeometricMeanLongitude
@@ -496,16 +502,16 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         return fMoonIlluminatedFraction
 
     @staticmethod
-    def PhysicalEphemerisMoon_51(fJulianCenturies, fSunApparentGeocentricLongitude, fMoonDistanceFromEarthInKm, fSunDistanceFromEarthInKm, fMoonMeanAnomaly, fSunMeanAnomaly, fMoonMeanElongation, fMoonGeocentricLongitude, fMoonGeocentricLatitude, fEarthNutationInLongitude, fMoonMeanAscendingNodeLongitude, fMoonArgumentOfLatitude):     # return fMoonOpticalLibrationInLongitude, fMoonOpticalLibrationInLatitude, fARad
+    def PhysicalEphemerisMoon_51(fJulianCenturies, fSunApparentGeocentricLongitude, fMoonDistanceFromEarthInKm, fSunDistanceFromEarthInKm, fMoonMeanAnomaly, fSunMeanAnomaly, fMoonMeanElongation, fMoonGeocentricLongitude, fMoonGeocentricLatitude, fEarthNutationInLongitude, fMoonMeanAscendingNodeLongitude, fMoonArgumentOfLatitude, fMoonApparentRightAscension, fEarthTrueObliquityEcliptic):     # return fMoonOpticalLibrationInLongitude, fMoonOpticalLibrationInLatitude, fARad
         #51.01
         fW = fMoonGeocentricLongitude - fEarthNutationInLongitude - fMoonMeanAscendingNodeLongitude
         fW = CommonAstroFormulaes.FormatDegreesTo360(fW)
-        fARad = math.atan2(((math.sin(math.radians(fW)) * math.cos(math.radians(fMoonGeocentricLatitude)) * math.cos(math.radians(1.54242))) - (math.sin(math.radians(fMoonGeocentricLatitude)) * math.sin(math.radians(1.54242)))) , (math.cos(math.radians(fW)) * math.cos(math.radians(fMoonGeocentricLatitude))))
+        fARad = math.atan2(((math.sin(math.radians(fW)) * math.cos(math.radians(fMoonGeocentricLatitude)) * math.cos(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg))) - (math.sin(math.radians(fMoonGeocentricLatitude)) * math.sin(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg)))) , (math.cos(math.radians(fW)) * math.cos(math.radians(fMoonGeocentricLatitude))))
         fARad = CommonAstroFormulaes.FormatRadiansTo2Pi(fARad)
 
         fA = math.degrees(fARad)
         fMoonOpticalLibrationInLongitude = fA - fMoonArgumentOfLatitude
-        fMoonOpticalLibrationInLatitudeRad = math.asin(-1.0 * math.sin(math.radians(fW)) * math.cos(math.radians(fMoonGeocentricLatitude)) * math.sin(math.radians(1.54242)) - math.sin(math.radians(fMoonGeocentricLatitude)) * math.cos(math.radians(1.54242)))
+        fMoonOpticalLibrationInLatitudeRad = math.asin(-1.0 * math.sin(math.radians(fW)) * math.cos(math.radians(fMoonGeocentricLatitude)) * math.sin(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg)) - math.sin(math.radians(fMoonGeocentricLatitude)) * math.cos(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg)))
         fMoonOpticalLibrationInLatitudeRad = (fMoonOpticalLibrationInLatitudeRad + (2.0 * math.pi) ) % (2.0 * math.pi)
         fMoonOpticalLibrationInLatitude = math.degrees(fMoonOpticalLibrationInLatitudeRad)
         
@@ -580,13 +586,13 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
 
         fW_H = fLambdaH - fEarthNutationInLongitude - fMoonMeanAscendingNodeLongitude
         fW_H = (fW_H + 360.0) % 360.0
-        fARad_H = math.atan2( ( (  math.sin(math.radians(fW_H)) * math.cos(math.radians(fBetaH)) * math.cos(math.radians(1.54242))) - ( math.sin(math.radians(fBetaH)) * math.sin(math.radians(1.54242)) ) )  , ( math.cos(math.radians(fW_H)) * math.cos(math.radians(fBetaH)) ))
+        fARad_H = math.atan2( ( (  math.sin(math.radians(fW_H)) * math.cos(math.radians(fBetaH)) * math.cos(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg))) - ( math.sin(math.radians(fBetaH)) * math.sin(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg)) ) )  , ( math.cos(math.radians(fW_H)) * math.cos(math.radians(fBetaH)) ))
         
         fARad_H = (fARad_H + (2.0 * math.pi)) % (2.0 * math.pi)
         fA_H = math.degrees(fARad_H)
 
         fLPrime_H = fA_H - fMoonArgumentOfLatitude
-        fBPrime_HRad = math.asin(-1.0 * math.sin(math.radians(fW_H)) * math.cos(math.radians(fBetaH)) * math.sin(math.radians(1.54242)) - math.sin(math.radians(fBetaH)) * math.cos(math.radians(1.54242)))
+        fBPrime_HRad = math.asin(-1.0 * math.sin(math.radians(fW_H)) * math.cos(math.radians(fBetaH)) * math.sin(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg)) - math.sin(math.radians(fBetaH)) * math.cos(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg)))
         fBPrime_HRad = (fBPrime_HRad + (2.0 * math.pi)) % (2.0 * math.pi)
         fBPrime_H = math.degrees(fBPrime_HRad)
         
@@ -599,7 +605,14 @@ class MeeusAlgorithmsFormulas(toolObjectSerializable):
         
         # The selenographic colongitude is the longitude of the morning terminator on the Moon, as measured in degrees westward from the prime meridian. 
         fMoonSelenographicColongitude = (360 - (fMoonSubSolarSelenographicLongitude - 90)) % 360.0
-#        fMoonSelenographicColongitude = (fMoonSelenographicLongitude - 90.0 + 360.0) % 360.0 #(450.0 - self._fMoonSelenographicLongitude) - int((450.0 - self._fMoonSelenographicLongitude) / 360.0) * 360.0
-#        if fMoonSelenographicColongitude > 180.0: fMoonSelenographicColongitude = fMoonSelenographicColongitude - 360.0
         
-        return fMoonOpticalLibrationInLongitude, fMoonOpticalLibrationInLatitude, fMoonSubSolarSelenographicLongitude, fMoonSubSolarSelenographicLatitude, fMoonSelenographicColongitude
+        # Compute Position Angle of the moon (Chapter 51, p. 341)
+        fMoonPositionAngle_V = fMoonMeanAscendingNodeLongitude + fEarthNutationInLongitude + (fT_o / math.sin(math.radians(MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg))) 
+        fMoonPositionAngle_X = math.sin(math.radians( MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg + fT_p )) * math.sin(math.radians( fMoonMeanAscendingNodeLongitude ))
+        fMoonPositionAngle_Y = math.sin(math.radians( MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg + fT_p )) * math.cos(math.radians( fMoonPositionAngle_V )) * math.cos(math.radians( fEarthTrueObliquityEcliptic ))- math.cos(math.radians( MeeusAlgorithmsFormulas.InclinationOfTheMeanLunarEquatorToTheEclipticInDeg + fT_p )) * math.sin(math.radians( fEarthTrueObliquityEcliptic ))
+        fMoonPositionAngle_w = math.degrees(math.atan( fMoonPositionAngle_X / fMoonPositionAngle_Y ))
+        if fMoonPositionAngle_Y < 0.0: fMoonPositionAngle_w = fMoonPositionAngle_w + 180.0
+        # --> angle en deg Ã  prendre dans le sens trigo
+        fMoonPositionAngleInDeg = math.degrees( math.asin( (math.sqrt( fMoonPositionAngle_X*fMoonPositionAngle_X + fMoonPositionAngle_Y*fMoonPositionAngle_Y ) * math.cos(math.radians(fMoonApparentRightAscension - fMoonPositionAngle_w))) / math.cos(math.radians( fMoonOpticalLibrationInLatitude ))) ) # should be the physical libration instead of optical libration
+
+        return fMoonOpticalLibrationInLongitude, fMoonOpticalLibrationInLatitude, fMoonSubSolarSelenographicLongitude, fMoonSubSolarSelenographicLatitude, fMoonSelenographicColongitude, fMoonPositionAngleInDeg
