@@ -138,9 +138,11 @@ if isResizeNeeded:
 else:
     print "     No need to resize the picture...   " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY) + " already fits ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
 
+# compute proposed values for parameters
 iPercentSizeSignatureProposed = _computeSignatureSizePercentage(iPhotoSizeX, iPhotoSizeY)
 iMarginProposed = int(float(iPhotoSizeX) * 0.03)
 
+# get remaining paameters
 sPositionTopBottom       = _getInput("Signature Position ?        [T]op  / [B]ottom / [C]enter", "B")
 sPositionLeftRight       = _getInput("Signature Position ?        [L]eft / [R]ight  / [C]enter", "R")
 sSignatureSize           = _getInput("Signature width in px or % ?           (ex. 100px or 5%)", str(iPercentSizeSignatureProposed) + "%")
@@ -149,26 +151,25 @@ sSignatureTransparency   = _getInput("Signature Transparency in % ?             
 sJPEGQuality             = _getInput("JPEG Quality in % ?                            (ex. 90%)", "90%")
 sCopyEXIFData            = _getInput("Copy EXIF data from original ?              [Y]es / [N]o", "Y")
 
-if sSignatureSize.find("%") > 0:
-    iSignatureSizeValue = int(sSignatureSize[:len(sSignatureSize) - 1])
-elif  sSignatureSize.find("px") > 0:
-    iSignatureSizeValue = int(sSignatureSize[:len(sSignatureSize) - 2])
+# process parameters
 iSignaturePaddingValue = int(sSignaturePadding[:len(sSignaturePadding) - 2])
 iSignatureTransparencyValue = int(sSignatureTransparency[:len(sSignatureTransparency) - 1])
 iJPEGQuality = int(sJPEGQuality[:len(sJPEGQuality) - 1])
 bCopyEXIFData = (sCopyEXIFData == "y")
 
-
 # compute signature display size
+iMinSignatureSizeX = 100
 if sSignatureSize.find("%") > 0:
+    iSignatureSizeValue = int(sSignatureSize[:len(sSignatureSize) - 1])
     iSignatureDisplaySizeX = int(float(iPhotoSizeX) * float(iSignatureSizeValue) / 100.0)
     fCoeff = float(iSignatureDisplaySizeX) / float(iSignatureSizeX)
     iSignatureDisplaySizeY = int(float(iSignatureSizeY) * fCoeff)
-    if iSignatureDisplaySizeX < 100:
-        iSignatureDisplaySizeX = 100
+    if iSignatureDisplaySizeX < iMinSignatureSizeX:
+        iSignatureDisplaySizeX = iMinSignatureSizeX
         fCoeff = float(iSignatureDisplaySizeX) / float(iSignatureSizeX)
         iSignatureDisplaySizeY = int(float(iSignatureSizeY) * fCoeff)
-elif  sSignatureSize.find("px") > 0:
+elif sSignatureSize.find("px") > 0:
+    iSignatureSizeValue = int(sSignatureSize[:len(sSignatureSize) - 2])
     iSignatureDisplaySizeX = iSignatureSizeValue
     fCoeff = float(iSignatureDisplaySizeX) / float(iSignatureSizeX)
     iSignatureDisplaySizeY = int(iSignatureSizeY * fCoeff)
@@ -204,9 +205,15 @@ if not bAbort:
     print "            displayed position:   X:" + str(iSignaturePositionX) + "    Y:" + str(iSignaturePositionY)
     print "            Transparency: " + sSignatureTransparency
     
-    sFinalImageFilename = sPhotoFilename.replace(".", "_sign.")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Q" + str(iJPEGQuality) + ".")
+    # compute final image name
+    sFinalImageFilename = sPhotoFilename.replace(".", ".")
+    if sResizeImageType != "n": sFinalImageFilename = sFinalImageFilename.replace(".", "_Resz-" + sResizeImageType + ".")
+    sFinalImageFilename = sFinalImageFilename.replace(".", "_Qal"   + sJPEGQuality + ".")
+    sFinalImageFilename = sFinalImageFilename.replace(".", "_Trsp"  + sSignatureTransparency + ".")
+    sFinalImageFilename = sFinalImageFilename.replace(".", "_SgnSz" + sSignatureSize + ".")
+    sFinalImageFilename = sFinalImageFilename.replace(".", "_Pad"   + sSignaturePadding + ".")
     sFinalImageFilename = sFinalImageFilename.replace(".", "_" + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + ".")
+    if bCopyEXIFData: sFinalImageFilename = sFinalImageFilename.replace(".", "_Exif.")
             
     # resize signature
     imgSignatureFile.thumbnail((iSignatureDisplaySizeX, iSignatureDisplaySizeY), Image.ANTIALIAS)
