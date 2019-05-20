@@ -217,15 +217,15 @@ if not bAbort:
     # compute final image name
     sImageNameInfo = "IMAGE["
     sImageNameInfo = sImageNameInfo + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + "_"
-    if sResizeImageType != "n": sImageNameInfo = sImageNameInfo + "Rsz" + sResizeImageType.upper() + "_"
-    sImageNameInfo = sImageNameInfo + "Qa" + sJPEGQuality
+    if sResizeImageType != "n": sImageNameInfo = sImageNameInfo + "R" + sResizeImageType.lower() + "_"
+    sImageNameInfo = sImageNameInfo + "Q" + str(iJPEGQualityValue)
     if bCopyEXIFData: sImageNameInfo = sImageNameInfo + "_Exif"
     sImageNameInfo = sImageNameInfo + "]"
 
     sImageNameSignInfo = "SIGN["
-    sImageNameSignInfo = sImageNameSignInfo + "Siz"  + sSignatureSize + "_"
-    sImageNameSignInfo = sImageNameSignInfo + "Pad"  + sSignaturePadding + "_"
-    sImageNameSignInfo = sImageNameSignInfo + "Trsp"  + sSignatureTransparency
+    sImageNameSignInfo = sImageNameSignInfo + "S"  + sSignatureSize + "_"
+    sImageNameSignInfo = sImageNameSignInfo + "P"  + str(iSignaturePaddingValue) + "_"
+    sImageNameSignInfo = sImageNameSignInfo + "T"  + str(iSignatureTransparencyValue)
     sImageNameSignInfo = sImageNameSignInfo + "]"
     
     sFinalImageFilename = sPhotoFilename.replace(".", "___" + sImageNameInfo + "_" + sImageNameSignInfo + ".")
