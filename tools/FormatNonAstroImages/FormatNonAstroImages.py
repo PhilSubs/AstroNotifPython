@@ -115,22 +115,21 @@ print sys.argv[0]
 print ""
 
 # Get signature file
-sSignatureFilename = _getInput("Signature filename", "Signature-2018G-1.png")
+sSignatureFilename = _getInput("Signature filename                                                        ", "Signature-2018G-1.png")
 imgSignatureFile = Image.open(sSignatureFilename)
 iSignatureSizeX, iSignatureSizeY = imgSignatureFile.size
-print "          Size: " + str(iSignatureSizeX) + "x" + str(iSignatureSizeY)
 
 # Get photo file
-sPhotoFilename = _getInput("Photo filename")
+sPhotoFilename = _getInput("Photo filename                                                            ")
 imgPhotoFile = Image.open(sPhotoFilename)
+iPhotoOriginalSizeX, iPhotoOriginalSizeY = imgPhotoFile.size
 iPhotoSizeX, iPhotoSizeY = imgPhotoFile.size
-print "          Size: " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY)
 
 #
 print ""
 
 # get additional parameters
-sResizeImageType         = _getInput("Resize image ?              [N]o  / [I]nstagram / [F]ullHD 1920x1080 / [H]D 1280x720", "N")
+sResizeImageType         = _getInput("Resize image ?      [N]o  [I]nstagram  [F]ullHD_1920x1080  [H]D_1280x720  ", "N")
 
 # Resize picture if needed
 isResizeNeeded, newPictureSizeX, newPictureSizeY, idealPictureSizeX, idealPictureSizeY = _computePictureResize(iPhotoSizeX, iPhotoSizeY, sResizeImageType)
@@ -138,23 +137,23 @@ if isResizeNeeded:
     imgPhotoFile.thumbnail((newPictureSizeX, newPictureSizeY), Image.ANTIALIAS)
     iPhotoSizeX = newPictureSizeX
     iPhotoSizeY = newPictureSizeY
-    print "     Picture will be resized to " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY) + " to fit ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
+    sResizeInfoMessage = "resized to fit ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
 else:
-    print "     No need to resize the picture...   " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY) + " already fits ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
+    sResizeInfoMessage = "already fits ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
 
 # compute proposed values for parameters
 iPercentSizeSignatureProposed = _computeSignatureSizePercentage(iPhotoSizeX, iPhotoSizeY)
 iMarginProposed = int(float(iPhotoSizeX) * 0.03)
 
 # get remaining paameters
-sPositionTopBottom       = _getInput("Signature Position ?        [T]op  / [B]ottom / [C]enter", "B")
-sPositionLeftRight       = _getInput("Signature Position ?        [L]eft / [R]ight  / [C]enter", "R")
-sSignatureSize           = _getInput("Signature width in px or % ?           (ex. 100px or 5%)", str(iPercentSizeSignatureProposed) + "%")
-sSignaturePadding        = _getInput("Signature Padding in px ?                    (ex. 100px)", str(iMarginProposed) + "px")
-sSignatureTransparency   = _getInput("Signature Transparency in % ?                  (ex. 70%)", "60%")
-sJPEGQuality             = _getInput("JPEG Quality in % ?                            (ex. 90%)", "90%")
+sPositionTopBottom       = _getInput("Signature Vertical Position ?                 [T]op   [B]ottom  [C]enter  ", "B")
+sPositionLeftRight       = _getInput("Signature Horizontal Position ?               [L]eft  [R]ight   [C]enter  ", "R")
+sSignatureSize           = _getInput("Signature width in px or % ?                           (ex. 100px or 5%)  ", str(iPercentSizeSignatureProposed) + "%")
+sSignaturePadding        = _getInput("Signature Padding in px ?                                    (ex. 100px)  ", str(iMarginProposed) + "px")
+sSignatureOpacity        = _getInput("Signature Opacity in % ?                                       (ex. 70%)  ", "50%")
+sJPEGQuality             = _getInput("JPEG Quality in % ?                                            (ex. 90%)  ", "90%")
 if bEXIFOptionEnabled: 
-    sCopyEXIFData = _getInput("Copy EXIF data from original ?              [Y]es / [N]o", "Y")
+    sCopyEXIFData = _getInput("Copy EXIF data from original ?                               [Y]es  [N]o  ", "Y")
 else:
     print "EXIF option is DISABLED"
     sCopyEXIFData = "n"
@@ -162,7 +161,7 @@ else:
 
 # process parameters
 iSignaturePaddingValue = int(sSignaturePadding[:len(sSignaturePadding) - 2])
-iSignatureTransparencyValue = int(sSignatureTransparency[:len(sSignatureTransparency) - 1])
+iSignatureOpacityValue = int(sSignatureOpacity[:len(sSignatureOpacity) - 1])
 iJPEGQualityValue = int(sJPEGQuality[:len(sJPEGQuality) - 1])
 bCopyEXIFData = (sCopyEXIFData == "y")
 
@@ -209,23 +208,43 @@ else:
 # Compute final image    
 if not bAbort:
     print ""
-    print "Signature:"
-    print "            displayed size: " + str(iSignatureDisplaySizeX) + "x" + str(iSignatureDisplaySizeY)
-    print "            displayed position:   X:" + str(iSignaturePositionX) + "    Y:" + str(iSignaturePositionY)
-    print "            Transparency: " + sSignatureTransparency
+    print ""
+    print "Image:         original size........:  " + str(iPhotoOriginalSizeX) + "x" + str(iPhotoOriginalSizeY)
+    if sResizeImageType == "i":
+        print "               resize ..............:  Instagram"
+    elif sResizeImageType == "F":
+        print "               resize ..............:  FullHD 1920x1080"
+    elif sResizeImageType == "i":
+        print "               resize ..............:  HD 1280x720"
+    else:
+        print "               resize ..............:  None"
+    print "               final size ..........:  " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY) + "     (" + sResizeInfoMessage + ")"
+    print "               quality..............:  " + sJPEGQuality
+    if bEXIFOptionEnabled:
+       if bCopyEXIFData:
+          print "               exif option..........:  Yes"
+       else:
+          print "               exif option..........:  No"
+    else:
+        print "               exif option..........:  disabled"
+    print ""
+    print "Signature:     original size........:  " + str(iSignatureSizeX) + "x" + str(iSignatureSizeY)
+    print "               displayed size.......:  " + str(iSignatureDisplaySizeX) + "x" + str(iSignatureDisplaySizeY)
+    print "               displayed position...:  X:" + str(iSignaturePositionX) + "  Y:" + str(iSignaturePositionY)
+    print "               opacity..............:  " + sSignatureOpacity
     
     # compute final image name
     sImageNameInfo = "IMAGE["
     sImageNameInfo = sImageNameInfo + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + "_"
-    if sResizeImageType != "n": sImageNameInfo = sImageNameInfo + "R" + sResizeImageType.lower() + "_"
-    sImageNameInfo = sImageNameInfo + "Q" + str(iJPEGQualityValue)
-    if bCopyEXIFData: sImageNameInfo = sImageNameInfo + "_Exif"
+    if sResizeImageType != "n": sImageNameInfo = sImageNameInfo + "r" + sResizeImageType.upper() + "_"
+    sImageNameInfo = sImageNameInfo + "q" + str(iJPEGQualityValue)
+    if bCopyEXIFData: sImageNameInfo = sImageNameInfo + "_exif"
     sImageNameInfo = sImageNameInfo + "]"
 
     sImageNameSignInfo = "SIGN["
-    sImageNameSignInfo = sImageNameSignInfo + "S"  + sSignatureSize + "_"
-    sImageNameSignInfo = sImageNameSignInfo + "P"  + str(iSignaturePaddingValue) + "_"
-    sImageNameSignInfo = sImageNameSignInfo + "T"  + str(iSignatureTransparencyValue)
+    sImageNameSignInfo = sImageNameSignInfo + "s"  + sSignatureSize + "_"
+    sImageNameSignInfo = sImageNameSignInfo + "p"  + str(iSignaturePaddingValue) + "_"
+    sImageNameSignInfo = sImageNameSignInfo + "o"  + str(iSignatureOpacityValue)
     sImageNameSignInfo = sImageNameSignInfo + "]"
     
     sFinalImageFilename = sPhotoFilename.replace(".", "___" + sImageNameInfo + "_" + sImageNameSignInfo + ".")
@@ -237,7 +256,7 @@ if not bAbort:
         imgSignatureFile.putalpha(alpha)
 
     # Add signature
-    paste_mask = imgSignatureFile.split()[3].point(lambda i: i * iSignatureTransparencyValue / 100.0)
+    paste_mask = imgSignatureFile.split()[3].point(lambda i: i * iSignatureOpacityValue / 100.0)
     imgPhotoFile.paste(imgSignatureFile, (iSignaturePositionX,iSignaturePositionY), mask=paste_mask)
 
     # copy EXIF (if needed)  and save final image
