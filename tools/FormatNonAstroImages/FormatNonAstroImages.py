@@ -7,7 +7,11 @@ import json
 import os.path
 import datetime
 import sys
-#import piexif
+try:
+    import piexif
+    bEXIFOptionEnabled = True
+except ImportError:
+    bEXIFOptionEnabled = False
 from PIL import Image, ImageDraw, ImageFont
 
 def _getInput(sLabel, sDefaultValue = ""):
@@ -149,12 +153,17 @@ sSignatureSize           = _getInput("Signature width in px or % ?           (ex
 sSignaturePadding        = _getInput("Signature Padding in px ?                    (ex. 100px)", str(iMarginProposed) + "px")
 sSignatureTransparency   = _getInput("Signature Transparency in % ?                  (ex. 70%)", "60%")
 sJPEGQuality             = _getInput("JPEG Quality in % ?                            (ex. 90%)", "90%")
-sCopyEXIFData            = _getInput("Copy EXIF data from original ?              [Y]es / [N]o", "Y")
+if bEXIFOptionEnabled: 
+    sCopyEXIFData = _getInput("Copy EXIF data from original ?              [Y]es / [N]o", "Y")
+else:
+    print "EXIF option is DISABLED"
+    sCopyEXIFData = "n"
+
 
 # process parameters
 iSignaturePaddingValue = int(sSignaturePadding[:len(sSignaturePadding) - 2])
 iSignatureTransparencyValue = int(sSignatureTransparency[:len(sSignatureTransparency) - 1])
-iJPEGQuality = int(sJPEGQuality[:len(sJPEGQuality) - 1])
+iJPEGQualityValue = int(sJPEGQuality[:len(sJPEGQuality) - 1])
 bCopyEXIFData = (sCopyEXIFData == "y")
 
 # compute signature display size
@@ -206,14 +215,20 @@ if not bAbort:
     print "            Transparency: " + sSignatureTransparency
     
     # compute final image name
-    sFinalImageFilename = sPhotoFilename.replace(".", ".")
-    if sResizeImageType != "n": sFinalImageFilename = sFinalImageFilename.replace(".", "_Resz-" + sResizeImageType + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Qal"   + sJPEGQuality + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Trsp"  + sSignatureTransparency + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_SgnSz" + sSignatureSize + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Pad"   + sSignaturePadding + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_" + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + ".")
-    if bCopyEXIFData: sFinalImageFilename = sFinalImageFilename.replace(".", "_Exif.")
+    sImageNameInfo = "IMAGE["
+    sImageNameInfo = sImageNameInfo + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + "_"
+    if sResizeImageType != "n": sImageNameInfo = sImageNameInfo + "Rsz" + sResizeImageType.upper() + "_"
+    sImageNameInfo = sImageNameInfo + "Qa" + sJPEGQuality
+    if bCopyEXIFData: sImageNameInfo = sImageNameInfo + "_Exif"
+    sImageNameInfo = sImageNameInfo + "]"
+
+    sImageNameSignInfo = "SIGN["
+    sImageNameSignInfo = sImageNameSignInfo + "Siz"  + sSignatureSize + "_"
+    sImageNameSignInfo = sImageNameSignInfo + "Pad"  + sSignaturePadding + "_"
+    sImageNameSignInfo = sImageNameSignInfo + "Trsp"  + sSignatureTransparency
+    sImageNameSignInfo = sImageNameSignInfo + "]"
+    
+    sFinalImageFilename = sPhotoFilename.replace(".", "___" + sImageNameInfo + "_" + sImageNameSignInfo + ".")
             
     # resize signature
     imgSignatureFile.thumbnail((iSignatureDisplaySizeX, iSignatureDisplaySizeY), Image.ANTIALIAS)
@@ -229,9 +244,9 @@ if not bAbort:
     if bCopyEXIFData:
         exif_dict = piexif.load(sPhotoFilename)
         exif_bytes = piexif.dump(exif_dict)
-        imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality, exif=exif_bytes)
+        imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQualityValue, exif=exif_bytes)
     else:
-        imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality)
+        imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQualityValue)
 
     print ""
     print "Image created: " + sFinalImageFilename
