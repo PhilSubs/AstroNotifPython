@@ -312,8 +312,8 @@ class RendererBitmap(toolObjectSerializable):
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12), sComment2, (0,0,0), font=self._getFont("LunarFeatureData"))
         theNewDraw.text((iStartX + 3, iStartY + 22 + 10 + 12 + 12), sComment3, (0,0,0), font=self._getFont("LunarFeatureData"))
         
-        if oLunarFeatureObject.getPictureName() <> "":
-            imgLunarFeatureObjectThumbnail = Image.open(Tools.get_ResourceSubfolder_path("Bitmaps") + oLunarFeatureObject.getPictureName())
+        if oLunarFeatureObject.get("PictureName") <> "":
+            imgLunarFeatureObjectThumbnail = Image.open(Tools.get_ResourceSubfolder_path("Bitmaps") + oLunarFeatureObject.get("PictureName"))
             oNewImg.paste(imgLunarFeatureObjectThumbnail, (iStartX + RendererBitmap.iTableWidthObjectLabel - 50 - RendererBitmap.iTableVisibilityFlagWidth - 2, iStartY + 2 ))
 
         return iStartY, oNewImg
