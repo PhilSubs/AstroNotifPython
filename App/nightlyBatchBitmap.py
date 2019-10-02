@@ -27,6 +27,18 @@ ANLib.Tools.logToTrace(theParameters.Runtime().get("Global.PathToLogFileName"), 
 theRendererBitmap = ANLib.RendererBitmap( theParameters, theParameters.Runtime().get('Global.PathToWWWFolder') + '/', "http://" + theParameters.Runtime().get('NightlyBatch.Domain') + "/", True)
 sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobjectsObservable, sBitmapFilenameAndPath, sBitmapFilename, bNotificationToBeSent = theRendererBitmap.getHTML(theCalendar, theEphemeridesData)
 
+# Save main data for Tasker notif
+sTaskerNotifFileName = theParameters.Runtime().get('Global.PathToCGIFolder') + ANLib.Tools.get_path_separator() + "TaskerInfo.txt"
+sTaskerNotifData = datetime.now().strftime("%d/%m/%Y %H:%M:%S") 
+sTaskerNotifData = sTaskerNotifData + ";" + theParameters.Runtime().get("Place").get("Name") 
+sTaskerNotifData = sTaskerNotifData + ";" + str(iNbPlanetsObservable) 
+sTaskerNotifData = sTaskerNotifData + ";" + str(iNbLunarFeaturesobservable) 
+sTaskerNotifData = sTaskerNotifData + ";" + str(iNbDeepSkyobjectsObservable)
+ANLib.Tools.logToTrace(theParameters.Runtime().get("Global.PathToLogFileName"), "Saving Tasker info to file " + sTaskerNotifFileName + "...   " + sTaskerNotifData)
+fileTaskerNotif = open(sTaskerNotifFileName,"w") 
+fileTaskerNotif.write(sTaskerNotifData) 
+fileTaskerNotif.close() 
+
 # Save as default html file
 ANLib.Tools.saveAsFileEncoded(theParameters.Runtime().get('Global.PathToWWWFolder') + ANLib.Tools.get_path_separator() + theParameters.Runtime().get('NightlyBatch.HTMLFilname'), sHTMLContent)
 ANLib.Tools.logToTrace(theParameters.Runtime().get("Global.PathToLogFileName"), "HTML page and bitmap are generated in " + theParameters.Runtime().get('Global.PathToWWWFolder') + ANLib.Tools.get_path_separator())
