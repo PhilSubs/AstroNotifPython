@@ -29,7 +29,8 @@ sHTMLContent, iNbPlanetsObservable, iNbLunarFeaturesobservable, iNbDeepSkyobject
 
 # Save main data for Tasker notif
 sTaskerNotifFileName = theParameters.Runtime().get('Global.PathToCGIFolder') + ANLib.Tools.get_path_separator() + "TaskerInfo.txt"
-sTaskerNotifData = datetime.now().strftime("%d/%m/%Y %H:%M:%S") 
+sTaskerNotifData = datetime.now().strftime("%d %b %Y") 
+sTaskerNotifData = sTaskerNotifData + ";" + datetime.now().strftime("%H:%M:%S")
 sTaskerNotifData = sTaskerNotifData + ";" + theParameters.Runtime().get("Place").get("Name") 
 sTaskerNotifData = sTaskerNotifData + ";" + str(iNbPlanetsObservable) 
 sTaskerNotifData = sTaskerNotifData + ";" + str(iNbLunarFeaturesobservable) 
