@@ -119,7 +119,7 @@ def _computeSignatureOpacity(imgPhoto, iSignaturePositionX, iSignaturePositionY,
             dAvgLuminance = dAvgLuminance + (((0.3 * float(tupColor[0]) + 0.6 * float(tupColor[1]) + 0.1 * float(tupColor[2])))  / dNbPixels)
     print "     Signature Zone " + str(iSignaturePositionX) + "," + str(iSignaturePositionY) + " - " + str(iSignaturePositionX + iSignatureSizeX) + "," + str(iSignaturePositionY + iSignatureSizeY) + "   Luminance: " + str(int(dAvgLuminance)) + "  (" + str(int(dAvgLuminance/2.55)) + "%)"
     iReturnValue = dAvgLuminance / 255.0 * 100.0
-    if iReturnValue < 10.0:
+    if iReturnValue <= 10.0:
         iReturnValue = iReturnValue * 3.0
     elif iReturnValue < 20.0:
         iReturnValue = iReturnValue * 2.0
@@ -273,9 +273,12 @@ if not bAbort:
     # copy EXIF (if needed)  and save final image
     if bCopyEXIFData:
         exif_dict = piexif.load(sPhotoFilename)
+        # Add image name in "artist" tag, just after Philippe larosa
+        exif_dict['0th'][315] = exif_dict['0th'][315] + "  (".encode('utf8') + sFinalImageFilename.encode('utf8') + ")".encode('utf8')
         exif_bytes = piexif.dump(exif_dict)
         imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality, exif=exif_bytes)
     else:
+        pass
         imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality)
 
     print ""
