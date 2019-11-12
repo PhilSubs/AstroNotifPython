@@ -141,6 +141,9 @@ print sys.argv[0]
 
 print ""
 
+# Get Photo Title
+sPhotoTitle = raw_input("Title             ")
+
 # Get signature file
 sSignatureFilename = _getInput("Signature filename", "Signature-2018G-1.png")
 imgSignatureFile = Image.open(sSignatureFilename)
@@ -230,15 +233,15 @@ else:
 iDefaultOpacity = _computeSignatureOpacity(imgPhotoFile, iSignaturePositionX, iSignaturePositionY, iSignatureDisplaySizeX, iSignatureDisplaySizeY)
 
 # get remaining parameters
-sSignatureTransparency   = _getInput("Signature Transparency in % ?                  (ex. 70%)", str(iDefaultOpacity) + "%")
-sJPEGQuality             = _getInput("JPEG Quality in % ?                            (ex. 90%)", "90%")
+sSignatureOpacity = _getInput("Signature Opacity in % ?                       (ex. 70%)", str(iDefaultOpacity) + "%")
+sJPEGQuality      = _getInput("JPEG Quality in % ?                            (ex. 90%)", "90%")
 if bEXIFOptionEnabled:
     sCopyEXIFData = _getInput("Copy EXIF data from original ?              [Y]es / [N]o", "Y")
 else:
     sCopyEXIFData = "n"
 
 # process parameters
-iSignatureTransparencyValue = int(sSignatureTransparency[:len(sSignatureTransparency) - 1])
+iSignatureOpacityValue = int(sSignatureOpacity[:len(sSignatureOpacity) - 1])
 iJPEGQuality = int(sJPEGQuality[:len(sJPEGQuality) - 1])
 bCopyEXIFData = (sCopyEXIFData == "y")
 
@@ -248,18 +251,19 @@ if not bAbort:
     print "Signature:"
     print "            displayed size: " + str(iSignatureDisplaySizeX) + "x" + str(iSignatureDisplaySizeY)
     print "            displayed position:   X:" + str(iSignaturePositionX) + "    Y:" + str(iSignaturePositionY)
-    print "            Transparency: " + sSignatureTransparency
+    print "            Opacity: " + sSignatureOpacity
     
     # compute final image name
     sFinalImageFilename = sPhotoFilename.replace(".", ".")
-    if sResizeImageType != "n": sFinalImageFilename = sFinalImageFilename.replace(".", "_Resz-" + sResizeImageType + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Qal"   + sJPEGQuality + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Trsp"  + sSignatureTransparency + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_SgnSz" + sSignatureSize + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Pad"   + sSignaturePadding + ".")
     sFinalImageFilename = sFinalImageFilename.replace(".", "_" + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + ".")
+    if sResizeImageType != "n": sFinalImageFilename = sFinalImageFilename.replace(".", "_Resz-" + sResizeImageType + ".")
+    sFinalImageFilename = sFinalImageFilename.replace(".", "_Qa" + sJPEGQuality + ".")
+    sFinalImageFilename = sFinalImageFilename.replace(".", "_Op" + sSignatureOpacity + ".")
+    sFinalImageFilename = sFinalImageFilename.replace(".", "_Sz" + sSignatureSize + ".")
+    sFinalImageFilename = sFinalImageFilename.replace(".", "_Pd" + sSignaturePadding + ".")
     if bCopyEXIFData: sFinalImageFilename = sFinalImageFilename.replace(".", "_Exif.")
-            
+    sFinalImageFilename = sPhotoTitle + " -- " + sFinalImageFilename
+
     # resize signature
     imgSignatureFile.thumbnail((iSignatureDisplaySizeX, iSignatureDisplaySizeY), Image.ANTIALIAS)
     if imgSignatureFile.mode!='RGBA':
@@ -267,14 +271,14 @@ if not bAbort:
         imgSignatureFile.putalpha(alpha)
 
     # Add signature
-    paste_mask = imgSignatureFile.split()[3].point(lambda i: i * iSignatureTransparencyValue / 100.0)
+    paste_mask = imgSignatureFile.split()[3].point(lambda i: i * iSignatureOpacityValue / 100.0)
     imgPhotoFile.paste(imgSignatureFile, (iSignaturePositionX,iSignaturePositionY), mask=paste_mask)
 
     # copy EXIF (if needed)  and save final image
     if bCopyEXIFData:
         exif_dict = piexif.load(sPhotoFilename)
         # Add image name in "artist" tag, just after Philippe larosa
-        exif_dict['0th'][315] = exif_dict['0th'][315] + "  (".encode('utf8') + sFinalImageFilename.encode('utf8') + ")".encode('utf8')
+        exif_dict['0th'][315] = exif_dict['0th'][315] + "  (".encode('utf8') + sPhotoTitle.encode('utf8') + " -- ".encode('utf8') + sFinalImageFilename.encode('utf8') + ")".encode('utf8')
         exif_bytes = piexif.dump(exif_dict)
         imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality, exif=exif_bytes)
     else:
