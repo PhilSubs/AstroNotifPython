@@ -278,7 +278,7 @@ if not bAbort:
     if bCopyEXIFData:
         exif_dict = piexif.load(sPhotoFilename)
         # Add image name in "artist" tag, just after Philippe larosa
-        exif_dict['0th'][315] = exif_dict['0th'][315] + "  (".encode('utf8') + sPhotoTitle.encode('utf8') + " -- ".encode('utf8') + sFinalImageFilename.encode('utf8') + ")".encode('utf8')
+        exif_dict['0th'][315] = exif_dict['0th'][315] + "  (".encode('utf8') + sFinalImageFilename.encode('utf8') + ")".encode('utf8')
         exif_bytes = piexif.dump(exif_dict)
         imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality, exif=exif_bytes)
     else:
