@@ -14,6 +14,10 @@ except ImportError:
     bEXIFOptionEnabled = False
 from PIL import Image, ImageDraw, ImageFont
 
+
+
+
+
 def _getInput(sLabel, sDefaultValue = ""):
     if len(sDefaultValue) != 0:
         sLabelDisplayed = sLabel + " [" + sDefaultValue + "]"
@@ -96,18 +100,20 @@ def _computePictureResize(iPictureSizeX, iPictureSizeY, sResizeType):
     return ((newPictureSizeX != iPictureSizeX) or (newPictureSizeY != iPictureSizeY)), newPictureSizeX, newPictureSizeY, idealPictureSizeX, idealPictureSizeY
 
 def _computeSignatureSizePercentage(iPictureSizeX, iPictureSizeY):
-    iMinSize = 100
-    if iPictureSizeX > iPictureSizeY:
-        iSize = int(float(iPictureSizeX) / 12.0)
-        if iSize < iMinSize:
-            iSize = iMinSize
-        iPercent = int(float(iSize) / float(iPictureSizeX) * 100.0)
+    iLogoMinSizeX = 100
+    iDisplaySizeOnFullHDScreen = 120   # for screen with resolution  2560 x 1440
+    iDisplayFullHDScreenX = 2560
+    iDisplayFullHDScreenY = 1440
+    fCoeffX = float(iDisplayFullHDScreenX) / float(iPictureSizeX)
+    fCoeffY = float(iDisplayFullHDScreenY) / float(iPictureSizeY)
+    if fCoeffX < fCoeffY:
+        fPercent = round( 100.0 * ( float(iDisplaySizeOnFullHDScreen) /  fCoeffX ) / float(iPictureSizeX)  , 1)
     else:
-        iSize = int(float(iPictureSizeY) / 7.0)
-        if iSize < iMinSize:
-            iSize = iMinSize
-        iPercent = int(float(iSize) / float(iPictureSizeY) * 100.0)
-    return iPercent
+        fPercent = round( 100.0 * ( float(iDisplaySizeOnFullHDScreen) /  fCoeffY ) / float(iPictureSizeX)  , 1)
+
+    if (iPictureSizeX * fPercent / 100) < iLogoMinSizeX:
+        fPercent = round( float(iLogoMinSizeX) / float(iPictureSizeX) , 1)
+    return fPercent
 
 def _computeSignatureOpacity(imgPhoto, iSignaturePositionX, iSignaturePositionY, iSignatureSizeX, iSignatureSizeY):
     dAvgLuminance = 0.0
@@ -192,7 +198,7 @@ iSignaturePaddingValue = int(sSignaturePadding[:len(sSignaturePadding) - 2])
 # compute signature display size
 iMinSignatureSizeX = 100
 if sSignatureSize.find("%") > 0:
-    iSignatureSizeValue = int(sSignatureSize[:len(sSignatureSize) - 1])
+    iSignatureSizeValue = float(sSignatureSize[:len(sSignatureSize) - 1])
     iSignatureDisplaySizeX = int(float(iPhotoSizeX) * float(iSignatureSizeValue) / 100.0)
     fCoeff = float(iSignatureDisplaySizeX) / float(iSignatureSizeX)
     iSignatureDisplaySizeY = int(float(iSignatureSizeY) * fCoeff)
@@ -254,14 +260,15 @@ if not bAbort:
     print "            Opacity: " + sSignatureOpacity
     
     # compute final image name
-    sFinalImageFilename = sPhotoFilename.replace(".", ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_" + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + ".")
-    if sResizeImageType != "n": sFinalImageFilename = sFinalImageFilename.replace(".", "_Resz-" + sResizeImageType + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Qa" + sJPEGQuality + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Op" + sSignatureOpacity + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Sz" + sSignatureSize + ".")
-    sFinalImageFilename = sFinalImageFilename.replace(".", "_Pd" + sSignaturePadding + ".")
-    if bCopyEXIFData: sFinalImageFilename = sFinalImageFilename.replace(".", "_Exif.")
+    sFinalImageFilename = sPhotoFilename.replace(".", "___")
+    sFinalImageFilename = sFinalImageFilename.replace("___", "_" + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + "___")
+    if sResizeImageType != "n": sFinalImageFilename = sFinalImageFilename.replace("___", "_Resz-" + sResizeImageType + "___")
+    sFinalImageFilename = sFinalImageFilename.replace("___", "_Qa" + sJPEGQuality + "___")
+    sFinalImageFilename = sFinalImageFilename.replace("___", "_Op" + sSignatureOpacity + "___")
+    sFinalImageFilename = sFinalImageFilename.replace("___", "_Sz" + sSignatureSize + "___")
+    sFinalImageFilename = sFinalImageFilename.replace("___", "_Pd" + sSignaturePadding + "___")
+    if bCopyEXIFData: sFinalImageFilename = sFinalImageFilename.replace("___", "_Exif___")
+    sFinalImageFilename = sFinalImageFilename.replace("___", ".")
     sFinalImageFilename = sPhotoTitle + " -- " + sFinalImageFilename
 
     # resize signature
