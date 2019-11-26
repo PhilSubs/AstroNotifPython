@@ -7,58 +7,62 @@ import json
 import os.path
 import datetime
 import sys
+
 try:
     import piexif
+
     bEXIFOptionEnabled = True
 except ImportError:
     bEXIFOptionEnabled = False
 from PIL import Image, ImageDraw, ImageFont
 
 
-
-
-
-def _getInput(sLabel, sDefaultValue = ""):
-    if len(sDefaultValue) != 0:
-        sLabelDisplayed = sLabel + " [" + sDefaultValue + "]"
-    else:
-        sLabelDisplayed = sLabel
-    sLabelDisplayed = sLabelDisplayed + "   "
-    sValue = raw_input(sLabelDisplayed)
-    if len(sDefaultValue) != 0 and len(sValue) == 0:
+def _getInput(sMode, sLabel, sDefaultValue=""):
+    if sMode == "auto":
         sValue = sDefaultValue
+    else:
+        if len(sDefaultValue) != 0:
+            sLabelDisplayed = sLabel + " [" + sDefaultValue + "]"
+        else:
+            sLabelDisplayed = sLabel
+        sLabelDisplayed = sLabelDisplayed + "   "
+        sValue = raw_input(sLabelDisplayed)
+        if len(sDefaultValue) != 0 and len(sValue) == 0:
+            sValue = sDefaultValue
     return sValue.lower()
+
 
 def _getRescaledSize(iPictureSizeX, iPictureSizeY, idealPictureSizeX, idealPictureSizeY):
     iNewSizeX = iPictureSizeX
     iNewSizeY = iPictureSizeY
     if iNewSizeX >= iNewSizeY:
-        #print "_getRescaledSize  ... landscape mode..."
+        # print "_getRescaledSize  ... landscape mode..."
         # resize X first
         if iNewSizeX > idealPictureSizeX:
             iNewSizeY = int((float(idealPictureSizeX) / float(iNewSizeX)) * float(iNewSizeY))
             iNewSizeX = idealPictureSizeX
-            #print "_getRescaledSize  ... resize X first... " + str(iNewSizeX) + "x" + str(iNewSizeY)
+            # print "_getRescaledSize  ... resize X first... " + str(iNewSizeX) + "x" + str(iNewSizeY)
         # then resze Y if needed
         if iNewSizeY > idealPictureSizeY:
             iNewSizeX = int((float(idealPictureSizeY) / float(iNewSizeY)) * float(iNewSizeX))
             iNewSizeY = idealPictureSizeY
-            #print "_getRescaledSize  ... then resze Y... " + str(iNewSizeX) + "x" + str(iNewSizeY)
+            # print "_getRescaledSize  ... then resze Y... " + str(iNewSizeX) + "x" + str(iNewSizeY)
     else:
-        #print "_getRescaledSize  ... portrait mode..."
+        # print "_getRescaledSize  ... portrait mode..."
         # resize Y first
         if iNewSizeY > idealPictureSizeY:
             iNewSizeX = int((float(idealPictureSizeY) / float(iNewSizeY)) * float(iNewSizeX))
             iNewSizeY = idealPictureSizeY
-            #print "_getRescaledSize  ... resize Y first... " + str(iNewSizeX) + "x" + str(iNewSizeY)
+            # print "_getRescaledSize  ... resize Y first... " + str(iNewSizeX) + "x" + str(iNewSizeY)
         # then resze X if needed
         if iNewSizeX > idealPictureSizeX:
             iNewSizeY = int((float(idealPictureSizeX) / float(iNewSizeX)) * float(iNewSizeY))
             iNewSizeX = idealPictureSizeX
-            #print "_getRescaledSize  ... then resze X... " + str(iNewSizeX) + "x" + str(iNewSizeY)
+            # print "_getRescaledSize  ... then resze X... " + str(iNewSizeX) + "x" + str(iNewSizeY)
     # return new sizes
     return iNewSizeX, iNewSizeY
-    
+
+
 def _computePictureResize(iPictureSizeX, iPictureSizeY, sResizeType):
     newPictureSizeX = iPictureSizeX
     newPictureSizeY = iPictureSizeY
@@ -95,25 +99,29 @@ def _computePictureResize(iPictureSizeX, iPictureSizeY, sResizeType):
             # portrait mode size for fullHD is 720x1280
             idealPictureSizeX = 720
             idealPictureSizeY = 1280
-            
-    newPictureSizeX, newPictureSizeY = _getRescaledSize(iPictureSizeX, iPictureSizeY, idealPictureSizeX, idealPictureSizeY)
-    return ((newPictureSizeX != iPictureSizeX) or (newPictureSizeY != iPictureSizeY)), newPictureSizeX, newPictureSizeY, idealPictureSizeX, idealPictureSizeY
+
+    newPictureSizeX, newPictureSizeY = _getRescaledSize(iPictureSizeX, iPictureSizeY, idealPictureSizeX,
+                                                        idealPictureSizeY)
+    return ((newPictureSizeX != iPictureSizeX) or (
+                newPictureSizeY != iPictureSizeY)), newPictureSizeX, newPictureSizeY, idealPictureSizeX, idealPictureSizeY
+
 
 def _computeSignatureSizePercentage(iPictureSizeX, iPictureSizeY):
     iLogoMinSizeX = 100
-    iDisplaySizeOnFullHDScreen = 120   # for screen with resolution  2560 x 1440
+    iDisplaySizeOnFullHDScreen = 120  # for screen with resolution  2560 x 1440
     iDisplayFullHDScreenX = 2560
     iDisplayFullHDScreenY = 1440
     fCoeffX = float(iDisplayFullHDScreenX) / float(iPictureSizeX)
     fCoeffY = float(iDisplayFullHDScreenY) / float(iPictureSizeY)
     if fCoeffX < fCoeffY:
-        fPercent = round( 100.0 * ( float(iDisplaySizeOnFullHDScreen) /  fCoeffX ) / float(iPictureSizeX)  , 1)
+        fPercent = round(100.0 * (float(iDisplaySizeOnFullHDScreen) / fCoeffX) / float(iPictureSizeX), 1)
     else:
-        fPercent = round( 100.0 * ( float(iDisplaySizeOnFullHDScreen) /  fCoeffY ) / float(iPictureSizeX)  , 1)
+        fPercent = round(100.0 * (float(iDisplaySizeOnFullHDScreen) / fCoeffY) / float(iPictureSizeX), 1)
 
     if (iPictureSizeX * fPercent / 100) < iLogoMinSizeX:
-        fPercent = round( float(iLogoMinSizeX) / float(iPictureSizeX) , 1)
+        fPercent = round(float(iLogoMinSizeX) / float(iPictureSizeX), 1)
     return fPercent
+
 
 def _computeSignatureOpacity(imgPhoto, iSignaturePositionX, iSignaturePositionY, iSignatureSizeX, iSignatureSizeY):
     dAvgLuminance = 0.0
@@ -122,42 +130,61 @@ def _computeSignatureOpacity(imgPhoto, iSignaturePositionX, iSignaturePositionY,
     for x in range(iSignatureSizeX):
         for y in range(iSignatureSizeY):
             tupColor = imPhoto[iSignaturePositionX + x, iSignaturePositionY + y]
-            dAvgLuminance = dAvgLuminance + (((0.3 * float(tupColor[0]) + 0.6 * float(tupColor[1]) + 0.1 * float(tupColor[2])))  / dNbPixels)
-    print "     Signature Zone " + str(iSignaturePositionX) + "," + str(iSignaturePositionY) + " - " + str(iSignaturePositionX + iSignatureSizeX) + "," + str(iSignaturePositionY + iSignatureSizeY) + "   Luminance: " + str(int(dAvgLuminance)) + "  (" + str(int(dAvgLuminance/2.55)) + "%)"
+            dAvgLuminance = dAvgLuminance + (
+                        ((0.3 * float(tupColor[0]) + 0.6 * float(tupColor[1]) + 0.1 * float(tupColor[2]))) / dNbPixels)
+    print "     Signature Zone " + str(iSignaturePositionX) + "," + str(iSignaturePositionY) + " - " + str(
+        iSignaturePositionX + iSignatureSizeX) + "," + str(
+        iSignaturePositionY + iSignatureSizeY) + "   Luminance: " + str(int(dAvgLuminance)) + "  (" + str(
+        int(dAvgLuminance / 2.55)) + "%)"
     iReturnValue = dAvgLuminance / 255.0 * 100.0
     if iReturnValue <= 10.0:
-        iReturnValue = iReturnValue * 3.0
+        iReturnValue = iReturnValue * 5.0
     elif iReturnValue < 20.0:
-        iReturnValue = iReturnValue * 2.0
+        iReturnValue = iReturnValue * 3.0
     elif iReturnValue < 30.0:
-        iReturnValue = iReturnValue * 1.5
+        iReturnValue = iReturnValue * 2.0
     elif iReturnValue < 40.0:
-        iReturnValue = iReturnValue * 1.3
+        iReturnValue = iReturnValue * 1.5
     elif iReturnValue < 50.0:
-        iReturnValue = iReturnValue * 1.1
+        iReturnValue = iReturnValue * 1.3
     else:
-        iReturnValue = iReturnValue * 0.6
-    iReturnValue = int(iReturnValue)
-    if iReturnValue > 100: iReturnValue = 100
-    if iReturnValue < 15: iReturnValue = 15
-    return iReturnValue
+        iReturnValue = iReturnValue * 0.8
+
+    iReturnValue = iReturnValue * 1.0
+
+    if iReturnValue > 100.0: iReturnValue = 100.0
+    if iReturnValue < 15.0: iReturnValue = 15.0
+    return int(iReturnValue)
+
 
 bAbort = False
-print sys.argv[0]
+
+# Read command line parameters
+sPhotoTitle = ""
+sMode = ""
+sPhotoFilename = ""
+for i in range(len(sys.argv)):
+    if i > 0:
+        if sys.argv[i].lower().find("title:") > -1:
+            sPhotoTitle = sys.argv[i][6:]
+        if sys.argv[i].lower().find("mode:") > -1:
+            sMode = sys.argv[i].lower()[5:]
+        if sys.argv[i].lower().find("image:") > -1:
+            sPhotoFilename = sys.argv[i].lower()[6:]
 
 print ""
 
 # Get Photo Title
-sPhotoTitle = raw_input("Title             ")
+if sPhotoTitle == "": sPhotoTitle = raw_input("Title             ")
 
 # Get signature file
-sSignatureFilename = _getInput("Signature filename", "Signature-2018G-1.png")
+sSignatureFilename = _getInput(sMode, "Signature filename", "Signature-2018G-1.png")
 imgSignatureFile = Image.open(sSignatureFilename)
 iSignatureSizeX, iSignatureSizeY = imgSignatureFile.size
 print "          Size: " + str(iSignatureSizeX) + "x" + str(iSignatureSizeY)
 
 # Get photo file
-sPhotoFilename = _getInput("Photo filename")
+sPhotoFilename = _getInput(sMode, "Photo filename", sPhotoFilename)
 imgPhotoFile = Image.open(sPhotoFilename)
 iPhotoSizeX, iPhotoSizeY = imgPhotoFile.size
 print "          Size: " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY)
@@ -166,17 +193,22 @@ print "          Size: " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY)
 print ""
 
 # get additional parameters
-sResizeImageType         = _getInput("Resize image ?              [N]o  / [I]nstagram / [F]ullHD 1920x1080 / [H]D 1280x720", "N")
+sResizeImageType = _getInput(sMode,
+                             "Resize image ?              [N]o  / [I]nstagram / [F]ullHD 1920x1080 / [H]D 1280x720",
+                             "N")
 
 # Resize picture if needed
-isResizeNeeded, newPictureSizeX, newPictureSizeY, idealPictureSizeX, idealPictureSizeY = _computePictureResize(iPhotoSizeX, iPhotoSizeY, sResizeImageType)
+isResizeNeeded, newPictureSizeX, newPictureSizeY, idealPictureSizeX, idealPictureSizeY = _computePictureResize(
+    iPhotoSizeX, iPhotoSizeY, sResizeImageType)
 if isResizeNeeded:
     imgPhotoFile.thumbnail((newPictureSizeX, newPictureSizeY), Image.ANTIALIAS)
     iPhotoSizeX = newPictureSizeX
     iPhotoSizeY = newPictureSizeY
-    print "     Picture will be resized to " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY) + " to fit ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
+    print "     Picture will be resized to " + str(iPhotoSizeX) + "x" + str(
+        iPhotoSizeY) + " to fit ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
 else:
-    print "     No need to resize the picture...   " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY) + " already fits ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
+    print "     No need to resize the picture...   " + str(iPhotoSizeX) + "x" + str(
+        iPhotoSizeY) + " already fits ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
 
 # compute proposed values for parameters
 iPercentSizeSignatureProposed = _computeSignatureSizePercentage(iPhotoSizeX, iPhotoSizeY)
@@ -186,11 +218,12 @@ else:
     iMarginProposed = int(float(iPhotoSizeX) * 0.02)
 
 # get remaining parameters
-sPositionTopBottom       = _getInput("Signature Position ?        [T]op  / [B]ottom / [C]enter", "B")
-sPositionLeftRight       = _getInput("Signature Position ?        [L]eft / [R]ight  / [C]enter", "R")
-sSignatureSize           = _getInput("Signature width in px or % ?           (ex. 100px or 5%)", str(iPercentSizeSignatureProposed) + "%")
-sSignaturePadding        = _getInput("Signature Padding in px ?                    (ex. 100px)", str(iMarginProposed) + "px")
-
+sPositionTopBottom = _getInput(sMode, "Signature Position ?        [T]op  / [B]ottom / [C]enter", "B")
+sPositionLeftRight = _getInput(sMode, "Signature Position ?        [L]eft / [R]ight  / [C]enter", "R")
+sSignatureSize = _getInput(sMode, "Signature width in px or % ?           (ex. 100px or 5%)",
+                           str(iPercentSizeSignatureProposed) + "%")
+sSignaturePadding = _getInput(sMode, "Signature Padding in px ?                    (ex. 100px)",
+                              str(iMarginProposed) + "px")
 
 # process parameters
 iSignaturePaddingValue = int(sSignaturePadding[:len(sSignaturePadding) - 2])
@@ -212,9 +245,10 @@ elif sSignatureSize.find("px") > 0:
     fCoeff = float(iSignatureDisplaySizeX) / float(iSignatureSizeX)
     iSignatureDisplaySizeY = int(iSignatureSizeY * fCoeff)
 else:
-    print "Error - invalid signature size (" + sSignatureSize + ":     %:" + str(sSignatureSize.find("%")) + "     px:" + str(sSignatureSize.find("px")) + ")"
+    print "Error - invalid signature size (" + sSignatureSize + ":     %:" + str(
+        sSignatureSize.find("%")) + "     px:" + str(sSignatureSize.find("px")) + ")"
     bAbort = True
-    
+
 # compute signature position
 if sPositionTopBottom == "t":
     iSignaturePositionY = iSignaturePaddingValue + 1
@@ -236,13 +270,15 @@ else:
     bAbort = True
 
 # get Default Opacity
-iDefaultOpacity = _computeSignatureOpacity(imgPhotoFile, iSignaturePositionX, iSignaturePositionY, iSignatureDisplaySizeX, iSignatureDisplaySizeY)
+iDefaultOpacity = _computeSignatureOpacity(imgPhotoFile, iSignaturePositionX, iSignaturePositionY,
+                                           iSignatureDisplaySizeX, iSignatureDisplaySizeY)
 
 # get remaining parameters
-sSignatureOpacity = _getInput("Signature Opacity in % ?                       (ex. 70%)", str(iDefaultOpacity) + "%")
-sJPEGQuality      = _getInput("JPEG Quality in % ?                            (ex. 90%)", "90%")
+sSignatureOpacity = _getInput(sMode, "Signature Opacity in % ?                       (ex. 70%)",
+                              str(iDefaultOpacity) + "%")
+sJPEGQuality = _getInput(sMode, "JPEG Quality in % ?                            (ex. 90%)", "90%")
 if bEXIFOptionEnabled:
-    sCopyEXIFData = _getInput("Copy EXIF data from original ?              [Y]es / [N]o", "Y")
+    sCopyEXIFData = _getInput(sMode, "Copy EXIF data from original ?              [Y]es / [N]o", "Y")
 else:
     sCopyEXIFData = "n"
 
@@ -251,18 +287,19 @@ iSignatureOpacityValue = int(sSignatureOpacity[:len(sSignatureOpacity) - 1])
 iJPEGQuality = int(sJPEGQuality[:len(sJPEGQuality) - 1])
 bCopyEXIFData = (sCopyEXIFData == "y")
 
-# Compute final image    
+# Compute final image
 if not bAbort:
     print ""
     print "Signature:"
     print "            displayed size: " + str(iSignatureDisplaySizeX) + "x" + str(iSignatureDisplaySizeY)
     print "            displayed position:   X:" + str(iSignaturePositionX) + "    Y:" + str(iSignaturePositionY)
     print "            Opacity: " + sSignatureOpacity
-    
+
     # compute final image name
     sFinalImageFilename = sPhotoFilename.replace(".", "___")
-    sFinalImageFilename = sFinalImageFilename.replace("___", "_" + str(iPhotoSizeX) +  "x" + str(iPhotoSizeY) + "___")
-    if sResizeImageType != "n": sFinalImageFilename = sFinalImageFilename.replace("___", "_Resz-" + sResizeImageType + "___")
+    sFinalImageFilename = sFinalImageFilename.replace("___", "_" + str(iPhotoSizeX) + "x" + str(iPhotoSizeY) + "___")
+    if sResizeImageType != "n": sFinalImageFilename = sFinalImageFilename.replace("___",
+                                                                                  "_Resz-" + sResizeImageType + "___")
     sFinalImageFilename = sFinalImageFilename.replace("___", "_Qa" + sJPEGQuality + "___")
     sFinalImageFilename = sFinalImageFilename.replace("___", "_Op" + sSignatureOpacity + "___")
     sFinalImageFilename = sFinalImageFilename.replace("___", "_Sz" + sSignatureSize + "___")
@@ -273,19 +310,20 @@ if not bAbort:
 
     # resize signature
     imgSignatureFile.thumbnail((iSignatureDisplaySizeX, iSignatureDisplaySizeY), Image.ANTIALIAS)
-    if imgSignatureFile.mode!='RGBA':
+    if imgSignatureFile.mode != 'RGBA':
         alpha = Image.new('L', imgSignatureFile.size, 255)
         imgSignatureFile.putalpha(alpha)
 
     # Add signature
     paste_mask = imgSignatureFile.split()[3].point(lambda i: i * iSignatureOpacityValue / 100.0)
-    imgPhotoFile.paste(imgSignatureFile, (iSignaturePositionX,iSignaturePositionY), mask=paste_mask)
+    imgPhotoFile.paste(imgSignatureFile, (iSignaturePositionX, iSignaturePositionY), mask=paste_mask)
 
     # copy EXIF (if needed)  and save final image
     if bCopyEXIFData:
         exif_dict = piexif.load(sPhotoFilename)
         # Add image name in "artist" tag, just after Philippe larosa
-        exif_dict['0th'][315] = exif_dict['0th'][315] + "  (".encode('utf8') + sFinalImageFilename.encode('utf8') + ")".encode('utf8')
+        exif_dict['0th'][315] = exif_dict['0th'][315] + "  (".encode('utf8') + sFinalImageFilename.encode(
+            'utf8') + ")".encode('utf8')
         exif_bytes = piexif.dump(exif_dict)
         imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality, exif=exif_bytes)
     else:
@@ -295,10 +333,10 @@ if not bAbort:
     print ""
     print "Image created: " + sFinalImageFilename
     print ""
-    
+
     print ""
     sClose = raw_input("Taper ENTER pour quitter")
-    
-    
-    
-    
+
+
+
+
