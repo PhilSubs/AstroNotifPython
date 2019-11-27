@@ -176,6 +176,7 @@ print ""
 
 # Get Photo Title
 if sPhotoTitle == "": sPhotoTitle = raw_input("Title             ")
+sPhotoTitle = sPhotoTitle.strip()
 
 # Get signature file
 sSignatureFilename = _getInput(sMode, "Signature filename", "Signature-2018G-1.png")
