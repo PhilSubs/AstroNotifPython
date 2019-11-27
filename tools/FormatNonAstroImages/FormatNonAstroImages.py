@@ -321,8 +321,8 @@ if not bAbort:
     # copy EXIF (if needed)  and save final image
     if bCopyEXIFData:
         exif_dict = piexif.load(sPhotoFilename)
-        # Add image name in "artist" tag, just after Philippe larosa
-        exif_dict['0th'][315] = exif_dict['0th'][315] + "  (".encode('utf8') + sFinalImageFilename.encode(
+        # Add image name in "artist" tag, so it is preserved when uploaded on Flickr... and downloaded from Flickr
+        exif_dict['0th'][315] = "Philippe Larosa  (".encode('utf8') + sFinalImageFilename.encode(
             'utf8') + ")".encode('utf8')
         exif_bytes = piexif.dump(exif_dict)
         imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality, exif=exif_bytes)
