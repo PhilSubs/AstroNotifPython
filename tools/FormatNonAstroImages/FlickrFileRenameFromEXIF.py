@@ -25,19 +25,27 @@ sCurrentPath = os.getcwd()
 for file in os.listdir(sCurrentPath):
     if file.endswith(".jpg"):
         sCurrentFileName = os.path.join(sCurrentPath, file)
+        print "- File  " + sCurrentFileName
         # get EXIF from file
         if not bEXIFOptionEnabled:
-            print "EXIF not enabled -- Cannot rename file " + sCurrentFileName
+            print "   EXIF not enabled -- Cannot rename file " + sCurrentFileName
         else:
-            exif_dict = piexif.load(sCurrentFileName)
-            sNewFileName = exif_dict['0th'][315]
-            # Remove Name and parenthesis
-            sNewFileName = sNewFileName[sNewFileName.find("("):]
-            sNewFileName = sNewFileName[:len(sNewFileName) - 1]
-            sNewFileName = sCurrentPath + sNewFileName.strip()
-            # rename file
             try:
-                os.rename(sCurrentFileName, sNewFileName)
-                print "SUCCESS - File   " + sCurrentFileName + "   renamed to   " + sNewFileName
+                exif_dict = piexif.load(sCurrentFileName)
+                sNewFileName = exif_dict['0th'][315]
             except:
-                print "ERROR   - Cannot rename file   " + sCurrentFileName + "   to   " + sNewFileName
+                sNewFileName = ""
+            if sNewFileName == "":
+                print "   ERROR   - Cannot rename file   " + sCurrentFileName + "   ... can't retrieve EXIF"
+            else:
+                sNewFileName = exif_dict['0th'][315]
+                # Remove Name and parenthesis
+                sNewFileName = sNewFileName[sNewFileName.find("(")+1:]
+                sNewFileName = sNewFileName[:len(sNewFileName) - 1]
+                sNewFileName = os.path.join(sCurrentPath, sNewFileName.strip())
+                # rename file
+                try:
+                    os.rename(sCurrentFileName, sNewFileName)
+                    print "   SUCCESS - File   " + sCurrentFileName + " --> " + sNewFileName
+                except:
+                    print "   ERROR   - Cannot rename file   " + sCurrentFileName + "   to   " + sNewFileName
