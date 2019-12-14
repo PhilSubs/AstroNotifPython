@@ -10,7 +10,6 @@ import sys
 
 try:
     import piexif
-
     bEXIFOptionEnabled = True
 except ImportError:
     bEXIFOptionEnabled = False

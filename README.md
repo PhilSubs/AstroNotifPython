@@ -3,7 +3,11 @@ Notify Astronomy objects observability
 
 # Pré-requis:
  - Python 2.7
- - Librairie PIL
+     - Librairie PIL
+     - Librairie piexif
+ - Python 3
+     - Librairie Pillow --> installation par la commande (sous cmd): pip install pillow
+     - Libraie piexif --> installation par la commande (sous cmd): pip install piexif
 
 # Structure des répertoires:
  La delivery contient trois répertoires:
