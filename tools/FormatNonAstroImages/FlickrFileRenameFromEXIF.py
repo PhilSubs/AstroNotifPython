@@ -9,15 +9,17 @@ from __future__ import unicode_literals
 
 import json
 import os
-import datetime
-import sys
+import logging
 
 try:
     import piexif
     bEXIFOptionEnabled = True
 except ImportError:
     bEXIFOptionEnabled = False
-from PIL import Image, ImageDraw, ImageFont
+
+# Options
+logging.basicConfig(level=logging.INFO)
+logging.debug("Option EXIF {}".format(bEXIFOptionEnabled))
 
 
 # Loop through jpg files in current folder
@@ -25,10 +27,10 @@ sCurrentPath = os.getcwd()
 for file in os.listdir(sCurrentPath):
     if file.endswith(".jpg"):
         sCurrentFileName = os.path.join(sCurrentPath, file)
-        print "- File  " + sCurrentFileName
+        logging.info("- File  {}".format(sCurrentFileName))
         # get EXIF from file
         if not bEXIFOptionEnabled:
-            print "   EXIF not enabled -- Cannot rename file " + sCurrentFileName
+            logging.info("   EXIF not enabled -- Cannot rename file {}".format(sCurrentFileName))
         else:
             try:
                 exif_dict = piexif.load(sCurrentFileName)
@@ -36,9 +38,10 @@ for file in os.listdir(sCurrentPath):
             except:
                 sNewFileName = ""
             if sNewFileName == "":
-                print "   ERROR   - Cannot rename file   " + sCurrentFileName + "   ... can't retrieve EXIF"
+                logging.info("   ERROR   - Cannot rename file   {}   ... can't retrieve EXIF".format(sCurrentFileName))
             else:
-                sNewFileName = exif_dict['0th'][315]
+                sNewFileName = str(exif_dict['0th'][315])
+                logging.info("Image {} contains following name: {}".format(sCurrentFileName, sNewFileName))
                 # Remove Name and parenthesis
                 sNewFileName = sNewFileName[sNewFileName.find("(")+1:]
                 sNewFileName = sNewFileName[:len(sNewFileName) - 1]
@@ -46,6 +49,6 @@ for file in os.listdir(sCurrentPath):
                 # rename file
                 try:
                     os.rename(sCurrentFileName, sNewFileName)
-                    print "   SUCCESS - File   " + sCurrentFileName + " --> " + sNewFileName
+                    logging.info("   SUCCESS - File   {} --> {}".format(sCurrentFileName, sNewFileName))
                 except:
-                    print "   ERROR   - Cannot rename file   " + sCurrentFileName + "   to   " + sNewFileName
+                    logging.info("   ERROR   - Cannot rename file   {}   to   {}".format(sCurrentFileName, sNewFileName))

@@ -1,7 +1,7 @@
 # AstroNotifPython v2.2
 Notify Astronomy objects observability
 
-# Pré-requis:
+# Librairies utilisées:
  - Python 2.7
      - Librairie PIL
      - Librairie piexif
