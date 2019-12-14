@@ -5,7 +5,7 @@ Notify Astronomy objects observability
  - Python 2.7
      - Librairie PIL
      - Librairie piexif
- - Python 3
+ - Python 3.8
      - Librairie Pillow --> installation par la commande (sous cmd): pip install pillow
      - Libraie piexif --> installation par la commande (sous cmd): pip install piexif
 
