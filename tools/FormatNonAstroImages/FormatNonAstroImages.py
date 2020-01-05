@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3.8
 # coding: utf8 
 
 from __future__ import unicode_literals
@@ -25,7 +25,7 @@ def _getInput(sMode, sLabel, sDefaultValue=""):
         else:
             sLabelDisplayed = sLabel
         sLabelDisplayed = sLabelDisplayed + "   "
-        sValue = raw_input(sLabelDisplayed)
+        sValue = input(sLabelDisplayed)
         if len(sDefaultValue) != 0 and len(sValue) == 0:
             sValue = sDefaultValue
     return sValue.lower()
@@ -131,10 +131,10 @@ def _computeSignatureOpacity(imgPhoto, iSignaturePositionX, iSignaturePositionY,
             tupColor = imPhoto[iSignaturePositionX + x, iSignaturePositionY + y]
             dAvgLuminance = dAvgLuminance + (
                         ((0.3 * float(tupColor[0]) + 0.6 * float(tupColor[1]) + 0.1 * float(tupColor[2]))) / dNbPixels)
-    print "     Signature Zone " + str(iSignaturePositionX) + "," + str(iSignaturePositionY) + " - " + str(
+    print ("     Signature Zone " + str(iSignaturePositionX) + "," + str(iSignaturePositionY) + " - " + str(
         iSignaturePositionX + iSignatureSizeX) + "," + str(
         iSignaturePositionY + iSignatureSizeY) + "   Luminance: " + str(int(dAvgLuminance)) + "  (" + str(
-        int(dAvgLuminance / 2.55)) + "%)"
+        int(dAvgLuminance / 2.55)) + "%)")
     iReturnValue = dAvgLuminance / 255.0 * 100.0
     if iReturnValue <= 10.0:
         iReturnValue = iReturnValue * 5.0
@@ -171,26 +171,26 @@ for i in range(len(sys.argv)):
         if sys.argv[i].lower().find("image:") > -1:
             sPhotoFilename = sys.argv[i].lower()[6:]
 
-print ""
+print ("")
 
 # Get Photo Title
-if sPhotoTitle == "": sPhotoTitle = raw_input("Title             ")
+if sPhotoTitle == "": sPhotoTitle = input("Title             ")
 sPhotoTitle = sPhotoTitle.strip()
 
 # Get signature file
 sSignatureFilename = _getInput(sMode, "Signature filename", "Signature-2018G-1.png")
 imgSignatureFile = Image.open(sSignatureFilename)
 iSignatureSizeX, iSignatureSizeY = imgSignatureFile.size
-print "          Size: " + str(iSignatureSizeX) + "x" + str(iSignatureSizeY)
+print ("          Size: " + str(iSignatureSizeX) + "x" + str(iSignatureSizeY))
 
 # Get photo file
 sPhotoFilename = _getInput(sMode, "Photo filename", sPhotoFilename)
 imgPhotoFile = Image.open(sPhotoFilename)
 iPhotoSizeX, iPhotoSizeY = imgPhotoFile.size
-print "          Size: " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY)
+print ("          Size: " + str(iPhotoSizeX) + "x" + str(iPhotoSizeY))
 
 #
-print ""
+print ("")
 
 # get additional parameters
 sResizeImageType = _getInput(sMode,
@@ -204,11 +204,11 @@ if isResizeNeeded:
     imgPhotoFile.thumbnail((newPictureSizeX, newPictureSizeY), Image.ANTIALIAS)
     iPhotoSizeX = newPictureSizeX
     iPhotoSizeY = newPictureSizeY
-    print "     Picture will be resized to " + str(iPhotoSizeX) + "x" + str(
-        iPhotoSizeY) + " to fit ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
+    print ("     Picture will be resized to " + str(iPhotoSizeX) + "x" + str(
+        iPhotoSizeY) + " to fit ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY))
 else:
-    print "     No need to resize the picture...   " + str(iPhotoSizeX) + "x" + str(
-        iPhotoSizeY) + " already fits ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY)
+    print ("     No need to resize the picture...   " + str(iPhotoSizeX) + "x" + str(
+        iPhotoSizeY) + " already fits ideal size of " + str(idealPictureSizeX) + "x" + str(idealPictureSizeY))
 
 # compute proposed values for parameters
 iPercentSizeSignatureProposed = _computeSignatureSizePercentage(iPhotoSizeX, iPhotoSizeY)
@@ -245,8 +245,8 @@ elif sSignatureSize.find("px") > 0:
     fCoeff = float(iSignatureDisplaySizeX) / float(iSignatureSizeX)
     iSignatureDisplaySizeY = int(iSignatureSizeY * fCoeff)
 else:
-    print "Error - invalid signature size (" + sSignatureSize + ":     %:" + str(
-        sSignatureSize.find("%")) + "     px:" + str(sSignatureSize.find("px")) + ")"
+    print ("Error - invalid signature size (" + sSignatureSize + ":     %:" + str(
+        sSignatureSize.find("%")) + "     px:" + str(sSignatureSize.find("px")) + ")")
     bAbort = True
 
 # compute signature position
@@ -257,7 +257,7 @@ elif sPositionTopBottom == "b":
 elif sPositionTopBottom == "c":
     iSignaturePositionY = iSignaturePaddingValue + (iPhotoSizeY - iSignatureDisplaySizeY) / 2
 else:
-    print "Error - invalid signature position Top/Bottom (" + sPositionTopBottom + ")"
+    print ("Error - invalid signature position Top/Bottom (" + sPositionTopBottom + ")")
     bAbort = True
 if sPositionLeftRight == "l":
     iSignaturePositionX = iSignaturePaddingValue + 1
@@ -266,7 +266,7 @@ elif sPositionLeftRight == "r":
 elif sPositionLeftRight == "c":
     iSignaturePositionX = iSignaturePaddingValue + (iPhotoSizeX - iSignatureDisplaySizeX) / 2
 else:
-    print "Error - invalid signature position Left/Right (" + sPositionLeftRight + ")"
+    print ("Error - invalid signature position Left/Right (" + sPositionLeftRight + ")")
     bAbort = True
 
 # get Default Opacity
@@ -289,11 +289,11 @@ bCopyEXIFData = (sCopyEXIFData == "y")
 
 # Compute final image
 if not bAbort:
-    print ""
-    print "Signature:"
-    print "            displayed size: " + str(iSignatureDisplaySizeX) + "x" + str(iSignatureDisplaySizeY)
-    print "            displayed position:   X:" + str(iSignaturePositionX) + "    Y:" + str(iSignaturePositionY)
-    print "            Opacity: " + sSignatureOpacity
+    print ("")
+    print ("Signature:")
+    print ("            displayed size: " + str(iSignatureDisplaySizeX) + "x" + str(iSignatureDisplaySizeY))
+    print ("            displayed position:   X:" + str(iSignaturePositionX) + "    Y:" + str(iSignaturePositionY))
+    print ("            Opacity: " + sSignatureOpacity)
 
     # compute final image name
     sFinalImageFilename = sPhotoFilename.replace(".", "___")
@@ -330,12 +330,12 @@ if not bAbort:
         pass
         imgPhotoFile.save(sFinalImageFilename, format='JPEG', subsampling=0, quality=iJPEGQuality)
 
-    print ""
-    print "Image created: " + sFinalImageFilename
-    print ""
+    print ("")
+    print ("Image created: " + sFinalImageFilename)
+    print ("")
 
-    print ""
-    sClose = raw_input("Taper ENTER pour quitter")
+    print ("")
+    sClose = input("Taper ENTER pour quitter")
 
 
 
