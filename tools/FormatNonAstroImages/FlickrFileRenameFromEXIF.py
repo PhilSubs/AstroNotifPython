@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 
 import logging
 import os
+from PIL import Image
 
 try:
     import piexif
@@ -34,6 +35,7 @@ for file in os.listdir(sCurrentPath):
             try:
                 exif_dict = piexif.load(sCurrentFileName)
                 sNewFileName = exif_dict['0th'][315]
+                # Prints the nicely formatted dictionary
             except:
                 sNewFileName = ""
             if sNewFileName == "":
@@ -44,7 +46,15 @@ for file in os.listdir(sCurrentPath):
                 # Remove Name and parenthesis
                 sNewFileName = sNewFileName[sNewFileName.find("(")+1:]
                 sNewFileName = sNewFileName[:len(sNewFileName) - 1]
+                sTitle = sNewFileName[:sNewFileName.find(" --"):]
                 sNewFileName = os.path.join(sCurrentPath, sNewFileName.strip())
+                # Change EXIF
+                im = Image.open(sCurrentFileName)
+                exif_dict_for_change = piexif.load(im.info["exif"])
+                # process im and exif_dict...
+                exif_dict_for_change['0th'][270] = sTitle.strip()
+                exif_bytes_for_change = piexif.dump(exif_dict_for_change)
+                im.save(sCurrentFileName + ".new.jpg", "jpeg", exif=exif_bytes_for_change, subsampling=0, quality=100)
                 # rename file
                 try:
                     os.rename(sCurrentFileName, sNewFileName)
