@@ -46,6 +46,7 @@ for file in os.listdir(sCurrentPath):
                 # Remove Name and parenthesis
                 sNewFileName = sNewFileName[sNewFileName.find("(")+1:]
                 sNewFileName = sNewFileName[:len(sNewFileName) - 1]
+                sNewFileName = sNewFileName.replace(".jpg)", ".jpg")
                 sTitle = sNewFileName[:sNewFileName.find(" --"):]
                 sNewFileName = os.path.join(sCurrentPath, sNewFileName.strip())
                 # Change EXIF
@@ -54,10 +55,9 @@ for file in os.listdir(sCurrentPath):
                 # process im and exif_dict...
                 exif_dict_for_change['0th'][270] = sTitle.strip()
                 exif_bytes_for_change = piexif.dump(exif_dict_for_change)
-                im.save(sCurrentFileName + ".new.jpg", "jpeg", exif=exif_bytes_for_change, subsampling=0, quality=100)
-                # rename file
+                # save with nez filename
                 try:
-                    os.rename(sCurrentFileName, sNewFileName)
+                    im.save(sNewFileName, "jpeg", exif=exif_bytes_for_change, subsampling=0, quality=100)
                     logging.info("   SUCCESS - File   {} --> {}".format(sCurrentFileName, sNewFileName))
                 except:
                     logging.info("   ERROR   - Cannot rename file   {}   to   {}".format(sCurrentFileName, sNewFileName))
