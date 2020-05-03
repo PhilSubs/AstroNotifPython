@@ -4745,6 +4745,7 @@
     "Reinhold 1": {"LongitudeInDeg":-25.81, "LatitudeInDeg":2.41, "LengthInKm":7.0, "WidthInKm":12.0, "HeightInM":null},
     "Reinhold 2": {"LongitudeInDeg":-25.32, "LatitudeInDeg":3.04, "LengthInKm":11.0, "WidthInKm":11.0, "HeightInM":null},
     "Reinhold 3": {"LongitudeInDeg":-25.45, "LatitudeInDeg":3.27, "LengthInKm":8.0, "WidthInKm":8.0, "HeightInM":null},
+    "REINHOLD A": {"LongitudeInDeg":-21.79, "LatitudeInDeg":4.16, "LengthInKm":3.7, "WidthInKm":3.7, "HeightInM":600},
     "REINHOLD B": {"LongitudeInDeg":-21.67, "LatitudeInDeg":4.28, "LengthInKm":24.0, "WidthInKm":24.0, "HeightInM":1060},
     "REPSOLD": {"LongitudeInDeg":-78.41, "LatitudeInDeg":51.31, "LengthInKm":108.0, "WidthInKm":108.0, "HeightInM":null},
     "REPSOLD A": {"LongitudeInDeg":-76.98, "LatitudeInDeg":51.84, "LengthInKm":9.0, "WidthInKm":9.0, "HeightInM":null},

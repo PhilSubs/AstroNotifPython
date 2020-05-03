@@ -82,8 +82,8 @@ FONT_SIGNATURE = ImageFont.truetype("Sugar Candy.ttf", 18)
 FONT_TITLE = ImageFont.truetype("COPRGTL.TTF", 36)
 FONT_ADDITIONAL_COMMENT = ImageFont.truetype("georgiai.ttf", 16)
 FONT_SUBTITLE = ImageFont.truetype("georgiai.ttf", 20)
-FONT_LUNARFEATURE_NAME = ImageFont.truetype("PCNavita-Regular.ttf", 12)
-FONT_LUNARFEATURE_DATA = ImageFont.truetype("PCNavita-Regular.ttf", 12)
+FONT_LUNARFEATURE_NAME = ImageFont.truetype("accid___.ttf",17) #"PCNavita-Regular.ttf", 14)
+FONT_LUNARFEATURE_DATA = ImageFont.truetype("accid___.ttf",17) #"PCNavita-Regular.ttf", 14)
 
 
 class Tools:
@@ -136,7 +136,11 @@ class Tools:
                 nbcorresp = 0
                 itervalid = -1
                 while iter < len(possiblevalues):
-                    if possiblevalues[iter].lower().find(lowerkeyboardvalue) > -1:
+                    if possiblevalues[iter].lower() == lowerkeyboardvalue:
+                        itervalid = iter
+                        iter = len(possiblevalues)
+                        nbcorresp = 1
+                    elif possiblevalues[iter].lower().find(lowerkeyboardvalue) > -1:
                         nbcorresp += 1
                         itervalid = iter
                         logger.debug("   --> {}, nbcorresp={}".format(possiblevalues[iter], str(nbcorresp)))
@@ -347,7 +351,7 @@ class ImageDataMoon(ImageData):
             super().inputdatamaterial()
             super().inputdatasoftware()
             super().inputdatacamerasettings()
-            self.inputLunarFeatureData()
+            self.inputDataLunarFeature()
             super().saveDataToJson()
 
     def getEphemerideData(self):
@@ -358,7 +362,7 @@ class ImageDataMoon(ImageData):
         if self.getValue("moonposangleindeg") != "": ephemerideData += " - Pos Angle " + self.getValue("moonposangleindeg") + "°"
         return ephemerideData
 
-    def inputLunarFeatureData(self):
+    def inputDataLunarFeature(self):
         # Read Lunar Features
         with open("FormatAstroImages_LunarFeatures.json", 'r') as fp:
             dicLunarFeatures = json.load(fp)
@@ -721,7 +725,7 @@ class ImageRenderMoon(ImageRenderer):
 
         for iFeatureId in range(0, len(arrFeatureInfos)):
             # Position
-            iStartPositionY = self._regionPhotoMiniature.getEndPosY() - abs(iFeatureId - (len(arrFeatureInfos)-1)) * (ifeaturenameheight + 7) - ifeatureinfoheight
+            iStartPositionY = self._regionPhotoMiniature.getEndPosY() - abs(iFeatureId - (len(arrFeatureInfos)-1)) * (ifeaturenameheight + 4) - ifeatureinfoheight
             # draw colored box
             self._pilFinalImageDraw.rectangle((iStartPositionX, iStartPositionY + ifeaturenameheight/2 - colorBoxSize/2, iStartPositionX + colorBoxSize, iStartPositionY + ifeaturenameheight/2 + colorBoxSize), fill=GLOBAL_MOON_FEATURE_COLOR[iFeatureId], outline=GLOBAL_MOON_FEATURE_COLOR[iFeatureId])
             # draw text
